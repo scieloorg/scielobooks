@@ -1,0 +1,1 @@
+[{"to": "_list/index/recent-posts", "from": "", "query": {"descending": true, "limit": 10}}, {"to": "script/*", "from": "script/*"}, {"to": "style/*", "from": "style/*"}, {"to": "vendor/*", "from": "vendor/*"}, {"to": "../../*", "from": ":db/*"}]

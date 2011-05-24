@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/scielo-books/!svn/ver/223/trunk/scielobooks/scielobooks/evaluation/templates
+END
+book_details.pt
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/scielo-books/!svn/ver/223/trunk/scielobooks/scielobooks/evaluation/templates/book_details.pt
+END
+new_book.pt
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/scielo-books/!svn/ver/214/trunk/scielobooks/scielobooks/evaluation/templates/new_book.pt
+END
+books_list.pt
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/scielo-books/!svn/ver/183/trunk/scielobooks/scielobooks/evaluation/templates/books_list.pt
+END

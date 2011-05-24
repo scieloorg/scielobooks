@@ -1,0 +1,11 @@
+0.1 (evaluation_01)
+---
+    Prepared a sample of evaluation bound to monograph records(#25)
+    Implemented the from_json factory method(#26)
+    Implemented publisher book listing(#27)
+    Implemented the summary page for the book evaluation(#28)
+    Reviewed logical names, routes name and view names in catalog app(#29)
+    Moved base template to a project scope(#30)
+    i18n support(#18)
+    Fixed the usage of ResourceNotFound exceptions
+    Added a placeholder for missing book covers

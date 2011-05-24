@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  metal:define-macro="master"
+  i18n:domain="scielobooks">
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <title>SciELO Books</title>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+      <script src="/static/js/language.js"></script>
+      <metal:block define-slot="custom_script"/>
+
+      <metal:block define-slot="css">
+        <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
+      </metal:block>
+    </head>
+    <body>
+      <div class="container">
+        <div class="top">
+          <h1><a href="#"><span>SciELO Livros</span></a></h1>
+          <span metal:define-slot="custom_top"></span>
+          <form id="form_language" action="/setlang/" method="post">
+            <input type="hidden" id="language" name="language"/>
+            <ul>
+              <li><a id="lang_pt" href="javascript: void(0);">Português</a></li>
+              <li><a id="lang_en" href="javascript: void(0);">English</a></li>
+            </ul>
+          </form>
+          <div class="spacer"></div>
+        </div>
+        <div class="messages">
+          <span class="notice"
+            tal:repeat="msg request.session.pop_flash()"
+            tal:content="msg" />
+        </div>
+        <div class="middle" metal:define-slot="middle"/>
+      </div><!--/container -->
+    </body>
+</html>

@@ -1,0 +1,297 @@
+if p(v2) or p(v706) then '  <doc>'/,
+
+'    <field name="id">',v2[1],'</field>'/,
+|    <field name="cc">|v1|</field>|/,
+if p(v3) then '    <field name="lo">'mhl,v3+| / |,mpl'</field>'/,fi,
+if p(v6) then '    <field name="type">',v6,'</field>'/,fi,
+if p(v8) then
+   (if p(v8^u) then
+       	|    <field name="ur">|v8^u|</field>|/,
+   else
+	|    <field name="ur">|v8^i|</field>|/,
+   ,fi,)
+,fi,
+
+(if p(v8^x) then
+   |    <field name="ur_meta">|v8|</field>|/,
+,fi,)
+
+   (if p(v10) then
+	  |    <field name="au">|v10^*|</field>|/
+   fi),
+   (if p(v11) then
+	  |    <field name="au">|v11^*|</field>|/
+   fi),
+   if p(v12) then
+	  (if p(v12^i) then
+		 |    <field name="ti_|v12^i|">|v12^*|</field>|/
+	  else
+		 |    <field name="ti">|v12^*|</field>|/
+	 ,fi,)
+   ,fi,
+   |    <field name="ti">|v13^*|</field>|/
+   if p(v14) then
+	   (,if p(v14^f) and p(v14^l) then
+		  |    <field name="pg">|v14^f| - |v14^l|</field>|/
+	   else
+		  |    <field name="pg">|v14^*|</field>|/
+	   ,fi,)
+	,fi,
+
+if v06 = 'as' or p(v706) then
+		if p(v30) then
+                   if p(v14^f) then
+			'    <field name="fo">'v30|;|,v31,|(|v32|)|,|: |v14^f|-|v14^l|, |,v64|. |,v38+|, |,".",n13'</field>'/
+                   else
+			'    <field name="fo">'v30|;|,v31,|(|v32|)|,|: |v14^*|, |,v64|. |,v38+|, |,".",n13'</field>'/
+                   fi,
+        	,fi,
+,fi,
+
+if v06 : 'am' then
+	if p(v16) or p(v17) then
+		if p(v16) then
+			'    <field name="fo">In. '(v16^*+|; |".")
+		fi
+		if p(v17) and a(v16) then
+			'    <field name="fo">In. '(v17^*+|; |".")
+	    fi,
+
+	       (" "v18^*+| / |". "),
+			v66', ',
+			(v62+|;|)', ',
+			v64'. ',
+                        if p(v14^f) then
+             			|p.|v14^f,|-|v14^l,
+                        else
+             			|p.|v14^*,
+			fi,
+                        |, |v38'. ',
+			|(|v30,
+			|, |v31,
+			|, |v32,
+			if p(v30) then ').' fi,
+			| (|v68|)|,
+		if p(v68) then '.' ,fi,'</field>'/,
+	,fi,
+,fi,
+
+if v06*0.1 = 'm' then
+	if p(v16) or p(v17) then
+	   (if p(v16) then
+		  |    <field name="au">|v16^*|</field>|/
+	    fi),
+	    (if p(v17) then
+		  |    <field name="au">|v17^*|</field>|/
+	    fi),
+	    (if p(v18) then
+		   	if p(v18^i) then
+			  |    <field name="ti_|v18^i|">|v18^*|</field>|/
+			else
+			  |    <field name="ti">|v18^*|</field>|/
+			,fi,
+		,fi,)
+		  |    <field name="ti">|v19^*|</field>|/
+		  |    <field name="pg">|v20^*|</field>|/
+		  |    <field name="vi">|v21^*|</field>|/
+	,fi,
+	if p(v66) then
+	'    <field name="fo">'
+				v66,'; ',
+				(v62+|;|),'; ',
+				v64,'. ',
+				v20| p. |,
+				v38+|, |".",
+				|(|v30,
+				|, |v31,
+				|, |v32,
+				if p(v30) then ').' fi,
+				| (|v68|).|,
+	'</field>'/
+	,fi,
+	if p(v30) then
+	'    <field name="fo">'
+				|(|v30,
+				|, |v31,
+				|, |v32,
+				').'|(|v68|).|,
+	'</field>'/
+	,fi,
+
+,fi,
+
+if v06 = 'c' then
+	if p(v23) or p(v24) then
+	       (if p(v23) then
+			  |    <field name="au">|v23^*|</field>|/
+	        fi),
+	       (if p(v24) then
+			  |    <field name="au">|v24^*|</field>|/
+	        fi),
+	       (if p(v25) then
+		       	if p(v25^i) then
+				  |    <field name="ti_|v25^i|">|v25^*|</field>|/
+				else
+				  |    <field name="ti">|v25^*|</field>|/
+				,fi,
+			,fi,)
+		  |    <field name="ti">|v26^*|</field>|/
+		  |    <field name="ntv">|v27^*|</field>|/
+	,fi,
+	if p(v66) then
+		'    <field name="fo">'
+			v66'; ',
+			(v62+|;|)'; ',
+			v64'. ',
+			v20| p. |,
+			v38'.',
+		'</field>'/
+	,fi,
+,fi,
+
+if p(v30) then
+	  (|    <field name="ta">|v30^*|</field>|/)
+	  (|    <field name="is">|v35^*|</field>|/)
+	  (|    <field name="vi">|v31^*|</field>|/)
+	  (|    <field name="ip">|v32^*|</field>|/)
+,fi,
+
+if p(v1100) then
+	  (|    <field name="ta_var">|v1100|</field>|/)
+,fi,
+if p(v1230) then
+	  (|    <field name="ta_var">|v1230|</field>|/)
+,fi,
+if p(v1235) then
+	  (|    <field name="ta_var">|v1235|</field>|/)
+,fi,
+if p(v1240) then
+	  (|    <field name="ta_var">|v1240|</field>|/)
+,fi,
+
+(if p(v40) then
+  |    <field name="la">|v40^*|</field>|/
+  else
+  	if p(v12^i) then
+	  |    <field name="la">|v12^i|</field>|/
+    else
+	  	if p(v18^i) then
+	  |    <field name="la">|v18^i|</field>|/
+		,fi,
+	,fi,
+,fi,)
+
+
+(if p(v41) then
+  |   <field name="la_ab">|v41^*|</field>|/
+,fi,)
+
+ (|    <field name="th_le">|v49^*|</field>|/)
+ |    <field name="th_in">|v50^*|</field>|/
+ |    <field name="th_ti">|v51^*|</field>|/
+
+if p(v62) or p(v64) then
+ (|    <field name="pu">|v62^*|</field>|/)
+ |    <field name="ed">|v63^*|</field>|/
+ |    <field name="dp">|v64^*|</field>|/
+ |    <field name="cy">|v66[1]^*|</field>|/
+ |    <field name="cp">|v67[1]^*|</field>|/
+ |    <field name="isbn">|v69^*|</field>|/
+fi,
+
+if val(v65.4) > 1900 and val(v65.4) <= val(left(date,4)) then
+  if size (v65^*)=4 then
+   '<field name="da">'v65^*.4'00</field>'/
+  else
+   '<field name="da">'v65^*.6'</field>'/
+  fi,
+fi,
+
+if p(v3004) then,
+   if val(v65.4) > 1900 and val(v65.4) <= val(left(date,4)) then,
+      '<field name="order_sjr">'v3004,v65^*.4'</field>'/,
+   else
+      '<field name="order_sjr">'v3004'0000</field>'/,
+   fi,
+fi,
+
+
+(,if p(v83)	then,
+   	if p(v83^i) then
+	  |    <field name="ab_|v83^i|">|v83^*|</field>|/
+	else
+		if p(v41) then
+		  |    <field name="ab_|v41[1]|">|v83^*|</field>|/
+		,fi,
+	,fi,
+,fi,)
+
+  (|    <field name="cn_in">|v52^*|</field>|/,)
+  (|    <field name="cn_na">|v53^*|</field>|/,)
+  (|    <field name="cn_dt">|v54^*|</field>|/,)
+  (|    <field name="cn_da">|v55^*|</field>|/,)
+  (|    <field name="cn_cy">|v56^*|</field>|/,)
+  (|    <field name="cn_co">|v57^*|</field>|/,)
+  (|    <field name="pr_in">|v58^*|</field>|/,)
+  (|    <field name="pr_na">|v59^*|</field>|/,)
+  (|    <field name="pr_nu">|v60^*|</field>|/,)
+  (|    <field name="pt">^d|v71^*|</field>|/,)
+  (|    <field name="ct">^d|v76^*|</field>|/,)
+  (if v87:'^0x' then
+    |    <field name="mj">^d|v87^*|</field>|/,
+  else
+    |    <field name="mj">|v87|</field>|/,
+  fi),
+  (if v88:'^0x' then
+    |    <field name="mh">^d|v88^*|</field>|/,
+  else
+    |    <field name="mh">|v88|</field>|/,
+  fi),
+
+
+(|    <field name="intertag">|v689|</field>|/,)
+
+/*
+if v8:'Internet' or (getenv('VAR1')='lil' and l(['/bases/lnk.000/iah.lnk/iah2orgG4']'ID=',v2) > 0) then,
+   '    <field name="fulltext">1</field>'/
+fi,
+*/
+
+if v4 : 'LILACSEXPRESS' or v4 : 'LLXPEDT' then,
+   '<field name="services">LXP</field>'/
+fi,
+
+(if p(v440) then
+|    <field name="jd">|v440|</field>|/
+fi),
+
+if v5*0.1 = 'N' or (v5*0.1 = 'M' and v6*0.1 = 'm') or a(v5) then,
+else,
+   '<field name="services">SCAD</field>'/
+fi,
+
+   '<field name="weight">',v8983'</field>'/
+if p(v653) then
+	  (|    <field name="Descritores_Locais">|v653|</field>|/)
+else if getenv('VAR1')='h1n' and p(v571)
+       then
+	  (|    <field name="Descritores_Locais">|v571|</field>|/)
+     fi,
+,fi,
+
+if p(v84) then
+   '<field name="entry_date">'v84'</field>'/
+fi,
+
+if p(v854) then
+   '<field name="dp_ym">'v854'</field>'/
+fi,
+
+if p(v855) then
+   '<field name="nro_month">'v855'</field>'/
+fi,
+
+
+'  </doc>'/,
+fi,
+

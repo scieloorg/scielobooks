@@ -1,0 +1,27 @@
+<VirtualHost *:80>
+  ServerName scielobooks.local
+  SetEnv PYTHON_EGG_CACHE /tmp
+
+  Alias /robots.txt /home/gustavo/Projects/bireme/scielo_books/trunk/scielobooks/scielobooks/static/robots.txt
+  Alias /favicon.ico /home/gustavo/Projects/bireme/scielo_books/trunk/scielobooks/scielobooks/static/favicon.ico
+  Alias /static/ /home/gustavo/Projects/bireme/scielo_books/trunk/scielobooks/scielobooks/static/
+
+  <Directory /home/gustavo/Projects/bireme/scielo_books/trunk/scielobooks/scielobooks/static/>
+        AllowOverride All
+        Options FollowSymLinks MultiViews
+        Order allow,deny
+        Allow from all
+  </Directory>
+
+  WSGIApplicationGroup %{GLOBAL}
+  WSGIPassAuthorization On
+  WSGIDaemonProcess scielobooks user=www-data group=www-data processes=1 threads=10 python-path=/home/gustavo/Projects/envs/scielobooks-env/lib/python2.6/site-packages
+  WSGIScriptAlias / /home/gustavo/Projects/bireme/scielo_books/trunk/scielobooks/apache/app/devel.wsgi
+
+  <Directory /home/gustavo/Projects/bireme/scielo_books/trunk/scielobooks/apache/app/>
+        WSGIProcessGroup scielobooks
+        Order allow,deny
+        Allow from all
+  </Directory>
+
+</VirtualHost>

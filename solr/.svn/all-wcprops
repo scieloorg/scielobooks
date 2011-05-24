@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/scielo-books/!svn/ver/101/trunk/scielobooks/solr
+END
+schema.xml
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/scielo-books/!svn/ver/101/trunk/scielobooks/solr/schema.xml
+END
+solrconfig.xml
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/scielo-books/!svn/ver/101/trunk/scielobooks/solr/solrconfig.xml
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/scielo-books/!svn/ver/88/trunk/scielobooks/couchapp/vendor/couchapp/evently/account
+END
+doSignup.js
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/scielo-books/!svn/ver/88/trunk/scielobooks/couchapp/vendor/couchapp/evently/account/doSignup.js
+END
+doLogin.js
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/scielo-books/!svn/ver/88/trunk/scielobooks/couchapp/vendor/couchapp/evently/account/doLogin.js
+END
+doLogout.js
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/scielo-books/!svn/ver/88/trunk/scielobooks/couchapp/vendor/couchapp/evently/account/doLogout.js
+END
+_init.js
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/scielo-books/!svn/ver/88/trunk/scielobooks/couchapp/vendor/couchapp/evently/account/_init.js
+END

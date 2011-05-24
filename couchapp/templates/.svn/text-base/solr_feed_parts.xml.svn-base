@@ -1,0 +1,25 @@
+<!DOCTYPE xml>
+<add>
+{{#rows}}
+    <doc>
+        <field name="sbid">{{sbid}}</field>
+        <field name="monographsbid">{{monographsbid}}</field>
+        <field name="chapterorder">{{chapterorder}}</field>
+        <field name="shortname">{{shortname}}</field>
+        <field name="title">{{title}}</field>
+        <field name="book_title">{{book_title}}</field>
+        <field name="isbn">{{isbn}}</field>
+        {{#authors}}
+            <field name="author">{{name}}</field>
+        {{/authors}}
+        <field name="publisher">{{publisher}}</field>
+        <field name="language">{{language}}</field>
+        <field name="year">{{year}}</field>
+        {{#format}}
+            <field name="format">{{type}}</field>
+        {{/format}}
+        <field name="type">{{type}}</field>
+    </doc>
+{{/rows}}
+</add>
+

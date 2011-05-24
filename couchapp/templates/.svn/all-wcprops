@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/scielo-books/!svn/ver/115/trunk/scielobooks/couchapp/templates
+END
+solr_feed_showpart.xml
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/scielo-books/!svn/ver/99/trunk/scielobooks/couchapp/templates/solr_feed_showpart.xml
+END
+solr_feed_parts.xml
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/scielo-books/!svn/ver/99/trunk/scielobooks/couchapp/templates/solr_feed_parts.xml
+END
+solr_feed_showbook.xml
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/scielo-books/!svn/ver/115/trunk/scielobooks/couchapp/templates/solr_feed_showbook.xml
+END
+solr_feed_books.xml
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/scielo-books/!svn/ver/88/trunk/scielobooks/couchapp/templates/solr_feed_books.xml
+END

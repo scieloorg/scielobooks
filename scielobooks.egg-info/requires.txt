@@ -1,0 +1,8 @@
+pyramid
+WebError
+Babel
+pyramid_zcml
+colander
+deform
+couchdbkit
+PIL

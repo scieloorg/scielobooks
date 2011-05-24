@@ -1,0 +1,116 @@
+
+body {
+	font-family: Arial;
+	color: #000;
+	margin: 0px;
+	padding: 0px;
+}
+a {
+	color: #2F2F2F;
+	text-decoration: none;
+}
+a:hover {
+	border-bottom: 1px dashed #2f2f2f;
+}
+.bookDetail {
+	width: 550px;
+	font-size: 12px;
+}
+.thumb {
+	text-align: center;
+	float: left;
+}
+.thumb img {
+	padding: 0px 15px;
+}
+
+.title {
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.details {
+	font-size: 11px;
+}
+.details span {
+	font-weight: bold;
+	color: #2F2F2F;
+}
+
+.actions {
+	clear: both;
+	margin-top: 10px;
+}
+
+.actions div {
+	float: left;
+	padding: 0px 2px 2px 20px;
+	margin: 10px;
+}
+
+.preview, .chapterPreview {
+	background: url(/static/preview.png) top left no-repeat;
+	padding: 0px 2px 2px 20px;
+}
+.permalink {
+	background: url(/static/link.png) top left no-repeat;
+}
+.tags {
+	background: url(/static/tag.gif) top left no-repeat;
+}
+fieldset.download {
+	float: right;
+	width: 200px;
+	margin: 10px;
+}
+.download legend {
+	font-weight: bold;
+	font-size: 14px;
+}
+.PDF {
+	background: url(/static/pdf.gif) top left no-repeat;
+	padding: 0px 2px 2px 20px;
+	
+}
+.ePub {
+	background: url(/static/epub.gif) top left no-repeat;
+}
+.tableContents {
+	clear: both;
+	margin: 5px;
+}
+ h2 {
+ 	font-size: 13px;
+	display: block;
+	border-bottom: 2px solid #cecece;
+	margin-bottom: 0px;
+ }
+ ul.chapters {
+ 	margin: 0px 10px;
+	padding: 0px;
+	list-style: none;
+ }
+ .chapters li {
+	clear:both;
+	float:left;
+	margin:5px 0 0;
+	width:100%;
+ }
+ .chapterTitle {
+ 	width: 60%;
+	clear: both;
+	float: left;
+	font-weight: bold;
+ }
+ .chapterPreview {
+ 	width: 12%;
+	float: left;
+ }
+ .chapterDownload {
+ 	width: 20%;
+	float: left;
+ }
+ .spacer {
+ 	clear: both;
+ }
+

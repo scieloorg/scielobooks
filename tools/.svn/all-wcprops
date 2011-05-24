@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/scielo-books/!svn/ver/213/trunk/scielobooks/tools
+END
+bvs_reg_XML.pft
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/scielo-books/!svn/ver/85/trunk/scielobooks/tools/bvs_reg_XML.pft
+END
+initialids.py
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/scielo-books/!svn/ver/36/trunk/scielobooks/tools/initialids.py
+END
+async_bulk.py
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/scielo-books/!svn/ver/90/trunk/scielobooks/tools/async_bulk.py
+END
+couchdb2solr-d.py
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/scielo-books/!svn/ver/213/trunk/scielobooks/tools/couchdb2solr-d.py
+END
+isbn.py
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/scielo-books/!svn/ver/34/trunk/scielobooks/tools/isbn.py
+END
+async.py
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/scielo-books/!svn/ver/89/trunk/scielobooks/tools/async.py
+END
+scielobooks.json
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/scielo-books/!svn/ver/35/trunk/scielobooks/tools/scielobooks.json
+END
+scielobooks_iahx.xml
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/scielo-books/!svn/ver/54/trunk/scielobooks/tools/scielobooks_iahx.xml
+END
+isbn.pyc
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/scielo-books/!svn/ver/41/trunk/scielobooks/tools/isbn.pyc
+END
+mn2sbid.py
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/scielo-books/!svn/ver/60/trunk/scielobooks/tools/mn2sbid.py
+END
+feedsolr.py
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/scielo-books/!svn/ver/90/trunk/scielobooks/tools/feedsolr.py
+END
+iahxdenormalize.py
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/scielo-books/!svn/ver/85/trunk/scielobooks/tools/iahxdenormalize.py
+END
+base28.py
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/scielo-books/!svn/ver/32/trunk/scielobooks/tools/base28.py
+END
+base28.pyc
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/scielo-books/!svn/ver/41/trunk/scielobooks/tools/base28.pyc
+END
