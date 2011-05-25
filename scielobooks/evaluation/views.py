@@ -18,6 +18,9 @@ import StringIO
 import os
 import uuid
 import colander
+#FIXME
+import isis
+import models
 
 from .models import Evaluation, Monograph
 
@@ -52,17 +55,17 @@ def book_details(request):
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
 
-    if 'creators' in monograph:
-        creators = [dict(creator) for creator in monograph['creators']]
+    if 'creators' in monograph and isinstance(monograph.get('creators',None), tuple):
+        creators = main_fields([dict(creator) for creator in monograph['creators']])
     else:
-        creators = []
+        creators = [creator for creator in monograph['creators']]
 
     document = monograph
     
     document.update({
         'cover_url': request.route_path('evaluation.cover', sbid=monograph['_id'], size='sz1'),
         'breadcrumb': {'home':request.registry.settings['solr_url'],},
-        'creators': main_fields(creators),
+        'creators': creators,
     })
     
     main = get_renderer(BASE_TEMPLATE).implementation()

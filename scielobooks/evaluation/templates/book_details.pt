@@ -16,25 +16,27 @@
 
         <dl class="metadata">
           <dt tal:condition="document.creators" i18n:translate="">Author:</dt>
-            <dd tal:repeat="person document.creators" tal:content="person">Soares, Sandra Regina</dd>
+            <dd tal:repeat="person document.creators">
+              <span tal:content="person">Soares, Sandra Regina</span>;
+            </dd>
 
           <dt tal:condition="document.publisher" i18n:translate="">Publisher:</dt>
             <dd tal:condition="document.publisher" tal:content="document.publisher">EDUSP</dd>
-
+          
           <dt tal:condition="document.language" i18n:translate="">Language:</dt>
             <dd tal:condition="document.language" tal:content="document.language">Português |</dd>
 
-          <!--dt tal:condition="document.edition" i18n:translate="">Edition:</dt-->
-            <!--dd tal:content="document.edition">3rd Edition</dd-->
+          <dt tal:condition="'edition' in document" i18n:translate="">Edition:</dt>
+            <dd tal:condition="'edition' in document" tal:content="document.edition">3rd Edition</dd>
 
-          <dt tal:condition="document.year" i18n:translate="">Year:</dt>
-            <dd tal:content="document.year">2009</dd>
+          <dt tal:condition="'year' in document" i18n:translate="">Year:</dt>
+            <dd tal:condition="'year' in document" tal:content="document.year">2009</dd>
 
-          <dt tal:condition="document.pages" i18n:translate="">Pages:</dt>
-            <dd tal:condition="document.pages" tal:content="document.pages">239</dd>
+          <dt tal:condition="'pages' in document" i18n:translate="">Pages:</dt>
+            <dd tal:condition="'pages' in document" tal:content="document.pages">239</dd>
 
-          <dt tal:condition="document.isbn" i18n:translate="">ISBN:</dt>
-            <dd tal:condition="document.isbn" tal:content="document.isbn">0123456789</dd>
+          <dt tal:condition="'isbn' in document" i18n:translate="">ISBN:</dt>
+            <dd tal:condition="'isbn' in document" tal:content="document.isbn">0123456789</dd>
         </dl>
 
         <div class="download">
@@ -56,7 +58,7 @@
 
         <div>
           <strong i18n:translate="">Synopsis</strong>
-          <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+          <p tal:condition="'synopsis' in document" tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
         </div>
         <div class="spacer"></div>
       </div>
