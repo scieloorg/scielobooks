@@ -43,10 +43,14 @@
           <fieldset>
             <legend>Download</legend>
             <div>
-              <a href="#">Parecer</a>
+              <a tal:condition="'editorial_decision_url' in document" 
+                 tal:attributes="href document.editorial_decision_url" 
+                 i18n:translate="" href="#">Parecer</a>
             </div>
-                <div>
-              <a href="#">Sumário</a>
+            <div>
+              <a tal:condition="'toc_url' in document"
+                 tal:attributes="href document.toc_url" 
+                 i18n:translate="" href="#">Sumário</a>
             </div>
           </fieldset>
         </div>
@@ -54,7 +58,9 @@
         <div class="actions"></div>
         <div class="spacer"></div>
 
-        <p><a href="#" i18n:translate="">Link para o Catálogo Institucional</a></p>
+        <p><a tal:condition="'publisher_url' in document"
+              tal:attributes="href document.publisher_url"
+              href="#" i18n:translate="">Link para o Catálogo Institucional</a></p>
 
         <div>
           <strong i18n:translate="">Synopsis</strong>
