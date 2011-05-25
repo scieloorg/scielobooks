@@ -27,8 +27,10 @@ class EvaluationForm():
         name='toc',
         widget=deform.widget.FileUploadWidget(tmpstore),
         missing=None))
-       
+
+    base_schema['synopsis'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
+
     @classmethod
     def get_form(cls):
         return deform.Form(cls.base_schema, buttons=('submit',))
-    
+
