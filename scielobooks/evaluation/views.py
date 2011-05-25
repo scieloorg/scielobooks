@@ -62,9 +62,24 @@ def book_details(request):
     document.update({
         'cover_url': request.route_path('evaluation.cover', sbid=monograph['_id'], size='sz1'),
         'breadcrumb': {'home':request.registry.settings['solr_url'],},
-        'creators': creators,
+        'creators': creators,        
     })
+
+    editorial_decision = evaluation.get('editorial_decision', {}).get('filename', None)
+    if editorial_decision is not None:
+        editorial_decision_url = static_url('scielobooks:database/%s/%s', request) % (evaluation['_id'], editorial_decision)
+        document.update({'editorial_decision_url':editorial_decision_url})
     
+    toc = evaluation.get('toc', {}).get('filename', None)
+    if toc is not None:
+        toc_url = static_url('scielobooks:database/%s/%s', request) % (evaluation['_id'], toc)
+        document.update({'toc_url':toc_url})
+
+    publisher_url = evaluation.get('publisher_url', None)
+    if publisher_url is not None:        
+        document.update({'publisher_url':publisher_url})
+    
+
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     return {'document':document,
