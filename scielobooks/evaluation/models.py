@@ -33,12 +33,21 @@ class Monograph(model.CouchdbDocument):
     format = model.TextProperty()
     cover = model.FileProperty()
     book = model.TextProperty()
-    #chapters_list = MultiCompositeTextProperty()
+    #chapters_list = model.MultiCompositeTextProperty()
     synopsis = model.TextProperty()
-    #about_author = MultiCompositeTextProperty()
+    #about_author = model.CompositeTextProperty()
     translators = model.MultiTextProperty()
     pdf_url = model.TextProperty()
     serie = model.TextProperty()
     
     class Meta:
         hide = ('evaluation',)
+
+class Part(model.CouchdbDocument):
+    title = model.TextProperty(required=True)
+    order = model.TextProperty(required=True)
+    creators = model.MultiCompositeTextProperty(required=False, subkeys=['full_name', 'role'])
+    monograph = model.TextProperty(required=False)
+
+    class Meta:
+        hide = ('monograph',)

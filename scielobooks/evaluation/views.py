@@ -22,7 +22,7 @@ import colander
 import isis
 import models
 
-from .models import Evaluation, Monograph
+from .models import Evaluation, Monograph, Part
 
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'
 MIMETYPES = {
@@ -215,3 +215,58 @@ def cover(request):
         img = urllib2.urlopen(static_url('scielobooks:static/images/fakecover.jpg', request))
 
         return Response(body=img.read(), content_type='image/jpeg')
+
+def parts_list(request):
+    monograph_id = request.matchdict['sbid']
+    try:
+       parts = request.db.view('scielobooks/monographs_and_parts', include_docs=True, key=[monograph_id, 1])
+    except couchdbkit.ResourceNotFound:
+        raise exceptions.NotFound()
+
+    documents = {}
+    for part in parts:
+        part_meta = {'title':part['doc']['title'],
+                     'order':part['doc']['order'],
+                     'creators':part['doc']['creators'],
+                     'edit_url':request.route_path('evaluation.edit_part', sbid=monograph_id, part_id=part['id'])}
+
+        documents[part['id']] = part_meta    
+    
+    main = get_renderer(BASE_TEMPLATE).implementation()
+
+    return {'documents': documents,
+            'main':main}
+
+def new_part(request):    
+    monograph_id = request.matchdict['sbid']
+
+    part_schema = Part.get_schema()
+    part_form = deform.Form(part_schema, buttons=('submit',))
+
+    main = get_renderer(BASE_TEMPLATE).implementation()
+
+    if 'submit' in request.POST:
+   
+        controls = request.POST.items()
+        try:
+            appstruct = part_form.validate(controls)
+        except deform.ValidationFailure, e:
+            return {'part_form':e.render(), 'main':main}
+                
+        part = Part.from_python(appstruct)
+        part.monograph = monograph_id
+
+        part.save(request.db)
+        request.session.flash('Adicionado com sucesso.')
+    
+        return {'part_form':None,
+                'main':main}
+
+    if 'part_id' in request.matchdict:
+        part = Part.get(request.db, request.matchdict['part_id'])
+        
+        return {'part_form':part_form.render(part.to_python()),
+                'main':main}    
+
+    return {'part_form':part_form.render(),
+            'main':main}

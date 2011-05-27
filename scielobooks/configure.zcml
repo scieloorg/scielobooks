@@ -84,4 +84,22 @@
     pattern="/evaluation/id/{sbid}/cover/{size}/cover.jpeg"
     view="scielobooks.evaluation.views.cover"
   />
+  <route
+    name="evaluation.parts_list"
+    pattern="/evaluation/id/{sbid}/parts"
+    view="scielobooks.evaluation.views.parts_list"
+    renderer="scielobooks:evaluation/templates/parts_list.pt"
+  />
+  <route
+    name="evaluation.new_part"
+    pattern="/evaluation/id/{sbid}/parts/new"
+    view="scielobooks.evaluation.views.new_part"
+    renderer="scielobooks:evaluation/templates/new_part.pt"
+  />
+  <route
+    name="evaluation.edit_part"
+    pattern="/evaluation/id/{sbid}/parts/{part_id}/edit"
+    view="scielobooks.evaluation.views.new_part"
+    renderer="scielobooks:evaluation/templates/new_part.pt"
+  />
 </configure>
