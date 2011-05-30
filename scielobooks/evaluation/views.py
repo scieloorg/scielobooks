@@ -37,9 +37,9 @@ COVER_SIZES = {
 
 def main_fields(composite_property):
     if isinstance(composite_property, list):
-        return [subfield['_'] for subfield in composite_property]
+        return [subfield['name'] for subfield in composite_property]
     else:
-        return composite_property['_']
+        return composite_property['name']
 
 def book_details(request):
     sbid = request.matchdict['sbid']
@@ -54,12 +54,9 @@ def book_details(request):
         monograph = request.db.get(evaluation['monograph'])
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
-
-    if 'creators' in monograph and isinstance(monograph.get('creators',None), tuple):
-        creators = main_fields([dict(creator) for creator in monograph['creators']])
-    else:
-        creators = [creator for creator in monograph['creators']]
-
+    
+    creators = main_fields([dict(creator) for creator in monograph['creators']])
+    
     document = monograph
     
     document.update({

@@ -1,4 +1,5 @@
 from isis import model
+import deform
 
 class Evaluation(model.CouchdbDocument):
     monograph = model.TextProperty() #model.ReferenceProperty()
@@ -21,7 +22,7 @@ class Monograph(model.CouchdbDocument):
     evaluation = model.TextProperty() #model.ReferenceProperty()
     title = model.TextProperty(required=True)
     isbn = model.TextProperty(required=True)
-    creators = model.MultiTextProperty()
+    creators = model.CompositeTextProperty(subkeys=['name','role',])
     publisher = model.TextProperty(required=True)
     language = model.TextProperty(choices=(('pt', 'portugues'), ('en', 'ingles')))
     year = model.TextProperty()
