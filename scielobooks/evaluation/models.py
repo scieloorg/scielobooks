@@ -1,4 +1,5 @@
 from isis import model
+import deform
 
 class Evaluation(model.CouchdbDocument):
     monograph = model.TextProperty() #model.ReferenceProperty()
@@ -21,7 +22,7 @@ class Monograph(model.CouchdbDocument):
     evaluation = model.TextProperty() #model.ReferenceProperty()
     title = model.TextProperty(required=True)
     isbn = model.TextProperty(required=True)
-    creators = model.MultiTextProperty()
+    creators = model.CompositeTextProperty(subkeys=['name','role',])
     publisher = model.TextProperty(required=True)
     language = model.TextProperty(choices=(('pt', 'portugues'), ('en', 'ingles')))
     year = model.TextProperty()
@@ -33,12 +34,21 @@ class Monograph(model.CouchdbDocument):
     format = model.TextProperty()
     cover = model.FileProperty()
     book = model.TextProperty()
-    #chapters_list = MultiCompositeTextProperty()
+    #chapters_list = model.MultiCompositeTextProperty()
     synopsis = model.TextProperty()
-    #about_author = MultiCompositeTextProperty()
+    #about_author = model.CompositeTextProperty()
     translators = model.MultiTextProperty()
     pdf_url = model.TextProperty()
     serie = model.TextProperty()
     
     class Meta:
         hide = ('evaluation',)
+
+class Part(model.CouchdbDocument):
+    title = model.TextProperty(required=True)
+    order = model.TextProperty(required=True)
+    creators = model.MultiCompositeTextProperty(required=False, subkeys=['full_name', 'role'])
+    monograph = model.TextProperty(required=False)
+
+    class Meta:
+        hide = ('monograph',)
