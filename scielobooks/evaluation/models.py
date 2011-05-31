@@ -22,7 +22,7 @@ class Monograph(model.CouchdbDocument):
     evaluation = model.TextProperty() #model.ReferenceProperty()
     title = model.TextProperty(required=True)
     isbn = model.TextProperty(required=True)
-    creators = model.CompositeTextProperty(subkeys=['name','role',])
+    creators = model.MultiCompositeTextProperty(subkeys=['full_name','role',])
     publisher = model.TextProperty(required=True)
     language = model.TextProperty(choices=(('pt', 'portugues'), ('en', 'ingles')))
     year = model.TextProperty()
