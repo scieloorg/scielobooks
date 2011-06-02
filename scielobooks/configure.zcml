@@ -102,4 +102,15 @@
     view="scielobooks.evaluation.views.new_part"
     renderer="scielobooks:evaluation/templates/new_part.pt"
   />
+<!--
+***********************************
+ STAFF APP
+***********************************
+-->
+  <route
+    name="staff.staff_panel"
+    pattern="/staff/panel"
+    view="scielobooks.staff.views.staff_panel"
+    renderer="scielobooks:staff/templates/staff_panel.pt"    
+  />
 </configure>
