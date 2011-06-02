@@ -18,9 +18,6 @@ import StringIO
 import os
 import uuid
 import colander
-#FIXME
-import isis
-import models
 
 from .models import Evaluation, Monograph, Part
 
@@ -44,23 +41,27 @@ def main_fields(composite_property):
 def book_details(request):
     sbid = request.matchdict['sbid']
     try:
-        evaluation = request.db.get(sbid)
+        monograph = request.db.get(sbid)
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
-    if evaluation['TYPE'] != 'Evaluation':
+    if monograph['TYPE'] != 'Monograph':
+        raise exceptions.NotFound()
+        
+    try:
+        evaluation = request.db.get(monograph['evaluation'])
+    except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
 
-    try:
-        monograph = request.db.get(evaluation['monograph'])
-    except couchdbkit.ResourceNotFound:
-        raise exceptions.NotFound()
-    
-    creators = main_fields([dict(creator) for creator in monograph['creators']])
-    
+
+    if 'creators' in monograph and isinstance(monograph.get('creators',None), tuple):
+        creators = main_fields([dict(creator) for creator in monograph['creators']])
+    else:
+        creators = [creator for creator in monograph['creators']]
+
     document = monograph
     
     document.update({
-        'cover_url': request.route_path('evaluation.cover', sbid=monograph['_id'], size='sz1'),
+        'cover_url': request.route_path('evaluation.cover', sbid=sbid, size='sz1'),
         'breadcrumb': {'home':request.registry.settings['solr_url'],},
         'creators': creators,        
     })
@@ -98,7 +99,7 @@ def books_list(request):
 
         book_meta = {'title':book['value']['title'],
                      'details_url':request.route_path('evaluation.book_details',
-                                                      sbid=book['id']),
+                                                      sbid=book['value']['monograph']),
                      }
         documents[book['key']].append(book_meta)
 
@@ -159,9 +160,8 @@ def new_book(request):
         return {'monograph_form':None,
                 'main':main}
     
-    if 'sbid' in request.matchdict:
-        monograph_id = request.db.get(request.matchdict['sbid'])['monograph']
-        monograph = Monograph.get(request.db, monograph_id)
+    if 'sbid' in request.matchdict:        
+        monograph = Monograph.get(request.db, request.matchdict['sbid'])
         appstruct = monograph.to_python()
 
         evaluation = Evaluation.get(request.db, monograph.evaluation, controls=False)
@@ -179,16 +179,15 @@ def cover(request):
     size = request.matchdict['size']
 
     try:
-        evaluation = request.db.get(sbid)
+        monograph = request.db.get(sbid)        
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
-
-    #FIXME: Restrict for type = Evaluation (need to think about the data entry form)
-    # if evaluation['TYPE'] != 'Evaluation':
-    #     raise exceptions.NotFound()
+    
+    if monograph['TYPE'] != 'Monograph':
+        raise exceptions.NotFound()
 
     try:
-        attach_name = evaluation['cover']['filename']
+        attach_name = monograph['cover']['filename']
     except KeyError:
         raise exceptions.NotFound()
 
@@ -198,9 +197,10 @@ def cover(request):
         size = 'sz1'
         img_size = COVER_SIZES['sz1']
 
-    filepath = '/tmp/cover-%s.%s.JPEG' % (sbid, size)
+    filepath = '/tmp/cover-%s.%s.JPEG' % (monograph['_id'], size)
     
-    cover_url = static_url('scielobooks:database/%s/%s', request) % (sbid, attach_name)
+    cover_url = static_url('scielobooks:database/%s/%s', request) % (monograph['_id'], attach_name)
+    
     try:
         img = urllib2.urlopen(cover_url.replace(' ', '%20'))#FIXME: urlencode must be handled more seriously
         img_thumb = Image.open(StringIO.StringIO(img.read()))
