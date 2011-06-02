@@ -1,5 +1,7 @@
 from isis import model
 import deform
+import urllib2
+
 
 class Evaluation(model.CouchdbDocument):
     monograph = model.TextProperty() #model.ReferenceProperty()

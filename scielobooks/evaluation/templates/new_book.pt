@@ -15,6 +15,10 @@
   </div>
 
   <div class="middle" metal:fill-slot="middle">
+    <p tal:condition="'sbid' in request.matchdict">
+      <a href="${request.route_path('evaluation.parts_list', sbid=request.matchdict['sbid'])}"
+         i18n:translate="">Manage book parts</a>
+    </p>
     <span tal:replace="structure monograph_form"></span>
   </div>
 </p>
