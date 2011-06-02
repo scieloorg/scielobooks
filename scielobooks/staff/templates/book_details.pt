@@ -70,7 +70,7 @@
       </div>
     </div>
     <div>
-      <a href="${request.url}/edit">Edit</a>
+      <a href="${request.route_path('staff.edit_book', sbid=request.matchdict['sbid'])}">Edit</a>
     </div>
   </div>
 </p>
