@@ -61,45 +61,57 @@
     view="scielobooks.evaluation.views.books_list"
     renderer="scielobooks:evaluation/templates/books_list.pt"    
   />
+  <!-- using staff.book_details -->
   <route
     name="evaluation.book_details"
     pattern="/evaluation/id/{sbid}"
-    view="scielobooks.evaluation.views.book_details"
-    renderer="scielobooks:evaluation/templates/book_details.pt"
-  />
-  <route
-    name="evaluation.new_book"
-    pattern="/evaluation/new"
-    view="scielobooks.evaluation.views.new_book"
-    renderer="scielobooks:evaluation/templates/new_book.pt"
-  />
-  <route
-    name="evaluation.edit_book"
-    pattern="/evaluation/id/{sbid}/edit"
-    view="scielobooks.evaluation.views.new_book"
-    renderer="scielobooks:evaluation/templates/new_book.pt"
-  />
+    view="scielobooks.staff.views.book_details"
+    renderer="scielobooks:staff/templates/book_details.pt"
+  />  
   <route
     name="evaluation.cover"
     pattern="/evaluation/id/{sbid}/cover/{size}/cover.jpeg"
     view="scielobooks.evaluation.views.cover"
   />
-  <route
-    name="evaluation.parts_list"
-    pattern="/evaluation/id/{sbid}/parts"
-    view="scielobooks.evaluation.views.parts_list"
-    renderer="scielobooks:evaluation/templates/parts_list.pt"
+<!--
+***********************************
+ STAFF APP
+***********************************
+-->
+  <route    
+    name="staff.book_details"
+    pattern="/staff/book/{sbid}"
+    view="scielobooks.staff.views.book_details"
+    renderer="scielobooks:staff/templates/book_details.pt"
   />
   <route
-    name="evaluation.new_part"
-    pattern="/evaluation/id/{sbid}/parts/new"
-    view="scielobooks.evaluation.views.new_part"
-    renderer="scielobooks:evaluation/templates/new_part.pt"
+    name="staff.new_book"
+    pattern="/staff/book/new"
+    view="scielobooks.staff.views.new_book"
+    renderer="scielobooks:staff/templates/new_book.pt"
   />
   <route
-    name="evaluation.edit_part"
-    pattern="/evaluation/id/{sbid}/parts/{part_id}/edit"
-    view="scielobooks.evaluation.views.new_part"
-    renderer="scielobooks:evaluation/templates/new_part.pt"
+    name="staff.edit_book"
+    pattern="/staff/book/{sbid}/edit"
+    view="scielobooks.staff.views.new_book"
+    renderer="scielobooks:staff/templates/new_book.pt"
+  />  
+  <route
+    name="staff.parts_list"
+    pattern="/staff/book/{sbid}/parts"
+    view="scielobooks.staff.views.parts_list"
+    renderer="scielobooks:staff/templates/parts_list.pt"
+  />
+  <route
+    name="staff.new_part"
+    pattern="/staff/book/{sbid}/parts/new"
+    view="scielobooks.staff.views.new_part"
+    renderer="scielobooks:staff/templates/new_part.pt"
+  />
+  <route
+    name="staff.edit_part"
+    pattern="/staff/book/{sbid}/parts/{part_id}/edit"
+    view="scielobooks.staff.views.new_part"
+    renderer="scielobooks:staff/templates/new_part.pt"
   />
 </configure>
