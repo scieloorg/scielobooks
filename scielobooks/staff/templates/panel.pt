@@ -28,7 +28,14 @@
                         Exupery
                     </span>
                 </td>
-                <td >4</td>
+                <td >
+                    <select>
+                      <option></option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                    </select>
+                </td>
             </tr>
             
         </table>
