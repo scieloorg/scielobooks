@@ -62,3 +62,9 @@ def custom_locale_negotiator(request):
         locale = settings['default_locale_name']
 
     return locale
+
+def add_sql_engine(event):        
+    import sqlalchemy
+    
+    engine = sqlalchemy.create_engine('sqlite:///:memory:', echo=False)
+    event.request.sql_engine = engine
