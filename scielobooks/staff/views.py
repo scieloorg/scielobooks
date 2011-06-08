@@ -173,15 +173,11 @@ def book_details(request):
 
 def panel(request):
 
-    try:
-       books = request.db.view('scielobooks/staff')
-    except couchdbkit.ResourceNotFound:
-        raise exceptions.NotFound()
+    evaluations = request.rel_db_session.query(rel_models.Evaluation).all()
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
-    return {'documents': {'books':books},
-            'total_documents': len(books),
+    return {'evaluations': evaluations,
             'main':main}
 
 def new_publisher(request):
