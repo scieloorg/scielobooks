@@ -34,3 +34,23 @@ class EvaluationForm():
     def get_form(cls):
         return deform.Form(cls.base_schema, buttons=('submit',))
 
+
+class PublisherForm():
+    class Schema(colander.Schema):
+        name = colander.SchemaNode(
+            colander.String(),
+            title='Publisher Name',
+            description='Type the publisher name',
+        )
+        email = colander.SchemaNode(
+            colander.String(),
+            validator=colander.Email(),
+        )
+        publisher_url = colander.SchemaNode(
+            colander.String(),
+        )
+    schema = Schema()
+
+    @classmethod
+    def get_form(cls):
+        return deform.Form(cls.schema, buttons=('submit',))

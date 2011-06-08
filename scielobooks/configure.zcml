@@ -120,4 +120,17 @@
     view="scielobooks.staff.views.panel"
     renderer="scielobooks:staff/templates/panel.pt"
   />
+  <route
+    name="staff.new_publisher"
+    pattern="/staff/publisher/new"
+    view="scielobooks.staff.views.new_publisher"
+    renderer="scielobooks:staff/templates/new_publisher.pt"
+  />
+  <route
+    name="staff.edit_publisher"
+    pattern="/staff/publisher/{slug}/edit"
+    view="scielobooks.staff.views.new_publisher"
+    renderer="scielobooks:staff/templates/new_publisher.pt"
+  />
+
 </configure>

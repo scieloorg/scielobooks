@@ -1,13 +1,18 @@
+# coding: utf-8
+
 from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid import exceptions
 from pyramid.url import route_url, static_url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import get_renderer
+from sqlalchemy.exc import IntegrityError
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
 
-from forms import EvaluationForm
+
+from forms import EvaluationForm, PublisherForm
+from ..models import models as rel_models
 
 import couchdbkit
 import urllib2
@@ -28,7 +33,7 @@ MIMETYPES = {
 }
 
 def new_book(request):    
-    import pdb; pdb.set_trace()
+
     monograph_form = EvaluationForm.get_form()
 
     main = get_renderer(BASE_TEMPLATE).implementation()
@@ -207,4 +212,62 @@ def panel(request):
 
     return {'documents': {'books':books},
             'total_documents': len(books),
+            'main':main}
+
+def new_publisher(request):
+
+    main = get_renderer(BASE_TEMPLATE).implementation()
+    
+    publisher_form = PublisherForm.get_form()
+    
+    if 'submit' in request.POST:
+
+        controls = request.POST.items()
+        try:
+            appstruct = publisher_form.validate(controls)
+        except deform.ValidationFailure, e:
+            return {'publisher_form':e.render(), 'main':main}
+    
+        session = request.rel_db
+
+        if 'slug' in request.matchdict: 
+            #edit
+            slug = request.matchdict.get('slug')
+            publisher = session.query(rel_models.Publisher).filter_by(name_slug=slug).one()
+            
+            publisher.email = appstruct['email']
+            publisher.publisher_url = appstruct['publisher_url']
+    
+        else:
+            #new
+            publisher = rel_models.Publisher(**appstruct)
+
+        session.add(publisher)
+            
+        try:
+            session.commit()
+        except IntegrityError:
+            session.Rollback()
+            request.session.flash(u'Esse registro já existe.')
+            return {'publisher_form':publisher_form.render(appstruct), 'main':main}
+
+        request.session.flash('Adicionado com sucesso.')
+
+        return {'publisher_form':None,
+                'main':main}
+
+
+    
+    if 'slug' in request.matchdict:
+
+        slug = request.matchdict.get('slug')
+        
+        session = request.rel_db
+        publisher = session.query(rel_models.Publisher).filter_by(name_slug=slug).one()
+        return {'publisher_form': publisher_form.render(publisher.as_dict()),
+                'main':main}
+
+     
+
+    return {'publisher_form': publisher_form.render(),
             'main':main}
