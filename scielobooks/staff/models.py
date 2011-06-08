@@ -3,25 +3,9 @@ import deform
 import urllib2
 
 
-class Evaluation(model.CouchdbDocument):
-    monograph = model.TextProperty() #model.ReferenceProperty()
-    publisher_url = model.TextProperty(required=False)
-    publisher = model.TextProperty()
-    title = model.TextProperty()
-    editorial_decision = model.FileProperty(required=False)
-    #committee_decision = model.MultiCompositeTextProperty()
-    #opinions = model.MultiCompositeTextProperty()
-    toc = model.FileProperty(required=False)
-    meetings = model.MultiTextProperty()
-    status = model.TextProperty()
-    theme = model.TextProperty()
-
-    class Meta:
-        hide = ('monograph', 'publisher', 'title',)
-
 class Monograph(model.CouchdbDocument):
     visible = model.BooleanProperty()
-    evaluation = model.TextProperty() #model.ReferenceProperty()
+    evaluation = model.TextProperty() # In relational database
     title = model.TextProperty(required=True)
     isbn = model.TextProperty(required=True)
     creators = model.MultiCompositeTextProperty(subkeys=['full_name','role',])
@@ -35,9 +19,8 @@ class Monograph(model.CouchdbDocument):
     format = model.TextProperty()
     cover = model.FileProperty()
     book = model.TextProperty()
-    #chapters_list = model.MultiCompositeTextProperty()
     synopsis = model.TextProperty()
-    #about_author = model.CompositeTextProperty()
+    about_author = model.MultiCompositeTextProperty(subkeys=['full_name','about',])
     translators = model.MultiTextProperty()
     pdf_url = model.TextProperty()
     serie = model.TextProperty()

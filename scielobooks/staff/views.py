@@ -24,7 +24,7 @@ import os
 import uuid
 import colander
 
-from .models import Evaluation, Monograph, Part
+from .models import Monograph, Part
 
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'
 MIMETYPES = {
@@ -44,41 +44,13 @@ def edit_book(request):
         try:
             appstruct = monograph_form.validate(controls)
         except deform.ValidationFailure, e:
+            
             return {'monograph_form':e.render(), 'main':main}
         
-        monograph = Monograph.from_python(appstruct)
-        
-        if 'sbid' in request.matchdict: #edit document
+        monograph = Monograph.from_python(appstruct)        
+        monograph.save(request.db)
 
-            monograph.evaluation = request.db.get(monograph._id)['evaluation']
-            monograph.save(request.db)
-            
-            evaluation = Evaluation.get(request.db, monograph.evaluation)
-
-            evaluation.publisher = monograph.publisher
-            evaluation.title = monograph.title
-
-            if appstruct['toc'] is not None:
-                evaluation.toc = appstruct['toc']
-            if appstruct['editorial_decision'] is not None:
-                evaluation.editorial_decision = appstruct['editorial_decision']
-            if appstruct['publisher_url'] is not None:
-                evaluation.publisher_url = appstruct['publisher_url']
-
-            evaluation.save(request.db)
-
-            request.session.flash('Atualizado com sucesso.')
-        # else: #new document
-        #     monograph.save(request.db)
-
-        #     evaluation = Evaluation.from_python(appstruct)
-        #     evaluation.monograph = monograph._id           
-        #     evaluation.save(request.db)
-
-        #     monograph.evaluation = evaluation._id
-        #     monograph.save(request.db)
-
-        #     request.session.flash('Adicionado com sucesso.')        
+        request.session.flash('Atualizado com sucesso.')
 
         return {'monograph_form':None,
                 'main':main}
@@ -87,15 +59,12 @@ def edit_book(request):
         monograph = Monograph.get(request.db, request.matchdict['sbid'])
         appstruct = monograph.to_python()
 
-        evaluation = Evaluation.get(request.db, monograph.evaluation, controls=False)
-             
-        appstruct.update(evaluation.to_python())
-
         return {'monograph_form':monograph_form.render(appstruct),
                 'main':main}
     
     return {'monograph_form':monograph_form.render(),
             'main':main}
+
 
 def parts_list(request):
     monograph_id = request.matchdict['sbid']
@@ -292,6 +261,13 @@ def new_book(request):
 
         evaluation.publisher = publisher
 
+        monograph = Monograph(title=evaluation.title, 
+                              isbn=evaluation.isbn, 
+                              publisher=evaluation.publisher.name,
+                              )
+        
+        evaluation.monograph_sbid = monograph._id
+                              
         request.rel_db_session.add(evaluation)
         try:
             request.rel_db_session.commit()
@@ -300,7 +276,6 @@ def new_book(request):
             request.session.flash(u'Esse registro já existe.')
             return {'monograph_form':evaluation_form.render(appstruct), 'main':main}
         
-        monograph = Monograph(title=evaluation.title, isbn=evaluation.isbn, publisher=evaluation.publisher.name)
         monograph.save(request.db)
 
         return HTTPFound(location=request.route_path('staff.edit_book', sbid=monograph._id))
