@@ -132,5 +132,11 @@
     view="scielobooks.staff.views.new_publisher"
     renderer="scielobooks:staff/templates/new_publisher.pt"
   />
+  <route
+    name="staff.new_meeting"
+    pattern="/staff/meeting/new"
+    view="scielobooks.staff.views.new_meeting"
+    renderer="scielobooks:templates/form.pt"
+  />
 
 </configure>

@@ -6,12 +6,13 @@ from pyramid import exceptions
 from pyramid.url import route_url, static_url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import get_renderer
-from sqlalchemy.exc import IntegrityError
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
 
+from sqlalchemy.exc import IntegrityError
+from datetime import date
 
-from forms import MonographForm, PublisherForm, EvaluationForm
+from forms import MonographForm, PublisherForm, EvaluationForm, MeetingForm
 from ..models import models as rel_models
 
 import couchdbkit
@@ -283,3 +284,28 @@ def new_book(request):
     return {'monograph_form': evaluation_form.render(),
             'main':main}
 
+def new_meeting(request):
+    main = get_renderer(BASE_TEMPLATE).implementation()
+
+    meeting_form = MeetingForm.get_form()
+
+    if 'submit' in request.POST:
+        
+        controls = request.POST.items()
+        try:
+            appstruct = meeting_form.validate(controls)
+        except deform.ValidationFailure, e:
+            return {'content':e.render(), 'main':main}
+    
+        meeting = rel_models.Meeting(**appstruct)
+
+        request.rel_db_session.add(meeting)
+
+        #TODO! catch exception
+        request.rel_db_session.commit()
+    
+        return HTTPFound(location=request.route_path('staff.panel'))
+
+    return {'content':meeting_form.render({'date':date.today()}),
+            'main':main,
+            }

@@ -1,5 +1,6 @@
 from models import Monograph
 
+import datetime
 import deform
 import colander
 
@@ -75,3 +76,21 @@ class EvaluationForm():
     def get_form(cls):
         return deform.Form(cls.schema, buttons=('submit',))
 
+class MeetingForm():
+    class Schema(colander.Schema):
+        date = colander.SchemaNode(
+                colander.Date(),
+                validator=colander.Range(
+                    min=datetime.date.today(),
+                    min_err='${val} is earlier than earliest date ${min}'
+                    )
+        )
+        description = colander.SchemaNode(
+            colander.String(),
+            missing=None,
+        )
+    schema = Schema()
+
+    @classmethod
+    def get_form(cls):
+        return deform.Form(cls.schema, buttons=('submit',))
