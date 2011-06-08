@@ -12,8 +12,8 @@ import couchdbkit
 import pyramid_zcml
 
 from .security import groupfinder
-
 from .models import initialize_sql
+from scielobooks.request import MyRequest
 
 
 def main(global_config, **settings):
@@ -21,11 +21,16 @@ def main(global_config, **settings):
     """
     authentication_policy = AuthTktAuthenticationPolicy('seekrit', callback=groupfinder)
     authorization_policy = ACLAuthorizationPolicy()
+    
+    engine = engine_from_config(settings, prefix='sqlalchemy.')
+    db_maker = sessionmaker(bind=engine)
+    settings['rel_db.sessionmaker'] = db_maker
 
     config = Configurator(settings=settings,
                           root_factory='scielobooks.resources.Root',
                           authentication_policy=authentication_policy,
-                          authorization_policy=authorization_policy)
+                          authorization_policy=authorization_policy,
+                          request_factory=MyRequest)
 
     config.include(pyramid_zcml)
     config.load_zcml('configure.zcml')
@@ -35,11 +40,8 @@ def main(global_config, **settings):
     config.registry.settings['db_conn'] = conn
     config.add_subscriber(add_couch_db, NewRequest)
 
-    # config.scan('scielobooks.models')
-    # engine = engine_from_config(settings, prefix='sqlalchemy.')
-    # db_maker = sessionmaker(bind=engine)
-    # settings['rel_db.sessionmaker'] = db_maker
-    # initialize_sql(engine)
+    config.scan('scielobooks.models')
+    initialize_sql(engine)
 
     if settings['serve_static_files'] == 'true':
         config.add_static_view(name='static', path='static')

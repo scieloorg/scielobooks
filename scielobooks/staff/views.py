@@ -28,7 +28,7 @@ MIMETYPES = {
 }
 
 def new_book(request):    
-
+    import pdb; pdb.set_trace()
     monograph_form = EvaluationForm.get_form()
 
     main = get_renderer(BASE_TEMPLATE).implementation()
