@@ -3,7 +3,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-Base = declarative_base()
+from scielobooks.models import Base
+
+from ..utilities import functions
 
 # association table
 meeting_evaluation = sqlalchemy.Table('meeting_evaluation', Base.metadata,
@@ -46,13 +48,21 @@ class Publisher(Base):
     name = sqlalchemy.Column(sqlalchemy.String, nullable=False, unique=True)
     email = sqlalchemy.Column(sqlalchemy.String, )
     publisher_url = sqlalchemy.Column(sqlalchemy.String, )
+    name_slug = sqlalchemy.Column(sqlalchemy.String, unique=True)
     
     def __init__(self, name, email=None, publisher_url=None):
 
         self.name = name
+        self.name_slug = functions.slugify(name)
 
         self.email = email
         self.publisher_url = publisher_url
+    
+    def as_dict(self):
+        return {'name': self.name,
+                'email': self.email,
+                'publisher_url': self.publisher_url,
+                }
 
 
 class Meeting(Base):
