@@ -11,7 +11,7 @@ from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
 
 
-from forms import EvaluationForm, PublisherForm
+from forms import MonographForm, PublisherForm, EvaluationForm
 from ..models import models as rel_models
 
 import couchdbkit
@@ -32,9 +32,9 @@ MIMETYPES = {
     'application/epub':'epub',
 }
 
-def new_book(request):    
+def edit_book(request):    
 
-    monograph_form = EvaluationForm.get_form()
+    monograph_form = MonographForm.get_form()
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -68,17 +68,17 @@ def new_book(request):
             evaluation.save(request.db)
 
             request.session.flash('Atualizado com sucesso.')
-        else: #new document
-            monograph.save(request.db)
+        # else: #new document
+        #     monograph.save(request.db)
 
-            evaluation = Evaluation.from_python(appstruct)
-            evaluation.monograph = monograph._id           
-            evaluation.save(request.db)
+        #     evaluation = Evaluation.from_python(appstruct)
+        #     evaluation.monograph = monograph._id           
+        #     evaluation.save(request.db)
 
-            monograph.evaluation = evaluation._id
-            monograph.save(request.db)
+        #     monograph.evaluation = evaluation._id
+        #     monograph.save(request.db)
 
-            request.session.flash('Adicionado com sucesso.')        
+        #     request.session.flash('Adicionado com sucesso.')        
 
         return {'monograph_form':None,
                 'main':main}
@@ -228,7 +228,7 @@ def new_publisher(request):
         except deform.ValidationFailure, e:
             return {'publisher_form':e.render(), 'main':main}
     
-        session = request.rel_db
+        session = request.rel_db_session
 
         if 'slug' in request.matchdict: 
             #edit
@@ -247,7 +247,7 @@ def new_publisher(request):
         try:
             session.commit()
         except IntegrityError:
-            session.Rollback()
+            session.rollback()
             request.session.flash(u'Esse registro já existe.')
             return {'publisher_form':publisher_form.render(appstruct), 'main':main}
 
@@ -255,19 +255,56 @@ def new_publisher(request):
 
         return {'publisher_form':None,
                 'main':main}
-
-
     
     if 'slug' in request.matchdict:
 
         slug = request.matchdict.get('slug')
-        
-        session = request.rel_db
+        session = request.rel_db_session
         publisher = session.query(rel_models.Publisher).filter_by(name_slug=slug).one()
-        return {'publisher_form': publisher_form.render(publisher.as_dict()),
+        
+        publisher_form['name'].widget = deform.widget.TextInputWidget(disabled="disabled")
+        
+        return {'publisher_form': publisher_form.render(publisher.as_dict(), ),
                 'main':main}
-
-     
 
     return {'publisher_form': publisher_form.render(),
             'main':main}
+
+
+def new_book(request):
+    main = get_renderer(BASE_TEMPLATE).implementation()
+    evaluation_form = EvaluationForm.get_form()
+
+    publishers = request.rel_db_session.query(rel_models.Publisher.name_slug, rel_models.Publisher.name).all()
+    evaluation_form['publisher'].widget = deform.widget.SelectWidget(values=(publishers), )
+
+    if 'submit' in request.POST:
+
+        controls = request.POST.items()
+        try:
+            appstruct = evaluation_form.validate(controls)
+        except deform.ValidationFailure, e:
+            return {'monograph_form':e.render(), 'main':main}
+
+        publisher_slug = appstruct.pop('publisher')
+        publisher = request.rel_db_session.query(rel_models.Publisher).filter_by(name_slug=publisher_slug).one()
+        evaluation = rel_models.Evaluation(**appstruct)
+
+        evaluation.publisher = publisher
+
+        request.rel_db_session.add(evaluation)
+        try:
+            request.rel_db_session.commit()
+        except IntegrityError:
+            request.rel_db_session.rollback()
+            request.session.flash(u'Esse registro já existe.')
+            return {'monograph_form':evaluation_form.render(appstruct), 'main':main}
+        
+        monograph = Monograph(title=evaluation.title, isbn=evaluation.isbn, publisher=evaluation.publisher.name)
+        monograph.save(request.db)
+
+        return HTTPFound(location=request.route_path('staff.edit_book', sbid=monograph._id))
+
+    return {'monograph_form': evaluation_form.render(),
+            'main':main}
+

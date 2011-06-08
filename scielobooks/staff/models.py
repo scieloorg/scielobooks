@@ -20,7 +20,7 @@ class Evaluation(model.CouchdbDocument):
         hide = ('monograph', 'publisher', 'title',)
 
 class Monograph(model.CouchdbDocument):
-    visible = model.BooleanProperty(required=False)
+    visible = model.BooleanProperty()
     evaluation = model.TextProperty() #model.ReferenceProperty()
     title = model.TextProperty(required=True)
     isbn = model.TextProperty(required=True)
@@ -31,7 +31,6 @@ class Monograph(model.CouchdbDocument):
     pages = model.TextProperty()
     edition = model.TextProperty()
     shortname = model.TextProperty()
-    download_formats = model.MultiTextProperty(required=False)
     collection = model.TextProperty()
     format = model.TextProperty()
     cover = model.FileProperty()

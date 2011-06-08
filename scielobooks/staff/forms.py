@@ -8,7 +8,7 @@ class MemoryTmpStore(dict):
         return None
 
 
-class EvaluationForm():
+class MonographForm():
 
     tmpstore = MemoryTmpStore()
 
@@ -45,12 +45,50 @@ class PublisherForm():
         email = colander.SchemaNode(
             colander.String(),
             validator=colander.Email(),
+            missing=None,
         )
         publisher_url = colander.SchemaNode(
             colander.String(),
+            missing=None,
         )
+
     schema = Schema()
 
     @classmethod
     def get_form(cls):
         return deform.Form(cls.schema, buttons=('submit',))
+
+
+class EvaluationForm():
+    class Schema(colander.Schema):
+
+        title = colander.SchemaNode(
+            colander.String(),
+        )
+        isbn = colander.SchemaNode(
+            colander.String(),
+        )
+        status = colander.SchemaNode(
+            colander.String(),
+            widget=deform.widget.SelectWidget(values=[('in_process','in process'),('approved','approved')],),
+        )
+        subject = colander.SchemaNode(
+            colander.String(),
+            widget=deform.widget.TextAreaWidget(),
+            missing=None,
+        )
+        publisher_catalog_url = colander.SchemaNode(
+            colander.String(),
+            missing=None,
+        )
+        publisher = colander.SchemaNode(
+            colander.String(),
+            missing=None,
+        )
+
+    schema = Schema()
+
+    @classmethod
+    def get_form(cls):
+        return deform.Form(cls.schema, buttons=('submit',))
+
