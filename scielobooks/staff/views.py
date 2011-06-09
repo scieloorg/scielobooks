@@ -123,49 +123,24 @@ def new_part(request):
             'main':main}
 
 def book_details(request):
+    main = get_renderer(BASE_TEMPLATE).implementation()
+    
     sbid = request.matchdict['sbid']
     try:
         monograph = request.db.get(sbid)
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
-    if monograph['TYPE'] != 'Monograph':
-        raise exceptions.NotFound()
-        
-    try:
-        evaluation = request.db.get(monograph['evaluation'])
-    except couchdbkit.ResourceNotFound:
+    if monograph['TYPE'] != 'Monograph': #FIXME! Really necessary?
         raise exceptions.NotFound()
 
-
-    if 'creators' in monograph and isinstance(monograph.get('creators',None), tuple):
-        creators = main_fields([dict(creator) for creator in monograph['creators']])
-    else:
-        creators = [creator for creator in monograph['creators']]
-
+    creators = [dict(creator)['full_name'] for creator in monograph['creators']]
+    
     document = monograph
     
     document.update({
-        'cover_url': request.route_path('evaluation.cover', sbid=sbid, size='sz1'),
         'breadcrumb': {'home':request.registry.settings['solr_url'],},
         'creators': creators,        
     })
-
-    editorial_decision = evaluation.get('editorial_decision', {}).get('filename', None)
-    if editorial_decision is not None:
-        editorial_decision_url = static_url('scielobooks:database/%s/%s', request) % (evaluation['_id'], editorial_decision)
-        document.update({'editorial_decision_url':editorial_decision_url})
-    
-    toc = evaluation.get('toc', {}).get('filename', None)
-    if toc is not None:
-        toc_url = static_url('scielobooks:database/%s/%s', request) % (evaluation['_id'], toc)
-        document.update({'toc_url':toc_url})
-
-    publisher_url = evaluation.get('publisher_url', None)
-    if publisher_url is not None:        
-        document.update({'publisher_url':publisher_url})
-    
-
-    main = get_renderer(BASE_TEMPLATE).implementation()
 
     return {'document':document,
             'main':main}
@@ -174,10 +149,12 @@ def book_details(request):
 def panel(request):
 
     evaluations = request.rel_db_session.query(rel_models.Evaluation).all()
+    meetings = request.rel_db_session.query(rel_models.Meeting).all()
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     return {'evaluations': evaluations,
+            'meetings': meetings,
             'main':main}
 
 def new_publisher(request):

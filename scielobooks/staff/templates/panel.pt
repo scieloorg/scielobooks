@@ -24,10 +24,7 @@
                 </td>
                 <td >
                     <select>
-                      <option></option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
+                      <option tal:repeat="meeting meetings" tal:content="meeting.date">blah</option>
                     </select>
                 </td>
             </tr>
