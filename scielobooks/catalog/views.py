@@ -145,23 +145,18 @@ def chapter_details(request):
 
 def cover(request):
     sbid = request.matchdict['sbid']
-    size = request.matchdict['size']
-
-    if size in COVER_SIZES:
-        img_size = COVER_SIZES[size]
-    else:
-        size = 'sz1'
-        img_size = COVER_SIZES['sz1']
 
     try:
         monograph = request.db.get(sbid)
-        img = request.db.fetch_attachment(monograph,monograph['cover_thumbnail']['filename'])
+        if 'thumbnail' in request.path:
+            img = request.db.fetch_attachment(monograph,monograph['cover_thumbnail']['filename'])
+        else:
+            img = request.db.fetch_attachment(monograph,monograph['cover']['filename'])
     except couchdbkit.ResourceNotFound:
         img = urllib2.urlopen(static_url('scielobooks:static/images/fakecover.jpg', request))
 
         return Response(body=img.read(), content_type='image/jpeg')
 
-    #FIXME!!! how to send an Image object for rendering?
     return Response(body=img, content_type='image/jpeg')
 
 
