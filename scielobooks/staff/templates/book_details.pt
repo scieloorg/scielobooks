@@ -10,7 +10,9 @@
     <div class="contentCol">        
       <div class="bookDetail">
         <div class="thumb">
-          <img tal:attributes="src document.cover_url" src="/static/images/fakecover.jpg" />
+          <a href="#" tal:attributes="href document.cover_full">
+            <img tal:attributes="src document.cover_thumb" src="/static/images/fakecover.jpg" />
+          </a>
         </div>
         <h3 tal:content="document.title">The man who ate his boots</h3>
 

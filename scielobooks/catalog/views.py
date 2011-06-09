@@ -6,6 +6,9 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import get_renderer
 from pyramid.i18n import TranslationStringFactory, negotiate_locale_name
 _ = TranslationStringFactory('scielobooks')
+
+from ..utilities.functions import create_thumbnail
+
 import couchdbkit
 import urllib2
 import json
@@ -142,26 +145,18 @@ def chapter_details(request):
 
 def cover(request):
     sbid = request.matchdict['sbid']
-    size = request.matchdict['size']
 
-    if size in COVER_SIZES:
-        img_size = COVER_SIZES[size]
-    else:
-        size = 'sz1'
-        img_size = COVER_SIZES['sz1']
+    try:
+        monograph = request.db.get(sbid)
+        if 'thumbnail' in request.path:
+            img = request.db.fetch_attachment(monograph,monograph['cover_thumbnail']['filename'])
+        else:
+            img = request.db.fetch_attachment(monograph,monograph['cover']['filename'])
+    except (couchdbkit.ResourceNotFound, KeyError):
+        img = urllib2.urlopen(static_url('scielobooks:static/images/fakecover.jpg', request))
 
-    filepath = '/tmp/cover-%s.%s.JPEG' % (sbid, size)
+        return Response(body=img.read(), content_type='image/jpeg')
 
-    if not os.path.isfile(filepath):
-        cover_url = static_url('scielobooks:books/%s/cover/original/cover.jpg', request) % sbid
-        try:
-            img = urllib2.urlopen(cover_url)
-            img_thumb = Image.open(StringIO.StringIO(img.read()))
-            img_thumb.thumbnail(img_size, Image.ANTIALIAS)
-            img_thumb.save(filepath, 'JPEG')
-        except urllib2.HTTPError:
-            img = urllib2.urlopen(static_url('scielobooks:static/images/fakecover.jpg', request))
+    return Response(body=img, content_type='image/jpeg')
 
-            return Response(body=img.read(), content_type='image/jpeg')
 
-    return Response(body=open(filepath).read(), content_type='image/jpeg')
