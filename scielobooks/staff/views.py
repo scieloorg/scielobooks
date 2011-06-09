@@ -145,7 +145,8 @@ def book_details(request):
     document = monograph
     
     document.update({
-        'cover_url': request.route_path('catalog.cover', sbid=sbid, size='sz1'),
+        'cover_thumb': request.route_path('catalog.cover_thumbnail', sbid=sbid),
+        'cover_full': request.route_path('catalog.cover', sbid=sbid),
         'breadcrumb': {'home':request.registry.settings['solr_url'],},
         'creators': creators,
     })
