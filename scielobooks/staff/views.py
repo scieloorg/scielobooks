@@ -26,6 +26,7 @@ import uuid
 import colander
 
 from .models import Monograph, Part
+from ..utilities.functions import create_thumbnail
 
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'
 MIMETYPES = {
@@ -48,13 +49,19 @@ def edit_book(request):
             
             return {'monograph_form':e.render(), 'main':main}
         
-        monograph = Monograph.from_python(appstruct)        
+        if 'cover' in appstruct:
+            cover_thumbnail = {'fp': create_thumbnail(appstruct['cover']['fp']),
+                               'filename': appstruct['cover']['filename'] + '.thumb',
+                               'uid':'', 
+                               }
+            appstruct['cover_thumbnail'] = cover_thumbnail
+        
+        monograph = Monograph.from_python(appstruct)
         monograph.save(request.db)
 
         request.session.flash('Atualizado com sucesso.')
 
-        return {'monograph_form':None,
-                'main':main}
+        return HTTPFound(location=request.route_path('staff.book_details', sbid=monograph._id))
     
     if 'sbid' in request.matchdict:        
         monograph = Monograph.get(request.db, request.matchdict['sbid'])
@@ -138,8 +145,9 @@ def book_details(request):
     document = monograph
     
     document.update({
+        'cover_url': request.route_path('catalog.cover', sbid=sbid, size='sz1'),
         'breadcrumb': {'home':request.registry.settings['solr_url'],},
-        'creators': creators,        
+        'creators': creators,
     })
 
     return {'document':document,
