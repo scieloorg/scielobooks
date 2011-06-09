@@ -35,7 +35,12 @@
 -->
   <route
     name="catalog.cover"
-    pattern="/id/{sbid}/cover/{size}/cover.jpeg"
+    pattern="/id/{sbid}/cover/cover.jpeg"
+    view="scielobooks.catalog.views.cover"
+  />
+  <route
+    name="catalog.cover_thumbnail"
+    pattern="/id/{sbid}/cover/cover_thumbnail.jpeg"
     view="scielobooks.catalog.views.cover"
   />
   <route
