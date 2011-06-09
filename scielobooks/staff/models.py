@@ -5,7 +5,6 @@ import urllib2
 
 class Monograph(model.CouchdbDocument):
     visible = model.BooleanProperty()
-    evaluation = model.TextProperty() # In relational database
     title = model.TextProperty(required=True)
     isbn = model.TextProperty(required=True)
     creators = model.MultiCompositeTextProperty(subkeys=['full_name','role',])
@@ -18,6 +17,7 @@ class Monograph(model.CouchdbDocument):
     collection = model.TextProperty()
     format = model.TextProperty()
     cover = model.FileProperty()
+    cover_thumbnail = model.FileProperty()
     book = model.TextProperty()
     synopsis = model.TextProperty()
     about_author = model.MultiCompositeTextProperty(subkeys=['full_name','about',])
@@ -26,7 +26,7 @@ class Monograph(model.CouchdbDocument):
     serie = model.TextProperty()
     
     class Meta:
-        hide = ('evaluation',)
+        hide = ('evaluation', 'cover_thumbnail')
 
 class Part(model.CouchdbDocument):
     title = model.TextProperty(required=True)
