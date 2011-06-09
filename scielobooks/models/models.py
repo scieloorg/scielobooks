@@ -7,14 +7,8 @@ from scielobooks.models import Base
 
 from ..utilities import functions
 
-# association table
-meeting_evaluation = sqlalchemy.Table('meeting_evaluation', Base.metadata,
-    sqlalchemy.Column('meeting_id', sqlalchemy.Integer, sqlalchemy.ForeignKey('meeting.id')),
-    sqlalchemy.Column('evaluation_id', sqlalchemy.Integer, sqlalchemy.ForeignKey('evaluation.id'))
-)
 
-class Evaluation(Base):
-    
+class Evaluation(Base):    
     __tablename__ = 'evaluation'
     
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
@@ -30,6 +24,9 @@ class Evaluation(Base):
     publisher_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('publisher.id'))    
     publisher = relationship("Publisher", backref=backref('evaluation', order_by=id))
 
+    meeting_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('meeting.id'))
+    meeting = relationship("Meeting", backref=backref('evaluation', order_by=id))
+
     def __init__(self, title, isbn, status, subject=None, publisher_catalog_url=None):
         self.title = title
         self.isbn = isbn
@@ -39,8 +36,7 @@ class Evaluation(Base):
         self.publisher_catalog_url = publisher_catalog_url
 
 
-class Publisher(Base):
-    
+class Publisher(Base):    
     __tablename__ = 'publisher'
     
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
@@ -51,22 +47,20 @@ class Publisher(Base):
     name_slug = sqlalchemy.Column(sqlalchemy.String, unique=True)
     
     def __init__(self, name, email=None, publisher_url=None):
-
         self.name = name
         self.name_slug = functions.slugify(name)
 
         self.email = email
         self.publisher_url = publisher_url
     
-    def as_dict(self):
+    def as_dict(self):        
         return {'name': self.name,
                 'email': self.email,
                 'publisher_url': self.publisher_url,
                 }
 
 
-class Meeting(Base):
-    
+class Meeting(Base):    
     __tablename__ = 'meeting'
     
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
@@ -74,12 +68,8 @@ class Meeting(Base):
     date = sqlalchemy.Column(sqlalchemy.Date, nullable=False, )
     description = sqlalchemy.Column(sqlalchemy.String, )
 
-    # many to many Meeting<->Evaluation
-    evaluations = relationship('Evaluation', secondary=meeting_evaluation, backref='meetings')
-    
+        
     def __init__(self, date, description=None):
-
         self.date = date
 
         self.description = description
-

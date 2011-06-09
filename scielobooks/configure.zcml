@@ -144,4 +144,15 @@
     renderer="scielobooks:templates/form.pt"
   />
 
+  <!--
+  ***************
+   AJAX FUNCTIONS
+  ***************
+   -->
+  <route
+    name="staff.ajax.set_meeting"
+    pattern="/staff/function/setmeeting/"
+    view="scielobooks.staff.views.ajax_set_meeting"
+  />
+
 </configure>

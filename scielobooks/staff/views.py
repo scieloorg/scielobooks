@@ -291,3 +291,25 @@ def new_meeting(request):
     return {'content':meeting_form.render({'date':date.today()}),
             'main':main,
             }
+
+
+def ajax_set_meeting(request):
+    if request.method == 'POST':        
+        evaluation_isbn = request.POST.get('evaluation', None)
+        meeting_id = request.POST.get('meeting', None)
+
+        if evaluation_isbn is None or meeting_id is None:
+            return Respose('insufficient params')
+        
+        #TODO! catch exception
+        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+        meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=meeting_id).one()
+
+        evaluation.meeting = meeting
+        request.rel_db_session.add(evaluation)
+        #TODO! catch exception
+        request.rel_db_session.commit()
+
+        return Response('done')
+
+    return Response('nothing to do')
