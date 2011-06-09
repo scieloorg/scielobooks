@@ -13,7 +13,6 @@ class Monograph(model.CouchdbDocument):
     year = model.TextProperty()
     pages = model.TextProperty()
     edition = model.TextProperty()
-    shortname = model.TextProperty()
     collection = model.TextProperty()
     format = model.TextProperty()
     cover = model.FileProperty()
