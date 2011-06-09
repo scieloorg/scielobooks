@@ -1,6 +1,4 @@
 # coding: utf-8
-
-
 import re
 from unicodedata import normalize
 import Image
@@ -36,6 +34,7 @@ def create_thumbnail(img, size=None):
     
     img_thumb = Image.open(StringIO.StringIO(img))
     img_thumb.thumbnail(size, Image.ANTIALIAS)
-    img_thumb.save('/tmp/scilothumb.jpg')
-    #FOR LORD, FIX ME!!!!
-    return open('/tmp/scilothumb.jpg')
+    buf = StringIO.StringIO()
+    img_thumb.save(buf, format='JPEG')
+
+    return buf
