@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
+    <div class="middle" metal:fill-slot="middle">
+        <div class="breadcrumb">
+            
+        </div>
+        <div class="leftCol">
+            &#160;
+        </div>
+
+        <h3>The man who ate his boots</h3>
+
+        <table cellspacing="0">
+            <tr>
+                <td>Publisher</td>
+                <td>Title</td>
+                <td>Authors</td>
+                <td>Meeting</td>
+            </tr>
+            
+            <tr tal:repeat="book documents.books">
+                <td tal:content="book.value.publisher">FAFIMUNDO</td>
+                <td >
+                    <a tal:attributes="href book.key" href="#" tal:content="book.value.title" >Le Petit Prince</a>
+                </td>
+                <td>
+                    <span tal:repeat="creator book.value.creators" tal:content="dict(creator).full_name">
+                        Exupery
+                    </span>
+                </td>
+                <td >4</td>
+            </tr>
+            
+        </table>
+
+        <div class="spacer"></div>
+    </div>
+</p>
