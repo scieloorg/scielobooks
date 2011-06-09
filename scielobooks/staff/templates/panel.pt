@@ -8,32 +8,23 @@
             &#160;
         </div>
 
-        <h3>The man who ate his boots</h3>
+        <h3>User Dashboard</h3>
 
         <table cellspacing="0">
             <tr>
                 <td>Publisher</td>
                 <td>Title</td>
-                <td>Authors</td>
                 <td>Meeting</td>
             </tr>
             
-            <tr tal:repeat="book documents.books">
-                <td tal:content="book.value.publisher">FAFIMUNDO</td>
+            <tr tal:repeat="evaluation evaluations">
+                <td tal:content="evaluation.publisher.name">FAFIMUNDO</td>
                 <td >
-                    <a href="${request.route_path('staff.book_details', sbid=book.key)}" tal:content="book.value.title" >Le Petit Prince</a>
-                </td>
-                <td>
-                    <span tal:repeat="creator book.value.creators" tal:content="dict(creator).full_name">
-                        Exupery
-                    </span>
+                    <a href="${request.route_path('staff.book_details', sbid=evaluation.monograph_sbid)}" tal:content="evaluation.title" >Le Petit Prince</a>
                 </td>
                 <td >
                     <select>
-                      <option></option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
+                      <option tal:repeat="meeting meetings" tal:content="meeting.date">blah</option>
                     </select>
                 </td>
             </tr>

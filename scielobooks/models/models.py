@@ -71,7 +71,7 @@ class Meeting(Base):
     
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     
-    date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False, )
+    date = sqlalchemy.Column(sqlalchemy.Date, nullable=False, )
     description = sqlalchemy.Column(sqlalchemy.String, )
 
     # many to many Meeting<->Evaluation
