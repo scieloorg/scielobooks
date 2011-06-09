@@ -49,7 +49,7 @@ def edit_book(request):
             
             return {'monograph_form':e.render(), 'main':main}
         
-        if 'cover' in appstruct:
+        if appstruct['cover']:
             cover_thumbnail = {'fp': create_thumbnail(appstruct['cover']['fp']),
                                'filename': appstruct['cover']['filename'] + '.thumb',
                                'uid':'', 

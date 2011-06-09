@@ -152,7 +152,7 @@ def cover(request):
             img = request.db.fetch_attachment(monograph,monograph['cover_thumbnail']['filename'])
         else:
             img = request.db.fetch_attachment(monograph,monograph['cover']['filename'])
-    except couchdbkit.ResourceNotFound:
+    except (couchdbkit.ResourceNotFound, KeyError):
         img = urllib2.urlopen(static_url('scielobooks:static/images/fakecover.jpg', request))
 
         return Response(body=img.read(), content_type='image/jpeg')
