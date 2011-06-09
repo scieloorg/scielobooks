@@ -6,6 +6,9 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import get_renderer
 from pyramid.i18n import TranslationStringFactory, negotiate_locale_name
 _ = TranslationStringFactory('scielobooks')
+
+from ..utilities.functions import create_thumbnail
+
 import couchdbkit
 import urllib2
 import json
@@ -150,18 +153,15 @@ def cover(request):
         size = 'sz1'
         img_size = COVER_SIZES['sz1']
 
-    filepath = '/tmp/cover-%s.%s.JPEG' % (sbid, size)
+    try:
+        monograph = request.db.get(sbid)
+        img = request.db.fetch_attachment(monograph,monograph['cover_thumbnail']['filename'])
+    except couchdbkit.ResourceNotFound:
+        img = urllib2.urlopen(static_url('scielobooks:static/images/fakecover.jpg', request))
 
-    if not os.path.isfile(filepath):
-        cover_url = static_url('scielobooks:books/%s/cover/original/cover.jpg', request) % sbid
-        try:
-            img = urllib2.urlopen(cover_url)
-            img_thumb = Image.open(StringIO.StringIO(img.read()))
-            img_thumb.thumbnail(img_size, Image.ANTIALIAS)
-            img_thumb.save(filepath, 'JPEG')
-        except urllib2.HTTPError:
-            img = urllib2.urlopen(static_url('scielobooks:static/images/fakecover.jpg', request))
+        return Response(body=img.read(), content_type='image/jpeg')
 
-            return Response(body=img.read(), content_type='image/jpeg')
+    #FIXME!!! how to send an Image object for rendering?
+    return Response(body=img, content_type='image/jpeg')
 
-    return Response(body=open(filepath).read(), content_type='image/jpeg')
+
