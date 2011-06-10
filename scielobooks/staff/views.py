@@ -49,9 +49,9 @@ def edit_book(request):
             
             return {'monograph_form':e.render(), 'main':main}
         
-        if appstruct['cover']:
+        if appstruct['cover'] and appstruct['cover']['fp'] is not None:
             cover_thumbnail = {'fp': create_thumbnail(appstruct['cover']['fp']),
-                               'filename': appstruct['cover']['filename'] + '.thumb',
+                               'filename': appstruct['cover']['filename'] + '.thumb.jpeg',
                                'uid':'', 
                                }
             appstruct['cover_thumbnail'] = cover_thumbnail
