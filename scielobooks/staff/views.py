@@ -34,7 +34,8 @@ MIMETYPES = {
     'application/epub':'epub',
 }
 
-def edit_book(request):    
+def edit_book(request):
+    FORM_TITLE = 'Submission of %s'
 
     monograph_form = MonographForm.get_form()
 
@@ -47,7 +48,10 @@ def edit_book(request):
             appstruct = monograph_form.validate(controls)
         except deform.ValidationFailure, e:
             
-            return {'monograph_form':e.render(), 'main':main}
+            return {'content':e.render(), 
+                    'main':main, 
+                    'form_title':FORM_TITLE % monograph.title,
+                    }
         
         if appstruct['cover'] and appstruct['cover']['fp'] is not None:
             cover_thumbnail = {'fp': create_thumbnail(appstruct['cover']['fp']),
@@ -67,12 +71,12 @@ def edit_book(request):
         monograph = Monograph.get(request.db, request.matchdict['sbid'])
         appstruct = monograph.to_python()
 
-        return {'monograph_form':monograph_form.render(appstruct),
-                'main':main}
+        return {'content':monograph_form.render(appstruct),
+                'main':main,
+                'form_title':FORM_TITLE % monograph.title,
+                }
     
-    return {'monograph_form':monograph_form.render(),
-            'main':main}
-
+    raise exceptions.NotFound
 
 def parts_list(request):
     monograph_id = request.matchdict['sbid']
@@ -86,16 +90,21 @@ def parts_list(request):
         part_meta = {'title':part['doc']['title'],
                      'order':part['doc']['order'],
                      'creators':part['doc']['creators'],
-                     'edit_url':request.route_path('staff.edit_part', sbid=monograph_id, part_id=part['id'])}
+                     'edit_url':request.route_path('staff.edit_part', sbid=monograph_id, part_id=part['id']),
+                     }
 
         documents[part['id']] = part_meta    
     
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     return {'documents': documents,
-            'main':main}
+            'main':main,
+            }
 
-def new_part(request):    
+def new_part(request):
+    FORM_TITLE_NEW = 'New Book Part'
+    FORM_TITLE_EDIT = 'Editing %s'
+
     monograph_id = request.matchdict['sbid']
 
     part_schema = Part.get_schema()
@@ -109,7 +118,10 @@ def new_part(request):
         try:
             appstruct = part_form.validate(controls)
         except deform.ValidationFailure, e:
-            return {'part_form':e.render(), 'main':main}
+            return {'content':e.render(),
+                    'main':main,
+                    'form_title':FORM_TITLE_NEW,
+                    }
                 
         part = Part.from_python(appstruct)
         part.monograph = monograph_id
@@ -117,17 +129,20 @@ def new_part(request):
         part.save(request.db)
         request.session.flash('Adicionado com sucesso.')
     
-        return {'part_form':None,
-                'main':main}
+        return HTTPFound(location=request.route_path('staff.panel'))
 
     if 'part_id' in request.matchdict:
         part = Part.get(request.db, request.matchdict['part_id'])
         
-        return {'part_form':part_form.render(part.to_python()),
-                'main':main}    
+        return {'content':part_form.render(part.to_python()),
+                'main':main,
+                'form_title':FORM_TITLE_EDIT % part.title,
+                }
 
-    return {'part_form':part_form.render(),
-            'main':main}
+    return {'content':part_form.render(),
+            'main':main,
+            'form_title':FORM_TITLE_NEW,
+            }
 
 def book_details(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
@@ -152,11 +167,11 @@ def book_details(request):
     })
 
     return {'document':document,
-            'main':main}
+            'main':main,
+            }
 
 
 def panel(request):
-
     evaluations = request.rel_db_session.query(rel_models.Evaluation).all()
     meetings = request.rel_db_session.query(rel_models.Meeting).all()
 
@@ -164,9 +179,12 @@ def panel(request):
 
     return {'evaluations': evaluations,
             'meetings': meetings,
-            'main':main}
+            'main':main,
+            }
 
 def new_publisher(request):
+    FORM_TITLE_NEW = 'New Publisher'
+    FORM_TITLE_EDIT = 'Editing %s'
 
     main = get_renderer(BASE_TEMPLATE).implementation()
     
@@ -178,7 +196,10 @@ def new_publisher(request):
         try:
             appstruct = publisher_form.validate(controls)
         except deform.ValidationFailure, e:
-            return {'publisher_form':e.render(), 'main':main}
+            return {'content':e.render(),
+                    'main':main,
+                    'form_title':FORM_TITLE_NEW,
+                    }
     
         session = request.rel_db_session
 
@@ -201,12 +222,14 @@ def new_publisher(request):
         except IntegrityError:
             session.rollback()
             request.session.flash(u'Esse registro já existe.')
-            return {'publisher_form':publisher_form.render(appstruct), 'main':main}
+            return {'content':publisher_form.render(appstruct),
+                    'main':main,
+                    'form_title':FORM_TITLE_NEW,
+                    }
 
         request.session.flash('Adicionado com sucesso.')
 
-        return {'publisher_form':None,
-                'main':main}
+        return HTTPFound(location=request.route_path('staff.panel'))
     
     if 'slug' in request.matchdict:
 
@@ -216,14 +239,20 @@ def new_publisher(request):
         
         publisher_form['name'].widget = deform.widget.TextInputWidget(disabled="disabled")
         
-        return {'publisher_form': publisher_form.render(publisher.as_dict(), ),
-                'main':main}
+        return {'content': publisher_form.render(publisher.as_dict()),
+                'main':main,
+                'form_title':FORM_TITLE_EDIT % publisher.name,
+                }
 
-    return {'publisher_form': publisher_form.render(),
-            'main':main}
+    return {'content': publisher_form.render(),
+            'main':main,
+            'form_title':FORM_TITLE_NEW,
+            }
 
 
 def new_book(request):
+    FORM_TITLE_NEW = 'New Book Submission'
+
     main = get_renderer(BASE_TEMPLATE).implementation()
     evaluation_form = EvaluationForm.get_form()
 
@@ -236,7 +265,10 @@ def new_book(request):
         try:
             appstruct = evaluation_form.validate(controls)
         except deform.ValidationFailure, e:
-            return {'monograph_form':e.render(), 'main':main}
+            return {'content':e.render(),
+                    'main':main,
+                    'form_title':FORM_TITLE_NEW,
+                    }
 
         publisher_slug = appstruct.pop('publisher')
         publisher = request.rel_db_session.query(rel_models.Publisher).filter_by(name_slug=publisher_slug).one()
@@ -257,16 +289,23 @@ def new_book(request):
         except IntegrityError:
             request.rel_db_session.rollback()
             request.session.flash(u'Esse registro já existe.')
-            return {'monograph_form':evaluation_form.render(appstruct), 'main':main}
+            return {'content':evaluation_form.render(appstruct),
+                    'main':main,
+                    'form_title':FORM_TITLE_NEW,
+                    }
         
         monograph.save(request.db)
 
         return HTTPFound(location=request.route_path('staff.edit_book', sbid=monograph._id))
 
-    return {'monograph_form': evaluation_form.render(),
-            'main':main}
+    return {'content': evaluation_form.render(),
+            'main':main,
+            'form_title':FORM_TITLE_NEW,
+            }
 
 def new_meeting(request):
+    FORM_TITLE_NEW = 'New Meeting'
+
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     meeting_form = MeetingForm.get_form()
@@ -277,12 +316,14 @@ def new_meeting(request):
         try:
             appstruct = meeting_form.validate(controls)
         except deform.ValidationFailure, e:
-            return {'content':e.render(), 'main':main}
+            return {'content':e.render(),
+                    'main':main,
+                    'form_title':FORM_TITLE_NEW,
+                    }
     
         meeting = rel_models.Meeting(**appstruct)
 
         request.rel_db_session.add(meeting)
-
         #TODO! catch exception
         request.rel_db_session.commit()
     
@@ -290,6 +331,7 @@ def new_meeting(request):
 
     return {'content':meeting_form.render({'date':date.today()}),
             'main':main,
+            'form_title':FORM_TITLE_NEW,
             }
 
 
