@@ -36,9 +36,10 @@ MIMETYPES = {
 }
 
 def edit_book(request):
-    FORM_TITLE = 'Submission of %s'
+    FORM_TITLE = _('Submission of %s')
 
-    monograph_form = MonographForm.get_form()
+    localizer = get_localizer(request)
+    monograph_form = MonographForm.get_form(localizer)
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
