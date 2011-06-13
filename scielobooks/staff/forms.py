@@ -52,7 +52,7 @@ class EvaluationForm():
             title = colander.SchemaNode(
                 colander.String(),
                 title=localizer.translate(_('Book Title')),
-                description=localizer.translate(_('Book title without abbreviations.')),
+                description=localizer.translate(_('Book title without abbreviations')),
             )
             isbn = colander.SchemaNode(
                 colander.String(),
@@ -74,13 +74,13 @@ class EvaluationForm():
                 colander.String(),
                 missing=None,
                 title=localizer.translate(_('Publisher\'s Catalog URL')),
-                description=localizer.translate(_('URL to the refered book, at the publisher\'s catalog.')),
+                description=localizer.translate(_('URL to the refered book, at the publisher\'s catalog')),
             )
             publisher = colander.SchemaNode(
                 colander.String(),
                 missing=None,
                 title=localizer.translate(_('Publisher')),
-                description=localizer.translate(_('Publisher name.')),
+                description=localizer.translate(_('Publisher name')),
             )
             __LOCALE__ = colander.SchemaNode(
                 colander.String(),
@@ -92,20 +92,29 @@ class EvaluationForm():
         return deform.Form(schema, buttons=(localizer.translate(_('submit')),))
 
 class MeetingForm():
-    class Schema(colander.Schema):
-        date = colander.SchemaNode(
-                colander.Date(),
-                validator=colander.Range(
-                    min=datetime.date.today(),
-                    min_err='${val} is earlier than earliest date ${min}'
-                    )
-        )
-        description = colander.SchemaNode(
-            colander.String(),
-            missing=None,
-        )
-    schema = Schema()
-
     @classmethod
-    def get_form(cls):
-        return deform.Form(cls.schema, buttons=('submit',))
+    def get_form(cls, localizer):
+        class Schema(colander.Schema):
+            date = colander.SchemaNode(
+                    colander.Date(),
+                    validator=colander.Range(
+                        min=datetime.date.today(),
+                        min_err='${val} is earlier than earliest date ${min}'
+                        ),
+                    title=localizer.translate(_('Meeting Date')),
+                    description=localizer.translate(_('Select the meeting date')),
+            )
+            description = colander.SchemaNode(
+                colander.String(),
+                missing=None,
+                title=localizer.translate(_('Description')),
+                description=localizer.translate(_('Short description about the meeting')),
+            )
+            __LOCALE__ = colander.SchemaNode(
+                colander.String(),
+                widget = deform.widget.HiddenWidget(),
+                default= localizer.locale_name,
+            )
+        schema = Schema()
+
+        return deform.Form(schema, buttons=('submit',))

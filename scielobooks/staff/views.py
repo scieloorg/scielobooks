@@ -255,7 +255,7 @@ def new_book(request):
     FORM_TITLE_NEW = 'New Book Submission'
 
     main = get_renderer(BASE_TEMPLATE).implementation()
-    
+
     localizer = get_localizer(request)
     evaluation_form = EvaluationForm.get_form(localizer)
 
@@ -311,7 +311,8 @@ def new_meeting(request):
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
-    meeting_form = MeetingForm.get_form()
+    localizer = get_localizer(request)
+    meeting_form = MeetingForm.get_form(localizer)
 
     if 'submit' in request.POST:
         

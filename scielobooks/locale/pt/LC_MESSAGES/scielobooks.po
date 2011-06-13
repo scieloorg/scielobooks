@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: scielobooks 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-06-13 16:55-0300\n"
+"POT-Creation-Date: 2011-06-13 17:15-0300\n"
 "PO-Revision-Date: 2011-04-01 16:15-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: pt <LL@li.org>\n"
@@ -90,8 +90,8 @@ msgid "Book Title"
 msgstr "Título do Livro"
 
 #: scielobooks/staff/forms.py:55
-msgid "Book title without abbreviations."
-msgstr "Título do livro sem abreviações."
+msgid "Book title without abbreviations"
+msgstr "Título do livro sem abreviações"
 
 #: scielobooks/staff/forms.py:59
 msgid "ISBN"
@@ -114,16 +114,36 @@ msgid "Publisher's Catalog URL"
 msgstr "URL do Catálogo da Editora"
 
 #: scielobooks/staff/forms.py:77
-msgid "URL to the refered book, at the publisher's catalog."
-msgstr "URL do livro no catálogo da editora."
+msgid "URL to the refered book, at the publisher's catalog"
+msgstr "URL do livro no catálogo da editora"
 
 #: scielobooks/staff/forms.py:82
 msgid "Publisher"
 msgstr "Editora"
 
 #: scielobooks/staff/forms.py:83
-msgid "Publisher name."
-msgstr "Nome da editora."
+msgid "Publisher name"
+msgstr "Nome da editora"
+
+#: scielobooks/staff/forms.py:92
+msgid "submit"
+msgstr ""
+
+#: scielobooks/staff/forms.py:104
+msgid "Meeting Date"
+msgstr "Data da Reunião"
+
+#: scielobooks/staff/forms.py:105
+msgid "Select the meeting date"
+msgstr "Selecione a data da reunião"
+
+#: scielobooks/staff/forms.py:110
+msgid "Description"
+msgstr "Descrição"
+
+#: scielobooks/staff/forms.py:111
+msgid "Short description about the meeting"
+msgstr "Breve descrição sobre a reunião"
 
 #: scielobooks/staff/templates/book_details.pt:63
 msgid "Link para o Catálogo Institucional"
