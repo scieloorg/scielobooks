@@ -2,6 +2,7 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.orm import scoped_session, sessionmaker
+from datetime import datetime
 
 from scielobooks.models import Base
 
@@ -18,6 +19,7 @@ class Evaluation(Base):
     status = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     subject = sqlalchemy.Column(sqlalchemy.String, )
     publisher_catalog_url = sqlalchemy.Column(sqlalchemy.String, )
+    creation_date = sqlalchemy.Column(sqlalchemy.DateTime, )
 
     monograph_sbid = sqlalchemy.Column(sqlalchemy.String, )
 
@@ -32,6 +34,8 @@ class Evaluation(Base):
         self.isbn = isbn
         self.status = status
 
+        self.creation_date = datetime.now()
+        
         self.subject = subject
         self.publisher_catalog_url = publisher_catalog_url
 
@@ -53,7 +57,7 @@ class Publisher(Base):
         self.email = email
         self.publisher_url = publisher_url
     
-    def as_dict(self):        
+    def as_dict(self):
         return {'name': self.name,
                 'email': self.email,
                 'publisher_url': self.publisher_url,
