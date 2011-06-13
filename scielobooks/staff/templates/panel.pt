@@ -19,14 +19,18 @@
         </script>
     </div>
     <div class="middle" metal:fill-slot="middle">
-        <div class="breadcrumb">
-            
-        </div>
+        <div class="breadcrumb"></div>
         <div class="leftCol">
             &#160;
         </div>
 
         <h3>User Dashboard</h3>
+
+        <ul>
+            <li><a href="${request.route_path('staff.new_book')}">New Submission</a></li>
+            <li><a href="${request.route_path('staff.new_meeting')}">New Meeting</a></li>
+            <li><a href="${request.route_path('staff.new_publisher')}">New Publisher</a></li>        
+        </ul>
 
         <table cellspacing="0">
             <tr>

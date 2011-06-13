@@ -93,13 +93,13 @@
     name="staff.new_book"
     pattern="/staff/book/new"
     view="scielobooks.staff.views.new_book"
-    renderer="scielobooks:staff/templates/new_book.pt"
+    renderer="scielobooks:templates/form.pt"
   />
   <route
     name="staff.edit_book"
     pattern="/staff/book/id/{sbid}/edit"
     view="scielobooks.staff.views.edit_book"
-    renderer="scielobooks:staff/templates/new_book.pt"
+    renderer="scielobooks:templates/form.pt"
   />
   <route
     name="staff.parts_list"
@@ -111,13 +111,13 @@
     name="staff.new_part"
     pattern="/staff/book/id/{sbid}/parts/new"
     view="scielobooks.staff.views.new_part"
-    renderer="scielobooks:staff/templates/new_part.pt"
+    renderer="scielobooks:templates/form.pt"
   />
   <route
     name="staff.edit_part"
     pattern="/staff/book/id/{sbid}/parts/{part_id}/edit"
     view="scielobooks.staff.views.new_part"
-    renderer="scielobooks:staff/templates/new_part.pt"
+    renderer="scielobooks:templates/form.pt"
   />
   <route
     name="staff.panel"
@@ -129,13 +129,13 @@
     name="staff.new_publisher"
     pattern="/staff/publisher/new"
     view="scielobooks.staff.views.new_publisher"
-    renderer="scielobooks:staff/templates/new_publisher.pt"
+    renderer="scielobooks:templates/form.pt"
   />
   <route
     name="staff.edit_publisher"
     pattern="/staff/publisher/{slug}/edit"
     view="scielobooks.staff.views.new_publisher"
-    renderer="scielobooks:staff/templates/new_publisher.pt"
+    renderer="scielobooks:templates/form.pt"
   />
   <route
     name="staff.new_meeting"
