@@ -4,31 +4,16 @@ import datetime
 import deform
 import colander
 
-class MemoryTmpStore(dict):
-    def preview_url(self, name):
-        return None
+
 
 
 class MonographForm():
-    tmpstore = MemoryTmpStore()
+    
+    role_values = [('writer','writer'),('translator','translator'),('editor','editor')]
 
     base_schema = Monograph.get_schema()
-    base_schema.add(colander.SchemaNode(
-        colander.String(),
-        name='publisher_url',
-        missing=None))    
-    base_schema.add(colander.SchemaNode(
-        deform.FileData(),
-        name='editorial_decision',
-        widget=deform.widget.FileUploadWidget(tmpstore),
-        missing=None))
-    base_schema.add(colander.SchemaNode(
-        deform.FileData(),
-        name='toc',
-        widget=deform.widget.FileUploadWidget(tmpstore),
-        missing=None))
-
     base_schema['synopsis'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
+    base_schema['creators'].children[0].children[0].widget = deform.widget.SelectWidget(values=role_values)
 
     @classmethod
     def get_form(cls):
