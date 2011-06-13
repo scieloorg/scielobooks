@@ -184,12 +184,13 @@ def panel(request):
             }
 
 def new_publisher(request):
-    FORM_TITLE_NEW = 'New Publisher'
-    FORM_TITLE_EDIT = 'Editing %s'
+    FORM_TITLE_NEW = _('New Publisher')
+    FORM_TITLE_EDIT = _('Editing %s')
 
     main = get_renderer(BASE_TEMPLATE).implementation()
     
-    publisher_form = PublisherForm.get_form()
+    localizer = get_localizer(request)
+    publisher_form = PublisherForm.get_form(localizer)
     
     if 'submit' in request.POST:
 
@@ -201,7 +202,7 @@ def new_publisher(request):
                     'main':main,
                     'form_title':FORM_TITLE_NEW,
                     }
-    
+        del(appstruct['__LOCALE__'])
         session = request.rel_db_session
 
         if 'slug' in request.matchdict: 
@@ -252,7 +253,7 @@ def new_publisher(request):
 
 
 def new_book(request):
-    FORM_TITLE_NEW = 'New Book Submission'
+    FORM_TITLE_NEW = _('New Book Submission')
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -273,6 +274,7 @@ def new_book(request):
                     'form_title':FORM_TITLE_NEW,
                     }
 
+        del(appstruct['__LOCALE__'])
         publisher_slug = appstruct.pop('publisher')
         publisher = request.rel_db_session.query(rel_models.Publisher).filter_by(name_slug=publisher_slug).one()
         evaluation = rel_models.Evaluation(**appstruct)
@@ -307,7 +309,7 @@ def new_book(request):
             }
 
 def new_meeting(request):
-    FORM_TITLE_NEW = 'New Meeting'
+    FORM_TITLE_NEW = _('New Meeting')
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -324,7 +326,8 @@ def new_meeting(request):
                     'main':main,
                     'form_title':FORM_TITLE_NEW,
                     }
-    
+        
+        del(appstruct['__LOCALE__'])
         meeting = rel_models.Meeting(**appstruct)
 
         request.rel_db_session.add(meeting)

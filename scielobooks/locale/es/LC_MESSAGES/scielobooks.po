@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: scielobooks 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-06-13 17:15-0300\n"
+"POT-Creation-Date: 2011-06-13 17:36-0300\n"
 "PO-Revision-Date: 2011-04-01 16:15-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: es <LL@li.org>\n"
@@ -85,64 +85,101 @@ msgstr ""
 msgid "Book:"
 msgstr ""
 
-#: scielobooks/staff/forms.py:54
-msgid "Book Title"
+#: scielobooks/staff/forms.py:30
+msgid "Publisher Name"
 msgstr ""
 
-#: scielobooks/staff/forms.py:55
-msgid "Book title without abbreviations"
-msgstr ""
-
-#: scielobooks/staff/forms.py:59
-msgid "ISBN"
-msgstr ""
-
-#: scielobooks/staff/forms.py:60
-msgid "ISBN 13"
-msgstr ""
-
-#: scielobooks/staff/forms.py:70
-msgid "Subject"
-msgstr ""
-
-#: scielobooks/staff/forms.py:71
-msgid "Subject key-words, separated by semi-colons \";\""
-msgstr ""
-
-#: scielobooks/staff/forms.py:76
-msgid "Publisher's Catalog URL"
-msgstr ""
-
-#: scielobooks/staff/forms.py:77
-msgid "URL to the refered book, at the publisher's catalog"
-msgstr ""
-
-#: scielobooks/staff/forms.py:82
-msgid "Publisher"
-msgstr ""
-
-#: scielobooks/staff/forms.py:83
+#: scielobooks/staff/forms.py:31 scielobooks/staff/forms.py:91
 msgid "Publisher name"
 msgstr ""
 
-#: scielobooks/staff/forms.py:92
+#: scielobooks/staff/forms.py:37
+msgid "E-mail"
+msgstr ""
+
+#: scielobooks/staff/forms.py:38
+msgid "Contact e-mail"
+msgstr ""
+
+#: scielobooks/staff/forms.py:43
+msgid "Institutional Site"
+msgstr ""
+
+#: scielobooks/staff/forms.py:44
+msgid "URL to publisher's institutional site"
+msgstr ""
+
+#: scielobooks/staff/forms.py:62
+msgid "Book Title"
+msgstr ""
+
+#: scielobooks/staff/forms.py:63
+msgid "Book title without abbreviations"
+msgstr ""
+
+#: scielobooks/staff/forms.py:67
+msgid "ISBN"
+msgstr ""
+
+#: scielobooks/staff/forms.py:68
+msgid "ISBN 13"
+msgstr ""
+
+#: scielobooks/staff/forms.py:78
+msgid "Subject"
+msgstr ""
+
+#: scielobooks/staff/forms.py:79
+msgid "Subject key-words, separated by semi-colons \";\""
+msgstr ""
+
+#: scielobooks/staff/forms.py:84
+msgid "Publisher's Catalog URL"
+msgstr ""
+
+#: scielobooks/staff/forms.py:85
+msgid "URL to the refered book, at the publisher's catalog"
+msgstr ""
+
+#: scielobooks/staff/forms.py:90
+msgid "Publisher"
+msgstr ""
+
+#: scielobooks/staff/forms.py:100
 msgid "submit"
 msgstr ""
 
-#: scielobooks/staff/forms.py:104
+#: scielobooks/staff/forms.py:112
 msgid "Meeting Date"
 msgstr ""
 
-#: scielobooks/staff/forms.py:105
+#: scielobooks/staff/forms.py:113
 msgid "Select the meeting date"
 msgstr ""
 
-#: scielobooks/staff/forms.py:110
+#: scielobooks/staff/forms.py:118
 msgid "Description"
 msgstr ""
 
-#: scielobooks/staff/forms.py:111
+#: scielobooks/staff/forms.py:119
 msgid "Short description about the meeting"
+msgstr ""
+
+#: scielobooks/staff/views.py:187
+msgid "New Publisher"
+msgstr ""
+
+#: scielobooks/staff/views.py:188
+#, python-format
+msgid "Editing %s"
+msgstr ""
+
+#: scielobooks/staff/views.py:256
+msgid "New Book Submission"
+msgstr ""
+
+#: scielobooks/staff/views.py:312
+msgid "New Meeting"
 msgstr ""
 
 #: scielobooks/staff/templates/book_details.pt:63

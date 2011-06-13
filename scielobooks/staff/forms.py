@@ -22,27 +22,35 @@ class MonographForm():
 
 
 class PublisherForm():
-    class Schema(colander.Schema):
-        name = colander.SchemaNode(
-            colander.String(),
-            title='Publisher Name',
-            description='Type the publisher name',
-        )
-        email = colander.SchemaNode(
-            colander.String(),
-            validator=colander.Email(),
-            missing=None,
-        )
-        publisher_url = colander.SchemaNode(
-            colander.String(),
-            missing=None,
-        )
-
-    schema = Schema()
-
     @classmethod
-    def get_form(cls):
-        return deform.Form(cls.schema, buttons=('submit',))
+    def get_form(cls, localizer):
+        class Schema(colander.Schema):
+            name = colander.SchemaNode(
+                colander.String(),
+                title=localizer.translate(_('Publisher Name')),
+                description=localizer.translate(_('Publisher name')),
+            )
+            email = colander.SchemaNode(
+                colander.String(),
+                validator=colander.Email(),
+                missing=None,
+                title=localizer.translate(_('E-mail')),
+                description=localizer.translate(_('Contact e-mail')),
+            )
+            publisher_url = colander.SchemaNode(
+                colander.String(),
+                missing=None,
+                title=localizer.translate(_('Institutional Site')),
+                description=localizer.translate(_('URL to publisher\'s institutional site')),
+            )
+            __LOCALE__ = colander.SchemaNode(
+                colander.String(),
+                widget = deform.widget.HiddenWidget(),
+                default= localizer.locale_name,
+            )
+        schema = Schema()
+
+        return deform.Form(schema, buttons=('submit',))
 
 
 class EvaluationForm():
