@@ -7,7 +7,7 @@
   i18n:domain="scielobooks">
     <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-      <title>SciELO Books</title>
+      <title metal:define-slot="custom_title">SciELO Books</title>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
       <script src="/static/js/language.js"></script>

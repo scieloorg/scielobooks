@@ -1,8 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <p metal:use-macro="main.macros['master']">
+  <title metal:fill-slot="custom_title">${form_title}</title>
 
   <div metal:fill-slot="custom_script">
     <script type="text/javascript" src="/deform_static/scripts/deform.js"></script>
+    <script type="text/javascript" src="/deform_static/scripts/jquery-ui-1.8.4.custom.min.js" ></script>
     <script type="text/javascript">
       deform.load()
     </script>
@@ -12,9 +14,11 @@
     <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
     <link rel="stylesheet" href="/deform_static/css/form.css" type="text/css"></link>
     <link rel="stylesheet" href="/deform_static/css/theme.css" type="text/css"></link>
+    <link rel="stylesheet" href="/deform_static/css/ui-lightness/jquery-ui-1.8.4.custom.css" type="text/css"></link>
   </div>
 
   <div class="middle" metal:fill-slot="middle">
-    <span tal:replace="structure part_form"></span>
+    <h2 class="form-title" tal:content="form_title"></h2>
+    <span tal:replace="structure content"></span>
   </div>
 </p>

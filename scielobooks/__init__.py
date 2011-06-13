@@ -5,30 +5,43 @@ from pyramid.i18n import get_localizer
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
+from sqlalchemy import engine_from_config
+from sqlalchemy.orm import sessionmaker
 
 import couchdbkit
 import pyramid_zcml
 
 from .security import groupfinder
+from .models import initialize_sql
+from scielobooks.request import MyRequest
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     authentication_policy = AuthTktAuthenticationPolicy('seekrit', callback=groupfinder)
     authorization_policy = ACLAuthorizationPolicy()
+    
+    engine = engine_from_config(settings, prefix='sqlalchemy.')
+    db_maker = sessionmaker(bind=engine)
+    settings['rel_db.sessionmaker'] = db_maker
 
     config = Configurator(settings=settings,
                           root_factory='scielobooks.resources.Root',
                           authentication_policy=authentication_policy,
-                          authorization_policy=authorization_policy)
+                          authorization_policy=authorization_policy,
+                          request_factory=MyRequest)
+
+    config.include(pyramid_zcml)
+    config.load_zcml('configure.zcml')
 
     db_uri = settings['db_uri']
     conn = couchdbkit.Server(db_uri)
     config.registry.settings['db_conn'] = conn
     config.add_subscriber(add_couch_db, NewRequest)
 
-    config.include(pyramid_zcml)
-    config.load_zcml('configure.zcml')
+    config.scan('scielobooks.models')
+    initialize_sql(engine)
 
     if settings['serve_static_files'] == 'true':
         config.add_static_view(name='static', path='static')
