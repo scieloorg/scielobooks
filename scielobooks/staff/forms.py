@@ -5,11 +5,9 @@ import deform
 import colander
 
 
-
-
 class MonographForm():
     
-    role_values = [('writer','writer'),('translator','translator'),('editor','editor')]
+    role_values = [('author','Author'),('translator','Translator'),('editor','Editor')]
 
     base_schema = Monograph.get_schema()
     base_schema['synopsis'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
