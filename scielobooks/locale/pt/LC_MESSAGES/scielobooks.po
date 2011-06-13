@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: scielobooks 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-04-13 10:36-0300\n"
+"POT-Creation-Date: 2011-06-13 16:55-0300\n"
 "PO-Revision-Date: 2011-04-01 16:15-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: pt <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: scielobooks/catalog/views.py:87 scielobooks/catalog/views.py:103
+#: scielobooks/catalog/views.py:90 scielobooks/catalog/views.py:106
 msgid "Not a valid chapter"
 msgstr "Capítulo inválido"
 
@@ -32,7 +32,7 @@ msgid "Table of Contents"
 msgstr "Tabela de Conteúdo"
 
 #: scielobooks/catalog/templates/book_details.pt:54
-#: scielobooks/evaluation/templates/book_details.pt:58
+#: scielobooks/staff/templates/book_details.pt:68
 msgid "Synopsis"
 msgstr "Sinopse"
 
@@ -42,42 +42,42 @@ msgstr ""
 
 #: scielobooks/catalog/templates/book_details.pt:39
 #: scielobooks/catalog/templates/chapter_details.pt:33
-#: scielobooks/evaluation/templates/book_details.pt:36
+#: scielobooks/staff/templates/book_details.pt:40
 msgid "ISBN:"
 msgstr ""
 
 #: scielobooks/catalog/templates/book_details.pt:36
 #: scielobooks/catalog/templates/chapter_details.pt:31
-#: scielobooks/evaluation/templates/book_details.pt:33
+#: scielobooks/staff/templates/book_details.pt:37
 msgid "Pages:"
 msgstr "Páginas:"
 
 #: scielobooks/catalog/templates/book_details.pt:33
-#: scielobooks/evaluation/templates/book_details.pt:30
+#: scielobooks/staff/templates/book_details.pt:34
 msgid "Year:"
 msgstr "Ano:"
 
 #: scielobooks/catalog/templates/book_details.pt:30
 #: scielobooks/catalog/templates/chapter_details.pt:29
-#: scielobooks/evaluation/templates/book_details.pt:27
+#: scielobooks/staff/templates/book_details.pt:31
 msgid "Edition:"
 msgstr "Edição:"
 
 #: scielobooks/catalog/templates/book_details.pt:27
 #: scielobooks/catalog/templates/chapter_details.pt:27
-#: scielobooks/evaluation/templates/book_details.pt:24
+#: scielobooks/staff/templates/book_details.pt:28
 msgid "Language:"
 msgstr "Idioma:"
 
 #: scielobooks/catalog/templates/book_details.pt:24
 #: scielobooks/catalog/templates/chapter_details.pt:25
-#: scielobooks/evaluation/templates/book_details.pt:21
+#: scielobooks/staff/templates/book_details.pt:25
 msgid "Publisher:"
 msgstr "Editora:"
 
 #: scielobooks/catalog/templates/book_details.pt:21
 #: scielobooks/catalog/templates/chapter_details.pt:21
-#: scielobooks/evaluation/templates/book_details.pt:18
+#: scielobooks/staff/templates/book_details.pt:20
 msgid "Author:"
 msgstr "Autor:"
 
@@ -85,6 +85,55 @@ msgstr "Autor:"
 msgid "Book:"
 msgstr "Livro:"
 
-#: scielobooks/evaluation/templates/book_details.pt:55
+#: scielobooks/staff/forms.py:54
+msgid "Book Title"
+msgstr "Título do Livro"
+
+#: scielobooks/staff/forms.py:55
+msgid "Book title without abbreviations."
+msgstr "Título do livro sem abreviações."
+
+#: scielobooks/staff/forms.py:59
+msgid "ISBN"
+msgstr ""
+
+#: scielobooks/staff/forms.py:60
+msgid "ISBN 13"
+msgstr ""
+
+#: scielobooks/staff/forms.py:70
+msgid "Subject"
+msgstr "Assunto"
+
+#: scielobooks/staff/forms.py:71
+msgid "Subject key-words, separated by semi-colons \";\""
+msgstr "Palavras-chave do assunto, separadas por ponto e vírgula \";\""
+
+#: scielobooks/staff/forms.py:76
+msgid "Publisher's Catalog URL"
+msgstr "URL do Catálogo da Editora"
+
+#: scielobooks/staff/forms.py:77
+msgid "URL to the refered book, at the publisher's catalog."
+msgstr "URL do livro no catálogo da editora."
+
+#: scielobooks/staff/forms.py:82
+msgid "Publisher"
+msgstr "Editora"
+
+#: scielobooks/staff/forms.py:83
+msgid "Publisher name."
+msgstr "Nome da editora."
+
+#: scielobooks/staff/templates/book_details.pt:63
 msgid "Link para o Catálogo Institucional"
 msgstr "Link to the Institutional Catalog"
+
+#: scielobooks/staff/templates/book_details.pt:53
+msgid "Sumário"
+msgstr ""
+
+#: scielobooks/staff/templates/book_details.pt:48
+msgid "Parecer"
+msgstr ""
+

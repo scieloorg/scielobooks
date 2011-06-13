@@ -6,6 +6,7 @@ from pyramid import exceptions
 from pyramid.url import route_url, static_url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import get_renderer
+from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
 
@@ -254,7 +255,9 @@ def new_book(request):
     FORM_TITLE_NEW = 'New Book Submission'
 
     main = get_renderer(BASE_TEMPLATE).implementation()
-    evaluation_form = EvaluationForm.get_form()
+    
+    localizer = get_localizer(request)
+    evaluation_form = EvaluationForm.get_form(localizer)
 
     publishers = request.rel_db_session.query(rel_models.Publisher.name_slug, rel_models.Publisher.name).all()
     evaluation_form['publisher'].widget = deform.widget.SelectWidget(values=(publishers), )

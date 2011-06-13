@@ -34,7 +34,7 @@ setup(name='scielobooks',
       main = scielobooks:main
       """,
       paster_plugins=['pyramid'],
-      message_extractors = { '.': [
+      message_extractors = { 'scielobooks': [
             ('**.py','chameleon_python', None ),
             ('**.pt','chameleon_xml', None ),
             ]

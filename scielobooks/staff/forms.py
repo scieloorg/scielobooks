@@ -1,5 +1,8 @@
 from models import Monograph
 
+from pyramid.i18n import TranslationStringFactory
+_ = TranslationStringFactory('scielobooks')
+
 import datetime
 import deform
 import colander
@@ -43,37 +46,50 @@ class PublisherForm():
 
 
 class EvaluationForm():
-    class Schema(colander.Schema):
-
-        title = colander.SchemaNode(
-            colander.String(),
-        )
-        isbn = colander.SchemaNode(
-            colander.String(),
-        )
-        status = colander.SchemaNode(
-            colander.String(),
-            widget=deform.widget.SelectWidget(values=[('in_process','in process'),('approved','approved')],),
-        )
-        subject = colander.SchemaNode(
-            colander.String(),
-            widget=deform.widget.TextAreaWidget(),
-            missing=None,
-        )
-        publisher_catalog_url = colander.SchemaNode(
-            colander.String(),
-            missing=None,
-        )
-        publisher = colander.SchemaNode(
-            colander.String(),
-            missing=None,
-        )
-
-    schema = Schema()
-
     @classmethod
-    def get_form(cls):
-        return deform.Form(cls.schema, buttons=('submit',))
+    def get_form(cls, localizer):        
+        class Schema(colander.Schema):
+            title = colander.SchemaNode(
+                colander.String(),
+                title=localizer.translate(_('Book Title')),
+                description=localizer.translate(_('Book title without abbreviations.')),
+            )
+            isbn = colander.SchemaNode(
+                colander.String(),
+                title=localizer.translate(_('ISBN')),
+                description=localizer.translate(_('ISBN 13')),
+            )
+            status = colander.SchemaNode(
+                colander.String(),
+                widget=deform.widget.SelectWidget(values=[('in_process','in process'),('approved','approved')],),
+            )
+            subject = colander.SchemaNode(
+                colander.String(),
+                widget=deform.widget.TextAreaWidget(),
+                missing=None,
+                title=localizer.translate(_('Subject')),
+                description=localizer.translate(_('Subject key-words, separated by semi-colons ";"')),
+            )
+            publisher_catalog_url = colander.SchemaNode(
+                colander.String(),
+                missing=None,
+                title=localizer.translate(_('Publisher\'s Catalog URL')),
+                description=localizer.translate(_('URL to the refered book, at the publisher\'s catalog.')),
+            )
+            publisher = colander.SchemaNode(
+                colander.String(),
+                missing=None,
+                title=localizer.translate(_('Publisher')),
+                description=localizer.translate(_('Publisher name.')),
+            )
+            __LOCALE__ = colander.SchemaNode(
+                colander.String(),
+                widget = deform.widget.HiddenWidget(),
+                default= localizer.locale_name,
+            )
+        schema = Schema()
+
+        return deform.Form(schema, buttons=(localizer.translate(_('submit')),))
 
 class MeetingForm():
     class Schema(colander.Schema):
