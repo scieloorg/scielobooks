@@ -5,6 +5,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from datetime import datetime
 
 from scielobooks.models import Base
+#from .users_models import Admin
 
 from ..utilities import functions
 
@@ -72,8 +73,11 @@ class Meeting(Base):
     date = sqlalchemy.Column(sqlalchemy.Date, nullable=False, )
     description = sqlalchemy.Column(sqlalchemy.String, )
 
-        
-    def __init__(self, date, description=None):
+    admin_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('user.id'))    
+    admin = relationship("Admin", backref=backref('meeting', order_by=id))
+
+    def __init__(self, date, admin, description=None):
         self.date = date
+        self.admin = admin
 
         self.description = description

@@ -1,6 +1,8 @@
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
 
+from ..models import users_models as users
+
 import datetime
 import deform
 import colander
@@ -8,10 +10,18 @@ import colander
 class SignupForm():
     @classmethod
     def get_form(cls, localizer, publishers):
+        
+        def validate_username(node, value):
+            msg = _("Username must not contains non alphanumeric digits",)
+            if not value.isalnum():
+                raise colander.Invalid(node, msg)
+            
         class Schema(colander.Schema):
             username = colander.SchemaNode(
                 colander.String(),
-                title=localizer.translate(_('Publisher Name')),
+                #TODO create a validator
+                validator=colander.All(validate_username),
+                title=localizer.translate(_('Username')),
                 description=localizer.translate(_('User name')),
             )
             password = colander.SchemaNode(
@@ -27,12 +37,11 @@ class SignupForm():
                 title=localizer.translate(_('E-mail')),
                 description=localizer.translate(_('Contact e-mail')),
             )
-            email = colander.SchemaNode(
+            publisher = colander.SchemaNode(
                 colander.String(),
-                validator=colander.Email(),
                 widget=deform.widget.SelectWidget(values=publishers),
-                title=localizer.translate(_('E-mail')),
-                description=localizer.translate(_('Contact e-mail')),
+                title=localizer.translate(_('Publisher')),
+                description=localizer.translate(_('Publisher name')),
             )
             __LOCALE__ = colander.SchemaNode(
                 colander.String(),

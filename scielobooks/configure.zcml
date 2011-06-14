@@ -164,6 +164,7 @@
     name="users.views.signup"
     pattern="/users/signup"
     view="scielobooks.users.views.signup"
+    renderer="scielobooks:templates/form.pt"
   />
 
 

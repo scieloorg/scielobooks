@@ -22,9 +22,45 @@ import json
 import deform
 import colander
 
+BASE_TEMPLATE = 'scielobooks:templates/base.pt'
 
 def signup(request):
     localizer = get_localizer(request)
-    publishers = request.rel_db_session.query(models.Publisher.name_slug, models.Publisher.name).all()
+    main = get_renderer(BASE_TEMPLATE).implementation()
+    publisher = request.rel_db_session.query(models.Publisher.name_slug, models.Publisher.name).all()
+    signup_form = SignupForm.get_form(localizer,publisher)
 
-    return Response(SignupForm.get_form(localizer, publisher).render())
+    if 'submit' in request.POST:
+                
+        controls = request.POST.items()
+        try:
+            appstruct = signup_form.validate(controls)
+        except deform.ValidationFailure, e:
+            
+            return {'content':e.render(), 
+                    'main':main, 
+                    'form_title':_('Signup'),
+                    }
+
+        del(appstruct['__LOCALE__'])
+
+        appstruct['publisher'] = request.rel_db_session.query(models.Publisher).filter_by(name_slug=appstruct['publisher']).one()
+        editor = users.Editor(**appstruct)
+        request.rel_db_session.add(editor)
+
+        try:
+            request.rel_db_session.commit()
+        except IntegrityError:
+            request.rel_db_session.rollback()
+            request.session.flash(_('This username already exists.'))
+            return {'content':signup_form.render(appstruct),
+                    'main':main,
+                    'form_title':'Signup',
+                    }
+        request.session.flash(_('Successfully added.'))
+        return HTTPFound(location=request.route_path('staff.panel'))
+
+    return {'content':signup_form.render(),
+            'form_title': _('Signup'),
+            'main':main,
+            }

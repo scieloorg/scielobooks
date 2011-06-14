@@ -44,20 +44,20 @@ class Admin(User):
 
     __mapper_args__ = {'polymorphic_identity': 'admin'}
 
-    def __init__(self):
-        super(Admin,self).__init__(self)
+    def __init__(self, username, password, fullname=None, email=None):
+        super(Admin,self).__init__(username,password,fullname,email)
 
 
 class Editor(User):
 
     publisher_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('publisher.id'))    
-    publisher = relationship("Publisher", ) #backref=backref('user', order_by=id)) #FIXME
+    publisher = relationship("Publisher", )
 
     __mapper_args__ = {'polymorphic_identity': 'editor'}
     
-    def __init__(self, publisher):
+    def __init__(self, username, password, publisher, fullname=None, email=None):
+        super(Editor,self).__init__(username,password,fullname,email)    
         self.publisher = publisher
-        super(Admin,self).__init__(self)    
 
 
 class Group(Base):    
