@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<p metal:use-macro="main.macros['master']">
+<p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
   <div class="middle" metal:fill-slot="middle">
     <div class="breadcrumb">
       <a href="/" tal:attributes="href document.breadcrumb.home">Home</a> / <span tal:replace="document.title">Le Petit Prince</span>
@@ -41,18 +41,14 @@
             <dd tal:condition="'isbn' in document" tal:content="document.isbn">0123456789</dd>
         </dl>
 
-        <div class="download">
+        <div class="download"
+             tal:condition="document.attachments | nothing">
           <fieldset>
             <legend>Download</legend>
-            <div>
-              <a tal:condition="'editorial_decision_url' in document" 
-                 tal:attributes="href document.editorial_decision_url" 
-                 i18n:translate="" href="#">Parecer</a>
-            </div>
-            <div>
-              <a tal:condition="'toc_url' in document"
-                 tal:attributes="href document.toc_url" 
-                 i18n:translate="" href="#">Sumário</a>
+            <div tal:repeat="attach document.attachments">
+              <a tal:attributes="href attach.url"
+                 tal:content="attach.text"
+                 href="#">Parecer</a>
             </div>
           </fieldset>
         </div>
@@ -69,10 +65,28 @@
           <p tal:condition="'synopsis' in document" tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
         </div>
         <div class="spacer"></div>
+
+        <div>
+          <strong i18n:translate="">Book Parts</strong>
+          <table>
+            <tr>
+                <th i18n:translate="">Order</th>
+                <th i18n:translate="">Title</th>
+            </tr>
+            <tr tal:repeat="part document_parts.keys()">
+                <td tal:content="document_parts[part].order" />
+                <td tal:content="document_parts[part].title" />
+                <td><a tal:attributes="href document_parts[part].edit_url" 
+                       i18n:translate="">edit</a>
+                </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
     <div>
-      <a href="${request.route_path('staff.edit_book', sbid=request.matchdict['sbid'])}">Edit</a>
+      <a href="${request.route_path('staff.edit_book', sbid=request.matchdict['sbid'])}" 
+         i18n:translate="">Edit</a>
     </div>
   </div>
 </p>

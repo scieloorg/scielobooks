@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: scielobooks 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-06-13 18:26-0300\n"
+"POT-Creation-Date: 2011-06-14 18:30-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,12 +27,12 @@ msgstr ""
 
 #: scielobooks/catalog/templates/book_details.pt:59
 #: scielobooks/catalog/templates/chapter_details.pt:38
-#: scielobooks/staff/forms.py:62
+#: scielobooks/staff/forms.py:62 scielobooks/staff/views.py:177
 msgid "Table of Contents"
 msgstr ""
 
 #: scielobooks/catalog/templates/book_details.pt:54 scielobooks/staff/forms.py:40
-#: scielobooks/staff/templates/book_details.pt:68
+#: scielobooks/staff/templates/book_details.pt:64
 msgid "Synopsis"
 msgstr ""
 
@@ -86,6 +86,8 @@ msgid "Book:"
 msgstr ""
 
 #: scielobooks/staff/forms.py:28 scielobooks/staff/forms.py:29
+#: scielobooks/staff/templates/book_details.pt:74
+#: scielobooks/staff/templates/panel.pt:41
 msgid "Title"
 msgstr ""
 
@@ -106,6 +108,7 @@ msgid "Authors, translators, editors..."
 msgstr ""
 
 #: scielobooks/staff/forms.py:34 scielobooks/staff/forms.py:136
+#: scielobooks/staff/templates/panel.pt:40
 msgid "Publisher"
 msgstr ""
 
@@ -177,7 +180,7 @@ msgstr ""
 msgid "serie"
 msgstr ""
 
-#: scielobooks/staff/forms.py:58
+#: scielobooks/staff/forms.py:58 scielobooks/staff/views.py:185
 msgid "Book in PDF"
 msgstr ""
 
@@ -265,32 +268,81 @@ msgstr ""
 msgid "Short description about the meeting"
 msgstr ""
 
-#: scielobooks/staff/views.py:188
-msgid "New Publisher"
+#: scielobooks/staff/views.py:39
+#, python-format
+msgid "Submission of %s"
 msgstr ""
 
-#: scielobooks/staff/views.py:189
+#: scielobooks/staff/views.py:68
+msgid "Successfully updated."
+msgstr ""
+
+#: scielobooks/staff/views.py:80
+msgid "Manage Book Parts"
+msgstr ""
+
+#: scielobooks/staff/views.py:110
+msgid "New Book Part"
+msgstr ""
+
+#: scielobooks/staff/views.py:111 scielobooks/staff/views.py:221
 #, python-format
 msgid "Editing %s"
 msgstr ""
 
-#: scielobooks/staff/views.py:257
+#: scielobooks/staff/views.py:135 scielobooks/staff/views.py:265
+msgid "Successfully added."
+msgstr ""
+
+#: scielobooks/staff/views.py:181
+msgid "Parecer da Editora"
+msgstr ""
+
+#: scielobooks/staff/views.py:220 scielobooks/staff/templates/panel.pt:34
+msgid "New Publisher"
+msgstr ""
+
+#: scielobooks/staff/views.py:259 scielobooks/staff/views.py:329
+msgid "This record already exists! Please check the data and try again."
+msgstr ""
+
+#: scielobooks/staff/views.py:289
 msgid "New Book Submission"
 msgstr ""
 
-#: scielobooks/staff/views.py:313
+#: scielobooks/staff/views.py:345 scielobooks/staff/templates/panel.pt:32
 msgid "New Meeting"
 msgstr ""
 
-#: scielobooks/staff/templates/book_details.pt:63
+#: scielobooks/staff/templates/book_details.pt:88
+msgid "Edit"
+msgstr ""
+
+#: scielobooks/staff/templates/book_details.pt:79
+msgid "edit"
+msgstr ""
+
+#: scielobooks/staff/templates/book_details.pt:73
+msgid "Order"
+msgstr ""
+
+#: scielobooks/staff/templates/book_details.pt:70
+msgid "Book Parts"
+msgstr ""
+
+#: scielobooks/staff/templates/book_details.pt:59
 msgid "Link para o Catálogo Institucional"
 msgstr ""
 
-#: scielobooks/staff/templates/book_details.pt:53
-msgid "Sumário"
+#: scielobooks/staff/templates/panel.pt:42
+msgid "Meeting"
 msgstr ""
 
-#: scielobooks/staff/templates/book_details.pt:48
-msgid "Parecer"
+#: scielobooks/staff/templates/panel.pt:30
+msgid "New Submission"
+msgstr ""
+
+#: scielobooks/staff/templates/panel.pt:27
+msgid "User's Dashboard"
 msgstr ""
 
