@@ -155,4 +155,16 @@
     view="scielobooks.staff.views.ajax_set_meeting"
   />
 
+  <!--
+  ***************
+   USERS APP
+  ***************
+   -->
+  <route
+    name="users.views.signup"
+    pattern="/users/signup"
+    view="scielobooks.users.views.signup"
+  />
+
+
 </configure>
