@@ -28,7 +28,8 @@ class User(Base):
     group_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('group.id'))    
     group = relationship("Group", backref=backref('group', order_by=id))
     
-    __mapper_args__ = {'polymorphic_on': username}
+    identity = sqlalchemy.Column(sqlalchemy.String)
+    __mapper_args__ = {'polymorphic_on': identity}
     
     def __init__(self, username, password, fullname=None, email=None):
         self.username = username
