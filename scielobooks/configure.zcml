@@ -13,17 +13,6 @@
     view="scielobooks.views.set_language"
   />
   <route
-    name="general.login"
-    pattern="/login"
-    view="scielobooks.views.login"
-    renderer="scielobooks:templates/login.pt"
-  />
-  <route
-    name="general.logout"
-    pattern="/logout"
-    view="scielobooks.views.logout"
-  />
-  <route
     name="general.attach"
     pattern="/attach/id/{sbid}/{filename}"
     view="scielobooks.views.attach"
@@ -165,6 +154,17 @@
     pattern="/users/signup"
     view="scielobooks.users.views.signup"
     renderer="scielobooks:templates/form.pt"
+  />
+    <route
+    name="users.login"
+    pattern="/login"
+    view="scielobooks.users.views.login"
+    renderer="scielobooks:templates/form.pt"
+  />
+  <route
+    name="users.logout"
+    pattern="/logout"
+    view="scielobooks.users.views.logout"
   />
 
 
