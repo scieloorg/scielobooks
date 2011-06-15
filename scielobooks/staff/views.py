@@ -34,6 +34,7 @@ MIMETYPES = {
     'application/pdf':'pdf',
     'application/epub':'epub',
 }
+STATUS_CHOICES = ['in-process','accepted', 'accepted-with-condition', 'rejected']
 
 def edit_book(request):
     FORM_TITLE = _('Submission of %s')
@@ -215,8 +216,15 @@ def panel(request):
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
+    committee_decisions = [{'text':_('In Process'), 'value':'in-process'},
+                           {'text':_('Accepted'), 'value':'accepted'},
+                           {'text':_('Accepted with Condition'), 'value':'accepted-with-condition'},
+                           {'text':_('Rejected'), 'value':'rejected'},
+                          ]
+
     return {'evaluations': evaluations,
             'meetings': meetings,
+            'committee_decisions':committee_decisions,
             'main':main,
             }
 
@@ -314,6 +322,7 @@ def new_book(request):
         del(appstruct['__LOCALE__'])
         publisher_slug = appstruct.pop('publisher')
         publisher = request.rel_db_session.query(rel_models.Publisher).filter_by(name_slug=publisher_slug).one()
+        appstruct['status'] = 'in-process'
         evaluation = rel_models.Evaluation(**appstruct)
 
         evaluation.publisher = publisher
@@ -392,6 +401,29 @@ def ajax_set_meeting(request):
         meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=meeting_id).one()
 
         evaluation.meeting = meeting
+        request.rel_db_session.add(evaluation)
+        #TODO! catch exception
+        request.rel_db_session.commit()
+
+        return Response('done')
+
+    return Response('nothing to do')
+
+def ajax_set_committee_decision(request):    
+    if request.method == 'POST':
+        evaluation_isbn = request.POST.get('evaluation', None)
+        decision = request.POST.get('decision', None)
+
+        if evaluation_isbn is None or decision is None:
+            return Respose('insufficient params')
+
+        if decision not in STATUS_CHOICES:
+            return Respose('invalid params')
+        
+        #TODO! catch exception
+        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+        
+        evaluation.status = decision
         request.rel_db_session.add(evaluation)
         #TODO! catch exception
         request.rel_db_session.commit()

@@ -113,10 +113,6 @@ class EvaluationForm():
                 title=localizer.translate(_('ISBN')),
                 description=localizer.translate(_('ISBN 13')),
             )
-            status = colander.SchemaNode(
-                colander.String(),
-                widget=deform.widget.SelectWidget(values=[('in_process','in process'),('approved','approved')],),
-            )
             subject = colander.SchemaNode(
                 colander.String(),
                 widget=deform.widget.TextAreaWidget(),
