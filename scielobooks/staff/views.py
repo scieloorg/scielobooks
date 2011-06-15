@@ -194,7 +194,7 @@ def panel(request):
     meetings = request.rel_db_session.query(rel_models.Meeting).all()
 
     main = get_renderer(BASE_TEMPLATE).implementation()
-
+    import pdb; pdb.set_trace()
     return {'evaluations': evaluations,
             'meetings': meetings,
             'main':main,

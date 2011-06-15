@@ -106,7 +106,16 @@ def signup(request):
         del(appstruct['__LOCALE__'])
 
         appstruct['publisher'] = request.rel_db_session.query(models.Publisher).filter_by(name_slug=appstruct['publisher']).one()
-        editor = users.Editor(**appstruct)
+        
+        #FIXME! so bizarre!
+        try:
+            group = request.rel_db_session.query(users.Group).filter_by(name='editor').one()
+        except NoResultFound:
+            group = users.Group(name='editor')
+            request.rel_db_session.add(group)
+            request.commit(group)
+
+        editor = users.Editor(group=group,**appstruct)
         request.rel_db_session.add(editor)
 
         try:

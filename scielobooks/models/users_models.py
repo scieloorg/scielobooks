@@ -31,12 +31,13 @@ class User(Base):
     identity = sqlalchemy.Column(sqlalchemy.String)
     __mapper_args__ = {'polymorphic_on': identity}
     
-    def __init__(self, username, password, fullname=None, email=None):
+    def __init__(self, username, password, group, fullname=None, email=None):
         self.username = username
         self.password = SHA256.new(password).hexdigest()
         self.password_encryption = 'SHA256'
         self.fullname = fullname
         self.email = email
+        self.group = group
 
         self.creation_date = datetime.now()
 
@@ -45,8 +46,8 @@ class Admin(User):
 
     __mapper_args__ = {'polymorphic_identity': 'admin'}
 
-    def __init__(self, username, password, fullname=None, email=None):
-        super(Admin,self).__init__(username,password,fullname,email)
+    def __init__(self, username, password, group, fullname=None, email=None):
+        super(Admin,self).__init__(username,password,group,fullname,email)
 
 
 class Editor(User):
@@ -56,8 +57,8 @@ class Editor(User):
 
     __mapper_args__ = {'polymorphic_identity': 'editor'}
     
-    def __init__(self, username, password, publisher, fullname=None, email=None):
-        super(Editor,self).__init__(username,password,fullname,email)    
+    def __init__(self, username, password, publisher, group, fullname=None, email=None):
+        super(Editor,self).__init__(username,password,group,fullname,email)    
         self.publisher = publisher
 
 
@@ -68,6 +69,6 @@ class Group(Base):
     
     name = sqlalchemy.Column(sqlalchemy.String, nullable=False, unique=True)
     
-    def __init__(self, name, email=None, publisher_url=None):
+    def __init__(self, name,):
         self.name = name
 
