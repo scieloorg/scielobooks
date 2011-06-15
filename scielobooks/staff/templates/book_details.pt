@@ -66,7 +66,7 @@
         </div>
         <div class="spacer"></div>
 
-        <div>
+        <div class="book-parts">
           <strong i18n:translate="">Book Parts</strong>
           <table>
             <tr>
@@ -82,6 +82,25 @@
             </tr>
           </table>
         </div>
+        <div class="spacer"></div>
+
+        <div class="evaluation-info">
+          <strong i18n:translate="">Evaluation Info</strong>
+          <br />
+          <dl class="metadata">
+            <dt i18n:translate="">Submission Date:</dt>
+              <dd tal:content="evaluation.creation_date.strftime('%B %d, %Y')"></dd>
+            <dt i18n:translate="">Status:</dt>
+              <dd tal:content="evaluation.status"></dd>
+            <dt i18n:translate="">Scheduled for Meeting:</dt>
+              <dd tal:content="evaluation.meeting.date.strftime('%B %d, %Y')"></dd>
+            <dt tal:condition="evaluation.meeting.description | nothing"
+                i18n:translate="">Meeting Description:</dt>
+              <dd tal:condition="evaluation.meeting.description | nothing"
+                  tal:content="evaluation.meeting.description"></dd>
+          </dl>
+        </div>
+
       </div>
     </div>
     <div>

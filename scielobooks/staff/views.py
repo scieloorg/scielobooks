@@ -199,8 +199,12 @@ def book_details(request):
 
         document_parts[part['id']] = part_meta
 
+    
+    evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph['_id']).one()
+
     return {'document':document,
             'document_parts':document_parts,
+            'evaluation':evaluation,
             'main':main,
             }
 
