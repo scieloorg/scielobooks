@@ -1,4 +1,3 @@
-.coverage
 CHANGES.txt
 README.txt
 development-TEMPLATE.ini
@@ -98,7 +97,7 @@ couchapp/views/evaluation/map.js
 couchapp/views/parts/map.js
 scielobooks/__init__.py
 scielobooks/configure.zcml
-scielobooks/models.py
+scielobooks/request.py
 scielobooks/resources.py
 scielobooks/security.py
 scielobooks/tests.py
@@ -116,16 +115,19 @@ scielobooks/catalog/views.py
 scielobooks/catalog/templates/book_details.pt
 scielobooks/catalog/templates/chapter_details.pt
 scielobooks/evaluation/__init__.py
-scielobooks/evaluation/models.py
 scielobooks/evaluation/views.py
-scielobooks/evaluation/templates/book_details.pt
 scielobooks/evaluation/templates/books_list.pt
-scielobooks/evaluation/templates/new_book.pt
 scielobooks/locale/scielobooks.pot
 scielobooks/locale/es/LC_MESSAGES/scielobooks.mo
 scielobooks/locale/es/LC_MESSAGES/scielobooks.po
 scielobooks/locale/pt/LC_MESSAGES/scielobooks.mo
 scielobooks/locale/pt/LC_MESSAGES/scielobooks.po
+scielobooks/models/__init__.py
+scielobooks/models/models.py
+scielobooks/staff/__init__.py
+scielobooks/staff/forms.py
+scielobooks/staff/models.py
+scielobooks/staff/views.py
 scielobooks/static/css/detalhamento.css
 scielobooks/static/css/styles.css
 scielobooks/static/images/bodyBg.jpg
@@ -149,6 +151,7 @@ scielobooks/templates/base.pt
 scielobooks/templates/login.pt
 scielobooks/utilities/__init__.py
 scielobooks/utilities/base28.py
+scielobooks/utilities/functions.py
 solr/schema.xml
 solr/solrconfig.xml
 tools/async.py

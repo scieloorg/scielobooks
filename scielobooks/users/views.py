@@ -7,6 +7,7 @@ from pyramid.url import route_url, static_url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import get_renderer
 from pyramid.security import remember, forget
+from pyramid.security import authenticated_userid
 from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
@@ -26,6 +27,13 @@ import deform
 import colander
 
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'
+
+
+def get_logged_user(request):
+    userid = authenticated_userid(request)
+    if userid:
+        return request.rel_db_session.query(users.User).get(userid)
+
 
 def login(request):
     FORM_TITLE = 'Login'
@@ -49,6 +57,7 @@ def login(request):
             return {'content':e.render(), 
                     'main':main, 
                     'form_title':FORM_TITLE,
+                    'user':get_logged_user(request),
                     }
         try:
             user = request.rel_db_session.query(users.User).filter_by(username=appstruct['username']).one()
@@ -61,15 +70,17 @@ def login(request):
             else:
                 request.session.flash(_("Username/password doesn't match")) 
 
-    return {'main':main,
+    return {
+            'main':main,
             'content':login_form.render(),
             'form_title':FORM_TITLE,
+            'user':get_logged_user(request),
            }
 
 
 def logout(request):
     headers = forget(request)
-    return HTTPFound(location = route_url('general.login', request),
+    return HTTPFound(location = route_url('users.login', request),
                      headers = headers)
 
 
@@ -89,6 +100,7 @@ def signup(request):
             return {'content':e.render(), 
                     'main':main, 
                     'form_title':_('Signup'),
+                    'user':get_logged_user(request),
                     }
 
         del(appstruct['__LOCALE__'])
@@ -105,6 +117,7 @@ def signup(request):
             return {'content':signup_form.render(appstruct),
                     'main':main,
                     'form_title':'Signup',
+                    'user':get_logged_user(request),
                     }
         request.session.flash(_('Successfully added.'))
         return HTTPFound(location=request.route_path('staff.panel'))
@@ -112,4 +125,5 @@ def signup(request):
     return {'content':signup_form.render(),
             'form_title': _('Signup'),
             'main':main,
+            'user':get_logged_user(request),
             }

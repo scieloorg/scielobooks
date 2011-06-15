@@ -4,6 +4,7 @@ from unicodedata import normalize
 import Image
 import StringIO
 
+
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 
 def slugify(text, delim=u'-'):
@@ -38,3 +39,4 @@ def create_thumbnail(img, size=None):
     img_thumb.save(buf, format='JPEG')
 
     return buf
+

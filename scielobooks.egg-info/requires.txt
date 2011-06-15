@@ -6,3 +6,4 @@ colander
 deform
 couchdbkit
 PIL
+isisdm
