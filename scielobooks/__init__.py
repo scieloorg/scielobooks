@@ -19,7 +19,7 @@ from scielobooks.request import MyRequest
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
-    authentication_policy = AuthTktAuthenticationPolicy('seekrit', callback=groupfinder)
+    authentication_policy = AuthTktAuthenticationPolicy('seekrit')
     authorization_policy = ACLAuthorizationPolicy()
     
     engine = engine_from_config(settings, prefix='sqlalchemy.')

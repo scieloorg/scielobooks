@@ -113,6 +113,7 @@
     pattern="/staff/panel"
     view="scielobooks.staff.views.panel"
     renderer="scielobooks:staff/templates/panel.pt"
+    permission="view"
   />
   <route
     name="staff.new_publisher"
