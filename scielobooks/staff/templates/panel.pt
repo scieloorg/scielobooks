@@ -1,74 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
+
     <div metal:fill-slot="custom_script" tal:omit-tag="">
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $('.meetings').change(function(){
-                    var selected = $('option:selected', this).val();
-                    var evaluation = selected.split('_')[0];
-                    var meeting = selected.split('_')[1];
-                    
-                    $('#meeting_load_icon_'+evaluation).show();
-
-                    $.post("${request.route_path('staff.ajax.set_meeting')}",
-                           {"evaluation":evaluation, "meeting":meeting}, function(res){
-                               $('#meeting_load_icon_'+evaluation).hide();
-                    });                    
-                });
-
-                $('.committee-decision').change(function(){
-                    var selected = $('option:selected', this).val();                    
-                    var evaluation = selected.split('_')[0];
-                    var decision = selected.split('_')[1];
-                    
-                    $('#committee-decision_load_icon_'+evaluation).show();
-
-                    $.post("${request.route_path('staff.ajax_set_committee_decision')}",
-                           {"evaluation":evaluation, "decision":decision}, function(res){
-                               $('#committee-decision_load_icon_'+evaluation).hide();
-                    });                                   
-                });
-
-                $('.action_publish').click(function(){
-                    var selected = $(this).attr('id');
-                    var evaluation = selected.split('_')[0];
-
-                    $('#actions_load_icon_'+evaluation).show();
-
-                    $.post("${request.route_path('staff.ajax_action_publish')}",
-                           {"evaluation":evaluation}, function(res){
-                               $('#actions_load_icon_'+evaluation).hide();
-                    });
-                });
-
-                $('.action_publish').click(function(){
-                    var selected = $(this).attr('id');
-                    var evaluation = selected.split('_')[0];
-
-                    $('#actions_load_icon_'+evaluation).show();
-
-                    $.post("${request.route_path('staff.ajax_action_publish')}",
-                           {"evaluation":evaluation}, function(res){
-                               $('#actions_load_icon_'+evaluation).hide();
-                               location.reload();
-                    });
-                });
-
-                $('.action_unpublish').click(function(){
-                    var selected = $(this).attr('id');
-                    var evaluation = selected.split('_')[0];
-
-                    $('#actions_load_icon_'+evaluation).show();
-
-                    $.post("${request.route_path('staff.ajax_action_unpublish')}",
-                           {"evaluation":evaluation}, function(res){
-                               $('#actions_load_icon_'+evaluation).hide();
-                               location.reload();
-                    });
-                });
-            });
-        </script>
+        <script src="/static/js/panel.js"></script>
     </div>
+
     <div class="middle" metal:fill-slot="middle">
         <div class="breadcrumb"></div>
         <div class="leftCol">
