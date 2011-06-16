@@ -27,7 +27,7 @@ def main(global_config, **settings):
     settings['rel_db.sessionmaker'] = db_maker
 
     config = Configurator(settings=settings,
-                          root_factory='scielobooks.resources.Root',
+                          root_factory='scielobooks.resources.RootFactory',
                           authentication_policy=authentication_policy,
                           authorization_policy=authorization_policy,
                           request_factory=MyRequest)

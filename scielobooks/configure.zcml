@@ -13,17 +13,6 @@
     view="scielobooks.views.set_language"
   />
   <route
-    name="general.login"
-    pattern="/login"
-    view="scielobooks.views.login"
-    renderer="scielobooks:templates/login.pt"
-  />
-  <route
-    name="general.logout"
-    pattern="/logout"
-    view="scielobooks.views.logout"
-  />
-  <route
     name="general.attach"
     pattern="/attach/id/{sbid}/{filename}"
     view="scielobooks.views.attach"
@@ -65,6 +54,7 @@
     pattern="/evaluation/list"
     view="scielobooks.evaluation.views.books_list"
     renderer="scielobooks:evaluation/templates/books_list.pt"
+    permission="editors"
   />
   <!-- using staff.book_details -->
   <route
@@ -72,6 +62,7 @@
     pattern="/evaluation/id/{sbid}"
     view="scielobooks.staff.views.book_details"
     renderer="scielobooks:staff/templates/book_details.pt"
+    permission="editors"
   />
   <route
     name="evaluation.cover"
@@ -88,60 +79,70 @@
     pattern="/staff/book/id/{sbid}"
     view="scielobooks.staff.views.book_details"
     renderer="scielobooks:staff/templates/book_details.pt"
+    permission="editors"
   />
   <route
     name="staff.new_book"
     pattern="/staff/book/new"
     view="scielobooks.staff.views.new_book"
     renderer="scielobooks:templates/form.pt"
+    permission="editors"
   />
   <route
     name="staff.edit_book"
     pattern="/staff/book/id/{sbid}/edit"
     view="scielobooks.staff.views.edit_book"
     renderer="scielobooks:templates/form.pt"
+    permission="editors"
   />
   <route
     name="staff.parts_list"
     pattern="/staff/book/id/{sbid}/parts"
     view="scielobooks.staff.views.parts_list"
     renderer="scielobooks:staff/templates/parts_list.pt"
+    permission="editors"
   />
   <route
     name="staff.new_part"
     pattern="/staff/book/id/{sbid}/parts/new"
     view="scielobooks.staff.views.new_part"
     renderer="scielobooks:templates/form.pt"
+    permission="editors"
   />
   <route
     name="staff.edit_part"
     pattern="/staff/book/id/{sbid}/parts/{part_id}/edit"
     view="scielobooks.staff.views.new_part"
     renderer="scielobooks:templates/form.pt"
+    permission="editors"
   />
   <route
     name="staff.panel"
     pattern="/staff/panel"
     view="scielobooks.staff.views.panel"
     renderer="scielobooks:staff/templates/panel.pt"
+    permission="editors"
   />
   <route
     name="staff.new_publisher"
     pattern="/staff/publisher/new"
     view="scielobooks.staff.views.new_publisher"
     renderer="scielobooks:templates/form.pt"
+    permission="admin"
   />
   <route
     name="staff.edit_publisher"
     pattern="/staff/publisher/{slug}/edit"
     view="scielobooks.staff.views.new_publisher"
     renderer="scielobooks:templates/form.pt"
+    permission="admin"
   />
   <route
     name="staff.new_meeting"
     pattern="/staff/meeting/new"
     view="scielobooks.staff.views.new_meeting"
     renderer="scielobooks:templates/form.pt"
+    permission="admin"
   />
 
   <!--
@@ -173,5 +174,30 @@
     view="scielobooks.staff.views.ajax_action_unpublish"
     xhr="True"
   />
+
+  <!--
+  ***************
+   USERS APP
+  ***************
+   -->
+  <route
+    name="users.views.signup"
+    pattern="/users/signup"
+    view="scielobooks.users.views.signup"
+    renderer="scielobooks:templates/form.pt"
+    permission="admin"
+  />
+    <route
+    name="users.login"
+    pattern="/login"
+    view="scielobooks.users.views.login"
+    renderer="scielobooks:templates/form.pt"
+  />
+  <route
+    name="users.logout"
+    pattern="/logout"
+    view="scielobooks.users.views.logout"
+  />
+
 
 </configure>

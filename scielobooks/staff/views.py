@@ -6,6 +6,7 @@ from pyramid import exceptions
 from pyramid.url import route_url, static_url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import get_renderer
+from pyramid.security import authenticated_userid
 from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
@@ -15,6 +16,8 @@ from datetime import date
 
 from forms import MonographForm, PublisherForm, EvaluationForm, MeetingForm
 from ..models import models as rel_models
+from ..models import users_models as users
+
 
 import couchdbkit
 import urllib2
@@ -36,6 +39,12 @@ MIMETYPES = {
 }
 STATUS_CHOICES = ['in-process','accepted', 'accepted-with-condition', 'rejected']
 
+def get_logged_user(request):
+    userid = authenticated_userid(request)
+    if userid:
+        return request.rel_db_session.query(users.User).get(userid)
+
+
 def edit_book(request):
     FORM_TITLE = _('Submission of %s')
 
@@ -53,6 +62,7 @@ def edit_book(request):
             
             return {'content':e.render(), 
                     'main':main, 
+                    'user':get_logged_user(request),
                     'form_stuff':{'form_title':FORM_TITLE % monograph.title,},
                     }
         
@@ -76,6 +86,7 @@ def edit_book(request):
 
         return {'content':monograph_form.render(appstruct),
                 'main':main,
+                'user':get_logged_user(request),
                 'form_stuff':{'form_title':FORM_TITLE % monograph.title,
                               'form_menu':[{'url':request.route_path('staff.parts_list', sbid=monograph._id),
                                             'text':_('Manage Book Parts')}]
@@ -105,6 +116,7 @@ def parts_list(request):
 
     return {'documents': documents,
             'main':main,
+            'user':get_logged_user(request),
             }
 
 def new_part(request):
@@ -126,6 +138,7 @@ def new_part(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
+                    'user':get_logged_user(request),
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
                     }
                 
@@ -142,11 +155,13 @@ def new_part(request):
         
         return {'content':part_form.render(part.to_python()),
                 'main':main,
+                'user':get_logged_user(request),
                 'form_stuff':{'form_title':FORM_TITLE_EDIT % part.title},
                 }
 
     return {'content':part_form.render(),
             'main':main,
+            'user':get_logged_user(request),
             'form_stuff':{'form_title':FORM_TITLE_NEW},
             }
 
@@ -207,6 +222,7 @@ def book_details(request):
             'document_parts':document_parts,
             'evaluation':evaluation,
             'main':main,
+            'user':get_logged_user(request),
             }
 
 
@@ -226,6 +242,7 @@ def panel(request):
             'meetings': meetings,
             'committee_decisions':committee_decisions,
             'main':main,
+            'user':get_logged_user(request),
             }
 
 def new_publisher(request):
@@ -245,6 +262,7 @@ def new_publisher(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
+                    'user':get_logged_user(request),
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
                     }
         del(appstruct['__LOCALE__'])
@@ -271,6 +289,7 @@ def new_publisher(request):
             request.session.flash(_('This record already exists! Please check the data and try again.'))
             return {'content':publisher_form.render(appstruct),
                     'main':main,
+                    'user':get_logged_user(request),
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
                     }
 
@@ -288,11 +307,13 @@ def new_publisher(request):
         
         return {'content': publisher_form.render(publisher.as_dict()),
                 'main':main,
+                'user':get_logged_user(request),
                 'form_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name},
                 }
 
     return {'content': publisher_form.render(),
             'main':main,
+            'user':get_logged_user(request),
             'form_stuff':{'form_title':FORM_TITLE_NEW},
             }
 
@@ -316,6 +337,7 @@ def new_book(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
+                    'user':get_logged_user(request),
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
                     }
 
@@ -342,6 +364,7 @@ def new_book(request):
             request.session.flash(_('This record already exists! Please check the data and try again.'))
             return {'content':evaluation_form.render(appstruct),
                     'main':main,
+                    'user':get_logged_user(request),
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
                     }
         
@@ -351,6 +374,7 @@ def new_book(request):
 
     return {'content': evaluation_form.render(),
             'main':main,
+            'user':get_logged_user(request),
             'form_stuff':{'form_title':FORM_TITLE_NEW},
             }
 
@@ -370,6 +394,7 @@ def new_meeting(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
+                    'user':get_logged_user(request),
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
                     }
         
@@ -384,6 +409,7 @@ def new_meeting(request):
 
     return {'content':meeting_form.render({'date':date.today()}),
             'main':main,
+            'user':get_logged_user(request),
             'form_stuff':{'form_title':FORM_TITLE_NEW},
             }
 
