@@ -97,6 +97,7 @@ couchapp/views/evaluation/map.js
 couchapp/views/parts/map.js
 scielobooks/__init__.py
 scielobooks/configure.zcml
+scielobooks/create_groups.py
 scielobooks/request.py
 scielobooks/resources.py
 scielobooks/security.py
@@ -124,6 +125,7 @@ scielobooks/locale/pt/LC_MESSAGES/scielobooks.mo
 scielobooks/locale/pt/LC_MESSAGES/scielobooks.po
 scielobooks/models/__init__.py
 scielobooks/models/models.py
+scielobooks/models/users_models.py
 scielobooks/staff/__init__.py
 scielobooks/staff/forms.py
 scielobooks/staff/models.py
@@ -149,6 +151,9 @@ scielobooks/static/images/tag.gif
 scielobooks/static/js/language.js
 scielobooks/templates/base.pt
 scielobooks/templates/login.pt
+scielobooks/users/__init__.py
+scielobooks/users/forms.py
+scielobooks/users/views.py
 scielobooks/utilities/__init__.py
 scielobooks/utilities/base28.py
 scielobooks/utilities/functions.py

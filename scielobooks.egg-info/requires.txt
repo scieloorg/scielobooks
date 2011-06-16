@@ -7,3 +7,6 @@ deform
 couchdbkit
 PIL
 isisdm
+SQLAlchemy
+pyramid_handlers
+pycrypto
