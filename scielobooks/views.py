@@ -5,7 +5,6 @@ from pyramid.security import remember, forget
 from pyramid.url import route_url
 from pyramid.renderers import get_renderer
 
-from .security import USERS
 
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'
 
