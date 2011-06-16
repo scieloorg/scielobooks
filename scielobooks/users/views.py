@@ -36,7 +36,7 @@ def get_logged_user(request):
 
 
 def login(request):
-    FORM_TITLE = 'Login'
+    FORM_TITLE = _('Login')
     localizer = get_localizer(request)
     main = get_renderer(BASE_TEMPLATE).implementation()
     login_form = LoginForm.get_form(localizer)
@@ -56,7 +56,7 @@ def login(request):
             
             return {'content':e.render(), 
                     'main':main, 
-                    'form_title':FORM_TITLE,
+                    'form_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
         try:
@@ -73,7 +73,7 @@ def login(request):
     return {
             'main':main,
             'content':login_form.render(),
-            'form_title':FORM_TITLE,
+            'form_stuff':{'form_title':FORM_TITLE},
             'user':get_logged_user(request),
            }
 
@@ -85,6 +85,7 @@ def logout(request):
 
 
 def signup(request):
+    FORM_TITLE = _('Signup')
     localizer = get_localizer(request)
     main = get_renderer(BASE_TEMPLATE).implementation()
     publisher = request.rel_db_session.query(models.Publisher.name_slug, models.Publisher.name).all()
@@ -99,7 +100,7 @@ def signup(request):
             
             return {'content':e.render(), 
                     'main':main, 
-                    'form_title':_('Signup'),
+                    'form_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
 
@@ -125,14 +126,14 @@ def signup(request):
             request.session.flash(_('This username already exists.'))
             return {'content':signup_form.render(appstruct),
                     'main':main,
-                    'form_title':'Signup',
+                    'form_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
         request.session.flash(_('Successfully added.'))
         return HTTPFound(location=request.route_path('staff.panel'))
 
     return {'content':signup_form.render(),
-            'form_title': _('Signup'),
+            'form_stuff':{'form_title':FORM_TITLE},
             'main':main,
             'user':get_logged_user(request),
             }

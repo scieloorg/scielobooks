@@ -62,16 +62,8 @@ def edit_book(request):
             
             return {'content':e.render(), 
                     'main':main, 
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    'form_title':FORM_TITLE % monograph.title,
                     'user':get_logged_user(request),
-=======
                     'form_stuff':{'form_title':FORM_TITLE % monograph.title,},
->>>>>>> gusfon/master
-=======
-                    'form_stuff':{'form_title':FORM_TITLE % monograph.title,},
->>>>>>> gusfon/master
                     }
         
         if appstruct['cover'] and appstruct['cover']['fp'] is not None:
@@ -94,21 +86,11 @@ def edit_book(request):
 
         return {'content':monograph_form.render(appstruct),
                 'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                'form_title':FORM_TITLE % monograph.title,
                 'user':get_logged_user(request),
-=======
-=======
->>>>>>> gusfon/master
                 'form_stuff':{'form_title':FORM_TITLE % monograph.title,
                               'form_menu':[{'url':request.route_path('staff.parts_list', sbid=monograph._id),
                                             'text':_('Manage Book Parts')}]
                              },
-<<<<<<< HEAD
->>>>>>> gusfon/master
-=======
->>>>>>> gusfon/master
                 }
     
     raise exceptions.NotFound
@@ -156,16 +138,8 @@ def new_part(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
-=======
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
-=======
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
                     }
                 
         part = Part.from_python(appstruct)
@@ -181,30 +155,14 @@ def new_part(request):
         
         return {'content':part_form.render(part.to_python()),
                 'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                'form_title':FORM_TITLE_EDIT % part.title,
                 'user':get_logged_user(request),
-=======
                 'form_stuff':{'form_title':FORM_TITLE_EDIT % part.title},
->>>>>>> gusfon/master
-=======
-                'form_stuff':{'form_title':FORM_TITLE_EDIT % part.title},
->>>>>>> gusfon/master
                 }
 
     return {'content':part_form.render(),
             'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-            'form_title':FORM_TITLE_NEW,
             'user':get_logged_user(request),
-=======
             'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
-=======
-            'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
             }
 
 def book_details(request):
@@ -273,9 +231,6 @@ def panel(request):
     meetings = request.rel_db_session.query(rel_models.Meeting).all()
 
     main = get_renderer(BASE_TEMPLATE).implementation()
-<<<<<<< HEAD
-    import pdb; pdb.set_trace()
-=======
 
     committee_decisions = [{'text':_('In Process'), 'value':'in-process'},
                            {'text':_('Accepted'), 'value':'accepted'},
@@ -283,7 +238,6 @@ def panel(request):
                            {'text':_('Rejected'), 'value':'rejected'},
                           ]
 
->>>>>>> gusfon/master
     return {'evaluations': evaluations,
             'meetings': meetings,
             'committee_decisions':committee_decisions,
@@ -308,16 +262,8 @@ def new_publisher(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
-=======
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
-=======
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
                     }
         del(appstruct['__LOCALE__'])
         session = request.rel_db_session
@@ -343,16 +289,8 @@ def new_publisher(request):
             request.session.flash(_('This record already exists! Please check the data and try again.'))
             return {'content':publisher_form.render(appstruct),
                     'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
-=======
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
-=======
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
                     }
 
         request.session.flash(_('Successfully added.'))
@@ -369,30 +307,14 @@ def new_publisher(request):
         
         return {'content': publisher_form.render(publisher.as_dict()),
                 'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                'form_title':FORM_TITLE_EDIT % publisher.name,
                 'user':get_logged_user(request),
-=======
                 'form_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name},
->>>>>>> gusfon/master
-=======
-                'form_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name},
->>>>>>> gusfon/master
                 }
 
     return {'content': publisher_form.render(),
             'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-            'form_title':FORM_TITLE_NEW,
             'user':get_logged_user(request),
-=======
             'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
-=======
-            'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
             }
 
 
@@ -415,16 +337,8 @@ def new_book(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
-=======
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
-=======
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
                     }
 
         del(appstruct['__LOCALE__'])
@@ -450,16 +364,8 @@ def new_book(request):
             request.session.flash(_('This record already exists! Please check the data and try again.'))
             return {'content':evaluation_form.render(appstruct),
                     'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
-=======
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
-=======
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
                     }
         
         monograph.save(request.db)
@@ -468,16 +374,8 @@ def new_book(request):
 
     return {'content': evaluation_form.render(),
             'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-            'form_title':FORM_TITLE_NEW,
             'user':get_logged_user(request),
-=======
             'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
-=======
-            'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
             }
 
 def new_meeting(request):
@@ -496,16 +394,8 @@ def new_meeting(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
-=======
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
-=======
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
                     }
         
         del(appstruct['__LOCALE__'])
@@ -519,16 +409,8 @@ def new_meeting(request):
 
     return {'content':meeting_form.render({'date':date.today()}),
             'main':main,
-<<<<<<< HEAD
-<<<<<<< HEAD
-            'form_title':FORM_TITLE_NEW,
             'user':get_logged_user(request),
-=======
             'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
-=======
-            'form_stuff':{'form_title':FORM_TITLE_NEW},
->>>>>>> gusfon/master
             }
 
 

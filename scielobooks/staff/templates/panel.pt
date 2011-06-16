@@ -53,11 +53,8 @@
                 <td i18n:translate="">Publisher</td>
                 <td i18n:translate="">Title</td>
                 <td i18n:translate="">Meeting</td>
-<<<<<<< HEAD
-=======
                 <td i18n:translate="">Committee Decision</td>
                 <td i18n:translate="">Publication Status</td>
->>>>>>> gusfon/master
             </tr>
             
             <tr tal:repeat="evaluation evaluations">
