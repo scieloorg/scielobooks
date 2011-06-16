@@ -107,7 +107,7 @@ def signup(request):
         del(appstruct['__LOCALE__'])
 
         appstruct['publisher'] = request.rel_db_session.query(models.Publisher).filter_by(name_slug=appstruct['publisher']).one()
-        import pdb; pdb.set_trace()
+        
         #FIXME! so bizarre!
         try:
             group = request.rel_db_session.query(users.Group).filter_by(name=appstruct['group']).one()
@@ -145,3 +145,4 @@ def signup(request):
             'main':main,
             'user':get_logged_user(request),
             }
+
