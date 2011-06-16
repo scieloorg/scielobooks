@@ -107,17 +107,25 @@ def signup(request):
         del(appstruct['__LOCALE__'])
 
         appstruct['publisher'] = request.rel_db_session.query(models.Publisher).filter_by(name_slug=appstruct['publisher']).one()
-        
+        import pdb; pdb.set_trace()
         #FIXME! so bizarre!
         try:
-            group = request.rel_db_session.query(users.Group).filter_by(name='editor').one()
+            group = request.rel_db_session.query(users.Group).filter_by(name=appstruct['group']).one()
         except NoResultFound:
-            group = users.Group(name='editor')
+            group = users.Group(name=appstruct['group'])
             request.rel_db_session.add(group)
             request.rel_db_session.commit()
+        finally:
+            group_name = appstruct['group']
+            del(appstruct['group'])
+        
+        if group_name == 'editor':
+            user = users.Editor(group=group,**appstruct)
+        elif group_name == 'admin':
+            del(appstruct['publisher'])
+            user = users.Admin(group=group,**appstruct)
 
-        editor = users.Editor(group=group,**appstruct)
-        request.rel_db_session.add(editor)
+        request.rel_db_session.add(user)
 
         try:
             request.rel_db_session.commit()

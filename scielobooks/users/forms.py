@@ -36,6 +36,12 @@ class SignupForm():
                 title=localizer.translate(_('E-mail')),
                 description=localizer.translate(_('Contact e-mail')),
             )
+            group = colander.SchemaNode(
+                colander.String(),
+                widget=deform.widget.SelectWidget(values=[('editor','Editor'),('admin','Administrator')]),
+                title=localizer.translate(_('Group')),
+                description=localizer.translate(_('Group name')),
+            )
             publisher = colander.SchemaNode(
                 colander.String(),
                 widget=deform.widget.SelectWidget(values=publishers),
