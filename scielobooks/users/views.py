@@ -114,7 +114,7 @@ def signup(request):
         except NoResultFound:
             group = users.Group(name='editor')
             request.rel_db_session.add(group)
-            request.commit(group)
+            request.rel_db_session.commit()
 
         editor = users.Editor(group=group,**appstruct)
         request.rel_db_session.add(editor)
