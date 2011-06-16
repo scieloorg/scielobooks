@@ -19,7 +19,7 @@ from scielobooks.request import MyRequest
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
-    authentication_policy = AuthTktAuthenticationPolicy('seekrit')
+    authentication_policy = AuthTktAuthenticationPolicy('seekrit', callback=groupfinder)
     authorization_policy = ACLAuthorizationPolicy()
     
     engine = engine_from_config(settings, prefix='sqlalchemy.')
@@ -27,7 +27,7 @@ def main(global_config, **settings):
     settings['rel_db.sessionmaker'] = db_maker
 
     config = Configurator(settings=settings,
-                          root_factory='scielobooks.resources.Root',
+                          root_factory='scielobooks.resources.RootFactory',
                           authentication_policy=authentication_policy,
                           authorization_policy=authorization_policy,
                           request_factory=MyRequest)
