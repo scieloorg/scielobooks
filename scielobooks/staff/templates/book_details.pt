@@ -93,10 +93,10 @@
             <dt i18n:translate="">Status:</dt>
               <dd tal:content="evaluation.status"></dd>
             <dt i18n:translate="">Scheduled for Meeting:</dt>
-              <dd tal:content="evaluation.meeting.date.strftime('%B %d, %Y')"></dd>
-            <dt tal:condition="evaluation.meeting.description | nothing"
+              <dd tal:content="evaluation.meeting.date.strftime('%B %d, %Y') | default">Not yet.</dd>
+            <dt tal:condition="evaluation.meeting | nothing"
                 i18n:translate="">Meeting Description:</dt>
-              <dd tal:condition="evaluation.meeting.description | nothing"
+              <dd tal:condition="evaluation.meeting | nothing"
                   tal:content="evaluation.meeting.description"></dd>
           </dl>
         </div>

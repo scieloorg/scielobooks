@@ -28,6 +28,44 @@
                                $('#committee-decision_load_icon_'+evaluation).hide();
                     });                                   
                 });
+
+                $('.action_publish').click(function(){
+                    var selected = $(this).attr('id');
+                    var evaluation = selected.split('_')[0];
+
+                    $('#actions_load_icon_'+evaluation).show();
+
+                    $.post("${request.route_path('staff.ajax_action_publish')}",
+                           {"evaluation":evaluation}, function(res){
+                               $('#actions_load_icon_'+evaluation).hide();
+                    });
+                });
+
+                $('.action_publish').click(function(){
+                    var selected = $(this).attr('id');
+                    var evaluation = selected.split('_')[0];
+
+                    $('#actions_load_icon_'+evaluation).show();
+
+                    $.post("${request.route_path('staff.ajax_action_publish')}",
+                           {"evaluation":evaluation}, function(res){
+                               $('#actions_load_icon_'+evaluation).hide();
+                               location.reload();
+                    });
+                });
+
+                $('.action_unpublish').click(function(){
+                    var selected = $(this).attr('id');
+                    var evaluation = selected.split('_')[0];
+
+                    $('#actions_load_icon_'+evaluation).show();
+
+                    $.post("${request.route_path('staff.ajax_action_unpublish')}",
+                           {"evaluation":evaluation}, function(res){
+                               $('#actions_load_icon_'+evaluation).hide();
+                               location.reload();
+                    });
+                });
             });
         </script>
     </div>
@@ -64,10 +102,11 @@
                 </td>
                 <td >
                     <select class="meetings">
-                      <option tal:repeat="meeting meetings" 
-                              tal:content="meeting.date" 
-                              value="${evaluation.isbn}_${meeting.id}"
-                              tal:attributes="selected evaluation.meeting == meeting">2011-09-23</option>
+                        <option value="nothing">---</option>
+                        <option tal:repeat="meeting meetings" 
+                                tal:content="meeting.date" 
+                                value="${evaluation.isbn}_${meeting.id}"
+                                tal:attributes="selected evaluation.meeting == meeting">2011-09-23</option>
                     </select>
                     <img id="meeting_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
                 </td>
@@ -81,13 +120,23 @@
                     <img id="committee-decision_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
                 </td>
                 <td>
-                    <span class="status-published" title="Published"></span>
+                    <span tal:condition="evaluation.is_published == True" 
+                          class="status-published" title="Published"></span>
+                    <span tal:condition="evaluation.is_published != True" 
+                          class="status-unpublished" title="Not Published"></span>
                 </td>
                 <td>
                     <ul class="actions">
-                        <li><a href="#" i18n:translate="">publish</a></li>
-                        <li><a href="#" i18n:translate="">unpublish</a></li>
+                        <li><a tal:condition="evaluation.is_published != True"
+                               href="javascript: void(0);" 
+                               class="action_publish"
+                               id="${evaluation.isbn}_action-publish" i18n:translate="">publish</a></li>
+                        <li><a tal:condition="evaluation.is_published == True"
+                               href="javascript: void(0);"
+                               class="action_unpublish"
+                               id="${evaluation.isbn}_action-unpublish" i18n:translate="">unpublish</a></li>
                     </ul>
+                    <img id="actions_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
                 </td>
             </tr>
             
