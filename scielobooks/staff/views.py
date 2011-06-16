@@ -37,6 +37,7 @@ MIMETYPES = {
     'application/pdf':'pdf',
     'application/epub':'epub',
 }
+STATUS_CHOICES = ['in-process','accepted', 'accepted-with-condition', 'rejected']
 
 def get_logged_user(request):
     userid = authenticated_userid(request)
@@ -62,8 +63,12 @@ def edit_book(request):
             return {'content':e.render(), 
                     'main':main, 
 <<<<<<< HEAD
+<<<<<<< HEAD
                     'form_title':FORM_TITLE % monograph.title,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE % monograph.title,},
+>>>>>>> gusfon/master
 =======
                     'form_stuff':{'form_title':FORM_TITLE % monograph.title,},
 >>>>>>> gusfon/master
@@ -90,13 +95,19 @@ def edit_book(request):
         return {'content':monograph_form.render(appstruct),
                 'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 'form_title':FORM_TITLE % monograph.title,
                 'user':get_logged_user(request),
 =======
+=======
+>>>>>>> gusfon/master
                 'form_stuff':{'form_title':FORM_TITLE % monograph.title,
                               'form_menu':[{'url':request.route_path('staff.parts_list', sbid=monograph._id),
                                             'text':_('Manage Book Parts')}]
                              },
+<<<<<<< HEAD
+>>>>>>> gusfon/master
+=======
 >>>>>>> gusfon/master
                 }
     
@@ -146,8 +157,12 @@ def new_part(request):
             return {'content':e.render(),
                     'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
                     'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
 =======
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
 >>>>>>> gusfon/master
@@ -167,8 +182,12 @@ def new_part(request):
         return {'content':part_form.render(part.to_python()),
                 'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 'form_title':FORM_TITLE_EDIT % part.title,
                 'user':get_logged_user(request),
+=======
+                'form_stuff':{'form_title':FORM_TITLE_EDIT % part.title},
+>>>>>>> gusfon/master
 =======
                 'form_stuff':{'form_title':FORM_TITLE_EDIT % part.title},
 >>>>>>> gusfon/master
@@ -177,8 +196,12 @@ def new_part(request):
     return {'content':part_form.render(),
             'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
             'form_title':FORM_TITLE_NEW,
             'user':get_logged_user(request),
+=======
+            'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
 =======
             'form_stuff':{'form_title':FORM_TITLE_NEW},
 >>>>>>> gusfon/master
@@ -250,9 +273,20 @@ def panel(request):
     meetings = request.rel_db_session.query(rel_models.Meeting).all()
 
     main = get_renderer(BASE_TEMPLATE).implementation()
+<<<<<<< HEAD
     import pdb; pdb.set_trace()
+=======
+
+    committee_decisions = [{'text':_('In Process'), 'value':'in-process'},
+                           {'text':_('Accepted'), 'value':'accepted'},
+                           {'text':_('Accepted with Condition'), 'value':'accepted-with-condition'},
+                           {'text':_('Rejected'), 'value':'rejected'},
+                          ]
+
+>>>>>>> gusfon/master
     return {'evaluations': evaluations,
             'meetings': meetings,
+            'committee_decisions':committee_decisions,
             'main':main,
             'user':get_logged_user(request),
             }
@@ -275,8 +309,12 @@ def new_publisher(request):
             return {'content':e.render(),
                     'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
                     'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
 =======
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
 >>>>>>> gusfon/master
@@ -306,8 +344,12 @@ def new_publisher(request):
             return {'content':publisher_form.render(appstruct),
                     'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
                     'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
 =======
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
 >>>>>>> gusfon/master
@@ -328,8 +370,12 @@ def new_publisher(request):
         return {'content': publisher_form.render(publisher.as_dict()),
                 'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 'form_title':FORM_TITLE_EDIT % publisher.name,
                 'user':get_logged_user(request),
+=======
+                'form_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name},
+>>>>>>> gusfon/master
 =======
                 'form_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name},
 >>>>>>> gusfon/master
@@ -338,8 +384,12 @@ def new_publisher(request):
     return {'content': publisher_form.render(),
             'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
             'form_title':FORM_TITLE_NEW,
             'user':get_logged_user(request),
+=======
+            'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
 =======
             'form_stuff':{'form_title':FORM_TITLE_NEW},
 >>>>>>> gusfon/master
@@ -366,8 +416,12 @@ def new_book(request):
             return {'content':e.render(),
                     'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
                     'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
 =======
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
 >>>>>>> gusfon/master
@@ -376,6 +430,7 @@ def new_book(request):
         del(appstruct['__LOCALE__'])
         publisher_slug = appstruct.pop('publisher')
         publisher = request.rel_db_session.query(rel_models.Publisher).filter_by(name_slug=publisher_slug).one()
+        appstruct['status'] = 'in-process'
         evaluation = rel_models.Evaluation(**appstruct)
 
         evaluation.publisher = publisher
@@ -396,8 +451,12 @@ def new_book(request):
             return {'content':evaluation_form.render(appstruct),
                     'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
                     'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
 =======
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
 >>>>>>> gusfon/master
@@ -410,8 +469,12 @@ def new_book(request):
     return {'content': evaluation_form.render(),
             'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
             'form_title':FORM_TITLE_NEW,
             'user':get_logged_user(request),
+=======
+            'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
 =======
             'form_stuff':{'form_title':FORM_TITLE_NEW},
 >>>>>>> gusfon/master
@@ -434,8 +497,12 @@ def new_meeting(request):
             return {'content':e.render(),
                     'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
                     'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
 =======
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
 >>>>>>> gusfon/master
@@ -453,8 +520,12 @@ def new_meeting(request):
     return {'content':meeting_form.render({'date':date.today()}),
             'main':main,
 <<<<<<< HEAD
+<<<<<<< HEAD
             'form_title':FORM_TITLE_NEW,
             'user':get_logged_user(request),
+=======
+            'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
 =======
             'form_stuff':{'form_title':FORM_TITLE_NEW},
 >>>>>>> gusfon/master
@@ -474,6 +545,29 @@ def ajax_set_meeting(request):
         meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=meeting_id).one()
 
         evaluation.meeting = meeting
+        request.rel_db_session.add(evaluation)
+        #TODO! catch exception
+        request.rel_db_session.commit()
+
+        return Response('done')
+
+    return Response('nothing to do')
+
+def ajax_set_committee_decision(request):    
+    if request.method == 'POST':
+        evaluation_isbn = request.POST.get('evaluation', None)
+        decision = request.POST.get('decision', None)
+
+        if evaluation_isbn is None or decision is None:
+            return Respose('insufficient params')
+
+        if decision not in STATUS_CHOICES:
+            return Respose('invalid params')
+        
+        #TODO! catch exception
+        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+        
+        evaluation.status = decision
         request.rel_db_session.add(evaluation)
         #TODO! catch exception
         request.rel_db_session.commit()

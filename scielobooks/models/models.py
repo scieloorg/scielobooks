@@ -10,7 +10,7 @@ from scielobooks.models import Base
 from ..utilities import functions
 
 
-class Evaluation(Base):    
+class Evaluation(Base):
     __tablename__ = 'evaluation'
     
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)

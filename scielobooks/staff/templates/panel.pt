@@ -15,6 +15,19 @@
                                $('#meeting_load_icon_'+evaluation).hide();
                     });                    
                 });
+
+                $('.committee-decision').change(function(){
+                    var selected = $('option:selected', this).val();                    
+                    var evaluation = selected.split('_')[0];
+                    var decision = selected.split('_')[1];
+                    
+                    $('#committee-decision_load_icon_'+evaluation).show();
+
+                    $.post("${request.route_path('staff.ajax_set_committee_decision')}",
+                           {"evaluation":evaluation, "decision":decision}, function(res){
+                               $('#committee-decision_load_icon_'+evaluation).hide();
+                    });                                   
+                });
             });
         </script>
     </div>
@@ -40,12 +53,17 @@
                 <td i18n:translate="">Publisher</td>
                 <td i18n:translate="">Title</td>
                 <td i18n:translate="">Meeting</td>
+<<<<<<< HEAD
+=======
+                <td i18n:translate="">Committee Decision</td>
+                <td i18n:translate="">Publication Status</td>
+>>>>>>> gusfon/master
             </tr>
             
             <tr tal:repeat="evaluation evaluations">
                 <td tal:content="evaluation.publisher.name">FAFIMUNDO</td>
                 <td >
-                    <a href="${request.route_path('staff.book_details', sbid=evaluation.monograph_sbid)}" tal:content="evaluation.title" >Le Petit Prince</a>
+                    <a href="${request.route_path('staff.book_details', sbid=evaluation.monograph_sbid)}" tal:content="evaluation.title">Le Petit Prince</a>
                 </td>
                 <td >
                     <select class="meetings">
@@ -55,6 +73,24 @@
                               tal:attributes="selected evaluation.meeting == meeting">2011-09-23</option>
                     </select>
                     <img id="meeting_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
+                </td>
+                <td>
+                    <select class="committee-decision">                        
+                        <option tal:repeat="decision committee_decisions" 
+                              tal:content="decision.text" 
+                              value="${evaluation.isbn}_${decision.value}"
+                              tal:attributes="selected evaluation.status == decision.value">Accepted</option>
+                    </select>
+                    <img id="committee-decision_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
+                </td>
+                <td>
+                    <span class="status-published" title="Published"></span>
+                </td>
+                <td>
+                    <ul class="actions">
+                        <li><a href="#" i18n:translate="">publish</a></li>
+                        <li><a href="#" i18n:translate="">unpublish</a></li>
+                    </ul>
                 </td>
             </tr>
             

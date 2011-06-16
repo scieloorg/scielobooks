@@ -144,6 +144,11 @@
     pattern="/staff/function/setmeeting/"
     view="scielobooks.staff.views.ajax_set_meeting"
   />
+  <route
+    name="staff.ajax_set_committee_decision"
+    pattern="/staff/function/setcommitteedecision/"
+    view="scielobooks.staff.views.ajax_set_committee_decision"
+  />
 
   <!--
   ***************
