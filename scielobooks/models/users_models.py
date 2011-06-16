@@ -25,8 +25,8 @@ class User(Base):
 
     creation_date = sqlalchemy.Column(sqlalchemy.DateTime)
 
-    group_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('group.id'))    
-    group = relationship("Group", backref=backref('group', order_by=id))
+    group_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('groups.id'))    
+    group = relationship("Group", backref=backref('groups', order_by=id))
     
     identity = sqlalchemy.Column(sqlalchemy.String)
     __mapper_args__ = {'polymorphic_on': identity}
@@ -63,7 +63,7 @@ class Editor(User):
 
 
 class Group(Base):    
-    __tablename__ = 'group'
+    __tablename__ = 'groups'
     
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     
