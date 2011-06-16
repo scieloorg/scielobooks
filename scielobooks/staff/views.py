@@ -457,3 +457,75 @@ def ajax_set_committee_decision(request):
         return Response('done')
 
     return Response('nothing to do')
+
+def ajax_action_publish(request):    
+    if request.method == 'POST':
+        evaluation_isbn = request.POST.get('evaluation', None)
+        
+        if evaluation_isbn is None:
+            return Respose('insufficient params')
+
+        #TODO! catch exception
+        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+
+        if evaluation.status != 'accepted' and evaluation.status != 'accepted-with-condition':
+            return Response('invalid action')
+
+        if evaluation.is_published:
+            return Response('nothing to do')
+
+        monograph = Monograph.get(request.db, evaluation.monograph_sbid)
+
+        evaluation.is_published = True
+        monograph.visible = True
+
+        request.rel_db_session.add(evaluation)        
+        monograph.save(request.db)
+
+        #TODO! catch exception
+        try:
+            request.rel_db_session.commit()
+        except:
+            request.rel_db_session.rollback()
+            monograph.visible = False
+            monograph.save(request.db)
+
+        return Response('done')
+
+    return Response('nothing to do')
+
+def ajax_action_unpublish(request):    
+    if request.method == 'POST':
+        evaluation_isbn = request.POST.get('evaluation', None)
+        
+        if evaluation_isbn is None:
+            return Respose('insufficient params')
+
+        #TODO! catch exception
+        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+
+        if evaluation.status != 'accepted' and evaluation.status != 'accepted-with-condition':
+            return Response('invalid action')
+
+        if not evaluation.is_published:
+            return Response('nothing to do')
+
+        monograph = Monograph.get(request.db, evaluation.monograph_sbid)
+
+        evaluation.is_published = False
+        monograph.visible = False
+
+        request.rel_db_session.add(evaluation)        
+        monograph.save(request.db)
+
+        #TODO! catch exception
+        try:
+            request.rel_db_session.commit()
+        except:
+            request.rel_db_session.rollback()
+            monograph.visible = True
+            monograph.save(request.db)
+
+        return Response('done')
+
+    return Response('nothing to do')

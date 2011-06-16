@@ -23,6 +23,7 @@ class Evaluation(Base):
     creation_date = sqlalchemy.Column(sqlalchemy.DateTime, )
 
     monograph_sbid = sqlalchemy.Column(sqlalchemy.String, )
+    is_published = sqlalchemy.Column(sqlalchemy.Boolean, )
 
     publisher_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('publisher.id'))    
     publisher = relationship("Publisher", backref=backref('evaluation', order_by=id))
@@ -30,7 +31,7 @@ class Evaluation(Base):
     meeting_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('meeting.id'))
     meeting = relationship("Meeting", backref=backref('evaluation', order_by=id))
 
-    def __init__(self, title, isbn, status, subject=None, publisher_catalog_url=None):
+    def __init__(self, title, isbn, status, subject=None, publisher_catalog_url=None, is_published=False):
         self.title = title
         self.isbn = isbn
         self.status = status
@@ -39,6 +40,7 @@ class Evaluation(Base):
         
         self.subject = subject
         self.publisher_catalog_url = publisher_catalog_url
+        self.is_published = is_published
 
 
 class Publisher(Base):    

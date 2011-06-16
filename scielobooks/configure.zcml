@@ -154,18 +154,32 @@
     name="staff.ajax.set_meeting"
     pattern="/staff/function/setmeeting/"
     view="scielobooks.staff.views.ajax_set_meeting"
+    xhr="True"
   />
   <route
     name="staff.ajax_set_committee_decision"
     pattern="/staff/function/setcommitteedecision/"
     view="scielobooks.staff.views.ajax_set_committee_decision"
+    xhr="True"
+  />
+  <route
+    name="staff.ajax_action_publish"
+    pattern="/staff/function/actionpublish/"
+    view="scielobooks.staff.views.ajax_action_publish"
+    xhr="True"
+  />
+  <route
+    name="staff.ajax_action_unpublish"
+    pattern="/staff/function/actionunpublish/"
+    view="scielobooks.staff.views.ajax_action_unpublish"
+    xhr="True"
   />
 
-  <!--
-  ***************
-   USERS APP
-  ***************
-   -->
+<!--
+***************
+ USERS APP
+***************
+ -->
   <route
     name="users.views.signup"
     pattern="/users/signup"
