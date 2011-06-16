@@ -61,8 +61,12 @@ def edit_book(request):
             
             return {'content':e.render(), 
                     'main':main, 
+<<<<<<< HEAD
                     'form_title':FORM_TITLE % monograph.title,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE % monograph.title,},
+>>>>>>> gusfon/master
                     }
         
         if appstruct['cover'] and appstruct['cover']['fp'] is not None:
@@ -75,18 +79,25 @@ def edit_book(request):
         monograph = Monograph.from_python(appstruct)
         monograph.save(request.db)
 
-        request.session.flash('Atualizado com sucesso.')
+        request.session.flash(_('Successfully updated.'))
 
         return HTTPFound(location=request.route_path('staff.book_details', sbid=monograph._id))
     
-    if 'sbid' in request.matchdict:        
+    if 'sbid' in request.matchdict:
         monograph = Monograph.get(request.db, request.matchdict['sbid'])
         appstruct = monograph.to_python()
 
         return {'content':monograph_form.render(appstruct),
                 'main':main,
+<<<<<<< HEAD
                 'form_title':FORM_TITLE % monograph.title,
                 'user':get_logged_user(request),
+=======
+                'form_stuff':{'form_title':FORM_TITLE % monograph.title,
+                              'form_menu':[{'url':request.route_path('staff.parts_list', sbid=monograph._id),
+                                            'text':_('Manage Book Parts')}]
+                             },
+>>>>>>> gusfon/master
                 }
     
     raise exceptions.NotFound
@@ -116,8 +127,8 @@ def parts_list(request):
             }
 
 def new_part(request):
-    FORM_TITLE_NEW = 'New Book Part'
-    FORM_TITLE_EDIT = 'Editing %s'
+    FORM_TITLE_NEW = _('New Book Part')
+    FORM_TITLE_EDIT = _('Editing %s')
 
     monograph_id = request.matchdict['sbid']
 
@@ -134,31 +145,43 @@ def new_part(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
+<<<<<<< HEAD
                     'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
                     }
                 
         part = Part.from_python(appstruct)
         part.monograph = monograph_id
 
         part.save(request.db)
-        request.session.flash('Adicionado com sucesso.')
+        request.session.flash(_('Successfully added.'))
     
-        return HTTPFound(location=request.route_path('staff.panel'))
+        return HTTPFound(location=request.route_path('staff.parts_list', sbid=part.monograph))
 
     if 'part_id' in request.matchdict:
         part = Part.get(request.db, request.matchdict['part_id'])
         
         return {'content':part_form.render(part.to_python()),
                 'main':main,
+<<<<<<< HEAD
                 'form_title':FORM_TITLE_EDIT % part.title,
                 'user':get_logged_user(request),
+=======
+                'form_stuff':{'form_title':FORM_TITLE_EDIT % part.title},
+>>>>>>> gusfon/master
                 }
 
     return {'content':part_form.render(),
             'main':main,
+<<<<<<< HEAD
             'form_title':FORM_TITLE_NEW,
             'user':get_logged_user(request),
+=======
+            'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
             }
 
 def book_details(request):
@@ -181,9 +204,42 @@ def book_details(request):
         'cover_full': request.route_path('catalog.cover', sbid=sbid),
         'breadcrumb': {'home':request.registry.settings['solr_url'],},
         'creators': creators,
+        'attachments':[],
     })
 
+    if 'toc' in monograph:
+        toc_url = static_url('scielobooks:database/%s/%s', request) % (monograph['_id'], monograph['toc']['filename'])
+        document['attachments'].append({'url':toc_url, 'text':_('Table of Contents')})
+
+    if 'editorial_decision' in monograph:
+        editorial_decision_url = static_url('scielobooks:database/%s/%s', request) % (monograph['_id'], monograph['editorial_decision']['filename'])
+        document['attachments'].append({'url':editorial_decision_url, 'text':_('Parecer da Editora')})
+
+    if 'pdf_file' in monograph:
+        pdf_file_url = static_url('scielobooks:database/%s/%s', request) % (monograph['_id'], monograph['pdf_file']['filename'])
+        document['attachments'].append({'url':pdf_file_url, 'text':_('Book in PDF')})
+
+    try:
+       parts = request.db.view('scielobooks/monographs_and_parts', include_docs=True, key=[monograph['_id'], 1])
+    except couchdbkit.ResourceNotFound:
+        raise exceptions.NotFound()
+
+    document_parts = {}
+    for part in parts:
+        part_meta = {'title':part['doc']['title'],
+                     'order':part['doc']['order'],
+                     'creators':part['doc']['creators'],
+                     'edit_url':request.route_path('staff.edit_part', sbid=monograph['_id'], part_id=part['id']),
+                     }
+
+        document_parts[part['id']] = part_meta
+
+    
+    evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph['_id']).one()
+
     return {'document':document,
+            'document_parts':document_parts,
+            'evaluation':evaluation,
             'main':main,
             'user':get_logged_user(request),
             }
@@ -218,8 +274,12 @@ def new_publisher(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
+<<<<<<< HEAD
                     'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
                     }
         del(appstruct['__LOCALE__'])
         session = request.rel_db_session
@@ -242,14 +302,18 @@ def new_publisher(request):
             session.commit()
         except IntegrityError:
             session.rollback()
-            request.session.flash(u'Esse registro já existe.')
+            request.session.flash(_('This record already exists! Please check the data and try again.'))
             return {'content':publisher_form.render(appstruct),
                     'main':main,
+<<<<<<< HEAD
                     'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
                     }
 
-        request.session.flash('Adicionado com sucesso.')
+        request.session.flash(_('Successfully added.'))
 
         return HTTPFound(location=request.route_path('staff.panel'))
     
@@ -263,14 +327,22 @@ def new_publisher(request):
         
         return {'content': publisher_form.render(publisher.as_dict()),
                 'main':main,
+<<<<<<< HEAD
                 'form_title':FORM_TITLE_EDIT % publisher.name,
                 'user':get_logged_user(request),
+=======
+                'form_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name},
+>>>>>>> gusfon/master
                 }
 
     return {'content': publisher_form.render(),
             'main':main,
+<<<<<<< HEAD
             'form_title':FORM_TITLE_NEW,
             'user':get_logged_user(request),
+=======
+            'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
             }
 
 
@@ -293,8 +365,12 @@ def new_book(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
+<<<<<<< HEAD
                     'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
                     }
 
         del(appstruct['__LOCALE__'])
@@ -316,11 +392,15 @@ def new_book(request):
             request.rel_db_session.commit()
         except IntegrityError:
             request.rel_db_session.rollback()
-            request.session.flash(u'Esse registro já existe.')
+            request.session.flash(_('This record already exists! Please check the data and try again.'))
             return {'content':evaluation_form.render(appstruct),
                     'main':main,
+<<<<<<< HEAD
                     'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
                     }
         
         monograph.save(request.db)
@@ -329,8 +409,12 @@ def new_book(request):
 
     return {'content': evaluation_form.render(),
             'main':main,
+<<<<<<< HEAD
             'form_title':FORM_TITLE_NEW,
             'user':get_logged_user(request),
+=======
+            'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
             }
 
 def new_meeting(request):
@@ -349,8 +433,12 @@ def new_meeting(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
+<<<<<<< HEAD
                     'form_title':FORM_TITLE_NEW,
                     'user':get_logged_user(request),
+=======
+                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
                     }
         
         del(appstruct['__LOCALE__'])
@@ -364,8 +452,12 @@ def new_meeting(request):
 
     return {'content':meeting_form.render({'date':date.today()}),
             'main':main,
+<<<<<<< HEAD
             'form_title':FORM_TITLE_NEW,
             'user':get_logged_user(request),
+=======
+            'form_stuff':{'form_title':FORM_TITLE_NEW},
+>>>>>>> gusfon/master
             }
 
 
