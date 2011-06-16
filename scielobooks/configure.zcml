@@ -175,11 +175,11 @@
     xhr="True"
   />
 
-  <!--
-  ***************
-   USERS APP
-  ***************
-   -->
+<!--
+***************
+ USERS APP
+***************
+ -->
   <route
     name="users.views.signup"
     pattern="/users/signup"

@@ -85,8 +85,8 @@
             <li><a href="${request.route_path('staff.new_publisher')}" 
                    i18n:translate="">New Publisher</a></li>        
         </ul>
-
-        <table cellspacing="0">
+        <p tal:condition="len(evaluations) == 0">There are no records.</p>
+        <table cellspacing="0" tal:condition="evaluations | nothing">
             <tr>
                 <td i18n:translate="">Publisher</td>
                 <td i18n:translate="">Title</td>
@@ -94,8 +94,8 @@
                 <td i18n:translate="">Committee Decision</td>
                 <td i18n:translate="">Publication Status</td>
             </tr>
-            
-            <tr tal:repeat="evaluation evaluations">
+            <tr tal:repeat="evaluation evaluations" 
+                tal:attributes="class 'odd' if repeat.evaluation.odd() else 'even'">
                 <td tal:content="evaluation.publisher.name">FAFIMUNDO</td>
                 <td >
                     <a href="${request.route_path('staff.book_details', sbid=evaluation.monograph_sbid)}" tal:content="evaluation.title">Le Petit Prince</a>
