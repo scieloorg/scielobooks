@@ -5,11 +5,12 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from datetime import datetime
 
 from scielobooks.models import Base
+#from .users_models import Admin
 
 from ..utilities import functions
 
 
-class Evaluation(Base):    
+class Evaluation(Base):
     __tablename__ = 'evaluation'
     
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
@@ -22,6 +23,7 @@ class Evaluation(Base):
     creation_date = sqlalchemy.Column(sqlalchemy.DateTime, )
 
     monograph_sbid = sqlalchemy.Column(sqlalchemy.String, )
+    is_published = sqlalchemy.Column(sqlalchemy.Boolean, )
 
     publisher_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('publisher.id'))    
     publisher = relationship("Publisher", backref=backref('evaluation', order_by=id))
@@ -29,7 +31,7 @@ class Evaluation(Base):
     meeting_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('meeting.id'))
     meeting = relationship("Meeting", backref=backref('evaluation', order_by=id))
 
-    def __init__(self, title, isbn, status, subject=None, publisher_catalog_url=None):
+    def __init__(self, title, isbn, status, subject=None, publisher_catalog_url=None, is_published=False):
         self.title = title
         self.isbn = isbn
         self.status = status
@@ -38,6 +40,7 @@ class Evaluation(Base):
         
         self.subject = subject
         self.publisher_catalog_url = publisher_catalog_url
+        self.is_published = is_published
 
 
 class Publisher(Base):    
@@ -72,8 +75,11 @@ class Meeting(Base):
     date = sqlalchemy.Column(sqlalchemy.Date, nullable=False, )
     description = sqlalchemy.Column(sqlalchemy.String, )
 
-        
-    def __init__(self, date, description=None):
+    admin_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('user.id'))    
+    admin = relationship("Admin", backref=backref('meeting', order_by=id))
+
+    def __init__(self, date, admin, description=None):
         self.date = date
+        self.admin = admin
 
         self.description = description

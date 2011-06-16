@@ -165,7 +165,13 @@ a:hover {
 .ePub {
     background: url(/static/images/epub.gif) top left no-repeat;
 }
-.PDF, .ePub {
+.status-published {
+    background: url(/static/images/icon-yes.gif) top left no-repeat;        
+}
+.status-unpublished {
+    background: url(/static/images/icon-no.gif) top left no-repeat;        
+}
+.PDF, .ePub, .status-published, .status-unpublished {
     padding: 3px 2px 2px 20px;
     margin: 0px 0px 4px 0px;
 }
@@ -248,4 +254,7 @@ TD.chpTitle {
     padding: 2px 5px;
     font-weight: bold;
     font-size: 80%;
+}
+.actions li {
+    display: inline;
 }

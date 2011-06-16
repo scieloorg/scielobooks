@@ -7,7 +7,8 @@ README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = ['pyramid', 'WebError', 'Babel', 'pyramid_zcml',
-            'colander', 'deform', 'couchdbkit', 'PIL', 'isisdm']
+            'colander', 'deform', 'couchdbkit', 'PIL', 'isisdm',
+            'SQLAlchemy', 'pyramid_handlers', 'pycrypto']
 
 setup(name='scielobooks',
       version='0.1',
@@ -34,7 +35,7 @@ setup(name='scielobooks',
       main = scielobooks:main
       """,
       paster_plugins=['pyramid'],
-      message_extractors = { '.': [
+      message_extractors = { 'scielobooks': [
             ('**.py','chameleon_python', None ),
             ('**.pt','chameleon_xml', None ),
             ]
