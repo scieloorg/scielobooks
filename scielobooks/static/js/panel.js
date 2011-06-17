@@ -25,7 +25,7 @@ $(document).ready(function(){
         });                                   
     });
     
-    $('.action_publish').click(function(){
+    $('.action_publish').click(function(){        
         var selected = $(this).attr('id');
         var evaluation = selected.split('_')[0];
 
@@ -49,5 +49,10 @@ $(document).ready(function(){
                    $('#actions_load_icon_'+evaluation).hide();
                    location.reload();
         });
+    });    
+    /* start tablesorter */
+    $("#evaluation-table").tablesorter({
+      sortList: [[1,0],[2,0]]
     });
+
 });

@@ -184,12 +184,20 @@ div STRONG {
     margin: 6px 0px;
     font-size: 120%;
 }
+.tablePanel {
+    margin: 20px 5px;
+    width: 100%;
+}
 .tableContents TABLE {
     width: 100%;
 }
-.tableContents TABLE TD {
+.tableContents TABLE TD, .tablePanel TD {
     padding: 4px 4px;
     border-bottom: 1px solid #ccc;
+}
+.tablePanel TD {
+    text-align: center;
+    vertical-align: middle;
 }
 .previewBook {
     width: 920px;
