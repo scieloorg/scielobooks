@@ -5,9 +5,9 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from datetime import datetime
 
 from scielobooks.models import Base
-#from .users_models import Admin
 
 from ..utilities import functions
+from ..users.models import User
 
 
 class Evaluation(Base):
@@ -75,11 +75,32 @@ class Meeting(Base):
     date = sqlalchemy.Column(sqlalchemy.Date, nullable=False, )
     description = sqlalchemy.Column(sqlalchemy.String, )
 
-    admin_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('user.id'))    
-    admin = relationship("Admin", backref=backref('meeting', order_by=id))
+    admin_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('user.id'))
+    admin = relationship("User", backref=backref('meetings', order_by=id))
+
 
     def __init__(self, date, admin, description=None):
         self.date = date
         self.admin = admin
 
         self.description = description
+
+
+class Admin(User):
+
+    __mapper_args__ = {'polymorphic_identity': 'admin'}
+
+    def __init__(self, username, password, group, fullname=None, email=None):
+        super(Admin,self).__init__(username,password,group,fullname,email)
+
+
+class Editor(User):
+
+    publisher_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('publisher.id'))    
+    publisher = relationship("Publisher", )
+
+    __mapper_args__ = {'polymorphic_identity': 'editor'}
+    
+    def __init__(self, username, password, publisher, group, fullname=None, email=None):
+        super(Editor,self).__init__(username,password,group,fullname,email)    
+        self.publisher = publisher

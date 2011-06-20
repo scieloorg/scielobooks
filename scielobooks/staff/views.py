@@ -16,8 +16,7 @@ from datetime import date
 
 from forms import MonographForm, PublisherForm, EvaluationForm, MeetingForm
 from ..models import models as rel_models
-from ..models import users_models as users
-
+from ..users import models as user_models
 
 import couchdbkit
 import urllib2
@@ -42,7 +41,7 @@ STATUS_CHOICES = ['in-process','accepted', 'accepted-with-condition', 'rejected'
 def get_logged_user(request):
     userid = authenticated_userid(request)
     if userid:
-        return request.rel_db_session.query(users.User).get(userid)
+        return request.rel_db_session.query(user_models.User).get(userid)
 
 
 def edit_book(request):
@@ -399,6 +398,8 @@ def new_meeting(request):
                     }
         
         del(appstruct['__LOCALE__'])
+        appstruct['admin'] = get_logged_user(request)
+
         meeting = rel_models.Meeting(**appstruct)
 
         request.rel_db_session.add(meeting)
@@ -503,10 +504,7 @@ def ajax_action_unpublish(request):
 
         #TODO! catch exception
         evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
-
-        if evaluation.status != 'accepted' and evaluation.status != 'accepted-with-condition':
-            return Response('invalid action')
-
+        
         if not evaluation.is_published:
             return Response('nothing to do')
 

@@ -1,5 +1,4 @@
-
-from scielobooks.models import users_models
+from scielobooks.users import models as users_models
 from sqlalchemy.orm import sessionmaker
 import sqlalchemy
 

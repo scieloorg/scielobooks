@@ -7,10 +7,7 @@ from datetime import datetime
 from Crypto.Hash import SHA256
 
 from scielobooks.models import Base
-from .models import Publisher 
-
 from ..utilities import functions
-
 
 class User(Base):    
     __tablename__ = 'user'
@@ -40,26 +37,6 @@ class User(Base):
         self.group = group
 
         self.creation_date = datetime.now()
-
-
-class Admin(User):
-
-    __mapper_args__ = {'polymorphic_identity': 'admin'}
-
-    def __init__(self, username, password, group, fullname=None, email=None):
-        super(Admin,self).__init__(username,password,group,fullname,email)
-
-
-class Editor(User):
-
-    publisher_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('publisher.id'))    
-    publisher = relationship("Publisher", )
-
-    __mapper_args__ = {'polymorphic_identity': 'editor'}
-    
-    def __init__(self, username, password, publisher, group, fullname=None, email=None):
-        super(Editor,self).__init__(username,password,group,fullname,email)    
-        self.publisher = publisher
 
 
 class Group(Base):    

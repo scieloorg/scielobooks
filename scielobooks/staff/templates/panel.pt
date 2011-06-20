@@ -1,80 +1,22 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
+
     <div metal:fill-slot="custom_script" tal:omit-tag="">
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $('.meetings').change(function(){
-                    var selected = $('option:selected', this).val();
-                    var evaluation = selected.split('_')[0];
-                    var meeting = selected.split('_')[1];
-                    
-                    $('#meeting_load_icon_'+evaluation).show();
-
-                    $.post("${request.route_path('staff.ajax.set_meeting')}",
-                           {"evaluation":evaluation, "meeting":meeting}, function(res){
-                               $('#meeting_load_icon_'+evaluation).hide();
-                    });                    
-                });
-
-                $('.committee-decision').change(function(){
-                    var selected = $('option:selected', this).val();                    
-                    var evaluation = selected.split('_')[0];
-                    var decision = selected.split('_')[1];
-                    
-                    $('#committee-decision_load_icon_'+evaluation).show();
-
-                    $.post("${request.route_path('staff.ajax_set_committee_decision')}",
-                           {"evaluation":evaluation, "decision":decision}, function(res){
-                               $('#committee-decision_load_icon_'+evaluation).hide();
-                    });                                   
-                });
-
-                $('.action_publish').click(function(){
-                    var selected = $(this).attr('id');
-                    var evaluation = selected.split('_')[0];
-
-                    $('#actions_load_icon_'+evaluation).show();
-
-                    $.post("${request.route_path('staff.ajax_action_publish')}",
-                           {"evaluation":evaluation}, function(res){
-                               $('#actions_load_icon_'+evaluation).hide();
-                    });
-                });
-
-                $('.action_publish').click(function(){
-                    var selected = $(this).attr('id');
-                    var evaluation = selected.split('_')[0];
-
-                    $('#actions_load_icon_'+evaluation).show();
-
-                    $.post("${request.route_path('staff.ajax_action_publish')}",
-                           {"evaluation":evaluation}, function(res){
-                               $('#actions_load_icon_'+evaluation).hide();
-                               location.reload();
-                    });
-                });
-
-                $('.action_unpublish').click(function(){
-                    var selected = $(this).attr('id');
-                    var evaluation = selected.split('_')[0];
-
-                    $('#actions_load_icon_'+evaluation).show();
-
-                    $.post("${request.route_path('staff.ajax_action_unpublish')}",
-                           {"evaluation":evaluation}, function(res){
-                               $('#actions_load_icon_'+evaluation).hide();
-                               location.reload();
-                    });
-                });
-            });
-        </script>
+        <script src="/static/js/panel.js"></script>
+        <script src="/static/js/jquery.tablesorter.js"></script>                
     </div>
+
+    <div metal:fill-slot="css" tal:omit-tag="">
+        <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
+        <link rel="stylesheet" href="/static/css/style-tablesorter.css" type="text/css" media="screen"></link>
+    </div>
+
     <div class="middle" metal:fill-slot="middle">
         <div class="breadcrumb"></div>
         <div class="leftCol">
             &#160;
-        </div>
-
+        </div>       
+        
         <h2 i18n:translate="">User's Dashboard</h2>
 
         <ul>
@@ -86,62 +28,65 @@
                    i18n:translate="">New Publisher</a></li>        
         </ul>
         <p tal:condition="len(evaluations) == 0">There are no records.</p>
-        <table cellspacing="0" tal:condition="evaluations | nothing">
-            <tr>
-                <td i18n:translate="">Publisher</td>
-                <td i18n:translate="">Title</td>
-                <td i18n:translate="">Meeting</td>
-                <td i18n:translate="">Committee Decision</td>
-                <td i18n:translate="">Publication Status</td>
-            </tr>
-            <tr tal:repeat="evaluation evaluations" 
-                tal:attributes="class 'odd' if repeat.evaluation.odd() else 'even'">
-                <td tal:content="evaluation.publisher.name">FAFIMUNDO</td>
-                <td >
-                    <a href="${request.route_path('staff.book_details', sbid=evaluation.monograph_sbid)}" tal:content="evaluation.title">Le Petit Prince</a>
-                </td>
-                <td >
-                    <select class="meetings">
-                        <option value="nothing">---</option>
-                        <option tal:repeat="meeting meetings" 
-                                tal:content="meeting.date" 
-                                value="${evaluation.isbn}_${meeting.id}"
-                                tal:attributes="selected evaluation.meeting == meeting">2011-09-23</option>
-                    </select>
-                    <img id="meeting_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
-                </td>
-                <td>
-                    <select class="committee-decision">                        
-                        <option tal:repeat="decision committee_decisions" 
-                              tal:content="decision.text" 
-                              value="${evaluation.isbn}_${decision.value}"
-                              tal:attributes="selected evaluation.status == decision.value">Accepted</option>
-                    </select>
-                    <img id="committee-decision_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
-                </td>
-                <td>
-                    <span tal:condition="evaluation.is_published == True" 
-                          class="status-published" title="Published"></span>
-                    <span tal:condition="evaluation.is_published != True" 
-                          class="status-unpublished" title="Not Published"></span>
-                </td>
-                <td>
-                    <ul class="actions">
-                        <li><a tal:condition="evaluation.is_published != True"
-                               href="javascript: void(0);" 
-                               class="action_publish"
-                               id="${evaluation.isbn}_action-publish" i18n:translate="">publish</a></li>
-                        <li><a tal:condition="evaluation.is_published == True"
-                               href="javascript: void(0);"
-                               class="action_unpublish"
-                               id="${evaluation.isbn}_action-unpublish" i18n:translate="">unpublish</a></li>
-                    </ul>
-                    <img id="actions_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
-                </td>
-            </tr>
-            
+        <table cellspacing="0" tal:condition="evaluations | nothing" 
+               class="tablesorter tablePanel" id="evaluation-table">
+            <thead>
+                <tr>
+                    <th i18n:translate="">Publisher</th>
+                    <th i18n:translate="">Title</th>
+                    <th i18n:translate="">Meeting</th>
+                    <th i18n:translate="">Committee Decision</th>
+                    <th i18n:translate="">Publication Status</th>
+                    <th i18n:translate="">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr tal:repeat="evaluation evaluations">
+                    <td tal:content="evaluation.publisher.name">FAFIMUNDO</td>
+                    <td >
+                        <a href="${request.route_path('staff.book_details', sbid=evaluation.monograph_sbid)}" tal:content="evaluation.title">Le Petit Prince</a>
+                    </td>
+                    <td >
+                        <select class="meetings">
+                            <option value="nothing">---</option>
+                            <option tal:repeat="meeting meetings" 
+                                    tal:content="meeting.date" 
+                                    value="${evaluation.isbn}_${meeting.id}"
+                                    tal:attributes="selected evaluation.meeting == meeting">2011-09-23</option>
+                        </select>
+                        <img id="meeting_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
+                    </td>
+                    <td>
+                        <select class="committee-decision">                        
+                            <option tal:repeat="decision committee_decisions" 
+                                  tal:content="decision.text" 
+                                  value="${evaluation.isbn}_${decision.value}"
+                                  tal:attributes="selected evaluation.status == decision.value">Accepted</option>
+                        </select>
+                        <img id="committee-decision_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
+                    </td>
+                    <td>
+                        <span tal:condition="evaluation.is_published == True" 
+                              class="status-published" title="Published"></span>
+                        <span tal:condition="evaluation.is_published != True" 
+                              class="status-unpublished" title="Not Published"></span>
+                    </td>
+                    <td>
+                        <ul class="actions">
+                            <li><a tal:condition="evaluation.is_published != True"
+                                   href="javascript: void(0);" 
+                                   class="action_publish"
+                                   id="${evaluation.isbn}_action-publish" i18n:translate="">publish</a></li>
+                            <li><a tal:condition="evaluation.is_published == True"
+                                   href="javascript: void(0);"
+                                   class="action_unpublish"
+                                   id="${evaluation.isbn}_action-unpublish" i18n:translate="">unpublish</a></li>
+                        </ul>
+                        <img id="actions_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
+                    </td>
+                </tr>
+            </tbody>
         </table>
-
         <div class="spacer"></div>
     </div>
 </p>
