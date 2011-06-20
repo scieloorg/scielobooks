@@ -355,7 +355,7 @@ def new_book(request):
                               publisher=evaluation.publisher.name,
                               visible=False,
                               )
-        import pdb; pdb.set_trace()
+        
         evaluation.monograph_sbid = monograph._id
                               
         request.rel_db_session.add(evaluation)
