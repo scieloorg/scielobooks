@@ -1,8 +1,7 @@
-
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
 
-from models.users_models import Group
+from users.models import Group
 
 engine = sqlalchemy.create_engine('sqlite:///../database.db', echo=False)
 Session = sessionmaker(bind=engine)

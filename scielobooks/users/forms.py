@@ -1,8 +1,6 @@
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
 
-from ..models import users_models as users
-
 import datetime
 import deform
 import colander

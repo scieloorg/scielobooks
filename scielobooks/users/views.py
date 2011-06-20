@@ -17,7 +17,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from datetime import date
 
 from forms import SignupForm, LoginForm
-from ..models import users_models as users
+import models as users
 from ..models import models
 
 from Crypto.Hash import SHA256
