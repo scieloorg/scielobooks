@@ -72,7 +72,9 @@ def edit_book(request):
                                }
             appstruct['cover_thumbnail'] = cover_thumbnail
         
-        monograph = Monograph.from_python(appstruct)
+        existing_doc_appstruct = Monograph.get(request.db, appstruct['_id']).to_python()
+        existing_doc_appstruct.update(appstruct)
+        monograph = Monograph.from_python(existing_doc_appstruct)
         monograph.save(request.db)
 
         request.session.flash(_('Successfully updated.'))
@@ -351,8 +353,9 @@ def new_book(request):
         monograph = Monograph(title=evaluation.title, 
                               isbn=evaluation.isbn, 
                               publisher=evaluation.publisher.name,
+                              visible=False,
                               )
-        
+        import pdb; pdb.set_trace()
         evaluation.monograph_sbid = monograph._id
                               
         request.rel_db_session.add(evaluation)
