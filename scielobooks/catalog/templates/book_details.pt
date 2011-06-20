@@ -13,19 +13,27 @@
     <div class="contentCol">
       <div class="bookDetail">
     	<div class="thumb">
-    	  <img tal:attributes="src cover_url" src="/static/images/cover.jpg"/>
+          <a href="#" tal:attributes="href cover_full_url">
+    	    <img tal:attributes="src cover_thumb_url" src="/static/images/cover.jpg"/>
+          </a>
     	</div>
     	<h3 tal:content="document.title">The man who ate his boots</h3>
 
     	<dl class="metadata">
-    	  <dt tal:condition="document.creators" i18n:translate="">Author:</dt>
+          <span tal:omit-tag="" tal:condition="getattr(document, 'creators', None)"> 
+    	  <dt i18n:translate="">Author:</dt>
     	    <dd tal:repeat="person document.creators" tal:content="person">Soares, Sandra Regina</dd>
+          </span>
 
-    	  <dt tal:condition="document.publisher" i18n:translate="">Publisher:</dt>
-    	    <dd tal:condition="document.publisher" tal:content="document.publisher">EDUSP</dd>
-
-    	  <dt tal:condition="document.language" i18n:translate="">Language:</dt>
-    	    <dd tal:condition="document.language" tal:content="document.language">Português |</dd>
+          <span tal:omit-tag="" tal:condition="getattr(document, 'publisher', None)">
+    	  <dt i18n:translate="">Publisher:</dt>
+    	    <dd tal:content="document.publisher">EDUSP</dd>
+          </span>
+            
+          <span tal:omit-tag="" tal:condition="getattr(document, 'language', None)">
+    	  <dt i18n:translate="">Language:</dt>
+    	    <dd tal:content="document.language">Português |</dd>
+          </span>
 
           <span tal:omit-tag="" tal:condition="getattr(document, 'edition', None)">
           <dt i18n:translate="">Edition:</dt>
@@ -48,12 +56,18 @@
           </span>
     	</dl>
 
-    	<div class="download">
-    	  <fieldset>
-    	    <legend i18n:translate="">Download</legend>
-    	    
-    	  </fieldset>
-    	</div>
+        <div class="download"
+             tal:condition="book_attachments | nothing">
+          <fieldset>
+            <legend>Download</legend>
+            <div tal:repeat="attach book_attachments">
+              <a tal:attributes="href attach.url"
+                 tal:content="attach.text"
+                 href="#">Livro em PDF</a>
+            </div>
+          </fieldset>
+        </div>	
+
     	<div class="actions"></div>
     	<div class="spacer"></div>
 
@@ -74,7 +88,7 @@
             </tr>
           </table>
         </div>
-        
+
     	<div class="spacer"></div>
       </div>
     </div>

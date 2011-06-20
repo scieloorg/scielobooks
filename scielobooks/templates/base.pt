@@ -19,17 +19,7 @@
     </head>
     <body>
       <div class="container">
-        <div class="top">
-          <div class="userbox">
-            
-            <span tal:condition="user" >
-              <span tal:replace="user.username">Usuário José</span> <a href="/logout">logout</a>
-            </span>
-            <span tal:condition="not user">
-              <a href="/logout">login</a>
-            </span>
-
-          </div>
+        <div class="top">          
           <h1><a href="#"><span>SciELO Livros</span></a></h1>
           <span metal:define-slot="custom_top"></span>
           <form id="form_language" action="/setlang/" method="post">
