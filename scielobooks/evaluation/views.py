@@ -9,12 +9,9 @@ _ = TranslationStringFactory('scielobooks')
 
 import couchdbkit
 import urllib2
-import json
 import deform
 import Image
 import StringIO
-import os
-import uuid
 import colander
 
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'

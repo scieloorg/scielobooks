@@ -19,13 +19,7 @@ from ..models import models as rel_models
 from ..users import models as user_models
 
 import couchdbkit
-import urllib2
-import json
 import deform
-import Image
-import StringIO
-import os
-import uuid
 import colander
 
 from .models import Monograph, Part

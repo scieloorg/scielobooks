@@ -7,17 +7,11 @@ from pyramid.renderers import get_renderer
 from pyramid.i18n import TranslationStringFactory, negotiate_locale_name
 _ = TranslationStringFactory('scielobooks')
 
-from ..utilities.functions import create_thumbnail
 from ..staff.models import Monograph
 
 import couchdbkit
 import urllib2
-import json
 import deform
-import Image
-import StringIO
-import os
-
 
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'
 MIMETYPES = {
