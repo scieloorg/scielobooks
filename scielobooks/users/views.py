@@ -25,6 +25,7 @@ from Crypto.Hash import SHA256
 import json
 import deform
 import colander
+import base64
 
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'
 
@@ -44,9 +45,11 @@ def login(request):
     login_url = route_url('users.login', request)
     referrer = request.url
     if referrer == login_url:
-        referrer = '/' # never use the login form itself as came_from
-    came_from = request.params.get('came_from', referrer)
+        referrer = route_url('staff.panel', request)
 
+    b64_caller = request.params.get('caller', None)
+    caller = base64.b64decode(b64_caller) if b64_caller is not None else referrer
+    
     if 'submit' in request.POST:
         
         controls = request.POST.items()
@@ -66,7 +69,7 @@ def login(request):
         else:
             if SHA256.new(appstruct['password']).hexdigest() == user.password:
                 headers = remember(request, user.id)
-                return HTTPFound(location=came_from, headers=headers)
+                return HTTPFound(location=caller, headers=headers)
             else:
                 request.session.flash(_("Username/password doesn't match")) 
 

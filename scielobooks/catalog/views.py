@@ -7,16 +7,11 @@ from pyramid.renderers import get_renderer
 from pyramid.i18n import TranslationStringFactory, negotiate_locale_name
 _ = TranslationStringFactory('scielobooks')
 
-from ..utilities.functions import create_thumbnail
+from ..staff.models import Monograph, Part
 
 import couchdbkit
 import urllib2
-import json
 import deform
-import Image
-import StringIO
-import os
-
 
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'
 MIMETYPES = {
@@ -35,51 +30,50 @@ def main_fields(composite_property):
     else:
         return composite_property['full_name']
 
+def get_book_parts(monograph_sbid, request):
+    try:
+       parts = request.db.view('scielobooks/monographs_and_parts', include_docs=True, key=[monograph_sbid, 1])
+    except couchdbkit.ResourceNotFound:
+        raise exceptions.NotFound()
+
+    monograph_parts = []
+    for i,part in enumerate(parts):
+        partnumber = str(i).zfill(2)
+        part_meta = {'part_sbid':part['id'],
+                     'partnumber':partnumber,
+                     'title':part['doc']['title'],                     
+                     'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_sbid, part=partnumber),
+                     'preview_url':request.route_path('catalog.chapter_details',sbid=monograph_sbid, chapter=partnumber),
+                     }
+        monograph_parts.append(part_meta)
+    
+    return monograph_parts
+
 def book_details(request):
     sbid = request.matchdict['sbid']
     try:
-        document = request.db.get(sbid)
+        monograph = Monograph.get(request.db, sbid)
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
-    if document['TYPE'] != 'Monograph':
+        
+    if not monograph.visible:
         raise exceptions.NotFound()
 
-    if not document['visible']:
-        raise exceptions.NotFound() #TODO change exception!
+    parts = get_book_parts(monograph._id, request)
 
-    isbn = document['isbn']
-
-    document['chapters_list'] = [dict(chap) for chap in document['chapters_list']]
-    document['creators'] = [dict(creator) for creator in document['creators']]
-
-    for num,chapter in enumerate(document['chapters_list']):
-        shortname = document['shortname']
-        partnumber = str(num).zfill(2)
-
-        pdf_url = static_url('scielobooks:books/%s/pdf/%s.pdf', request) % (sbid, partnumber)
-        chapter['url'] = pdf_url
-        chapter['preview_url'] = request.route_path(
-            'catalog.chapter_details',sbid=sbid, chapter=partnumber)
-
-    download_formats = []
-    for format in document['download_formats']:
-        if format in MIMETYPES:
-            if format == 'application/pdf':
-                pdf_url = static_url('scielobooks:books/%s/pdf/%s.pdf', request) % (sbid, isbn)
-                download_formats.append(dict(name=MIMETYPES[format], url=pdf_url))
-            else:
-                download_formats.append(dict(name=MIMETYPES[format], url='#'))
-
-    document.update({
-        'download_formats': download_formats,
-        'cover_url': request.route_path('catalog.cover', sbid=sbid, size='sz1'),
-        'breadcrumb': {'home':request.registry.settings['solr_url'],},
-        'creators': main_fields(document['creators']),
-    })
+    book_attachments = []
+    if getattr(monograph, 'pdf_file', None):
+        pdf_file_url = request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn)
+        book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
 
     main = get_renderer(BASE_TEMPLATE).implementation()
-
-    return {'document':document,
+    
+    return {'document':monograph,
+            'book_attachments':book_attachments,
+            'parts':parts,
+            'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
+            'cover_full_url': request.route_path('catalog.cover', sbid=monograph._id),
+            'breadcrumb': {'home':request.registry.settings['solr_url'],},
             'main':main}
 
 def chapter_details(request):
@@ -90,57 +84,29 @@ def chapter_details(request):
         raise exceptions.NotFound(_('Not a valid chapter'))
 
     try:
-        document = request.db.get(sbid)#monographic sbid, not the analictic one!
+        monograph = Monograph.get(request.db, sbid)
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
-    isbn = document['isbn']
-    if document['TYPE'] != 'Monograph':
+        
+    if not monograph.visible:
         raise exceptions.NotFound()
 
-    document['chapters_list'] = [dict(chap) for chap in document['chapters_list']]
-    document['creators'] = [dict(creator) for creator in document['creators']]
+    parts = get_book_parts(monograph._id, request)
 
     try:
-        chapter_sbid = document['chapters_list'][chapter]['sbid']
+        part = parts[chapter]
     except IndexError:
         raise exceptions.NotFound(_('Not a valid chapter'))
 
-    try:
-        chapter_document = request.db.get(chapter_sbid)
-    except couchdbkit.ResourceNotFound:
-        raise exceptions.NotFound()
-
-    for num,chapter in enumerate(document['chapters_list']):
-        shortname = document['shortname']
-        partnumber = str(num).zfill(2)
-        chapter['preview_url'] = request.route_path('catalog.chapter_details',sbid=sbid, chapter=partnumber)
-
-    partnumber = request.matchdict['chapter']
-    partnumber.zfill(2)
-
-    pdf_url = static_url('scielobooks:books/%s/pdf/%s.pdf', request) % (sbid, partnumber)
-
-    chapter_document['creators'] = [dict(creator) for creator in chapter_document['creators']]
-
-    creators = main_fields(chapter_document['creators']) if chapter_document['creators'] \
-                            else main_fields(document['creators'])
-    document.update({
-        'creators': creators,
-        'pdf_url': pdf_url,
-        'chaptertitle': chapter_document['title'],
-        'pages': chapter_document['pages'],
-        'partnumber': partnumber,
-        'cover_url': request.route_path('catalog.cover', sbid=sbid, size='sz1'),
-    })
-
-    document['breadcrumb'] = {'home':request.registry.settings['solr_url'],
-                              'book':request.route_path('catalog.book_details',
-                                                        sbid=sbid)
-                              }
-
     main = get_renderer(BASE_TEMPLATE).implementation()
 
-    return {'document':document,
+    return {'document':monograph,
+            'document_pdf_url': request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn),
+            'parts':parts,
+            'part':part,
+            'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
+            'breadcrumb':{'home':request.registry.settings['solr_url'],
+                          'book':request.route_path('catalog.book_details', sbid=sbid),},
             'main':main}
 
 def cover(request):
@@ -159,4 +125,27 @@ def cover(request):
 
     return Response(body=img, content_type='image/jpeg')
 
+def pdf_file(request):    
+    sbid = request.matchdict['sbid']
+    req_part = request.matchdict['part']
 
+    monograph = Monograph.get(request.db, sbid)
+    if req_part == monograph.isbn:
+        try:
+            pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'])
+        except (couchdbkit.ResourceNotFound, AttributeError):
+            raise exceptions.NotFound()
+    else:
+        parts = get_book_parts(monograph._id, request)
+        try:
+            selected_part = parts[int(req_part)]
+        except (IndexError, ValueError):            
+            raise exceptions.NotFound()
+
+        part = Part.get(request.db, selected_part['part_sbid'])
+        try:
+            pdf_file = request.db.fetch_attachment(part._id, part.pdf_file['filename'])
+        except (couchdbkit.ResourceNotFound, AttributeError):
+            raise exceptions.NotFound()
+
+    return Response(body=pdf_file, content_type='application/pdf')

@@ -5,12 +5,14 @@ from pyramid.i18n import get_localizer
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
+from pyramid.exceptions import Forbidden
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker
 
 import couchdbkit
 import pyramid_zcml
 
+from .views import custom_forbidden_view
 from .security import groupfinder
 from .models import initialize_sql
 from scielobooks.request import MyRequest
@@ -39,7 +41,7 @@ def main(global_config, **settings):
     conn = couchdbkit.Server(db_uri)
     config.registry.settings['db_conn'] = conn
     config.add_subscriber(add_couch_db, NewRequest)
-
+    
     config.scan('scielobooks.models')
     initialize_sql(engine)
 
@@ -48,6 +50,8 @@ def main(global_config, **settings):
     config.add_static_view('deform_static', 'deform:static')
     config.add_static_view(settings['books_static_url'], 'scielobooks:books')
     config.add_static_view('/'.join((settings['db_uri'], settings['db_name'])), 'scielobooks:database')
+    
+    config.add_view(custom_forbidden_view, context=Forbidden)
 
     config.add_translation_dirs('scielobooks:locale/')
     config.set_locale_negotiator(custom_locale_negotiator)

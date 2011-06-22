@@ -44,6 +44,11 @@
     view="scielobooks.catalog.views.chapter_details"
     renderer="scielobooks:catalog/templates/chapter_details.pt"
   />
+  <route
+    name="catalog.pdf_file"
+    pattern="/id/{sbid}/pdf/{part}.pdf"
+    view="scielobooks.catalog.views.pdf_file"
+  />
 <!--
 ***********************************
  EVALUATION APP

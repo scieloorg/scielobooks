@@ -22,7 +22,7 @@ def filterDigits(input):
     input = input.strip()
     digits = [c for c in input if c.isdigit()]
     # an X may appear as check digit in ISBN-10
-    if input[-1].upper() == 'X':
+    if len(input) and input[-1].upper() == 'X':
         digits.append('X')
     return ''.join(digits)
 
@@ -164,4 +164,3 @@ def convertISBN13toLang(isbn13):
         if possible_group in group_lang:
             return group_lang[possible_group]
     return None
-

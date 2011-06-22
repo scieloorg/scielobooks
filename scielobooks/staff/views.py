@@ -19,13 +19,7 @@ from ..models import models as rel_models
 from ..users import models as user_models
 
 import couchdbkit
-import urllib2
-import json
 import deform
-import Image
-import StringIO
-import os
-import uuid
 import colander
 
 from .models import Monograph, Part
@@ -72,7 +66,9 @@ def edit_book(request):
                                }
             appstruct['cover_thumbnail'] = cover_thumbnail
         
-        monograph = Monograph.from_python(appstruct)
+        existing_doc_appstruct = Monograph.get(request.db, appstruct['_id']).to_python()
+        existing_doc_appstruct.update(appstruct)
+        monograph = Monograph.from_python(existing_doc_appstruct)
         monograph.save(request.db)
 
         request.session.flash(_('Successfully updated.'))
@@ -351,6 +347,7 @@ def new_book(request):
         monograph = Monograph(title=evaluation.title, 
                               isbn=evaluation.isbn, 
                               publisher=evaluation.publisher.name,
+                              visible=False,
                               )
         
         evaluation.monograph_sbid = monograph._id
