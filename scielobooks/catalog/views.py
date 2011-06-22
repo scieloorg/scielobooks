@@ -7,7 +7,7 @@ from pyramid.renderers import get_renderer
 from pyramid.i18n import TranslationStringFactory, negotiate_locale_name
 _ = TranslationStringFactory('scielobooks')
 
-from ..staff.models import Monograph
+from ..staff.models import Monograph, Part
 
 import couchdbkit
 import urllib2
@@ -42,7 +42,7 @@ def get_book_parts(monograph_sbid, request):
         part_meta = {'part_sbid':part['id'],
                      'partnumber':partnumber,
                      'title':part['doc']['title'],                     
-                     'pdf_url':static_url('scielobooks:books/%s/pdf/%s.pdf', request) % (monograph_sbid, partnumber),
+                     'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_sbid, part=partnumber),
                      'preview_url':request.route_path('catalog.chapter_details',sbid=monograph_sbid, chapter=partnumber),
                      }
         monograph_parts.append(part_meta)
@@ -63,7 +63,7 @@ def book_details(request):
 
     book_attachments = []
     if getattr(monograph, 'pdf_file', None):
-        pdf_file_url = static_url('scielobooks:books/%s/pdf/%s.pdf', request) % (monograph._id, monograph.isbn)
+        pdf_file_url = request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn)
         book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
 
     main = get_renderer(BASE_TEMPLATE).implementation()
@@ -101,7 +101,7 @@ def chapter_details(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     return {'document':monograph,
-            'document_pdf_url': static_url('scielobooks:books/%s/pdf/%s.pdf', request) % (monograph._id, monograph.isbn),
+            'document_pdf_url': request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn),
             'parts':parts,
             'part':part,
             'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
@@ -125,4 +125,27 @@ def cover(request):
 
     return Response(body=img, content_type='image/jpeg')
 
+def pdf_file(request):    
+    sbid = request.matchdict['sbid']
+    req_part = request.matchdict['part']
 
+    monograph = Monograph.get(request.db, sbid)
+    if req_part == monograph.isbn:
+        try:
+            pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'])
+        except (couchdbkit.ResourceNotFound, AttributeError):
+            raise exceptions.NotFound()
+    else:
+        parts = get_book_parts(monograph._id, request)
+        try:
+            selected_part = parts[int(req_part)]
+        except (IndexError, ValueError):            
+            raise exceptions.NotFound()
+
+        part = Part.get(request.db, selected_part['part_sbid'])
+        try:
+            pdf_file = request.db.fetch_attachment(part._id, part.pdf_file['filename'])
+        except (couchdbkit.ResourceNotFound, AttributeError):
+            raise exceptions.NotFound()
+
+    return Response(body=pdf_file, content_type='application/pdf')
