@@ -10,29 +10,30 @@
     <div class="leftCol">
     &#160;
     </div>
+
     <div class="contentCol">
       <div class="bookDetail">
-    	<div class="thumb">
-          <a href="#" tal:attributes="href cover_full_url">
-    	    <img tal:attributes="src cover_thumb_url" src="/static/images/cover.jpg"/>
-          </a>
-    	</div>
-    	<h3 tal:content="document.title">The man who ate his boots</h3>
+      	<div class="thumb">
+            <a href="#" tal:attributes="href cover_full_url">
+      	    <img tal:attributes="src cover_thumb_url" src="/static/images/cover.jpg"/>
+            </a>
+      	</div>
+      	<h3 tal:content="document.title">The man who ate his boots</h3>
 
-    	<dl class="metadata">
-          <span tal:omit-tag="" tal:condition="getattr(document, 'creators', None)"> 
-    	  <dt i18n:translate="">Author:</dt>
-    	    <dd tal:repeat="person document.creators" tal:content="person">Soares, Sandra Regina</dd>
-          </span>
-
-          <span tal:omit-tag="" tal:condition="getattr(document, 'publisher', None)">
-    	  <dt i18n:translate="">Publisher:</dt>
-    	    <dd tal:content="document.publisher">EDUSP</dd>
+      	<dl class="metadata">            
+          <span tal:omit-tag="" tal:condition="getattr(document, 'creators', None)">
+          <dt i18n:translate="">Author:</dt>
+            <dd tal:repeat="person document.creators" tal:content="person.full_name">Soares, Sandra Regina</dd>
           </span>
             
+          <span tal:omit-tag="" tal:condition="getattr(document, 'publisher', None)">
+          <dt i18n:translate="">Publisher:</dt>
+            <dd tal:content="document.publisher">EDUSP</dd>
+          </span>
+              
           <span tal:omit-tag="" tal:condition="getattr(document, 'language', None)">
-    	  <dt i18n:translate="">Language:</dt>
-    	    <dd tal:content="document.language">Português |</dd>
+          <dt i18n:translate="">Language:</dt>
+            <dd tal:content="document.language">Português |</dd>
           </span>
 
           <span tal:omit-tag="" tal:condition="getattr(document, 'edition', None)">
@@ -51,11 +52,11 @@
           </span>
 
           <span tal:omit-tag="" tal:condition="getattr(document, 'isbn', None)">
-    	  <dt i18n:translate="">ISBN:</dt>
-    	    <dd tal:content="document.isbn">0123456789</dd>
+          <dt i18n:translate="">ISBN:</dt>
+            <dd tal:content="document.isbn">0123456789</dd>
           </span>
-    	</dl>
-
+      	</dl>
+        
         <div class="download"
              tal:condition="book_attachments | nothing">
           <fieldset>
@@ -68,17 +69,17 @@
           </fieldset>
         </div>	
 
-    	<div class="actions"></div>
-    	<div class="spacer"></div>
+      	<div class="actions"></div>
+      	<div class="spacer"></div>
 
-    	<div tal:condition="getattr(document, 'synopsis', None)">
-    	  <strong i18n:translate="">Synopsis</strong>
-    	  <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-    	</div>
+      	<div tal:condition="getattr(document, 'synopsis', None)">
+      	  <strong i18n:translate="">Synopsis</strong>
+      	  <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+      	</div>
 
-    	<div class="spacer"></div>
+      	<div class="spacer"></div>
 
-    	<div class="tableContents">
+      	<div class="tableContents">
           <strong i18n:translate="">Table of Contents</strong>
           <table cellspacing="0">
             <tr tal:repeat="part parts">
@@ -89,8 +90,8 @@
           </table>
         </div>
 
-    	<div class="spacer"></div>
-      </div>
-    </div>
+    	  <div class="spacer"></div> 
+      </div> 
+    </div> 
   </div>
 </p>

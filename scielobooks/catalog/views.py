@@ -67,7 +67,7 @@ def book_details(request):
         book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
 
     main = get_renderer(BASE_TEMPLATE).implementation()
-
+    
     return {'document':monograph,
             'book_attachments':book_attachments,
             'parts':parts,
