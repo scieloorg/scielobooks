@@ -107,10 +107,8 @@
   </div>
 
   <div class="spacer"></div>
-    <script type="text/javascript">
-      var chapter = ${part.partnumber};
-      var cell = document.getElementsByTagName("li")[chapter];
-      cell.setAttribute("class","chpTitle bookmark");
+    <script type="text/javascript">      
+      $(".chpTitle")[${part.partnumber}].setAttribute("class","chpTitle bookmark");
     </script>
   </div>
   </div><!--/middle -->
