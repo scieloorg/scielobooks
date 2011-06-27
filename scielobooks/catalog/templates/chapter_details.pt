@@ -1,8 +1,44 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
+
+  <div metal:fill-slot="custom_script" tal:omit-tag="">
+    <script src="/static/js/flexpaper_flash.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var fp = new FlexPaperViewer( 
+             '/static/swf/FlexPaperViewer',
+             'viewerPlaceHolder', { config : {
+             SwfFile : escape('${part.swf_url}'),
+             Scale : 0.6, 
+             ZoomTransition : 'easeOut',
+             ZoomTime : 0.5,
+             ZoomInterval : 0.2,
+             FitPageOnLoad : true,
+             FitWidthOnLoad : false,
+             PrintEnabled : true,
+             FullScreenAsMaxWindow : false,
+             ProgressiveLoading : false,
+             MinZoomSize : 0.2,
+             MaxZoomSize : 5,
+             SearchMatchAll : false,
+             InitViewMode : 'Portrait',
+             
+             ViewModeToolsVisible : true,
+             ZoomToolsVisible : true,
+             NavToolsVisible : true,
+             CursorToolsVisible : true,
+             SearchToolsVisible : true,
+              
+               localeChain: 'en_US'
+             }});
+      });
+    </script>
+  </div>
+
   <h2 metal:fill-slot="custom_top"
     tal:condition="document.publisher"
     tal:content="document.publisher">EDUSP</h2>
+
   <div class="middle" metal:fill-slot="middle">
     <div class="breadcrumb">
       <a href="/" tal:attributes="href breadcrumb.home">Home</a> / <a href="#" tal:attributes="href breadcrumb.book" tal:content="document.title">Book</a> / <span tal:replace="part.title">Le Petit Prince</span>
@@ -66,8 +102,8 @@
     </ul>
   </div>
 
-  <div class="player">
-	<iframe src="" style="width:720px; height:800px;" frameborder="0"></iframe>
+  <div class="player">	  
+    <a id="viewerPlaceHolder" style="width:720px; height:800px;" frameborder="0"></a>
   </div>
 
   <div class="spacer"></div>
