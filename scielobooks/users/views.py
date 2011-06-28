@@ -19,6 +19,7 @@ from datetime import date
 from forms import SignupForm, LoginForm
 import models as users
 from ..models import models
+from managers import RegistrationProfileManager
 
 from Crypto.Hash import SHA256
 
@@ -123,12 +124,15 @@ def signup(request):
             del(appstruct['group'])
         
         if group_name == 'editor':
-            user = users.Editor(group=group,**appstruct)
+            user = models.Editor(group=group,**appstruct)
         elif group_name == 'admin':
             del(appstruct['publisher'])
-            user = users.Admin(group=group,**appstruct)
+            user = models.Admin(group=group,**appstruct)
+        
+        registration_profile = users.RegistrationProfile(user)
 
         request.rel_db_session.add(user)
+        request.rel_db_session.add(registration_profile)
 
         try:
             request.rel_db_session.commit()
@@ -140,6 +144,10 @@ def signup(request):
                     'form_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
+        else:            
+            RegistrationProfileManager.send_activation_mail(user, request)
+
+
         request.session.flash(_('Successfully added.'))
         return HTTPFound(location=request.route_path('staff.panel'))
 

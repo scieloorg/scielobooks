@@ -39,4 +39,3 @@ def create_thumbnail(img, size=None):
     img_thumb.save(buf, format='JPEG')
 
     return buf
-

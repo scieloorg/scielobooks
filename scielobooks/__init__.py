@@ -6,6 +6,7 @@ from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.exceptions import Forbidden
+from pyramid_mailer.mailer import Mailer
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker
 
@@ -36,6 +37,9 @@ def main(global_config, **settings):
 
     config.include(pyramid_zcml)
     config.load_zcml('configure.zcml')
+    config.include('pyramid_mailer')
+
+    config.registry['mailer'] = Mailer.from_settings(settings)
 
     db_uri = settings['db_uri']
     conn = couchdbkit.Server(db_uri)
