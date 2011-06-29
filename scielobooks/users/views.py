@@ -127,7 +127,7 @@ def signup(request):
         finally:
             group_name = appstruct['group']
             del(appstruct['group'])
-        
+     
         if group_name == 'editor':
             user = models.Editor(group=group,**appstruct)
         elif group_name == 'admin':
@@ -135,6 +135,8 @@ def signup(request):
             user = models.Admin(group=group,**appstruct)
         
         registration_profile = users.RegistrationProfile(user)
+
+        RegistrationProfileManager.clean_expired(request)
 
         request.rel_db_session.add(user)
         request.rel_db_session.add(registration_profile)

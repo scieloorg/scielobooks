@@ -4,6 +4,8 @@ import models
 import transaction
 from datetime import datetime
 
+ACTIVATED = 'ACTIVATED'
+
 class InvalidActivationKey(Exception):
     def __init__(self, message=None):
         super(Exception, self).__init__(message)
@@ -22,7 +24,7 @@ class RegistrationProfileManager(object):
 
     @staticmethod
     def activate_user(activation_key, request):
-        if activation_key == 'ACTIVATED':
+        if activation_key == ACTIVATED:
             raise InvalidActivationKey()
             
         try:
@@ -34,7 +36,7 @@ class RegistrationProfileManager(object):
             raise InvalidActivationKey()
 
         reg_profile.user.is_active = True
-        reg_profile.activation_key = 'ACTIVATED'
+        reg_profile.activation_key = ACTIVATED
         reg_profile.activation_date = datetime.now()
 
         request.rel_db_session.add(reg_profile)
@@ -48,7 +50,7 @@ class RegistrationProfileManager(object):
     
     @staticmethod
     def send_activation_mail(user, request):
-        if user.registration_profile.activation_key == 'ACTIVATED':
+        if user.registration_profile.activation_key == ACTIVATED:
             raise InvalidActivationKey()
 
         activation_url = request.route_url('users.activation') + '?key=%s' % user.registration_profile.activation_key
@@ -62,4 +64,9 @@ class RegistrationProfileManager(object):
 
     @staticmethod
     def clean_expired(request):
-        pass
+        try:        
+            exclude_total = request.rel_db_session.query(models.RegistrationProfile).filter(models.RegistrationProfile.activation_key != ACTIVATED and models.RegistrationProfile.expiration_date < datetime.now()).delete()
+        except:
+            pass
+        
+        return exclude_total
