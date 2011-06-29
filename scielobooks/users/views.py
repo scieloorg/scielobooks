@@ -20,6 +20,8 @@ from forms import SignupForm, LoginForm
 import models as users
 from ..models import models
 from managers import RegistrationProfileManager
+from managers import InvalidActivationKey
+from managers import ActivationError
 
 from Crypto.Hash import SHA256
 
@@ -69,10 +71,13 @@ def login(request):
             request.session.flash(_("Username doesn't exist."))
         else:
             if SHA256.new(appstruct['password']).hexdigest() == user.password:
-                headers = remember(request, user.id)
-                return HTTPFound(location=caller, headers=headers)
+                if not user.is_active:
+                    request.session.flash(_("The username is not active. Check your email account for the activation instructions."))
+                else:
+                    headers = remember(request, user.id)
+                    return HTTPFound(location=caller, headers=headers)
             else:
-                request.session.flash(_("Username/password doesn't match")) 
+                request.session.flash(_("Username/password doesn't match"))             
 
     return {
             'main':main,
@@ -157,3 +162,21 @@ def signup(request):
             'user':get_logged_user(request),
             }
 
+def activation(request):
+    main = get_renderer(BASE_TEMPLATE).implementation()
+
+    activation_key = request.params.get('key', None)
+    if activation_key is None:
+        raise exceptions.NotFound()
+    
+    try:
+        user = RegistrationProfileManager.activate_user(activation_key, request)
+    except InvalidActivationKey:
+        raise exceptions.NotFound()
+    except ActivationError:
+        request.session.flash(_('Problems occured when trying to activate the user. Please try again.'))
+        return {'main':main, 'active':False}
+
+    request.session.flash(_('User %s has been activated successfuly.' % user.username))
+
+    return {'main':main, 'active':True}

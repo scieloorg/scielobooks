@@ -9,7 +9,7 @@ from Crypto.Hash import SHA256
 from scielobooks.models import Base
 from ..utilities import functions
 
-class User(Base):    
+class User(Base):
     __tablename__ = 'user'
     
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
@@ -62,7 +62,7 @@ class RegistrationProfile(Base):
     activation_date = sqlalchemy.Column(sqlalchemy.DateTime)
 
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('user.id'))
-    user = relationship("User", backref=backref('registration_profile', order_by=id))
+    user = relationship("User", backref=backref('registration_profile', order_by=id, uselist=False))
 
     def __init__(self, user):
         self.user = user

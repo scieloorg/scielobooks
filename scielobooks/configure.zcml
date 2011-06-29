@@ -196,7 +196,7 @@
     renderer="scielobooks:users/templates/signup_form.pt"
     permission="admin"
   />
-    <route
+  <route
     name="users.login"
     pattern="/login"
     view="scielobooks.users.views.login"
@@ -207,6 +207,10 @@
     pattern="/logout"
     view="scielobooks.users.views.logout"
   />
-
-
+  <route
+    name="users.activation"
+    pattern="/users/activation"
+    view="scielobooks.users.views.activation"
+    renderer="scielobooks:users/templates/activation.pt"
+  />
 </configure>
