@@ -213,4 +213,16 @@
     view="scielobooks.users.views.activation"
     renderer="scielobooks:users/templates/activation.pt"
   />
+  <route
+    name="users.forgot_password"
+    pattern="/users/forgot_password"
+    view="scielobooks.users.views.forgot_password"
+    renderer="scielobooks:templates/form.pt"
+  />
+  <route
+    name="users.recover_password"
+    pattern="/users/recover_password"
+    view="scielobooks.users.views.recover_password"
+    renderer="scielobooks:templates/form.pt"
+  />
 </configure>

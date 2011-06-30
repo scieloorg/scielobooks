@@ -69,4 +69,23 @@ class RegistrationProfile(Base):
         self.user = user
         self.activation_key = SHA256.new(user.username).hexdigest()
         self.expiration_date = datetime.now() + timedelta(1)
+
+
+class AccountRecovery(Base):
+    __tablename__ = 'account_recovery'
+
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+
+    recovery_key = sqlalchemy.Column(sqlalchemy.String, nullable=False)
+    expiration_date = sqlalchemy.Column(sqlalchemy.DateTime)
+    recovery_date = sqlalchemy.Column(sqlalchemy.DateTime)
+
+    user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('user.id'))
+    user = relationship("User", backref=backref('account_recovery', order_by=id,
+        uselist=True), cascade='all, delete, delete-orphan', single_parent=True)
+
+    def __init__(self, user):
+        self.user = user
+        self.recovery_key = SHA256.new(user.username+ str(datetime.now())).hexdigest()
+        self.expiration_date = datetime.now() + timedelta(1)
         
