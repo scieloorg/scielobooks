@@ -49,6 +49,11 @@
     pattern="/id/{sbid}/pdf/{part}.pdf"
     view="scielobooks.catalog.views.pdf_file"
   />
+  <route
+    name="catalog.swf_file"
+    pattern="/id/{sbid}/swf/{part}.swf"
+    view="scielobooks.catalog.views.swf_file"
+  />
 <!--
 ***********************************
  EVALUATION APP
