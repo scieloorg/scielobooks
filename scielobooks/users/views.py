@@ -16,9 +16,13 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from datetime import date
 
-from forms import SignupForm, LoginForm
+from forms import SignupForm, LoginForm, RecoverPasswordForm, ForgotPasswordForm
 import models as users
 from ..models import models
+from managers import RegistrationProfileManager
+from managers import InvalidActivationKey
+from managers import ActivationError
+from managers import AccountRecoveryManager
 
 from Crypto.Hash import SHA256
 
@@ -68,10 +72,13 @@ def login(request):
             request.session.flash(_("Username doesn't exist."))
         else:
             if SHA256.new(appstruct['password']).hexdigest() == user.password:
-                headers = remember(request, user.id)
-                return HTTPFound(location=caller, headers=headers)
+                if not user.is_active:
+                    request.session.flash(_("The username is not active. Check your email account for the activation instructions."))
+                else:
+                    headers = remember(request, user.id)
+                    return HTTPFound(location=caller, headers=headers)
             else:
-                request.session.flash(_("Username/password doesn't match")) 
+                request.session.flash(_("Username/password doesn't match"))             
 
     return {
             'main':main,
@@ -121,14 +128,19 @@ def signup(request):
         finally:
             group_name = appstruct['group']
             del(appstruct['group'])
-        
+     
         if group_name == 'editor':
-            user = users.Editor(group=group,**appstruct)
+            user = models.Editor(group=group,**appstruct)
         elif group_name == 'admin':
             del(appstruct['publisher'])
-            user = users.Admin(group=group,**appstruct)
+            user = models.Admin(group=group,**appstruct)
+        
+        registration_profile = users.RegistrationProfile(user)
+
+        RegistrationProfileManager.clean_expired(request)
 
         request.rel_db_session.add(user)
+        request.rel_db_session.add(registration_profile)
 
         try:
             request.rel_db_session.commit()
@@ -140,6 +152,10 @@ def signup(request):
                     'form_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
+        else:            
+            RegistrationProfileManager.send_activation_mail(user, request)
+
+
         request.session.flash(_('Successfully added.'))
         return HTTPFound(location=request.route_path('staff.panel'))
 
@@ -149,3 +165,117 @@ def signup(request):
             'user':get_logged_user(request),
             }
 
+def activation(request):
+    main = get_renderer(BASE_TEMPLATE).implementation()
+
+    activation_key = request.params.get('key', None)
+    if activation_key is None:
+        raise exceptions.NotFound()
+    
+    try:
+        user = RegistrationProfileManager.activate_user(activation_key, request)
+    except InvalidActivationKey:
+        raise exceptions.NotFound()
+    except ActivationError:
+        request.session.flash(_('Problems occured when trying to activate the user. Please try again.'))
+        return {'main':main, 'active':False}
+
+    request.session.flash(_('User %s has been activated successfuly.' % user.username))
+
+    return {'main':main, 'active':True}
+
+def forgot_password(request):
+    FORM_TITLE = _('Password Recovery')
+    main = get_renderer(BASE_TEMPLATE).implementation()
+    localizer = get_localizer(request)
+    forgot_password_form = ForgotPasswordForm.get_form(localizer)
+
+    if 'submit' in request.POST:
+        controls = request.POST.items()
+        try:
+            appstruct = forgot_password_form.validate(controls)
+        except deform.ValidationFailure, e:            
+            return {'content':e.render(), 
+                    'main':main, 
+                    'form_stuff':{'form_title':FORM_TITLE},
+                    'user':get_logged_user(request),
+                    }
+
+        del(appstruct['__LOCALE__'])
+        try:
+            user = request.rel_db_session.query(users.User).filter_by(username=appstruct['username']).one()
+        except NoResultFound:
+            request.session.flash(_("Username doesn't exist."))
+            return {'content':forgot_password_form.render(appstruct),
+                    'main':main,
+                    'form_stuff':{'form_title':FORM_TITLE},
+                    'user':get_logged_user(request),
+                    }
+        
+        account = users.AccountRecovery(user)
+        request.rel_db_session.add(account)
+
+        try:
+            request.rel_db_session.commit()
+        except:
+            request.rel_db_session.rollback()
+            request.session.flash(_('Problems occured when trying to redefine the user password. Please try again.'))
+            return {'content':forgot_password_form.render(appstruct),
+                    'main':main,
+                    'form_stuff':{'form_title':FORM_TITLE},
+                    'user':get_logged_user(request),
+                    }
+        else:
+            AccountRecoveryManager.send_recovery_mail(user, request)
+
+        request.session.flash(_('You will receive an email with instructions on how to reset your account password.'))
+        return HTTPFound(location=request.route_path('users.forgot_password'))
+
+    return {'content':forgot_password_form.render(),
+            'main':main,
+            'form_stuff':{'form_title':FORM_TITLE},
+            'user':get_logged_user(request),
+            }
+
+def recover_password(request):
+    FORM_TITLE = _('Password Recovery')
+    main = get_renderer(BASE_TEMPLATE).implementation()
+    localizer = get_localizer(request)
+    recovery_form = RecoverPasswordForm.get_form(localizer)
+
+    recovery_key = request.params.get('key', None)
+    if recovery_key is None:
+        raise exceptions.NotFound()
+    
+    if 'submit' in request.POST:
+        controls = request.POST.items()
+        try:
+            appstruct = recovery_form.validate(controls)
+        except deform.ValidationFailure, e:            
+            return {'content':e.render(), 
+                    'main':main, 
+                    'form_stuff':{'form_title':FORM_TITLE},
+                    'user':get_logged_user(request),
+                    }
+
+        del(appstruct['__LOCALE__'])
+        try:
+            user = AccountRecoveryManager.redefine_password(appstruct['recovery_key'], appstruct['new_password'], request)
+            request.session.flash(_('Password successfully redefined.'))
+        except InvalidActivationKey:
+            raise exceptions.NotFound()
+        except ActivationError:
+            request.session.flash(_('Problems occured when trying to redefine the user password. Please try again.'))
+
+        return HTTPFound(location=request.route_path('users.login'))
+    else:
+        try:
+            account = request.rel_db_session.query(users.AccountRecovery).filter_by(recovery_key=recovery_key).one()
+        except NoResultFound:
+            raise exceptions.NotFound()
+        
+    return {'content':recovery_form.render({'recovery_key':recovery_key}),
+            'main':main, 
+            'form_stuff':{'form_title':FORM_TITLE},
+            'user':get_logged_user(request),
+            }

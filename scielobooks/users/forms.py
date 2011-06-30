@@ -79,3 +79,46 @@ class LoginForm():
         schema = Schema()
 
         return deform.Form(schema, buttons=('submit',))
+
+class ForgotPasswordForm():
+    @classmethod
+    def get_form(cls, localizer):
+        
+        class Schema(colander.Schema):
+            username = colander.SchemaNode(
+                colander.String(),
+                title=localizer.translate(_('Username')),
+                description=localizer.translate(_('User name')),
+            )            
+            __LOCALE__ = colander.SchemaNode(
+                colander.String(),
+                widget = deform.widget.HiddenWidget(),
+                default= localizer.locale_name,
+            )
+        schema = Schema()
+
+        return deform.Form(schema, buttons=('submit',))
+
+class RecoverPasswordForm():
+    @classmethod
+    def get_form(cls, localizer):
+        
+        class Schema(colander.Schema):
+            new_password = colander.SchemaNode(
+                colander.String(),
+                validator=colander.Length(min=5),
+                widget=deform.widget.CheckedPasswordWidget(size=20),
+                description=localizer.translate(_('Type your password and confirm it')),
+            )
+            recovery_key = colander.SchemaNode(
+                colander.String(),
+                widget = deform.widget.HiddenWidget(),                
+            )
+            __LOCALE__ = colander.SchemaNode(
+                colander.String(),
+                widget = deform.widget.HiddenWidget(),
+                default= localizer.locale_name,
+            )
+        schema = Schema()
+
+        return deform.Form(schema, buttons=('submit',))

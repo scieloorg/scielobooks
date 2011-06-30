@@ -75,4 +75,3 @@ def convert_pdf2swf(pdf_doc):
 
     swf_file = open(swf_temp_filename, 'r')
 
-    return swf_file
