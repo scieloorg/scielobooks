@@ -8,6 +8,7 @@ from pyramid.i18n import TranslationStringFactory, negotiate_locale_name
 _ = TranslationStringFactory('scielobooks')
 
 from ..staff.models import Monograph, Part
+from scielobooks.utilities import functions
 
 import couchdbkit
 import urllib2
@@ -44,6 +45,7 @@ def get_book_parts(monograph_sbid, request):
                      'title':part['doc']['title'],                     
                      'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_sbid, part=partnumber),
                      'preview_url':request.route_path('catalog.chapter_details',sbid=monograph_sbid, chapter=partnumber),
+                     'swf_url': request.route_path('catalog.swf_file', sbid=monograph_sbid, part=partnumber),
                      }
         monograph_parts.append(part_meta)
     
@@ -103,7 +105,7 @@ def chapter_details(request):
     return {'document':monograph,
             'document_pdf_url': request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn),
             'parts':parts,
-            'part':part,
+            'part':part,            
             'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
             'breadcrumb':{'home':request.registry.settings['solr_url'],
                           'book':request.route_path('catalog.book_details', sbid=sbid),},
@@ -125,7 +127,7 @@ def cover(request):
 
     return Response(body=img, content_type='image/jpeg')
 
-def pdf_file(request):    
+def pdf_file(request):
     sbid = request.matchdict['sbid']
     req_part = request.matchdict['part']
 
@@ -149,3 +151,30 @@ def pdf_file(request):
             raise exceptions.NotFound()
 
     return Response(body=pdf_file, content_type='application/pdf')
+
+def swf_file(request):
+    sbid = request.matchdict['sbid']
+    req_part = request.matchdict['part']
+
+    monograph = Monograph.get(request.db, sbid)
+    if req_part == monograph.isbn:
+        try:
+            pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'])
+        except (couchdbkit.ResourceNotFound, AttributeError):
+            raise exceptions.NotFound()
+    else:
+        parts = get_book_parts(monograph._id, request)
+        try:
+            selected_part = parts[int(req_part)]
+        except (IndexError, ValueError):            
+            raise exceptions.NotFound()
+
+        part = Part.get(request.db, selected_part['part_sbid'])
+        try:
+            pdf_file = request.db.fetch_attachment(part._id, part.pdf_file['filename'])
+        except (couchdbkit.ResourceNotFound, AttributeError):
+            raise exceptions.NotFound()
+
+    swf_file = functions.convert_pdf2swf(pdf_file)
+
+    return Response(body=swf_file.read(), content_type='application/x-shockwave-flash')
