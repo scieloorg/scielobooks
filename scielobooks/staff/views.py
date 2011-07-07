@@ -222,8 +222,21 @@ def book_details(request):
 
 
 def panel(request):
-    evaluations = request.rel_db_session.query(rel_models.Evaluation).all()
+    filter_publisher = request.params.get('publisher', None)
+    filter_meeting = request.params.get('meeting', None)
+    if filter_publisher is not None and len(filter_publisher) > 0:
+        if filter_meeting is not None and len(filter_meeting) > 0:
+            evaluations = request.rel_db_session.query(rel_models.Evaluation).join(rel_models.Publisher).join(rel_models.Meeting).filter(rel_models.Publisher.name_slug==filter_publisher and rel_models.Meeting.date==filter_meeting).all()
+        else:
+            evaluations = request.rel_db_session.query(rel_models.Evaluation).join(rel_models.Publisher).filter(rel_models.Publisher.name_slug==filter_publisher).all()
+    else:
+        if filter_meeting is not None and len(filter_meeting) > 0:
+            evaluations = request.rel_db_session.query(rel_models.Evaluation).join(rel_models.Meeting).filter(rel_models.Meeting.date==filter_meeting).all()
+        else:
+            evaluations = request.rel_db_session.query(rel_models.Evaluation).all()
+
     meetings = request.rel_db_session.query(rel_models.Meeting).all()
+    publishers = request.rel_db_session.query(rel_models.Publisher).all()
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -232,12 +245,16 @@ def panel(request):
                            {'text':_('Accepted with Condition'), 'value':'accepted-with-condition'},
                            {'text':_('Rejected'), 'value':'rejected'},
                           ]
-
+    
     return {'evaluations': evaluations,
             'meetings': meetings,
+            'publishers':publishers,
             'committee_decisions':committee_decisions,
             'main':main,
             'user':get_logged_user(request),
+            'filters':{'publisher':filter_publisher if filter_publisher is not None else 'nothing',
+                       'meeting':filter_meeting if filter_meeting is not None else 'nothing',
+                      }
             }
 
 def new_publisher(request):

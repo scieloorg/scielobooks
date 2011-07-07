@@ -8,7 +8,7 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = ['pyramid', 'WebError', 'Babel', 'pyramid_zcml',
             'colander', 'deform', 'couchdbkit', 'PIL', 'isisdm',
-            'SQLAlchemy', 'pyramid_handlers', 'pycrypto', 'pyramid_mailer']
+            'SQLAlchemy', 'pyramid_handlers', 'pycrypto', 'pyramid_mailer', 'couchapp']
 
 setup(name='scielobooks',
       version='0.1',
