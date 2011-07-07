@@ -54,7 +54,7 @@ def login(request):
     b64_caller = request.params.get('caller', None)
     caller = base64.b64decode(b64_caller) if b64_caller is not None else referrer
     
-    if 'submit' in request.POST:
+    if request.method == 'POST':
         
         controls = request.POST.items()
         try:
@@ -101,7 +101,7 @@ def signup(request):
     publisher = request.rel_db_session.query(models.Publisher.name_slug, models.Publisher.name).all()
     signup_form = SignupForm.get_form(localizer,publisher)
 
-    if 'submit' in request.POST:
+    if request.method == 'POST':
                 
         controls = request.POST.items()
         try:
@@ -190,7 +190,7 @@ def forgot_password(request):
     localizer = get_localizer(request)
     forgot_password_form = ForgotPasswordForm.get_form(localizer)
 
-    if 'submit' in request.POST:
+    if request.method == 'POST':
         controls = request.POST.items()
         try:
             appstruct = forgot_password_form.validate(controls)
@@ -247,7 +247,7 @@ def recover_password(request):
     if recovery_key is None:
         raise exceptions.NotFound()
     
-    if 'submit' in request.POST:
+    if request.method == 'POST':
         controls = request.POST.items()
         try:
             appstruct = recovery_form.validate(controls)

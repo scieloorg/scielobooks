@@ -155,7 +155,7 @@ def pdf_file(request):
 def swf_file(request):
     sbid = request.matchdict['sbid']
     req_part = request.matchdict['part']
-
+    
     monograph = Monograph.get(request.db, sbid)
     if req_part == monograph.isbn:
         try:

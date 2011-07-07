@@ -46,7 +46,7 @@ def edit_book(request):
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
-    if 'submit' in request.POST:
+    if request.method == 'POST':
    
         controls = request.POST.items()
         try:
@@ -125,7 +125,7 @@ def new_part(request):
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
-    if 'submit' in request.POST:
+    if request.method == 'POST':
    
         controls = request.POST.items()
         try:
@@ -249,7 +249,7 @@ def new_publisher(request):
     localizer = get_localizer(request)
     publisher_form = PublisherForm.get_form(localizer)
     
-    if 'submit' in request.POST:
+    if request.method == 'POST':
 
         controls = request.POST.items()
         try:
@@ -324,7 +324,7 @@ def new_book(request):
     publishers = request.rel_db_session.query(rel_models.Publisher.name_slug, rel_models.Publisher.name).all()
     evaluation_form['publisher'].widget = deform.widget.SelectWidget(values=(publishers), )
 
-    if 'submit' in request.POST:
+    if request.method == 'POST':
 
         controls = request.POST.items()
         try:
@@ -351,7 +351,6 @@ def new_book(request):
                               )
         
         evaluation.monograph_sbid = monograph._id
-                              
         request.rel_db_session.add(evaluation)
         try:
             request.rel_db_session.commit()
@@ -382,7 +381,7 @@ def new_meeting(request):
     localizer = get_localizer(request)
     meeting_form = MeetingForm.get_form(localizer)
 
-    if 'submit' in request.POST:
+    if request.method == 'POST':
         
         controls = request.POST.items()
         try:

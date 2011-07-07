@@ -46,6 +46,7 @@ def create_thumbnail(img, size=None):
     return buf
 
 def convert_pdf2swf(pdf_doc):
+    
     if not isinstance(pdf_doc, basestring):
         try:
             pdf_doc = pdf_doc.read()
@@ -72,6 +73,5 @@ def convert_pdf2swf(pdf_doc):
     swf.save(swf_temp_filename)
 
     os.unlink(pdf_temp_filename)
-
-    swf_file = open(swf_temp_filename, 'r')
-
+    
+    return open(swf_temp_filename, 'r')
