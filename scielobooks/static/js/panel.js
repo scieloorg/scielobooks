@@ -22,33 +22,36 @@ $(document).ready(function(){
         $.post("/staff/function/setcommitteedecision/",
                {"evaluation":evaluation, "decision":decision}, function(res){
                    $('#committee-decision_load_icon_'+evaluation).hide();
+                   location.reload();
         });                                   
     });
     
-    $('.action_publish').click(function(){        
+    $('.action_publish').click(function(){
         var selected = $(this).attr('id');
         var evaluation = selected.split('_')[0];
 
-        $('#actions_load_icon_'+evaluation).show();
-
-        $.post("/staff/function/actionpublish/",
-               {"evaluation":evaluation}, function(res){
-                   $('#actions_load_icon_'+evaluation).hide();
-                   location.reload();
-        });
+        if(confirm("Please, confirm you are publishing the book ISBN: "+evaluation )){
+          $('#actions_load_icon_'+evaluation).show();
+          $.post("/staff/function/actionpublish/",
+                 {"evaluation":evaluation}, function(res){
+                     $('#actions_load_icon_'+evaluation).hide();
+                     location.reload();
+          });
+        }
     });
 
     $('.action_unpublish').click(function(){
         var selected = $(this).attr('id');
         var evaluation = selected.split('_')[0];
-
-        $('#actions_load_icon_'+evaluation).show();
-
-        $.post("/staff/function/actionunpublish/",
+        
+        if(confirm("Please, confirm you are unpublishing the book ISBN: "+evaluation )){
+          $('#actions_load_icon_'+evaluation).show();
+          $.post("/staff/function/actionunpublish/",
                {"evaluation":evaluation}, function(res){
                    $('#actions_load_icon_'+evaluation).hide();
                    location.reload();
-        });
+          });  
+        }        
     });    
     
     /* start tablesorter */
