@@ -95,13 +95,13 @@
                     </td>
                     <td>
                         <span tal:condition="evaluation.is_published == True" 
-                              class="status-published" title="Published"></span>
+                              class="status-published pub-status" title="Published"></span>
                         <span tal:condition="evaluation.is_published != True" 
-                              class="status-unpublished" title="Not Published"></span>
+                              class="status-unpublished pub-status" title="Not Published"></span>
                     </td>
                     <td>
                         <ul class="actions">
-                            <li><a tal:condition="evaluation.is_published != True"
+                            <li tal:condition="evaluation.status == 'accepted' or evaluation.status == 'accepted-with-condition'"><a tal:condition="evaluation.is_published != True"
                                    href="javascript: void(0);" 
                                    class="action_publish"
                                    id="${evaluation.isbn}_action-publish" i18n:translate="">publish</a></li>
