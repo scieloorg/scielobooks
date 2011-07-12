@@ -31,10 +31,12 @@ class Evaluation(Base):
     meeting_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('meeting.id'))
     meeting = relationship("Meeting", backref=backref('evaluation', order_by=id))
 
-    def __init__(self, title, isbn, status, subject=None, publisher_catalog_url=None, is_published=False):
+    def __init__(self, title, isbn, status, subject=None, publisher_catalog_url=None, is_published=False, monograph_sbid=None, publisher=None):
         self.title = title
         self.isbn = isbn
         self.status = status
+        self.monograph_sbid = monograph_sbid
+        self.publisher = publisher
 
         self.creation_date = datetime.now()
         

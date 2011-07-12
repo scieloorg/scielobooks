@@ -97,15 +97,17 @@ def parts_list(request):
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
 
-    documents = {}
+    documents = []
     for part in parts:
-        part_meta = {'title':part['doc']['title'],
+        part_meta = {'id':part['id'],
+                     'title':part['doc']['title'],
                      'order':part['doc']['order'],
                      'creators':part['doc']['creators'],
+                     'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_id, part=part['doc']['order']),
                      'edit_url':request.route_path('staff.edit_part', sbid=monograph_id, part_id=part['id']),
                      }
 
-        documents[part['id']] = part_meta    
+        documents.append(part_meta)
     
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -200,15 +202,17 @@ def book_details(request):
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
 
-    document_parts = {}
+    document_parts = []
     for part in parts:
-        part_meta = {'title':part['doc']['title'],
+        part_meta = {'id':part['id'],
+                     'title':part['doc']['title'],
                      'order':part['doc']['order'],
                      'creators':part['doc']['creators'],
+                     'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph['_id'], part=part['doc']['order']),
                      'edit_url':request.route_path('staff.edit_part', sbid=monograph['_id'], part_id=part['id']),
                      }
 
-        document_parts[part['id']] = part_meta
+        document_parts.append(part_meta)
 
     
     evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph['_id']).one()

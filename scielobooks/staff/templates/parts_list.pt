@@ -16,10 +16,13 @@
             <th>order</th>
             <th>title</th>
         </tr>
-        <tr tal:repeat="part documents.keys()">
-            <td tal:content="documents[part].order" />
-            <td tal:content="documents[part].title" />
-            <td><a tal:attributes="href documents[part].edit_url">edit</a></td>
+        <tr tal:repeat="part documents">
+            <td tal:content="part.order" />
+            <td tal:content="part.title" />
+            <td><a class="PDF" href="#" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
+            <td><a tal:attributes="href part.edit_url" 
+                   i18n:translate="">edit</a>
+            </td>
         </tr>
     </table>
     <a href="${request.url}/new">Add</a>
