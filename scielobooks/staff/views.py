@@ -83,10 +83,7 @@ def edit_book(request):
         return {'content':monograph_form.render(appstruct),
                 'main':main,
                 'user':get_logged_user(request),
-                'form_stuff':{'form_title':FORM_TITLE % monograph.title,
-                              'form_menu':[{'url':request.route_path('staff.parts_list', sbid=monograph._id),
-                                            'text':_('Manage Book Parts')}]
-                             },
+                'form_stuff':{'form_title':FORM_TITLE % monograph.title},
                 }
     
     raise exceptions.NotFound
@@ -143,10 +140,15 @@ def new_part(request):
         part = Part.from_python(appstruct)
         part.monograph = monograph_id
 
+        is_new = True if getattr(part, '_rev', None) is None else False
+
         part.save(request.db)
-        request.session.flash(_('Successfully added.'))
+        if is_new:
+            request.session.flash(_('Successfully added.'))
+        else:
+            request.session.flash(_('Successfully updated.'))
     
-        return HTTPFound(location=request.route_path('staff.parts_list', sbid=part.monograph))
+        return HTTPFound(location=request.route_path('staff.edit_part', sbid=part.monograph, part_id=part._id))
 
     if 'part_id' in request.matchdict:
         part = Part.get(request.db, request.matchdict['part_id'])
@@ -200,7 +202,8 @@ def book_details(request):
             'user':get_logged_user(request),
             'breadcrumb': {'home':request.route_path('staff.panel')},
             'cover_full_url': request.route_path('catalog.cover', sbid=monograph._id),
-            'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),            
+            'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
+            'add_part_url': request.route_path('staff.new_part', sbid=monograph._id),
             }
 
 

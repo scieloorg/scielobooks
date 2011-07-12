@@ -116,14 +116,14 @@
     name="staff.new_part"
     pattern="/staff/book/id/{sbid}/parts/new"
     view="scielobooks.staff.views.new_part"
-    renderer="scielobooks:templates/form.pt"
+    renderer="scielobooks:templates/lightbox-form.pt"
     permission="editors"
   />
   <route
     name="staff.edit_part"
     pattern="/staff/book/id/{sbid}/parts/{part_id}/edit"
     view="scielobooks.staff.views.new_part"
-    renderer="scielobooks:templates/form.pt"
+    renderer="scielobooks:templates/lightbox-form.pt"
     permission="editors"
   />
   <route

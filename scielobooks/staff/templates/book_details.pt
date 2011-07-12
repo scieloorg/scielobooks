@@ -20,13 +20,19 @@
   </div>
 
   <div class="middle" metal:fill-slot="middle">
+
+    <span class="notice">Atenção! Você está na interface administrativa e qualquer alteração nos dados será refletida imediatamente nos registros, incluindo os públicados.</span>
+
+    <div class="spacer"></div>
+
     <div class="breadcrumb">
       <a href="/" tal:attributes="href breadcrumb.home">Panel</a> / <span tal:replace="document.title">Le Petit Prince</span>
     </div>
     <div class="leftCol">
       &#160;    
     </div>
-    <div class="contentCol">        
+
+    <div class="contentCol">
       <div class="bookDetail">
         <div class="thumb">
           <a href="#" tal:attributes="href cover_full_url" class="thickbox" title="${document.title}">
@@ -108,11 +114,11 @@
                 <td tal:content="part.partnumber" />
                 <td tal:content="part.title" />
                 <td><a class="PDF" href="#" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
-                <td><a tal:attributes="href part.edit_url" 
-                       i18n:translate="">edit</a>
+                <td><a href="${part.edit_url}?KeepThis=true&amp;TB_iframe=true&amp;height=570&amp;width=600" class="thickbox" i18n:translate="">edit</a>
                 </td>
             </tr>
           </table>
+          <a href="${add_part_url}?KeepThis=true&amp;TB_iframe=true&amp;height=570&amp;width=600" class="thickbox">New Part</a>
         </div>
         <div class="spacer"></div>
 
