@@ -11,6 +11,7 @@ db_uri = 'http://localhost:5984'
 db_name = 'scielobooks_1a'
 
 orphan_books = []
+integrity_error = []
 known_publishers = {}
 
 def get_publisher_or_create(publisher_name):
@@ -39,7 +40,8 @@ def get_monographs():
              'isbn':book['value']['isbn'],
              'monograph_sbid':book['id'],
              'publisher':get_publisher_or_create(book['value']['publisher']),
-             'status':'accepted'}
+             'status':'accepted',
+             'is_published':True}
         books.append(b)
 
     return books
@@ -49,9 +51,12 @@ def create_evaluation(monograph):
     session.add(evaluation)
     try:
         session.commit()
-    except:
+    except IntegrityError:        
         session.rollback()
-        orphan_books.append(monograph['monograph_sbid'])
+        integrity_error.append(monograph['monograph_sbid'])
+    except e:
+        session.rollback()
+        orphan_books.append((monograph['monograph_sbid'], e.message))
 
 
 if __name__ == '__main__':
@@ -67,3 +72,4 @@ if __name__ == '__main__':
     
     print 'done'
     print 'Orphan books: ', orphan_books
+    print 'Integrity error: ', integrity_error
