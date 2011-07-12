@@ -17,6 +17,7 @@ from datetime import date
 from forms import MonographForm, PublisherForm, EvaluationForm, MeetingForm
 from ..models import models as rel_models
 from ..users import models as user_models
+from ..catalog import views as catalog_views
 
 import couchdbkit
 import deform
@@ -167,61 +168,39 @@ def book_details(request):
     
     sbid = request.matchdict['sbid']
     try:
-        monograph = request.db.get(sbid)
+        monograph = Monograph.get(request.db, sbid)
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
-    if monograph['TYPE'] != 'Monograph': #FIXME! Really necessary?
+        
+    if not monograph.visible:
         raise exceptions.NotFound()
 
-    creators = [dict(creator)['full_name'] for creator in monograph['creators']]
+    book_attachments = []
+    if getattr(monograph, 'toc', None):
+        toc_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.toc['filename'])
+        book_attachments.append({'url':toc_url, 'text':_('Table of Contents')})
+
+    if getattr(monograph, 'editorial_decision', None):
+        editorial_decision_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.editorial_decision['filename'])
+        book_attachments.append({'url':editorial_decision_url, 'text':_('Parecer da Editora')})
+
+    if getattr(monograph, 'pdf_file', None):
+        pdf_file_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.pdf_file['filename'])
+        book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
     
-    document = monograph
-    
-    document.update({
-        'cover_thumb': request.route_path('catalog.cover_thumbnail', sbid=sbid),
-        'cover_full': request.route_path('catalog.cover', sbid=sbid),
-        'breadcrumb': {'home':request.registry.settings['solr_url'],},
-        'creators': creators,
-        'attachments':[],
-    })
+    evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph._id).one()
 
-    if 'toc' in monograph:
-        toc_url = static_url('scielobooks:database/%s/%s', request) % (monograph['_id'], monograph['toc']['filename'])
-        document['attachments'].append({'url':toc_url, 'text':_('Table of Contents')})
+    parts = catalog_views.get_book_parts(monograph._id, request)
 
-    if 'editorial_decision' in monograph:
-        editorial_decision_url = static_url('scielobooks:database/%s/%s', request) % (monograph['_id'], monograph['editorial_decision']['filename'])
-        document['attachments'].append({'url':editorial_decision_url, 'text':_('Parecer da Editora')})
-
-    if 'pdf_file' in monograph:
-        pdf_file_url = static_url('scielobooks:database/%s/%s', request) % (monograph['_id'], monograph['pdf_file']['filename'])
-        document['attachments'].append({'url':pdf_file_url, 'text':_('Book in PDF')})
-
-    try:
-       parts = request.db.view('scielobooks/monographs_and_parts', include_docs=True, key=[monograph['_id'], 1])
-    except couchdbkit.ResourceNotFound:
-        raise exceptions.NotFound()
-
-    document_parts = []
-    for part in parts:
-        part_meta = {'id':part['id'],
-                     'title':part['doc']['title'],
-                     'order':part['doc']['order'],
-                     'creators':part['doc']['creators'],
-                     'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph['_id'], part=part['doc']['order']),
-                     'edit_url':request.route_path('staff.edit_part', sbid=monograph['_id'], part_id=part['id']),
-                     }
-
-        document_parts.append(part_meta)
-
-    
-    evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph['_id']).one()
-
-    return {'document':document,
-            'document_parts':document_parts,
+    return {'document':monograph,
+            'document_parts':parts,
             'evaluation':evaluation,
+            'book_attachments':book_attachments,
             'main':main,
             'user':get_logged_user(request),
+            'breadcrumb': {'home':request.route_path('staff.panel')},
+            'cover_full_url': request.route_path('catalog.cover', sbid=monograph._id),
+            'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),            
             }
 
 

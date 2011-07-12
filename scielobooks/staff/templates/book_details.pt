@@ -21,7 +21,7 @@
 
   <div class="middle" metal:fill-slot="middle">
     <div class="breadcrumb">
-      <a href="/" tal:attributes="href document.breadcrumb.home">Home</a> / <span tal:replace="document.title">Le Petit Prince</span>
+      <a href="/" tal:attributes="href breadcrumb.home">Panel</a> / <span tal:replace="document.title">Le Petit Prince</span>
     </div>
     <div class="leftCol">
       &#160;    
@@ -29,45 +29,57 @@
     <div class="contentCol">        
       <div class="bookDetail">
         <div class="thumb">
-          <a href="#" tal:attributes="href document.cover_full" class="thickbox" title="${document.title}">
-            <img tal:attributes="src document.cover_thumb" src="/static/images/fakecover.jpg" />
+          <a href="#" tal:attributes="href cover_full_url" class="thickbox" title="${document.title}">
+            <img tal:attributes="src cover_thumb_url" src="/static/images/fakecover.jpg" />
           </a>
         </div>
         <h3 tal:content="document.title">The man who ate his boots</h3>
 
         <dl class="metadata">
-          <dt tal:condition="document.creators" i18n:translate="">Author:</dt>
-            <dd tal:repeat="person document.creators">
-              <span tal:content="person">Soares, Sandra Regina</span>;
-            </dd>
+          <span tal:omit-tag="" tal:condition="getattr(document, 'creators', None)">
+          <dt i18n:translate="">Author:</dt>
+            <dd tal:repeat="person document.creators" tal:content="person.full_name">Soares, Sandra Regina</dd>
+          </span>
+  
+          <span tal:omit-tag="" tal:condition="getattr(document, 'publisher', None)">
+          <dt i18n:translate="">Publisher:</dt>
+            <dd tal:content="document.publisher">EDUSP</dd>
+          </span>
+              
+          <span tal:omit-tag="" tal:condition="getattr(document, 'language', None)">
+          <dt i18n:translate="">Language:</dt>
+            <dd tal:content="document.language">Português |</dd>
+          </span>
 
-          <dt tal:condition="document.publisher" i18n:translate="">Publisher:</dt>
-            <dd tal:condition="document.publisher" tal:content="document.publisher">EDUSP</dd>
-          
-          <dt tal:condition="document.language" i18n:translate="">Language:</dt>
-            <dd tal:condition="document.language" tal:content="document.language">Português |</dd>
+          <span tal:omit-tag="" tal:condition="getattr(document, 'edition', None)">
+          <dt i18n:translate="">Edition:</dt>
+            <dd tal:content="document.edition">3rd Edition</dd>
+          </span>
 
-          <dt tal:condition="'edition' in document" i18n:translate="">Edition:</dt>
-            <dd tal:condition="'edition' in document" tal:content="document.edition">3rd Edition</dd>
+          <span tal:omit-tag="" tal:condition="getattr(document, 'year', None)">
+          <dt i18n:translate="">Year:</dt>
+            <dd tal:content="document.year">2009</dd>
+          </span>
 
-          <dt tal:condition="'year' in document" i18n:translate="">Year:</dt>
-            <dd tal:condition="'year' in document" tal:content="document.year">2009</dd>
+          <span tal:omit-tag="" tal:condition="getattr(document, 'pages', None)">
+          <dt i18n:translate="">Pages:</dt>
+            <dd tal:content="document.pages">239</dd>
+          </span>
 
-          <dt tal:condition="'pages' in document" i18n:translate="">Pages:</dt>
-            <dd tal:condition="'pages' in document" tal:content="document.pages">239</dd>
-
-          <dt tal:condition="'isbn' in document" i18n:translate="">ISBN:</dt>
-            <dd tal:condition="'isbn' in document" tal:content="document.isbn">0123456789</dd>
+          <span tal:omit-tag="" tal:condition="getattr(document, 'isbn', None)">
+          <dt i18n:translate="">ISBN:</dt>
+            <dd tal:content="document.isbn">0123456789</dd>
+          </span>
         </dl>
 
         <div class="download"
-             tal:condition="document.attachments | nothing">
+             tal:condition="book_attachments | nothing">
           <fieldset>
             <legend>Download</legend>
-            <div tal:repeat="attach document.attachments">
+            <div tal:repeat="attach book_attachments">
               <a tal:attributes="href attach.url"
                  tal:content="attach.text"
-                 href="#">Parecer</a>
+                 href="#">Livro em PDF</a>
             </div>
           </fieldset>
         </div>
@@ -75,7 +87,7 @@
         <div class="actions"></div>
         <div class="spacer"></div>
 
-        <p><a tal:condition="'publisher_url' in document"
+        <p><a tal:condition="getattr(document, 'publisher_url', None)"
               tal:attributes="href document.publisher_url"
               href="#" i18n:translate="">Link para o Catálogo Institucional</a></p>
 
@@ -93,7 +105,7 @@
                 <th i18n:translate="">Title</th>
             </tr>
             <tr tal:repeat="part document_parts">
-                <td tal:content="part.order" />
+                <td tal:content="part.partnumber" />
                 <td tal:content="part.title" />
                 <td><a class="PDF" href="#" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
                 <td><a tal:attributes="href part.edit_url" 
