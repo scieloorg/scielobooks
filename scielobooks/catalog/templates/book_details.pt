@@ -3,6 +3,16 @@
   <h2 metal:fill-slot="custom_top"
     tal:condition="document.publisher"
     tal:content="document.publisher">EDUSP</h2>
+
+  <div metal:fill-slot="custom_script" tal:omit-tag="">
+    <script src="/static/js/thickbox-compressed.js"></script>
+  </div>
+
+  <div metal:fill-slot="css" tal:omit-tag="">
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
+    <link rel="stylesheet" href="/static/css/thickbox.css" type="text/css" media="screen"></link>
+  </div>
+
   <div class="middle" metal:fill-slot="middle">
     <div class="breadcrumb">
       <a href="/" tal:attributes="href breadcrumb.home">Home</a> / <span tal:replace="document.title">Le Petit Prince</span>
@@ -14,7 +24,7 @@
     <div class="contentCol">
       <div class="bookDetail">
       	<div class="thumb">
-            <a href="#" tal:attributes="href cover_full_url">
+            <a href="#" tal:attributes="href cover_full_url" class="thickbox" title="${document.title}">
       	    <img tal:attributes="src cover_thumb_url" src="/static/images/cover.jpg"/>
             </a>
       	</div>

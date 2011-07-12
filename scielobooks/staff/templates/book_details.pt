@@ -10,6 +10,15 @@
     </span>
   </div>
 
+  <div metal:fill-slot="custom_script" tal:omit-tag="">
+    <script src="/static/js/thickbox-compressed.js"></script>
+  </div>
+
+  <div metal:fill-slot="css" tal:omit-tag="">
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
+    <link rel="stylesheet" href="/static/css/thickbox.css" type="text/css" media="screen"></link>
+  </div>
+
   <div class="middle" metal:fill-slot="middle">
     <div class="breadcrumb">
       <a href="/" tal:attributes="href document.breadcrumb.home">Home</a> / <span tal:replace="document.title">Le Petit Prince</span>
@@ -20,7 +29,7 @@
     <div class="contentCol">        
       <div class="bookDetail">
         <div class="thumb">
-          <a href="#" tal:attributes="href document.cover_full">
+          <a href="#" tal:attributes="href document.cover_full" class="thickbox" title="${document.title}">
             <img tal:attributes="src document.cover_thumb" src="/static/images/fakecover.jpg" />
           </a>
         </div>
@@ -83,10 +92,11 @@
                 <th i18n:translate="">Order</th>
                 <th i18n:translate="">Title</th>
             </tr>
-            <tr tal:repeat="part document_parts.keys()">
-                <td tal:content="document_parts[part].order" />
-                <td tal:content="document_parts[part].title" />
-                <td><a tal:attributes="href document_parts[part].edit_url" 
+            <tr tal:repeat="part document_parts">
+                <td tal:content="part.order" />
+                <td tal:content="part.title" />
+                <td><a class="PDF" href="#" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
+                <td><a tal:attributes="href part.edit_url" 
                        i18n:translate="">edit</a>
                 </td>
             </tr>
