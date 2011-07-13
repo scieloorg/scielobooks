@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"  
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"  
+  i18n:domain="scielobooks">
+
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/deform_static/scripts/deform.js"></script>
+    <script type="text/javascript" src="/deform_static/scripts/jquery-ui-1.8.4.custom.min.js" ></script>
+    <script type="text/javascript">
+      deform.load()
+    </script>
+
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
+    <link rel="stylesheet" href="/deform_static/css/form.css" type="text/css"></link>
+    <link rel="stylesheet" href="/deform_static/css/theme.css" type="text/css"></link>
+    <link rel="stylesheet" href="/deform_static/css/ui-lightness/jquery-ui-1.8.4.custom.css" type="text/css"></link>
+  </head>
+
+  <div class="messages">
+    <span class="notice"
+      tal:repeat="msg request.session.pop_flash()"
+      tal:content="msg" />
+  </div>
+  <div class="middle">
+    <h2 class="form-title" tal:content="form_stuff.form_title"></h2>
+
+    <ul class="form-menu" tal:condition="'form_menu' in form_stuff">
+      <li tal:repeat="item form_stuff.form_menu">
+        <a tal:attributes="href item.url" tal:content="item.text"/>
+      </li>
+    </ul>
+
+    <span tal:replace="structure content"></span>
+  </div>
+</html>

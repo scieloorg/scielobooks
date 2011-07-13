@@ -46,6 +46,7 @@ def get_book_parts(monograph_sbid, request):
                      'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_sbid, part=partnumber),
                      'preview_url':request.route_path('catalog.chapter_details',sbid=monograph_sbid, chapter=partnumber),
                      'swf_url': request.route_path('catalog.swf_file', sbid=monograph_sbid, part=partnumber),
+                     'edit_url':request.route_path('staff.edit_part', sbid=monograph_sbid, part_id=part['id']),
                      }
         monograph_parts.append(part_meta)
     

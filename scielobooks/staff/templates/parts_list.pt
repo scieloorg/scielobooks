@@ -1,16 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<p metal:use-macro="main.macros['master']">
-    
-  <div metal:fill-slot="custom_top" class="userbox">
-    <span tal:condition="user" >
-      <span tal:replace="user.username">Loro José</span> <a href="/logout">logout</a>
-    </span>
-    <span tal:condition="not user">
-      <a href="/logout">login</a>
-    </span>
-  </div>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"  
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"  
+  i18n:domain="scielobooks">
 
-  <div class="middle" metal:fill-slot="middle">
+  <head>
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>    
+  </head>
+
+  <div class="middle">
     <table>
         <tr>
             <th>order</th>
@@ -27,4 +25,4 @@
     </table>
     <a href="${request.url}/new">Add</a>
   </div>
-</p>
+</html>

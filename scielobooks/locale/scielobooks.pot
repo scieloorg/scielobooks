@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: scielobooks 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-07-07 18:02-0300\n"
+"POT-Creation-Date: 2011-07-13 15:37-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,77 +21,157 @@ msgstr ""
 msgid "You are not authorized to access this page. Try logging in before proceed."
 msgstr ""
 
-#: scielobooks/catalog/views.py:69 scielobooks/staff/forms.py:58
-#: scielobooks/staff/views.py:196
+#: scielobooks/catalog/views.py:70 scielobooks/staff/forms.py:58
+#: scielobooks/staff/views.py:191
 msgid "Book in PDF"
 msgstr ""
 
-#: scielobooks/catalog/views.py:86 scielobooks/catalog/views.py:101
+#: scielobooks/catalog/views.py:87 scielobooks/catalog/views.py:102
 msgid "Not a valid chapter"
 msgstr ""
 
-#: scielobooks/catalog/templates/book_details.pt:87
+#: scielobooks/catalog/templates/book_details.pt:97
 msgid "Preview"
 msgstr ""
 
-#: scielobooks/catalog/templates/book_details.pt:83
+#: scielobooks/catalog/templates/book_details.pt:93
 #: scielobooks/catalog/templates/chapter_details.pt:94
-#: scielobooks/staff/forms.py:62 scielobooks/staff/views.py:188
+#: scielobooks/staff/forms.py:62 scielobooks/staff/views.py:183
 msgid "Table of Contents"
 msgstr ""
 
-#: scielobooks/catalog/templates/book_details.pt:76 scielobooks/staff/forms.py:40
-#: scielobooks/staff/templates/book_details.pt:74
+#: scielobooks/catalog/templates/book_details.pt:86
+#: scielobooks/evaluation/templates/book_details.pt:96
+#: scielobooks/staff/forms.py:40 scielobooks/staff/templates/book_details.pt:104
 msgid "Synopsis"
 msgstr ""
 
-#: scielobooks/catalog/templates/book_details.pt:55
+#: scielobooks/catalog/templates/book_details.pt:65
 #: scielobooks/catalog/templates/chapter_details.pt:86
-#: scielobooks/staff/templates/book_details.pt:50
+#: scielobooks/evaluation/templates/book_details.pt:71
+#: scielobooks/staff/templates/book_details.pt:79
 msgid "ISBN:"
 msgstr ""
 
-#: scielobooks/catalog/templates/book_details.pt:50
+#: scielobooks/catalog/templates/book_details.pt:60
 #: scielobooks/catalog/templates/chapter_details.pt:81
-#: scielobooks/staff/templates/book_details.pt:47
+#: scielobooks/evaluation/templates/book_details.pt:66
+#: scielobooks/staff/templates/book_details.pt:74
 msgid "Pages:"
 msgstr ""
 
-#: scielobooks/catalog/templates/book_details.pt:45
+#: scielobooks/catalog/templates/book_details.pt:55
 #: scielobooks/catalog/templates/chapter_details.pt:76
-#: scielobooks/staff/templates/book_details.pt:44
+#: scielobooks/evaluation/templates/book_details.pt:61
+#: scielobooks/staff/templates/book_details.pt:69
 msgid "Year:"
 msgstr ""
 
-#: scielobooks/catalog/templates/book_details.pt:40
+#: scielobooks/catalog/templates/book_details.pt:50
 #: scielobooks/catalog/templates/chapter_details.pt:71
-#: scielobooks/staff/templates/book_details.pt:41
+#: scielobooks/evaluation/templates/book_details.pt:56
+#: scielobooks/staff/templates/book_details.pt:64
 msgid "Edition:"
 msgstr ""
 
-#: scielobooks/catalog/templates/book_details.pt:35
+#: scielobooks/catalog/templates/book_details.pt:45
 #: scielobooks/catalog/templates/chapter_details.pt:66
-#: scielobooks/staff/templates/book_details.pt:38
+#: scielobooks/evaluation/templates/book_details.pt:51
+#: scielobooks/staff/templates/book_details.pt:59
 msgid "Language:"
 msgstr ""
 
-#: scielobooks/catalog/templates/book_details.pt:30
+#: scielobooks/catalog/templates/book_details.pt:40
 #: scielobooks/catalog/templates/chapter_details.pt:61
-#: scielobooks/staff/templates/book_details.pt:35
+#: scielobooks/evaluation/templates/book_details.pt:46
+#: scielobooks/evaluation/templates/books_list.pt:37
+#: scielobooks/staff/templates/book_details.pt:54
 #: scielobooks/staff/templates/panel.pt:41
 msgid "Publisher:"
 msgstr ""
 
-#: scielobooks/catalog/templates/book_details.pt:25
+#: scielobooks/catalog/templates/book_details.pt:35
 #: scielobooks/catalog/templates/chapter_details.pt:56
-#: scielobooks/staff/templates/book_details.pt:30
+#: scielobooks/evaluation/templates/book_details.pt:41
+#: scielobooks/staff/templates/book_details.pt:49
 msgid "Author:"
 msgstr ""
 
-#: scielobooks/staff/forms.py:28 scielobooks/staff/forms.py:29
-#: scielobooks/staff/templates/book_details.pt:84
+#: scielobooks/evaluation/templates/book_details.pt:128
+#: scielobooks/staff/templates/book_details.pt:143
+msgid "Meeting Description:"
+msgstr ""
+
+#: scielobooks/evaluation/templates/book_details.pt:126
+#: scielobooks/staff/templates/book_details.pt:141
+msgid "Scheduled for Meeting:"
+msgstr ""
+
+#: scielobooks/evaluation/templates/book_details.pt:124
+#: scielobooks/staff/templates/book_details.pt:139
+msgid "Status:"
+msgstr ""
+
+#: scielobooks/evaluation/templates/book_details.pt:122
+#: scielobooks/staff/templates/book_details.pt:137
+msgid "Submission Date:"
+msgstr ""
+
+#: scielobooks/evaluation/templates/book_details.pt:119
+#: scielobooks/staff/templates/book_details.pt:134
+msgid "Evaluation Info"
+msgstr ""
+
+#: scielobooks/evaluation/templates/book_details.pt:106
+#: scielobooks/evaluation/templates/books_list.pt:60 scielobooks/staff/forms.py:28
+#: scielobooks/staff/forms.py:29 scielobooks/staff/templates/book_details.pt:117
 #: scielobooks/staff/templates/panel.pt:64
 msgid "Title"
+msgstr ""
+
+#: scielobooks/evaluation/templates/book_details.pt:105
+#: scielobooks/staff/templates/book_details.pt:116
+msgid "Order"
+msgstr ""
+
+#: scielobooks/evaluation/templates/book_details.pt:102
+#: scielobooks/staff/templates/book_details.pt:111
+msgid "Book Parts"
+msgstr ""
+
+#: scielobooks/evaluation/templates/book_details.pt:91
+#: scielobooks/staff/templates/book_details.pt:99
+msgid "Link para o Catálogo Institucional"
+msgstr ""
+
+#: scielobooks/evaluation/templates/books_list.pt:59 scielobooks/staff/forms.py:34
+#: scielobooks/staff/forms.py:132 scielobooks/staff/templates/panel.pt:63
+#: scielobooks/users/forms.py:46
+msgid "Publisher"
+msgstr ""
+
+#: scielobooks/evaluation/templates/books_list.pt:47
+#: scielobooks/evaluation/templates/books_list.pt:39
+#: scielobooks/staff/templates/panel.pt:51 scielobooks/staff/templates/panel.pt:43
+msgid "Show all"
+msgstr ""
+
+#: scielobooks/evaluation/templates/books_list.pt:45
+#: scielobooks/staff/templates/panel.pt:49
+msgid "Meeting:"
+msgstr ""
+
+#: scielobooks/evaluation/templates/books_list.pt:36
+#: scielobooks/staff/templates/panel.pt:40
+msgid "Filters"
+msgstr ""
+
+#: scielobooks/evaluation/templates/books_list.pt:32
+msgid "Total of records found:"
+msgstr ""
+
+#: scielobooks/evaluation/templates/books_list.pt:29
+msgid "Evaluation Records"
 msgstr ""
 
 #: scielobooks/staff/forms.py:30 scielobooks/staff/forms.py:113
@@ -108,11 +188,6 @@ msgstr ""
 
 #: scielobooks/staff/forms.py:33
 msgid "Authors, translators, editors..."
-msgstr ""
-
-#: scielobooks/staff/forms.py:34 scielobooks/staff/forms.py:132
-#: scielobooks/staff/templates/panel.pt:63 scielobooks/users/forms.py:46
-msgid "Publisher"
 msgstr ""
 
 #: scielobooks/staff/forms.py:35
@@ -268,107 +343,82 @@ msgstr ""
 msgid "Short description about the meeting"
 msgstr ""
 
-#: scielobooks/staff/views.py:42
+#: scielobooks/staff/views.py:43
 #, python-format
 msgid "Submission of %s"
 msgstr ""
 
-#: scielobooks/staff/views.py:74
+#: scielobooks/staff/views.py:75 scielobooks/staff/views.py:149
 msgid "Successfully updated."
-msgstr ""
-
-#: scielobooks/staff/views.py:87
-msgid "Manage Book Parts"
 msgstr ""
 
 #: scielobooks/staff/views.py:118
 msgid "New Book Part"
 msgstr ""
 
-#: scielobooks/staff/views.py:119 scielobooks/staff/views.py:262
+#: scielobooks/staff/views.py:119 scielobooks/staff/views.py:248
 #, python-format
 msgid "Editing %s"
 msgstr ""
 
-#: scielobooks/staff/views.py:144 scielobooks/staff/views.py:308
+#: scielobooks/staff/views.py:147 scielobooks/staff/views.py:294
 #: scielobooks/users/views.py:159
 msgid "Successfully added."
 msgstr ""
 
-#: scielobooks/staff/views.py:192
+#: scielobooks/staff/views.py:187
 msgid "Parecer da Editora"
 msgstr ""
 
-#: scielobooks/staff/views.py:243
+#: scielobooks/staff/views.py:229
 msgid "In Process"
 msgstr ""
 
-#: scielobooks/staff/views.py:244
+#: scielobooks/staff/views.py:230
 msgid "Accepted"
 msgstr ""
 
-#: scielobooks/staff/views.py:245
+#: scielobooks/staff/views.py:231
 msgid "Accepted with Condition"
 msgstr ""
 
-#: scielobooks/staff/views.py:246
+#: scielobooks/staff/views.py:232
 msgid "Rejected"
 msgstr ""
 
-#: scielobooks/staff/views.py:261 scielobooks/staff/templates/panel.pt:36
+#: scielobooks/staff/views.py:247 scielobooks/staff/templates/panel.pt:36
 msgid "New Publisher"
 msgstr ""
 
-#: scielobooks/staff/views.py:301 scielobooks/staff/views.py:376
+#: scielobooks/staff/views.py:287 scielobooks/staff/views.py:362
 msgid "This record already exists! Please check the data and try again."
 msgstr ""
 
-#: scielobooks/staff/views.py:334
+#: scielobooks/staff/views.py:320
 msgid "New Book Submission"
 msgstr ""
 
-#: scielobooks/staff/views.py:394 scielobooks/staff/templates/panel.pt:34
+#: scielobooks/staff/views.py:380 scielobooks/staff/templates/panel.pt:34
 msgid "New Meeting"
 msgstr ""
 
-#: scielobooks/staff/templates/book_details.pt:117
+#: scielobooks/staff/templates/book_details.pt:125
+#: scielobooks/staff/templates/book_details.pt:43
 msgid "Edit"
 msgstr ""
 
-#: scielobooks/staff/templates/book_details.pt:107
-msgid "Meeting Description:"
+#: scielobooks/staff/templates/book_details.pt:112
+msgid "Add"
 msgstr ""
 
-#: scielobooks/staff/templates/book_details.pt:105
-msgid "Scheduled for Meeting:"
+#: scielobooks/staff/templates/book_details.pt:27
+msgid "Dashboard"
 msgstr ""
 
-#: scielobooks/staff/templates/book_details.pt:103
-msgid "Status:"
-msgstr ""
-
-#: scielobooks/staff/templates/book_details.pt:101
-msgid "Submission Date:"
-msgstr ""
-
-#: scielobooks/staff/templates/book_details.pt:98
-msgid "Evaluation Info"
-msgstr ""
-
-#: scielobooks/staff/templates/book_details.pt:89
-msgid "edit"
-msgstr ""
-
-#: scielobooks/staff/templates/book_details.pt:83
-msgid "Order"
-msgstr ""
-
-#: scielobooks/staff/templates/book_details.pt:80
-msgid "Book Parts"
-msgstr ""
-
-#: scielobooks/staff/templates/book_details.pt:69
-msgid "Link para o Catálogo Institucional"
+#: scielobooks/staff/templates/book_details.pt:24
+msgid ""
+"Attention! Any change in the data will be immediately reflected in the "
+"records, including those already published."
 msgstr ""
 
 #: scielobooks/staff/templates/panel.pt:108
@@ -395,24 +445,16 @@ msgstr ""
 msgid "Meeting"
 msgstr ""
 
-#: scielobooks/staff/templates/panel.pt:51 scielobooks/staff/templates/panel.pt:43
-msgid "Show all"
-msgstr ""
-
-#: scielobooks/staff/templates/panel.pt:49
-msgid "Meeting:"
-msgstr ""
-
-#: scielobooks/staff/templates/panel.pt:40
-msgid "Filters"
-msgstr ""
-
 #: scielobooks/staff/templates/panel.pt:32
 msgid "New Submission"
 msgstr ""
 
 #: scielobooks/staff/templates/panel.pt:29
-msgid "User's Dashboard"
+msgid "Administrative Dashboard"
+msgstr ""
+
+#: scielobooks/staff/templates/parts_list.pt:21
+msgid "edit"
 msgstr ""
 
 #: scielobooks/templates/form.pt:26
