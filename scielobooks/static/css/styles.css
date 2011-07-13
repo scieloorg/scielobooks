@@ -198,6 +198,7 @@ div STRONG {
 .tablePanel TD {
     text-align: center;
     vertical-align: middle;
+    text-align:left;
 }
 .previewBook {
     width: 920px;

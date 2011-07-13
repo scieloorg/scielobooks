@@ -1,32 +1,70 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<p metal:use-macro="main.macros['master']">
-  <div metal:fill-slot="custom_script" tal:omit-tag="">
-    <script type="text/javascript">
-      function toggle(obj) {
-        var el = document.getElementById(obj);
-        if ( el.style.display != "none" ) {
-          el.style.display = 'none';
-        }
-        else {
-          el.style.display = 'block';
-        }
-      }
-    </script>
-  </div>
-  <div class="middle" metal:fill-slot="middle">
-    <h3 tal:content="string:Total - ${total_documents} títulos"></h3>
-    <span tal:repeat="publisher documents.keys()">
-        <h4><img src="/static/images/seta.jpg"/>
-          <a tal:content="string:${publisher} - ${python:len(documents[publisher])} título(s)"
-             tal:define="elem_id repeat.publisher.number"
-             tal:attributes="href string:javascript:toggle(${elem_id});">
-          </a>
-        </h4>
-        <ol tal:attributes="id repeat.publisher.number" style="display: none;">
-            <li tal:repeat="doc documents[publisher]">
-                <a tal:content="doc.title" tal:attributes="href doc.details_url"></a>
-            </li>
-        </ol>
-    </span>
-  </div>
+<p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
+
+    <div metal:fill-slot="custom_script" tal:omit-tag="">        
+        <script src="/static/js/jquery.tablesorter.js"></script>
+        <script src="/static/js/evaluation-books_list.js"></script>
+    </div>
+
+    <div metal:fill-slot="css" tal:omit-tag="">
+        <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
+        <link rel="stylesheet" href="/static/css/style-tablesorter.css" type="text/css" media="screen"></link>
+    </div>
+
+    <div metal:fill-slot="custom_top" class="userbox">
+      <span tal:condition="user" >
+        <span tal:replace="user.username">Loro José</span> <a href="/logout">logout</a>
+      </span>
+      <span tal:condition="not user">
+        <a href="/logout">login</a>
+      </span>
+    </div>
+
+    <div class="middle" metal:fill-slot="middle">
+        <div class="breadcrumb"></div>
+        <div class="leftCol">
+            &#160;
+        </div>       
+        
+        <h2 i18n:translate="">Evaluation Records <span tal:omit-tal="" tal:condition="filters.meeting != 'nothing'" i18n:translate="">by meeting: ${filters.meeting}</span></h2>
+        
+        <fieldset>
+          <legend i18n:translate="">Filters</legend>
+          <span i18n:translate="">Publisher:</span>
+          <select class="filter-by-publisher">
+              <option value="nothing" i18n:translate="">Show all</option>
+              <option tal:repeat="publisher publishers" 
+                      tal:content="publisher.name" 
+                      value="${publisher.name_slug}"
+                      tal:attributes="selected publisher.name_slug == filters.publisher">BIREME Press</option>
+          </select>
+          <span i18n:translate="">Meeting:</span>
+          <select class="filter-by-meeting">
+              <option value="nothing" i18n:translate="">Show all</option>
+              <option tal:repeat="meeting meetings" 
+                      tal:content="meeting.date" 
+                      value="${meeting.date}"
+                      tal:attributes="selected str(meeting.date) == filters.meeting">2011-07-07</option>
+          </select>
+        </fieldset>
+        <p tal:condition="len(evaluations) == 0">There are no records.</p>
+        <table cellspacing="0" tal:condition="evaluations | nothing" 
+               class="tablesorter tablePanel" id="evaluation-table">
+            <thead>
+                <tr>
+                    <th i18n:translate="">Publisher</th>
+                    <th i18n:translate="">Title</th>                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr tal:repeat="evaluation evaluations">
+                    <td tal:content="evaluation.publisher.name">FAFIMUNDO</td>
+                    <td >
+                        <a href="${request.route_path('evaluation.book_details', sbid=evaluation.monograph_sbid)}" tal:content="evaluation.title">Le Petit Prince</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="spacer"></div>
+    </div>
 </p>

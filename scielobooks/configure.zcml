@@ -62,22 +62,16 @@
   <route
     name="evaluation.books_list"
     pattern="/evaluation/list"
-    view="scielobooks.evaluation.views.books_list"
+    view="scielobooks.staff.views.panel"
     renderer="scielobooks:evaluation/templates/books_list.pt"
     permission="editors"
-  />
-  <!-- using staff.book_details -->
+  />  
   <route
     name="evaluation.book_details"
     pattern="/evaluation/id/{sbid}"
     view="scielobooks.staff.views.book_details"
-    renderer="scielobooks:staff/templates/book_details.pt"
+    renderer="scielobooks:evaluation/templates/book_details.pt"
     permission="editors"
-  />
-  <route
-    name="evaluation.cover"
-    pattern="/evaluation/id/{sbid}/cover/{size}/cover.jpeg"
-    view="scielobooks.evaluation.views.cover"
   />
 <!--
 ***********************************
