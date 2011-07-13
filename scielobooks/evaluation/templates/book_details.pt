@@ -21,7 +21,7 @@
 
   <div class="middle" metal:fill-slot="middle">
     <div class="breadcrumb">
-      <a href="/" tal:attributes="href breadcrumb.home">List</a> / <span tal:replace="document.title">Le Petit Prince</span>
+      <a href="${request.referer}">Evaluation List</a> / <span tal:replace="document.title">Le Petit Prince</span>
     </div>
     <div class="leftCol">
       &#160;    
