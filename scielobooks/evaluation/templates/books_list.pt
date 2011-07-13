@@ -26,8 +26,12 @@
             &#160;
         </div>       
         
-        <h2 i18n:translate="">Evaluation Records <span tal:omit-tal="" tal:condition="filters.meeting != 'nothing'" i18n:translate="">by meeting:&nbsp;${filters.meeting}</span></h2>
-        
+        <h2 i18n:translate="">Evaluation Records</h2>
+
+        <div class="list-total">
+          <p><span tal:omit-tag="" i18n:translate="">Total of records found:</span>&nbsp;<span>${len(evaluations)}</span></p>
+        </div>
+
         <fieldset>
           <legend i18n:translate="">Filters</legend>
           <span i18n:translate="">Publisher:</span>

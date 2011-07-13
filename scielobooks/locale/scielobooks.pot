@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: scielobooks 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-07-13 14:32-0300\n"
+"POT-Creation-Date: 2011-07-13 15:37-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,7 +84,7 @@ msgstr ""
 #: scielobooks/catalog/templates/book_details.pt:40
 #: scielobooks/catalog/templates/chapter_details.pt:61
 #: scielobooks/evaluation/templates/book_details.pt:46
-#: scielobooks/evaluation/templates/books_list.pt:33
+#: scielobooks/evaluation/templates/books_list.pt:37
 #: scielobooks/staff/templates/book_details.pt:54
 #: scielobooks/staff/templates/panel.pt:41
 msgid "Publisher:"
@@ -123,7 +123,7 @@ msgid "Evaluation Info"
 msgstr ""
 
 #: scielobooks/evaluation/templates/book_details.pt:106
-#: scielobooks/evaluation/templates/books_list.pt:56 scielobooks/staff/forms.py:28
+#: scielobooks/evaluation/templates/books_list.pt:60 scielobooks/staff/forms.py:28
 #: scielobooks/staff/forms.py:29 scielobooks/staff/templates/book_details.pt:117
 #: scielobooks/staff/templates/panel.pt:64
 msgid "Title"
@@ -144,34 +144,34 @@ msgstr ""
 msgid "Link para o Catálogo Institucional"
 msgstr ""
 
-#: scielobooks/evaluation/templates/books_list.pt:55 scielobooks/staff/forms.py:34
+#: scielobooks/evaluation/templates/books_list.pt:59 scielobooks/staff/forms.py:34
 #: scielobooks/staff/forms.py:132 scielobooks/staff/templates/panel.pt:63
 #: scielobooks/users/forms.py:46
 msgid "Publisher"
 msgstr ""
 
-#: scielobooks/evaluation/templates/books_list.pt:43
-#: scielobooks/evaluation/templates/books_list.pt:35
+#: scielobooks/evaluation/templates/books_list.pt:47
+#: scielobooks/evaluation/templates/books_list.pt:39
 #: scielobooks/staff/templates/panel.pt:51 scielobooks/staff/templates/panel.pt:43
 msgid "Show all"
 msgstr ""
 
-#: scielobooks/evaluation/templates/books_list.pt:41
+#: scielobooks/evaluation/templates/books_list.pt:45
 #: scielobooks/staff/templates/panel.pt:49
 msgid "Meeting:"
 msgstr ""
 
-#: scielobooks/evaluation/templates/books_list.pt:32
+#: scielobooks/evaluation/templates/books_list.pt:36
 #: scielobooks/staff/templates/panel.pt:40
 msgid "Filters"
 msgstr ""
 
-#: scielobooks/evaluation/templates/books_list.pt:29
-msgid "Evaluation Records "
+#: scielobooks/evaluation/templates/books_list.pt:32
+msgid "Total of records found:"
 msgstr ""
 
 #: scielobooks/evaluation/templates/books_list.pt:29
-msgid "by meeting:&nbsp;${filters.meeting}"
+msgid "Evaluation Records"
 msgstr ""
 
 #: scielobooks/staff/forms.py:30 scielobooks/staff/forms.py:113
