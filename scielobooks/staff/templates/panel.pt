@@ -26,7 +26,7 @@
             &#160;
         </div>       
         
-        <h2 i18n:translate="">User's Dashboard</h2>
+        <h2 i18n:translate="">Administrative Dashboard</h2>
 
         <ul>
             <li><a href="${request.route_path('staff.new_book')}" 
@@ -72,7 +72,7 @@
                 <tr tal:repeat="evaluation evaluations">
                     <td tal:content="evaluation.publisher.name">FAFIMUNDO</td>
                     <td >
-                        <a href="${request.route_path('staff.book_details', sbid=evaluation.monograph_sbid)}" tal:content="evaluation.title">Le Petit Prince</a>
+                        <a href="${request.route_path('staff.book_details', sbid=evaluation.monograph_sbid)}"><strong>${evaluation.title}</strong></a>
                     </td>
                     <td >
                         <select class="meetings">

@@ -21,12 +21,10 @@
 
   <div class="middle" metal:fill-slot="middle">
 
-    <span class="notice">Atenção! Você está na interface administrativa e qualquer alteração nos dados será refletida imediatamente nos registros, incluindo os públicados.</span>
-
-    <div class="spacer"></div>
-
+    <span class="notice" i18n:translate="">Attention! Any change in the data will be immediately reflected in the records, including those already published.</span>
+    <br/>
     <div class="breadcrumb">
-      <a href="/" tal:attributes="href breadcrumb.home">Panel</a> / <span tal:replace="document.title">Le Petit Prince</span>
+      <a href="/" tal:attributes="href breadcrumb.home" i18n:translate="">Dashboard</a> / <span tal:replace="document.title">Le Petit Prince</span>
     </div>
     <div class="leftCol">
       &#160;    
@@ -39,8 +37,13 @@
             <img tal:attributes="src cover_thumb_url" src="/static/images/fakecover.jpg" />
           </a>
         </div>
-        <h3 tal:content="document.title">The man who ate his boots</h3>
-
+        
+        <h3>
+          ${document.title}
+          <span class="edit"><a href="${request.route_path('staff.edit_book', sbid=request.matchdict['sbid'])}" i18n:translate="">Edit</a></span>
+        </h3>
+          
+        
         <dl class="metadata">
           <span tal:omit-tag="" tal:condition="getattr(document, 'creators', None)">
           <dt i18n:translate="">Author:</dt>
@@ -97,14 +100,17 @@
               tal:attributes="href document.publisher_url"
               href="#" i18n:translate="">Link para o Catálogo Institucional</a></p>
 
-        <div>
+        <div class="synopsis">
           <strong i18n:translate="">Synopsis</strong>
           <p tal:condition="'synopsis' in document" tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
         </div>
         <div class="spacer"></div>
 
         <div class="book-parts">
-          <strong i18n:translate="">Book Parts</strong>
+          <strong>
+            <span  i18n:translate="" tal:omit-tag="">Book Parts</span>
+            <span class="add"><a href="${add_part_url}?KeepThis=true&amp;TB_iframe=true&amp;height=570&amp;width=600" class="thickbox" i18n:translate="">Add</a></span>
+          </strong>
           <table>
             <tr>
                 <th i18n:translate="">Order</th>
@@ -114,11 +120,13 @@
                 <td tal:content="part.partnumber" />
                 <td tal:content="part.title" />
                 <td><a class="PDF" href="#" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
-                <td><a href="${part.edit_url}?KeepThis=true&amp;TB_iframe=true&amp;height=570&amp;width=600" class="thickbox" i18n:translate="">edit</a>
+                <td>
+                  <span class="edit">
+                    <a href="${part.edit_url}?KeepThis=true&amp;TB_iframe=true&amp;height=570&amp;width=600" class="thickbox" i18n:translate="">Edit</a>
+                  </span>
                 </td>
             </tr>
-          </table>
-          <a href="${add_part_url}?KeepThis=true&amp;TB_iframe=true&amp;height=570&amp;width=600" class="thickbox">New Part</a>
+          </table>          
         </div>
         <div class="spacer"></div>
 
@@ -140,10 +148,6 @@
         </div>
 
       </div>
-    </div>
-    <div>
-      <a href="${request.route_path('staff.edit_book', sbid=request.matchdict['sbid'])}" 
-         i18n:translate="">Edit</a>
-    </div>
+    </div>    
   </div>
 </p>
