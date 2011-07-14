@@ -55,6 +55,50 @@ class SignupForm():
 
         return deform.Form(schema, buttons=('submit',))
 
+class EditUserForm():
+    @classmethod
+    def get_form(cls, localizer, publishers):
+        class Schema(colander.Schema):            
+            password = colander.SchemaNode(
+                colander.String(),
+                validator=colander.Length(min=5),
+                widget=deform.widget.CheckedPasswordWidget(size=20),
+                description=localizer.translate(_('Type your password and confirm it')),
+                missing=None
+            )
+            email = colander.SchemaNode(
+                colander.String(),
+                validator=colander.Email(),
+                missing=None,
+                title=localizer.translate(_('E-mail')),
+                description=localizer.translate(_('Contact e-mail')),
+            )
+            group = colander.SchemaNode(
+                colander.String(),
+                widget=deform.widget.SelectWidget(values=[('editor','Editor'),('admin','Administrator')]),
+                title=localizer.translate(_('Group')),
+                description=localizer.translate(_('Group name')),
+            )
+            publisher = colander.SchemaNode(
+                colander.String(),
+                widget=deform.widget.SelectWidget(values=publishers),
+                title=localizer.translate(_('Publisher')),
+                description=localizer.translate(_('Publisher name')),
+                missing = None,
+            )
+            __LOCALE__ = colander.SchemaNode(
+                colander.String(),
+                widget = deform.widget.HiddenWidget(),
+                default= localizer.locale_name,
+            )
+            _id = colander.SchemaNode(
+                colander.String(),
+                widget = deform.widget.HiddenWidget(),                
+            )
+        schema = Schema()
+
+        return deform.Form(schema, buttons=('submit',))
+
 class LoginForm():
     @classmethod
     def get_form(cls, localizer):

@@ -95,9 +95,9 @@
                     </td>
                     <td>
                         <span tal:condition="evaluation.is_published == True" 
-                              class="status-published pub-status" title="Published"></span>
+                              class="status-true pub-status" title="Published"></span>
                         <span tal:condition="evaluation.is_published != True" 
-                              class="status-unpublished pub-status" title="Not Published"></span>
+                              class="status-false pub-status" title="Not Published"></span>
                     </td>
                     <td>
                         <ul class="actions">

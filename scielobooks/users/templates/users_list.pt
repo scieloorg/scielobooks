@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
+  <title metal:fill-slot="custom_title">Manage Users</title>
+
+  <div metal:fill-slot="custom_script" tal:omit-tag="">
+    <script src="/static/js/users-users_list.js"></script>
+    <script src="/static/js/jquery.tablesorter.js"></script>
+  </div>
+
+  <div metal:fill-slot="css" tal:omit-tag="">
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
+    <link rel="stylesheet" href="/static/css/style-tablesorter.css" type="text/css" media="screen"></link>
+  </div>
+
+  <div class="middle" metal:fill-slot="middle">
+    <h2 i18n:translate="">Manage Users</h2>
+
+    <ul>
+      <li><a href="${request.route_path('users.signup')}">Add user</a></li>
+    </ul>
+
+    <table cellspacing="0" class="tablesorter tablePanel" id="users-list-table">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tal:repeat="user users">
+          <td tal:content="user.identity"></td>
+          <td>
+            <a href="${request.route_path('users.edit_user', id=user.id)}" tal:content="user.username"></a>
+          </td>
+          <td>
+            <a href="mailto:${user.email}" tal:content="user.email"></a>
+          </td>
+          <td style="text-align:center;">
+            <span tal:attributes="class 'status-true' if user.is_active else 'status-false';title 'active' if user.is_active else 'inactive'"></span>
+          </td>
+          <td>
+            <ul class="actions">
+              <li>activate</li>
+              <li>deactivate</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</p>

@@ -16,7 +16,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from datetime import date
 
-from forms import SignupForm, LoginForm, RecoverPasswordForm, ForgotPasswordForm
+from forms import SignupForm, LoginForm, RecoverPasswordForm, ForgotPasswordForm, EditUserForm
 import models as users
 from ..models import models
 from managers import RegistrationProfileManager
@@ -279,3 +279,75 @@ def recover_password(request):
             'form_stuff':{'form_title':FORM_TITLE},
             'user':get_logged_user(request),
             }
+
+def users_list(request):
+    main = get_renderer(BASE_TEMPLATE).implementation()    
+    user_list = request.rel_db_session.query(users.User).all()
+
+    return {'users':user_list,
+            'main':main
+            }
+
+def edit_user(request):
+    FORM_TITLE = _('Edit User')
+    main = get_renderer(BASE_TEMPLATE).implementation()
+    localizer = get_localizer(request)
+    publishers = request.rel_db_session.query(models.Publisher.name_slug, models.Publisher.name).all()
+    edit_user_form = EditUserForm.get_form(localizer,publishers)
+
+    if request.method == 'POST':
+        controls = request.POST.items()
+        try:
+            appstruct = edit_user_form.validate(controls)
+        except deform.ValidationFailure, e:
+            
+            return {'content':e.render(), 
+                    'main':main, 
+                    'form_stuff':{'form_title':FORM_TITLE},
+                    'user':get_logged_user(request),
+                    }
+        
+        try:
+            user = request.rel_db_session.query(users.User).filter_by(id=appstruct['_id']).one()
+        except NoResultFound:
+            raise exceptions.NotFound()
+        
+        if appstruct['password'] is not None:
+            user.password = SHA256.new(appstruct['password']).hexdigest()
+            user.password_encryption = 'SHA256'
+
+        if len(appstruct['email']):
+            user.email = appstruct['email']
+
+        if appstruct['group'] != user.group.name:
+            group = request.rel_db_session.query(users.Group).filter_by(name=appstruct['group']).one()
+            user.group = group
+
+        request.rel_db_session.add(user)
+        try:
+            request.rel_db_session.commit()
+        except:
+            request.rel_db_session.rollback()
+            request.session.flash(_('Problems occured when trying to update user data. Please try again.'))
+        else:
+            request.session.flash(_('Successfully updated.'))
+
+        return HTTPFound(location=request.route_path('users.edit_user', id=user.id))
+
+    if 'id' in request.matchdict:
+        try:
+            user = request.rel_db_session.query(users.User).filter_by(id=request.matchdict['id']).one()
+        except NoResultFound:
+            raise exceptions.NotFound()
+
+        appstruct = {'email':user.email,
+                     'group':user.group.name,
+                     '_id':user.id}
+
+        return {'content':edit_user_form.render(appstruct),
+                'main':main,
+                'form_stuff':{'form_title':FORM_TITLE},                
+                'user':get_logged_user(request),
+                }
+    
+    raise exceptions.NotFound()

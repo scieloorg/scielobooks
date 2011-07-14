@@ -189,7 +189,7 @@
 ***************
  -->
   <route
-    name="users.views.signup"
+    name="users.signup"
     pattern="/users/signup"
     view="scielobooks.users.views.signup"
     renderer="scielobooks:users/templates/signup_form.pt"
@@ -223,5 +223,19 @@
     pattern="/users/recover_password"
     view="scielobooks.users.views.recover_password"
     renderer="scielobooks:templates/form.pt"
+  />
+  <route
+    name="users.list"
+    pattern="/users/list"
+    view="scielobooks.users.views.users_list"
+    renderer="scielobooks:users/templates/users_list.pt"
+    permission="admin"
+  />
+  <route
+    name="users.edit_user"
+    pattern="/users/id/{id}/edit"
+    view="scielobooks.users.views.edit_user"
+    renderer="scielobooks:users/templates/signup_form.pt"
+    permission="admin"
   />
 </configure>

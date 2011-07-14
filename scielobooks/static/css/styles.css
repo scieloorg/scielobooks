@@ -165,13 +165,13 @@ a:hover {
 .ePub {
     background: url(/static/images/epub.gif) top left no-repeat;
 }
-.status-published {
-    background: url(/static/images/icon-yes.gif) top left no-repeat;        
+.status-true {
+    background: url(/static/images/icon-yes.gif) top left no-repeat;    
 }
-.status-unpublished {
-    background: url(/static/images/icon-no.gif) top left no-repeat;        
+.status-false {
+    background: url(/static/images/icon-no.gif) top left no-repeat;
 }
-.PDF, .ePub, .status-published, .status-unpublished {
+.PDF, .ePub, .status-true, .status-false {
     padding: 3px 2px 2px 20px;
     margin: 0px 0px 4px 0px;
 }
