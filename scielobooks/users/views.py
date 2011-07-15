@@ -285,7 +285,8 @@ def users_list(request):
     user_list = request.rel_db_session.query(users.User).all()
 
     return {'users':user_list,
-            'main':main
+            'main':main,
+            'breadcrumb': {'home':request.route_path('staff.panel')},
             }
 
 def edit_user(request):
@@ -375,7 +376,7 @@ def ajax_set_active(request):
             except:
                 request.rel_db_session.rollback()
                 return Response('error')
-            
+
     except ActivationError:        
         return Response('error')
   

@@ -13,6 +13,13 @@
   </div>
 
   <div class="middle" metal:fill-slot="middle">
+    <div class="breadcrumb">
+      <a href="/" tal:attributes="href breadcrumb.home" i18n:translate="">Dashboard</a> / <span i18n:translate="">Manage Users</span>
+    </div>
+    <div class="leftCol">
+        &#160;
+    </div>
+        
     <h2 i18n:translate="">Manage Users</h2>
 
     <ul>
