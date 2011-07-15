@@ -321,7 +321,7 @@ def edit_user(request):
 
         if appstruct['group'] != user.group.name:
             group = request.rel_db_session.query(users.Group).filter_by(name=appstruct['group']).one()
-            user.group = group
+            user.group = group            
 
         request.rel_db_session.add(user)
         try:
@@ -351,3 +351,53 @@ def edit_user(request):
                 }
     
     raise exceptions.NotFound()
+
+def ajax_set_active(request):
+    user_id = request.POST.get('id', None)
+    if user_id is None:
+        return Respose('insufficient params')
+    
+    try:
+        user = request.rel_db_session.query(users.User).filter_by(id=user_id).one()
+    except NoResultFound:
+        return Respose('nothing to do')
+
+    activation_key = user.registration_profile.activation_key
+    
+    try:
+        user = RegistrationProfileManager.activate_user(activation_key, request)
+    except InvalidActivationKey:
+        if user.is_active == False:
+            user.is_active = True
+            request.rel_db_session.add(user)
+            try:
+                request.rel_db_session.commit()
+            except:
+                request.rel_db_session.rollback()
+                return Response('error')
+            
+    except ActivationError:        
+        return Response('error')
+  
+    return Response('done')
+
+def ajax_set_inactive(request):
+    user_id = request.POST.get('id', None)
+    if user_id is None:
+        return Respose('insufficient params')
+    
+    try:
+        user = request.rel_db_session.query(users.User).filter_by(id=user_id).one()
+    except NoResultFound:
+        return Respose('nothing to do')
+
+    if user.is_active == True:
+        user.is_active = False
+        request.rel_db_session.add(user)
+        try:
+            request.rel_db_session.commit()
+        except:
+            request.rel_db_session.rollback()
+            return Response('error')
+
+    return Response('done')

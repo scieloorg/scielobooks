@@ -238,4 +238,23 @@
     renderer="scielobooks:users/templates/signup_form.pt"
     permission="admin"
   />
+  <!--
+  ***************
+   AJAX FUNCTIONS
+  ***************
+   -->
+  <route
+    name="users.ajax.setactive"
+    pattern="/users/function/setactive/"
+    view="scielobooks.users.views.ajax_set_active"
+    xhr="True"
+    permission="admin"
+  />
+  <route
+    name="users.ajax.setinactive"
+    pattern="/users/function/setinactive/"
+    view="scielobooks.users.views.ajax_set_inactive"
+    xhr="True"
+    permission="admin"
+  />
 </configure>

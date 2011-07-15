@@ -31,9 +31,9 @@
       </thead>
       <tbody>
         <tr tal:repeat="user users">
-          <td tal:content="user.identity"></td>
+          <td tal:content="user.group.name"></td>
           <td>
-            <a href="${request.route_path('users.edit_user', id=user.id)}" tal:content="user.username"></a>
+            <a href="${request.route_path('users.edit_user', id=user.id)}"><strong tal:content="user.username"></strong></a>
           </td>
           <td>
             <a href="mailto:${user.email}" tal:content="user.email"></a>
@@ -43,9 +43,14 @@
           </td>
           <td>
             <ul class="actions">
-              <li>activate</li>
-              <li>deactivate</li>
+              <li tal:condition="not user.is_active">
+                <a href="javascript: void(0);" class="action_activate" id="${user.id}">activate</a>
+              </li>
+              <li tal:condition="user.is_active">
+                <a href="javascript: void(0);" class="action_deactivate" id="${user.id}">deactivate</a>
+              </li>
             </ul>
+            <img id="actions_load_icon_${user.id}" src="/static/images/ajax-loader.gif" style="display:none"/>
           </td>
         </tr>
       </tbody>
