@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
+
+    <div metal:fill-slot="custom_script" tal:omit-tag="">        
+        <script src="/static/js/jquery.tablesorter.js"></script>
+        <script src="/static/js/evaluation-books_list.js"></script>
+    </div>
+
+    <div metal:fill-slot="css" tal:omit-tag="">
+        <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
+        <link rel="stylesheet" href="/static/css/style-tablesorter.css" type="text/css" media="screen"></link>
+    </div>
+
+    <div metal:fill-slot="custom_top" class="userbox">
+      <span tal:condition="user" >
+        <span tal:replace="user.username">Loro José</span> <a href="/logout">logout</a>
+      </span>
+      <span tal:condition="not user">
+        <a href="/logout">login</a>
+      </span>
+    </div>
+
+    <div class="middle" metal:fill-slot="middle">
+        <div class="breadcrumb">
+          <a href="/" tal:attributes="href breadcrumb.home" i18n:translate="">Dashboard</a> / <span i18n:translate="">Manage Meetings</span>
+        </div>
+        <div class="leftCol">
+            &#160;
+        </div>       
+        
+        <h2 i18n:translate="">Meetings</h2>
+
+        <ul>
+          <li><a href="${request.route_path('staff.new_meeting')}" 
+                   i18n:translate="">New Meeting</a></li>
+        </ul>
+
+        <p tal:condition="len(meetings) == 0">There are no records.</p>
+        <table cellspacing="0" tal:condition="meetings | nothing" 
+               class="tablesorter tablePanel" id="meetings-table">
+            <thead>
+                <tr>
+                    <th i18n:translate="">Date</th>
+                    <th i18n:translate="">Description</th>
+                    <th i18n:translate="">Evaluation meeting link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr tal:repeat="meeting meetings">
+                    <td tal:content="meeting.date">2011-02-17</td>
+                    <td>
+                      ${meeting.description}
+                      <span class="edit"><a href="${request.route_path('staff.edit_meeting', id=meeting.id)}">Edit</a></span>
+                    </td>
+                    <td><a href="${request.route_path('evaluation.books_list')}?meeting=${str(meeting.date)}">permalink</a></td>
+
+                </tr>
+            </tbody>
+        </table>
+        <div class="spacer"></div>
+    </div>
+</p>

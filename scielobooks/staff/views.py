@@ -378,6 +378,7 @@ def new_book(request):
 
 def new_meeting(request):
     FORM_TITLE_NEW = _('New Meeting')
+    FORM_TITLE_EDIT = _('Editing %s meeting')
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -399,13 +400,31 @@ def new_meeting(request):
         del(appstruct['__LOCALE__'])
         appstruct['admin'] = get_logged_user(request)
 
-        meeting = rel_models.Meeting(**appstruct)
+        if 'id' in request.matchdict:
+            meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=request.matchdict['id']).one()
+            meeting.date = appstruct['date']
+            meeting.description = appstruct['description']
+
+            request.session.flash(_('Successfully updated.'))
+        else:
+            meeting = rel_models.Meeting(**appstruct)
+            request.session.flash(_('Successfully added.'))
 
         request.rel_db_session.add(meeting)
         #TODO! catch exception
         request.rel_db_session.commit()
     
-        return HTTPFound(location=request.route_path('staff.panel'))
+        return HTTPFound(location=request.route_path('staff.meetings_list'))
+
+    if 'id' in request.matchdict:
+        meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=request.matchdict['id']).one()
+        appstruct = {'date':meeting.date, 'description':meeting.description}
+
+        return {'content':meeting_form.render(appstruct),
+                'main':main,
+                'user':get_logged_user(request),
+                'form_stuff':{'form_title':FORM_TITLE_EDIT % str(meeting.date)},
+                }    
 
     return {'content':meeting_form.render({'date':date.today()}),
             'main':main,
@@ -413,6 +432,15 @@ def new_meeting(request):
             'form_stuff':{'form_title':FORM_TITLE_NEW},
             }
 
+def meetings_list(request):
+    main = get_renderer(BASE_TEMPLATE).implementation()
+    meetings = request.rel_db_session.query(rel_models.Meeting).all()
+
+    return {'meetings':meetings,
+            'main':main,
+            'user':get_logged_user(request),
+            'breadcrumb': {'home':request.route_path('staff.panel')},
+            }
 
 def ajax_set_meeting(request):
     if request.method == 'POST':        

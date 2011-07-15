@@ -83,49 +83,49 @@
     pattern="/staff/book/id/{sbid}"
     view="scielobooks.staff.views.book_details"
     renderer="scielobooks:staff/templates/book_details.pt"
-    permission="editors"
+    permission="admin"
   />
   <route
     name="staff.new_book"
     pattern="/staff/book/new"
     view="scielobooks.staff.views.new_book"
     renderer="scielobooks:templates/form.pt"
-    permission="editors"
+    permission="admin"
   />
   <route
     name="staff.edit_book"
     pattern="/staff/book/id/{sbid}/edit"
     view="scielobooks.staff.views.edit_book"
     renderer="scielobooks:templates/form.pt"
-    permission="editors"
+    permission="admin"
   />
   <route
     name="staff.parts_list"
     pattern="/staff/book/id/{sbid}/parts"
     view="scielobooks.staff.views.parts_list"
     renderer="scielobooks:staff/templates/parts_list.pt"
-    permission="editors"
+    permission="admin"
   />
   <route
     name="staff.new_part"
     pattern="/staff/book/id/{sbid}/parts/new"
     view="scielobooks.staff.views.new_part"
     renderer="scielobooks:templates/lightbox-form.pt"
-    permission="editors"
+    permission="admin"
   />
   <route
     name="staff.edit_part"
     pattern="/staff/book/id/{sbid}/parts/{part_id}/edit"
     view="scielobooks.staff.views.new_part"
     renderer="scielobooks:templates/lightbox-form.pt"
-    permission="editors"
+    permission="admin"
   />
   <route
     name="staff.panel"
     pattern="/staff/panel"
     view="scielobooks.staff.views.panel"
     renderer="scielobooks:staff/templates/panel.pt"
-    permission="editors"
+    permission="admin"
   />
   <route
     name="staff.new_publisher"
@@ -148,7 +148,20 @@
     renderer="scielobooks:templates/form.pt"
     permission="admin"
   />
-
+  <route
+    name="staff.edit_meeting"
+    pattern="/staff/meeting/{id}/edit"
+    view="scielobooks.staff.views.new_meeting"
+    renderer="scielobooks:templates/form.pt"
+    permission="admin"
+  />
+  <route
+    name="staff.meetings_list"
+    pattern="/staff/meeting/list"
+    view="scielobooks.staff.views.meetings_list"
+    renderer="scielobooks:staff/templates/meetings_list.pt"
+    permission="admin"
+  />
   <!--
   ***************
    AJAX FUNCTIONS
