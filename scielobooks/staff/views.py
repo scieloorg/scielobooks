@@ -174,9 +174,6 @@ def book_details(request):
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
         
-    if not monograph.visible:
-        raise exceptions.NotFound()
-
     book_attachments = []
     if getattr(monograph, 'toc', None):
         toc_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.toc['filename'])
