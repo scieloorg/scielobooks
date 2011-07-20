@@ -157,7 +157,7 @@ def signup(request):
 
 
         request.session.flash(_('Successfully added.'))
-        return HTTPFound(location=request.route_path('staff.panel'))
+        return HTTPFound(location=request.route_url('staff.panel'))
 
     return {'content':signup_form.render(),
             'form_stuff':{'form_title':FORM_TITLE},
@@ -229,7 +229,7 @@ def forgot_password(request):
             AccountRecoveryManager.send_recovery_mail(user, request)
 
         request.session.flash(_('You will receive an email with instructions on how to reset your account password.'))
-        return HTTPFound(location=request.route_path('users.forgot_password'))
+        return HTTPFound(location=request.route_url('users.forgot_password'))
 
     return {'content':forgot_password_form.render(),
             'main':main,
@@ -267,7 +267,7 @@ def recover_password(request):
         except ActivationError:
             request.session.flash(_('Problems occured when trying to redefine the user password. Please try again.'))
 
-        return HTTPFound(location=request.route_path('users.login'))
+        return HTTPFound(location=request.route_url('users.login'))
     else:
         try:
             account = request.rel_db_session.query(users.AccountRecovery).filter_by(recovery_key=recovery_key).one()
@@ -286,7 +286,7 @@ def users_list(request):
 
     return {'users':user_list,
             'main':main,
-            'breadcrumb': {'home':request.route_path('staff.panel')},
+            'breadcrumb': {'home':request.route_url('staff.panel')},
             }
 
 def edit_user(request):
@@ -333,7 +333,7 @@ def edit_user(request):
         else:
             request.session.flash(_('Successfully updated.'))
 
-        return HTTPFound(location=request.route_path('users.edit_user', id=user.id))
+        return HTTPFound(location=request.route_url('users.edit_user', id=user.id))
 
     if 'id' in request.matchdict:
         try:

@@ -31,7 +31,7 @@
         <h2 i18n:translate="">Meetings</h2>
 
         <ul>
-          <li><a href="${request.route_path('staff.new_meeting')}" 
+          <li><a href="${request.route_url('staff.new_meeting')}" 
                    i18n:translate="">New Meeting</a></li>
         </ul>
 
@@ -50,9 +50,9 @@
                     <td tal:content="meeting.date">2011-02-17</td>
                     <td>
                       ${meeting.description}
-                      <span class="edit"><a href="${request.route_path('staff.edit_meeting', id=meeting.id)}">Edit</a></span>
+                      <span class="edit"><a href="${request.route_url('staff.edit_meeting', id=meeting.id)}">Edit</a></span>
                     </td>
-                    <td><a href="${request.route_path('evaluation.books_list')}?meeting=${str(meeting.date)}">permalink</a></td>
+                    <td><a href="${request.route_url('evaluation.books_list')}?meeting=${str(meeting.date)}">permalink</a></td>
 
                 </tr>
             </tbody>

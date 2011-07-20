@@ -74,7 +74,7 @@ def edit_book(request):
 
         request.session.flash(_('Successfully updated.'))
 
-        return HTTPFound(location=request.route_path('staff.book_details', sbid=monograph._id))
+        return HTTPFound(location=request.route_url('staff.book_details', sbid=monograph._id))
     
     if 'sbid' in request.matchdict:
         monograph = Monograph.get(request.db, request.matchdict['sbid'])
@@ -101,8 +101,8 @@ def parts_list(request):
                      'title':part['doc']['title'],
                      'order':part['doc']['order'],
                      'creators':part['doc']['creators'],
-                     'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_id, part=part['doc']['order']),
-                     'edit_url':request.route_path('staff.edit_part', sbid=monograph_id, part_id=part['id']),
+                     'pdf_url':request.route_url('catalog.pdf_file', sbid=monograph_id, part=part['doc']['order']),
+                     'edit_url':request.route_url('staff.edit_part', sbid=monograph_id, part_id=part['id']),
                      }
 
         documents.append(part_meta)
@@ -148,7 +148,7 @@ def new_part(request):
         else:
             request.session.flash(_('Successfully updated.'))
     
-        return HTTPFound(location=request.route_path('staff.edit_part', sbid=part.monograph, part_id=part._id))
+        return HTTPFound(location=request.route_url('staff.edit_part', sbid=part.monograph, part_id=part._id))
 
     if 'part_id' in request.matchdict:
         part = Part.get(request.db, request.matchdict['part_id'])
@@ -197,10 +197,10 @@ def book_details(request):
             'book_attachments':book_attachments,
             'main':main,
             'user':get_logged_user(request),
-            'breadcrumb': {'home':request.route_path('staff.panel')},
-            'cover_full_url': request.route_path('catalog.cover', sbid=monograph._id),
-            'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
-            'add_part_url': request.route_path('staff.new_part', sbid=monograph._id),
+            'breadcrumb': {'home':request.route_url('staff.panel')},
+            'cover_full_url': request.route_url('catalog.cover', sbid=monograph._id),
+            'cover_thumb_url': request.route_url('catalog.cover_thumbnail', sbid=monograph._id),
+            'add_part_url': request.route_url('staff.new_part', sbid=monograph._id),
             }
 
 
@@ -290,7 +290,7 @@ def new_publisher(request):
 
         request.session.flash(_('Successfully added.'))
 
-        return HTTPFound(location=request.route_path('staff.panel'))
+        return HTTPFound(location=request.route_url('staff.panel'))
     
     if 'slug' in request.matchdict:
 
@@ -365,7 +365,7 @@ def new_book(request):
         
         monograph.save(request.db)
 
-        return HTTPFound(location=request.route_path('staff.edit_book', sbid=monograph._id))
+        return HTTPFound(location=request.route_url('staff.edit_book', sbid=monograph._id))
 
     return {'content': evaluation_form.render(),
             'main':main,
@@ -411,7 +411,7 @@ def new_meeting(request):
         #TODO! catch exception
         request.rel_db_session.commit()
     
-        return HTTPFound(location=request.route_path('staff.meetings_list'))
+        return HTTPFound(location=request.route_url('staff.meetings_list'))
 
     if 'id' in request.matchdict:
         meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=request.matchdict['id']).one()
@@ -436,7 +436,7 @@ def meetings_list(request):
     return {'meetings':meetings,
             'main':main,
             'user':get_logged_user(request),
-            'breadcrumb': {'home':request.route_path('staff.panel')},
+            'breadcrumb': {'home':request.route_url('staff.panel')},
             }
 
 def ajax_set_meeting(request):

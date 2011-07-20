@@ -23,7 +23,7 @@
     <h2 i18n:translate="">Manage Users</h2>
 
     <ul>
-      <li><a href="${request.route_path('users.signup')}">Add user</a></li>
+      <li><a href="${request.route_url('users.signup')}">Add user</a></li>
     </ul>
 
     <table cellspacing="0" class="tablesorter tablePanel" id="users-list-table">
@@ -40,7 +40,7 @@
         <tr tal:repeat="user users">
           <td tal:content="user.group.name"></td>
           <td>
-            <a href="${request.route_path('users.edit_user', id=user.id)}"><strong tal:content="user.username"></strong></a>
+            <a href="${request.route_url('users.edit_user', id=user.id)}"><strong tal:content="user.username"></strong></a>
           </td>
           <td>
             <a href="mailto:${user.email}" tal:content="user.email"></a>

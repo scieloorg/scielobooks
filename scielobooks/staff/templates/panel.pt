@@ -29,13 +29,13 @@
         <h2 i18n:translate="">Administrative Dashboard</h2>
 
         <ul>
-            <li><a href="${request.route_path('staff.new_book')}" 
+            <li><a href="${request.route_url('staff.new_book')}" 
                    i18n:translate="">New Submission</a></li>
-            <li><a href="${request.route_path('staff.meetings_list')}" 
+            <li><a href="${request.route_url('staff.meetings_list')}" 
                    i18n:translate="">Manage Meetings</a></li>
-            <li><a href="${request.route_path('staff.new_publisher')}" 
+            <li><a href="${request.route_url('staff.new_publisher')}" 
                    i18n:translate="">New Publisher</a></li>
-            <li><a href="${request.route_path('users.list')}"
+            <li><a href="${request.route_url('users.list')}"
                    i18n:translate="">Manage Users</a></li>
         </ul>
         <fieldset>
@@ -74,7 +74,7 @@
                 <tr tal:repeat="evaluation evaluations">
                     <td tal:content="evaluation.publisher.name">FAFIMUNDO</td>
                     <td >
-                        <a href="${request.route_path('staff.book_details', sbid=evaluation.monograph_sbid)}"><strong>${evaluation.title}</strong></a>
+                        <a href="${request.route_url('staff.book_details', sbid=evaluation.monograph_sbid)}"><strong>${evaluation.title}</strong></a>
                     </td>
                     <td >
                         <select class="meetings">
