@@ -151,9 +151,11 @@ Apache with mod_wsgi
 Note: The application comes with 2 base templates, for development and for production environments.
 
 Development::
+
     $ cp development-TEMPLATE.ini development.ini
 
 Production::
+
     $ cp production-TEMPLATE.ini production.ini
 
 
@@ -163,9 +165,11 @@ See http://pythonpaste.org/script/#configuration for more information about Past
 Note: The application comes with a directory named *apache*, containing templates for deployments using Apache with mod_wsgi
 
 Development::
+
     $ cp apache/app/devel-TEMPLATE.wsgi apache/app/devel.wsgi
 
 Production::
+
     $ cp apache/app/production-TEMPLATE.wsgi apache/app/production.wsgi
 
 
@@ -175,13 +179,35 @@ Note: The .wsgi configuration file must be configured to point to the previously
 Note: The application comes with 2 virtual hosts base templates. You can simply create a symlink to the apache's available sites.
 
 Development::
+
     $ cp apache/httpd-devel-TEMPLATE.conf apache/httpd-devel.conf
 
 Production::
+
     $ cp apache/httpd-TEMPLATE.conf apache/httpd.conf
 
 
 See http://docs.pylonsproject.org/projects/pyramid/1.0/tutorials/modwsgi/index.html for more information about deploying a Pyramid app using mod_wsgi.
+
+
+WordPress Integration
+---------------------
+
+In order to both applications, the main site (Wordpress) and the details site (Python), coexist transparently, we need to add some rules in the webserver.
+
+Basically, the catalog package must be accessible from the Wordpress domain, i.e. *http://books.scielo.org/id/w2* must resolve to *http://admin.books.scielo.org/id/w2*. The latter should not be accessible for users.
+
+Rules to reverse proxy some requests::
+
+    # wordpress app virtualhost
+    <Proxy *>
+        Allow from all
+    </Proxy>
+    
+    ProxyPassMatch ^/id/(.*)$ http://admin.books.scielo.org/id/$1
+    ProxyPassMatch ^/static/(.*)$ http://admin.books.scielo.org/static/$1
+    ProxyPassMatch ^/deform_static/(.*)$ http://admin.books.scielo.org/deform_static/$1
+    ProxyPassMatch ^/setlang/$ http://admin.books.scielo.org/
 
 
 Troubleshooting
