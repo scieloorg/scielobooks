@@ -1,3 +1,8 @@
+
+'''
+These view callables use request.route_path instead of request.route_url, because of the 
+integration needs with the wordpress based app (apache proxy rules).
+'''
 from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid import exceptions
@@ -43,10 +48,10 @@ def get_book_parts(monograph_sbid, request):
         part_meta = {'part_sbid':part['id'],
                      'partnumber':partnumber,
                      'title':part['doc']['title'],                     
-                     'pdf_url':request.route_url('catalog.pdf_file', sbid=monograph_sbid, part=partnumber),
-                     'preview_url':request.route_url('catalog.chapter_details',sbid=monograph_sbid, chapter=partnumber),
-                     'swf_url': request.route_url('catalog.swf_file', sbid=monograph_sbid, part=partnumber),
-                     'edit_url':request.route_url('staff.edit_part', sbid=monograph_sbid, part_id=part['id']),
+                     'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_sbid, part=partnumber),
+                     'preview_url':request.route_path('catalog.chapter_details',sbid=monograph_sbid, chapter=partnumber),
+                     'swf_url': request.route_path('catalog.swf_file', sbid=monograph_sbid, part=partnumber),
+                     'edit_url':request.route_path('staff.edit_part', sbid=monograph_sbid, part_id=part['id']),
                      }
         monograph_parts.append(part_meta)
     
@@ -66,7 +71,7 @@ def book_details(request):
 
     book_attachments = []
     if getattr(monograph, 'pdf_file', None):
-        pdf_file_url = request.route_url('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn)
+        pdf_file_url = request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn)
         book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
 
     main = get_renderer(BASE_TEMPLATE).implementation()
@@ -74,8 +79,8 @@ def book_details(request):
     return {'document':monograph,
             'book_attachments':book_attachments,
             'parts':parts,
-            'cover_thumb_url': request.route_url('catalog.cover_thumbnail', sbid=monograph._id),
-            'cover_full_url': request.route_url('catalog.cover', sbid=monograph._id),
+            'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
+            'cover_full_url': request.route_path('catalog.cover', sbid=monograph._id),
             'breadcrumb': {'home':request.registry.settings['solr_url'],},
             'main':main}
 
@@ -104,12 +109,12 @@ def chapter_details(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     return {'document':monograph,
-            'document_pdf_url': request.route_url('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn),
+            'document_pdf_url': request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn),
             'parts':parts,
             'part':part,            
-            'cover_thumb_url': request.route_url('catalog.cover_thumbnail', sbid=monograph._id),
+            'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
             'breadcrumb':{'home':request.registry.settings['solr_url'],
-                          'book':request.route_url('catalog.book_details', sbid=sbid),},
+                          'book':request.route_path('catalog.book_details', sbid=sbid),},
             'main':main}
 
 def cover(request):
