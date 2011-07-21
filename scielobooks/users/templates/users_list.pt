@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
+  <title metal:fill-slot="custom_title">Manage Users</title>
+
+  <div metal:fill-slot="custom_script" tal:omit-tag="">
+    <script src="/static/js/users-users_list.js"></script>
+    <script src="/static/js/jquery.tablesorter.js"></script>
+  </div>
+
+  <div metal:fill-slot="css" tal:omit-tag="">
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
+    <link rel="stylesheet" href="/static/css/style-tablesorter.css" type="text/css" media="screen"></link>
+  </div>
+
+  <div class="middle" metal:fill-slot="middle">
+    <div class="breadcrumb">
+      <a href="/" tal:attributes="href breadcrumb.home" i18n:translate="">Dashboard</a> / <span i18n:translate="">Manage Users</span>
+    </div>
+    <div class="leftCol">
+        &#160;
+    </div>
+        
+    <h2 i18n:translate="">Manage Users</h2>
+
+    <ul>
+      <li><a href="${request.route_url('users.signup')}">Add user</a></li>
+    </ul>
+
+    <table cellspacing="0" class="tablesorter tablePanel" id="users-list-table">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tal:repeat="user users">
+          <td tal:content="user.group.name"></td>
+          <td>
+            <a href="${request.route_url('users.edit_user', id=user.id)}"><strong tal:content="user.username"></strong></a>
+          </td>
+          <td>
+            <a href="mailto:${user.email}" tal:content="user.email"></a>
+          </td>
+          <td style="text-align:center;">
+            <span tal:attributes="class 'status-true' if user.is_active else 'status-false';title 'active' if user.is_active else 'inactive'"></span>
+          </td>
+          <td>
+            <ul class="actions">
+              <li tal:condition="not user.is_active">
+                <a href="javascript: void(0);" class="action_activate" id="${user.id}">activate</a>
+              </li>
+              <li tal:condition="user.is_active">
+                <a href="javascript: void(0);" class="action_deactivate" id="${user.id}">deactivate</a>
+              </li>
+            </ul>
+            <img id="actions_load_icon_${user.id}" src="/static/images/ajax-loader.gif" style="display:none"/>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</p>

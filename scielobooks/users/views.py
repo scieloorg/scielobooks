@@ -16,7 +16,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from datetime import date
 
-from forms import SignupForm, LoginForm, RecoverPasswordForm, ForgotPasswordForm
+from forms import SignupForm, LoginForm, RecoverPasswordForm, ForgotPasswordForm, EditUserForm
 import models as users
 from ..models import models
 from managers import RegistrationProfileManager
@@ -157,7 +157,7 @@ def signup(request):
 
 
         request.session.flash(_('Successfully added.'))
-        return HTTPFound(location=request.route_path('staff.panel'))
+        return HTTPFound(location=request.route_url('staff.panel'))
 
     return {'content':signup_form.render(),
             'form_stuff':{'form_title':FORM_TITLE},
@@ -229,7 +229,7 @@ def forgot_password(request):
             AccountRecoveryManager.send_recovery_mail(user, request)
 
         request.session.flash(_('You will receive an email with instructions on how to reset your account password.'))
-        return HTTPFound(location=request.route_path('users.forgot_password'))
+        return HTTPFound(location=request.route_url('users.forgot_password'))
 
     return {'content':forgot_password_form.render(),
             'main':main,
@@ -267,7 +267,7 @@ def recover_password(request):
         except ActivationError:
             request.session.flash(_('Problems occured when trying to redefine the user password. Please try again.'))
 
-        return HTTPFound(location=request.route_path('users.login'))
+        return HTTPFound(location=request.route_url('users.login'))
     else:
         try:
             account = request.rel_db_session.query(users.AccountRecovery).filter_by(recovery_key=recovery_key).one()
@@ -279,3 +279,126 @@ def recover_password(request):
             'form_stuff':{'form_title':FORM_TITLE},
             'user':get_logged_user(request),
             }
+
+def users_list(request):
+    main = get_renderer(BASE_TEMPLATE).implementation()    
+    user_list = request.rel_db_session.query(users.User).all()
+
+    return {'users':user_list,
+            'main':main,
+            'breadcrumb': {'home':request.route_url('staff.panel')},
+            }
+
+def edit_user(request):
+    FORM_TITLE = _('Edit User')
+    main = get_renderer(BASE_TEMPLATE).implementation()
+    localizer = get_localizer(request)
+    publishers = request.rel_db_session.query(models.Publisher.name_slug, models.Publisher.name).all()
+    edit_user_form = EditUserForm.get_form(localizer,publishers)
+
+    if request.method == 'POST':
+        controls = request.POST.items()
+        try:
+            appstruct = edit_user_form.validate(controls)
+        except deform.ValidationFailure, e:
+            
+            return {'content':e.render(), 
+                    'main':main, 
+                    'form_stuff':{'form_title':FORM_TITLE},
+                    'user':get_logged_user(request),
+                    }
+        
+        try:
+            user = request.rel_db_session.query(users.User).filter_by(id=appstruct['_id']).one()
+        except NoResultFound:
+            raise exceptions.NotFound()
+        
+        if appstruct['password'] is not None:
+            user.password = SHA256.new(appstruct['password']).hexdigest()
+            user.password_encryption = 'SHA256'
+
+        if len(appstruct['email']):
+            user.email = appstruct['email']
+
+        if appstruct['group'] != user.group.name:
+            group = request.rel_db_session.query(users.Group).filter_by(name=appstruct['group']).one()
+            user.group = group            
+
+        request.rel_db_session.add(user)
+        try:
+            request.rel_db_session.commit()
+        except:
+            request.rel_db_session.rollback()
+            request.session.flash(_('Problems occured when trying to update user data. Please try again.'))
+        else:
+            request.session.flash(_('Successfully updated.'))
+
+        return HTTPFound(location=request.route_url('users.edit_user', id=user.id))
+
+    if 'id' in request.matchdict:
+        try:
+            user = request.rel_db_session.query(users.User).filter_by(id=request.matchdict['id']).one()
+        except NoResultFound:
+            raise exceptions.NotFound()
+
+        appstruct = {'email':user.email,
+                     'group':user.group.name,
+                     '_id':user.id}
+
+        return {'content':edit_user_form.render(appstruct),
+                'main':main,
+                'form_stuff':{'form_title':FORM_TITLE},                
+                'user':get_logged_user(request),
+                }
+    
+    raise exceptions.NotFound()
+
+def ajax_set_active(request):
+    user_id = request.POST.get('id', None)
+    if user_id is None:
+        return Respose('insufficient params')
+    
+    try:
+        user = request.rel_db_session.query(users.User).filter_by(id=user_id).one()
+    except NoResultFound:
+        return Respose('nothing to do')
+
+    activation_key = user.registration_profile.activation_key
+    
+    try:
+        user = RegistrationProfileManager.activate_user(activation_key, request)
+    except InvalidActivationKey:
+        if user.is_active == False:
+            user.is_active = True
+            request.rel_db_session.add(user)
+            try:
+                request.rel_db_session.commit()
+            except:
+                request.rel_db_session.rollback()
+                return Response('error')
+
+    except ActivationError:        
+        return Response('error')
+  
+    return Response('done')
+
+def ajax_set_inactive(request):
+    user_id = request.POST.get('id', None)
+    if user_id is None:
+        return Respose('insufficient params')
+    
+    try:
+        user = request.rel_db_session.query(users.User).filter_by(id=user_id).one()
+    except NoResultFound:
+        return Respose('nothing to do')
+
+    if user.is_active == True:
+        user.is_active = False
+        request.rel_db_session.add(user)
+        try:
+            request.rel_db_session.commit()
+        except:
+            request.rel_db_session.rollback()
+            return Response('error')
+
+    return Response('done')

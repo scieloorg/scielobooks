@@ -40,7 +40,7 @@
         
         <h3>
           ${document.title}
-          <span class="edit"><a href="${request.route_path('staff.edit_book', sbid=request.matchdict['sbid'])}" i18n:translate="">Edit</a></span>
+          <span class="edit"><a href="${request.route_url('staff.edit_book', sbid=request.matchdict['sbid'])}" i18n:translate="">Edit</a></span>
         </h3>
           
         

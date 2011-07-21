@@ -92,8 +92,8 @@ class Admin(User):
 
     __mapper_args__ = {'polymorphic_identity': 'admin'}
 
-    def __init__(self, username, password, group, fullname=None, email=None):
-        super(Admin,self).__init__(username,password,group,fullname,email)
+    def __init__(self, username, password, group, **kwargs):
+        super(Admin,self).__init__(username, password, group, **kwargs)
 
 
 class Editor(User):

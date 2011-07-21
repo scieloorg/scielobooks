@@ -1,3 +1,8 @@
+
+'''
+These view callables use request.route_path instead of request.route_url, because of the 
+integration needs with the wordpress based app (apache proxy rules).
+'''
 from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid import exceptions
@@ -36,7 +41,7 @@ def get_book_parts(monograph_sbid, request):
        parts = request.db.view('scielobooks/monographs_and_parts', include_docs=True, key=[monograph_sbid, 1])
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
-
+    
     monograph_parts = []
     for i,part in enumerate(parts):
         partnumber = str(i).zfill(2)
@@ -118,15 +123,16 @@ def cover(request):
     try:
         monograph = request.db.get(sbid)
         if 'thumbnail' in request.path:
-            img = request.db.fetch_attachment(monograph,monograph['cover_thumbnail']['filename'])
+            img = request.db.fetch_attachment(monograph,monograph['cover_thumbnail']['filename'], stream=True)
         else:
-            img = request.db.fetch_attachment(monograph,monograph['cover']['filename'])
+            img = request.db.fetch_attachment(monograph,monograph['cover']['filename'], stream=True)
     except (couchdbkit.ResourceNotFound, KeyError):
         img = urllib2.urlopen(static_url('scielobooks:static/images/fakecover.jpg', request))
+    
+    response = Response(content_type='image/jpeg')
+    response.app_iter = img
 
-        return Response(body=img.read(), content_type='image/jpeg')
-
-    return Response(body=img, content_type='image/jpeg')
+    return response
 
 def pdf_file(request):
     sbid = request.matchdict['sbid']
@@ -135,7 +141,7 @@ def pdf_file(request):
     monograph = Monograph.get(request.db, sbid)
     if req_part == monograph.isbn:
         try:
-            pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'])
+            pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
         except (couchdbkit.ResourceNotFound, AttributeError):
             raise exceptions.NotFound()
     else:
@@ -147,11 +153,14 @@ def pdf_file(request):
 
         part = Part.get(request.db, selected_part['part_sbid'])
         try:
-            pdf_file = request.db.fetch_attachment(part._id, part.pdf_file['filename'])
+            pdf_file = request.db.fetch_attachment(part._id, part.pdf_file['filename'], stream=True)
         except (couchdbkit.ResourceNotFound, AttributeError):
             raise exceptions.NotFound()
 
-    return Response(body=pdf_file, content_type='application/pdf')
+    response = Response(content_type='application/pdf')
+    response.app_iter = pdf_file
+
+    return response
 
 def swf_file(request):
     sbid = request.matchdict['sbid']
@@ -178,4 +187,7 @@ def swf_file(request):
 
     swf_file = functions.convert_pdf2swf(pdf_file)
 
-    return Response(body=swf_file.read(), content_type='application/x-shockwave-flash')
+    response = Response(content_type='application/x-shockwave-flash')
+    response.app_iter = swf_file
+
+    return response
