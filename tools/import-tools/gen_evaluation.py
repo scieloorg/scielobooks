@@ -9,6 +9,7 @@ from scielobooks.models import models
 
 db_uri = 'http://localhost:5984'
 db_name = 'scielobooks_1a'
+rdbms_dsn = 'sqlite:///../../database.db'
 
 orphan_books = []
 integrity_error = []
@@ -63,7 +64,7 @@ if __name__ == '__main__':
     server = couchdbkit.Server(db_uri)
     db = server.get_or_create_db(db_name)
 
-    engine = sqlalchemy.create_engine('sqlite:///../../database.db', echo=False)
+    engine = sqlalchemy.create_engine(rdbms_dsn, echo=False)
     Session = sessionmaker(bind=engine)
     session = Session()
 
