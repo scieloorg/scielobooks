@@ -312,6 +312,16 @@ def new_publisher(request):
             'form_stuff':{'form_title':FORM_TITLE_NEW},
             }
 
+def publishers_list(request):
+    main = get_renderer(BASE_TEMPLATE).implementation()
+    publishers = request.rel_db_session.query(rel_models.Publisher).all()
+
+    return {'publishers':publishers,
+            'main':main,
+            'user':get_logged_user(request),
+            'breadcrumb': {'home':request.route_url('staff.panel')},
+            }
+    
 
 def new_book(request):
     FORM_TITLE_NEW = _('New Book Submission')
