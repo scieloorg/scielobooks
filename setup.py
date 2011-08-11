@@ -6,9 +6,9 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
-requires = ['pyramid', 'WebError', 'Babel', 'pyramid_zcml',
-            'colander', 'deform', 'couchdbkit', 'PIL', 'isisdm',
-            'SQLAlchemy', 'pyramid_handlers', 'pycrypto', 'pyramid_mailer', 'couchapp']
+requires = ['pyramid<=1.0', 'WebError', 'Babel', 'pyramid_zcml',
+            'colander', 'deform<=0.9.3', 'couchdbkit', 'PIL', 'isisdm',
+            'SQLAlchemy', 'pyramid_handlers', 'pycrypto', 'pyramid_mailer', 'couchapp', 'chameleon<1.999']
 
 setup(name='scielobooks',
       version='0.1',

@@ -142,6 +142,13 @@
     permission="admin"
   />
   <route
+    name="staff.publishers_list"
+    pattern="/staff/publisher/list"
+    view="scielobooks.staff.views.publishers_list"
+    renderer="scielobooks:staff/templates/publishers_list.pt"
+    permission="admin"
+  />
+  <route
     name="staff.new_meeting"
     pattern="/staff/meeting/new"
     view="scielobooks.staff.views.new_meeting"

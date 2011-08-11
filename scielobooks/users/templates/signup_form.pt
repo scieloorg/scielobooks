@@ -21,7 +21,7 @@
         });
     </script>
     <script type="text/javascript" src="/deform_static/scripts/deform.js"></script>
-    <script type="text/javascript" src="/deform_static/scripts/jquery-ui-1.8.4.custom.min.js" ></script>
+    <script type="text/javascript" src="/deform_static/scripts/jquery-ui-1.8.11.custom.min.js" ></script>
     <script type="text/javascript">
       deform.load()
     </script>
@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
     <link rel="stylesheet" href="/deform_static/css/form.css" type="text/css"></link>
     <link rel="stylesheet" href="/deform_static/css/theme.css" type="text/css"></link>
-    <link rel="stylesheet" href="/deform_static/css/ui-lightness/jquery-ui-1.8.4.custom.css" type="text/css"></link>
+    <link rel="stylesheet" href="/deform_static/css/ui-lightness/jquery-ui-1.8.11.custom.css" type="text/css"></link>
   </div>
 
   <div class="middle" metal:fill-slot="middle">
