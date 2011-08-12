@@ -561,3 +561,47 @@ def ajax_action_unpublish(request):
         return Response('done')
 
     return Response('nothing to do')
+
+def ajax_action_delete(request):
+    if request.method == 'POST':
+        evaluation_isbn = request.POST.get('evaluation', None)
+        
+        if evaluation_isbn is None:
+            return Respose('insufficient params')
+
+        #TODO! catch exception
+        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+
+        try:
+            parts = [part['doc'] for part in request.db.view('scielobooks/monographs_and_parts', 
+                include_docs=True, startkey=[evaluation.monograph_sbid, 0], endkey=[evaluation.monograph_sbid, 1])]
+        except couchdbkit.ResourceNotFound:
+            raise exceptions.NotFound()
+
+        request.rel_db_session.delete(evaluation)
+                
+        #TODO! catch exception
+        try:
+            request.rel_db_session.commit()
+            request.db.delete_docs(parts, all_or_nothing=True)
+            request.session.flash(_('Successfully deleted.'))
+        except:
+            request.rel_db_session.rollback()
+
+        return Response('done')
+
+    return Response('nothing to do')
+
+def ajax_action_delete_part(request):
+    if request.method == 'POST':
+        part_sbid = request.POST.get('part', None)
+        
+        if part_sbid is None:
+            return Respose('insufficient params')
+
+        request.db.delete_doc(part_sbid)
+        request.session.flash(_('Successfully deleted.'))
+
+        return Response('done')
+
+    return Response('nothing to do')

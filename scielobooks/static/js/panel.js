@@ -52,6 +52,20 @@ $(document).ready(function(){
                    location.reload();
           });  
         }        
+    });
+    
+    $('.action_delete').click(function(){
+        var selected = $(this).attr('id');
+        var evaluation = selected.split('_')[0];
+        
+        if(confirm("Please, confirm you are deleting the book ISBN: "+evaluation )){
+          $('#actions_load_icon_'+evaluation).show();
+          $.post("/staff/function/actiondelete/",
+               {"evaluation":evaluation}, function(res){
+                   $('#actions_load_icon_'+evaluation).hide();
+                   location.reload();
+          });  
+        }        
     });    
     
     /* start tablesorter */
