@@ -561,3 +561,30 @@ def ajax_action_unpublish(request):
         return Response('done')
 
     return Response('nothing to do')
+
+def ajax_action_delete(request):
+    if request.method == 'POST':
+        evaluation_isbn = request.POST.get('evaluation', None)
+        
+        if evaluation_isbn is None:
+            return Respose('insufficient params')
+
+        #TODO! catch exception
+        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+
+        monograph = Monograph.get(request.db, evaluation.monograph_sbid)
+        
+        request.rel_db_session.delete(evaluation)
+        request.db.delete_doc(monograph._id)
+
+        #TODO! catch exception
+        try:
+            request.rel_db_session.commit()
+            request.session.flash(_('Successfully deleted.'))
+        except:
+            request.rel_db_session.rollback()
+            monograph.save(request.db)
+
+        return Response('done')
+
+    return Response('nothing to do')

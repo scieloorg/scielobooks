@@ -111,6 +111,9 @@
                                    href="javascript: void(0);"
                                    class="action_unpublish"
                                    id="${evaluation.isbn}_action-unpublish" i18n:translate="">unpublish</a></li>
+                            <li><a href="javascript: void(0);"
+                                   class="action_delete"
+                                   id="${evaluation.isbn}_action-delete" i18n:translate="">delete</a></li>
                         </ul>
                         <img id="actions_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
                     </td>
