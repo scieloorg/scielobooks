@@ -41,15 +41,7 @@
                       tal:content="publisher.name" 
                       value="${publisher.name_slug}"
                       tal:attributes="selected publisher.name_slug == filters.publisher">BIREME Press</option>
-          </select>
-          <span i18n:translate="">Meeting:</span>
-          <select class="filter-by-meeting">
-              <option value="nothing" i18n:translate="">Show all</option>
-              <option tal:repeat="meeting meetings" 
-                      tal:content="meeting.date" 
-                      value="${meeting.date}"
-                      tal:attributes="selected str(meeting.date) == filters.meeting">2011-07-07</option>
-          </select>
+          </select>          
         </fieldset>
         <p tal:condition="len(evaluations) == 0">There are no records.</p>
         <table cellspacing="0" tal:condition="evaluations | nothing" 
