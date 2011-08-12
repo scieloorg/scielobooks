@@ -12,6 +12,23 @@
 
   <div metal:fill-slot="custom_script" tal:omit-tag="">
     <script src="/static/js/thickbox-compressed.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('.delete').click(function(){
+          var part = $(this).attr('id');
+        
+          if(confirm("Please, confirm you are deleting the book part" )){
+            /* $('#actions_load_icon_'+evaluation).show(); */
+            $.post("/staff/function/actiondeletepart/",
+                 {"part":part}, function(res){
+                     /* $('#actions_load_icon_'+evaluation).hide(); */
+                     location.reload();
+            });  
+          }
+
+        })
+      })
+    </script>
   </div>
 
   <div metal:fill-slot="css" tal:omit-tag="">
@@ -123,6 +140,9 @@
                 <td>
                   <span class="edit">
                     <a href="${part.edit_url}?KeepThis=true&amp;TB_iframe=true&amp;height=570&amp;width=600" class="thickbox" i18n:translate="">Edit</a>
+                  </span>
+                  <span>
+                    <a id="${part.part_sbid}" class="delete" href="javascript: void(0);" i18n:translate="">Delete</a>
                   </span>
                 </td>
             </tr>

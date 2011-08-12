@@ -209,6 +209,13 @@
     xhr="True"
     permission="admin"
   />
+  <route
+    name="staff.ajax_action_delete_part"
+    pattern="/staff/function/actiondeletepart/"
+    view="scielobooks.staff.views.ajax_action_delete_part"
+    xhr="True"
+    permission="admin"
+  />
 
 <!--
 ***************
