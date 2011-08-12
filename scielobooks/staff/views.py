@@ -357,6 +357,7 @@ def new_book(request):
         monograph = Monograph(title=evaluation.title, 
                               isbn=evaluation.isbn, 
                               publisher=evaluation.publisher.name,
+                              publisher_url=evaluation.publisher_catalog_url,
                               visible=False,
                               )
         

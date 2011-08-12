@@ -117,11 +117,13 @@
               tal:attributes="href document.publisher_url"
               href="#" i18n:translate="">Link para o Catálogo Institucional</a></p>
 
+        <span tal:omit-tag="" tal:condition="getattr(document, 'synopsis', None)">
         <div class="synopsis">
           <strong i18n:translate="">Synopsis</strong>
-          <p tal:condition="'synopsis' in document" tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+          <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>          
         </div>
         <div class="spacer"></div>
+        </span>
 
         <div class="book-parts">
           <strong>
