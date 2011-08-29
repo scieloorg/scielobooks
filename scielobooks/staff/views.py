@@ -48,25 +48,25 @@ def edit_book(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     if request.method == 'POST':
-   
+
         controls = request.POST.items()
         try:
             appstruct = monograph_form.validate(controls)
         except deform.ValidationFailure, e:
-            
-            return {'content':e.render(), 
-                    'main':main, 
+
+            return {'content':e.render(),
+                    'main':main,
                     'user':get_logged_user(request),
                     'form_stuff':{'form_title':FORM_TITLE % monograph.title,},
                     }
-        
+
         if appstruct['cover'] and appstruct['cover']['fp'] is not None:
             cover_thumbnail = {'fp': create_thumbnail(appstruct['cover']['fp']),
                                'filename': appstruct['cover']['filename'] + '.thumb.jpeg',
-                               'uid':'', 
+                               'uid':'',
                                }
             appstruct['cover_thumbnail'] = cover_thumbnail
-        
+
         existing_doc_appstruct = Monograph.get(request.db, appstruct['_id']).to_python()
         existing_doc_appstruct.update(appstruct)
         monograph = Monograph.from_python(existing_doc_appstruct)
@@ -75,7 +75,7 @@ def edit_book(request):
         request.session.flash(_('Successfully updated.'))
 
         return HTTPFound(location=request.route_url('staff.book_details', sbid=monograph._id))
-    
+
     if 'sbid' in request.matchdict:
         monograph = Monograph.get(request.db, request.matchdict['sbid'])
         appstruct = monograph.to_python()
@@ -85,7 +85,7 @@ def edit_book(request):
                 'user':get_logged_user(request),
                 'form_stuff':{'form_title':FORM_TITLE % monograph.title},
                 }
-    
+
     raise exceptions.NotFound
 
 def parts_list(request):
@@ -106,7 +106,7 @@ def parts_list(request):
                      }
 
         documents.append(part_meta)
-    
+
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     return {'documents': documents,
@@ -126,7 +126,7 @@ def new_part(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     if request.method == 'POST':
-   
+
         controls = request.POST.items()
         try:
             appstruct = part_form.validate(controls)
@@ -136,7 +136,7 @@ def new_part(request):
                     'user':get_logged_user(request),
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
                     }
-                
+
         part = Part.from_python(appstruct)
         part.monograph = monograph_id
 
@@ -147,12 +147,12 @@ def new_part(request):
             request.session.flash(_('Successfully added.'))
         else:
             request.session.flash(_('Successfully updated.'))
-    
+
         return HTTPFound(location=request.route_url('staff.edit_part', sbid=part.monograph, part_id=part._id))
 
     if 'part_id' in request.matchdict:
         part = Part.get(request.db, request.matchdict['part_id'])
-        
+
         return {'content':part_form.render(part.to_python()),
                 'main':main,
                 'user':get_logged_user(request),
@@ -167,13 +167,13 @@ def new_part(request):
 
 def book_details(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
-    
+
     sbid = request.matchdict['sbid']
     try:
         monograph = Monograph.get(request.db, sbid)
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
-        
+
     book_attachments = []
     if getattr(monograph, 'toc', None):
         toc_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.toc['filename'])
@@ -186,7 +186,7 @@ def book_details(request):
     if getattr(monograph, 'pdf_file', None):
         pdf_file_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.pdf_file['filename'])
         book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
-    
+
     evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph._id).one()
 
     parts = catalog_views.get_book_parts(monograph._id, request)
@@ -228,7 +228,7 @@ def panel(request):
                            {'text':_('Accepted with Condition'), 'value':'accepted-with-condition'},
                            {'text':_('Rejected'), 'value':'rejected'},
                           ]
-    
+
     return {'evaluations': evaluations,
             'meetings': meetings,
             'publishers':publishers,
@@ -245,10 +245,10 @@ def new_publisher(request):
     FORM_TITLE_EDIT = _('Editing %s')
 
     main = get_renderer(BASE_TEMPLATE).implementation()
-    
+
     localizer = get_localizer(request)
     publisher_form = PublisherForm.get_form(localizer)
-    
+
     if request.method == 'POST':
 
         controls = request.POST.items()
@@ -263,20 +263,20 @@ def new_publisher(request):
         del(appstruct['__LOCALE__'])
         session = request.rel_db_session
 
-        if 'slug' in request.matchdict: 
+        if 'slug' in request.matchdict:
             #edit
             slug = request.matchdict.get('slug')
             publisher = session.query(rel_models.Publisher).filter_by(name_slug=slug).one()
-            
+
             publisher.email = appstruct['email']
             publisher.publisher_url = appstruct['publisher_url']
-    
+
         else:
             #new
             publisher = rel_models.Publisher(**appstruct)
 
         session.add(publisher)
-            
+
         try:
             session.commit()
         except IntegrityError:
@@ -291,15 +291,15 @@ def new_publisher(request):
         request.session.flash(_('Successfully added.'))
 
         return HTTPFound(location=request.route_url('staff.panel'))
-    
+
     if 'slug' in request.matchdict:
 
         slug = request.matchdict.get('slug')
         session = request.rel_db_session
         publisher = session.query(rel_models.Publisher).filter_by(name_slug=slug).one()
-        
+
         publisher_form['name'].widget = deform.widget.TextInputWidget(disabled="disabled")
-        
+
         return {'content': publisher_form.render(publisher.as_dict()),
                 'main':main,
                 'user':get_logged_user(request),
@@ -321,7 +321,7 @@ def publishers_list(request):
             'user':get_logged_user(request),
             'breadcrumb': {'home':request.route_url('staff.panel')},
             }
-    
+
 
 def new_book(request):
     FORM_TITLE_NEW = _('New Book Submission')
@@ -354,13 +354,13 @@ def new_book(request):
 
         evaluation.publisher = publisher
 
-        monograph = Monograph(title=evaluation.title, 
-                              isbn=evaluation.isbn, 
+        monograph = Monograph(title=evaluation.title,
+                              isbn=evaluation.isbn,
                               publisher=evaluation.publisher.name,
                               publisher_url=evaluation.publisher_catalog_url,
                               visible=False,
                               )
-        
+
         evaluation.monograph_sbid = monograph._id
         request.rel_db_session.add(evaluation)
         try:
@@ -373,7 +373,7 @@ def new_book(request):
                     'user':get_logged_user(request),
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
                     }
-        
+
         monograph.save(request.db)
 
         return HTTPFound(location=request.route_url('staff.edit_book', sbid=monograph._id))
@@ -394,7 +394,7 @@ def new_meeting(request):
     meeting_form = MeetingForm.get_form(localizer)
 
     if request.method == 'POST':
-        
+
         controls = request.POST.items()
         try:
             appstruct = meeting_form.validate(controls)
@@ -404,7 +404,7 @@ def new_meeting(request):
                     'user':get_logged_user(request),
                     'form_stuff':{'form_title':FORM_TITLE_NEW},
                     }
-        
+
         del(appstruct['__LOCALE__'])
         appstruct['admin'] = get_logged_user(request)
 
@@ -421,7 +421,7 @@ def new_meeting(request):
         request.rel_db_session.add(meeting)
         #TODO! catch exception
         request.rel_db_session.commit()
-    
+
         return HTTPFound(location=request.route_url('staff.meetings_list'))
 
     if 'id' in request.matchdict:
@@ -432,7 +432,7 @@ def new_meeting(request):
                 'main':main,
                 'user':get_logged_user(request),
                 'form_stuff':{'form_title':FORM_TITLE_EDIT % str(meeting.date)},
-                }    
+                }
 
     return {'content':meeting_form.render({'date':date.today()}),
             'main':main,
@@ -451,13 +451,13 @@ def meetings_list(request):
             }
 
 def ajax_set_meeting(request):
-    if request.method == 'POST':        
+    if request.method == 'POST':
         evaluation_isbn = request.POST.get('evaluation', None)
         meeting_id = request.POST.get('meeting', None)
 
         if evaluation_isbn is None or meeting_id is None:
             return Respose('insufficient params')
-        
+
         #TODO! catch exception
         evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
         meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=meeting_id).one()
@@ -471,7 +471,7 @@ def ajax_set_meeting(request):
 
     return Response('nothing to do')
 
-def ajax_set_committee_decision(request):    
+def ajax_set_committee_decision(request):
     if request.method == 'POST':
         evaluation_isbn = request.POST.get('evaluation', None)
         decision = request.POST.get('decision', None)
@@ -481,10 +481,10 @@ def ajax_set_committee_decision(request):
 
         if decision not in STATUS_CHOICES:
             return Respose('invalid params')
-        
+
         #TODO! catch exception
         evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
-        
+
         evaluation.status = decision
         request.rel_db_session.add(evaluation)
         #TODO! catch exception
@@ -494,10 +494,10 @@ def ajax_set_committee_decision(request):
 
     return Response('nothing to do')
 
-def ajax_action_publish(request):    
+def ajax_action_publish(request):
     if request.method == 'POST':
         evaluation_isbn = request.POST.get('evaluation', None)
-        
+
         if evaluation_isbn is None:
             return Respose('insufficient params')
 
@@ -515,7 +515,7 @@ def ajax_action_publish(request):
         evaluation.is_published = True
         monograph.visible = True
 
-        request.rel_db_session.add(evaluation)        
+        request.rel_db_session.add(evaluation)
         monograph.save(request.db)
 
         #TODO! catch exception
@@ -530,16 +530,16 @@ def ajax_action_publish(request):
 
     return Response('nothing to do')
 
-def ajax_action_unpublish(request):    
+def ajax_action_unpublish(request):
     if request.method == 'POST':
         evaluation_isbn = request.POST.get('evaluation', None)
-        
+
         if evaluation_isbn is None:
             return Respose('insufficient params')
 
         #TODO! catch exception
         evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
-        
+
         if not evaluation.is_published:
             return Response('nothing to do')
 
@@ -548,7 +548,7 @@ def ajax_action_unpublish(request):
         evaluation.is_published = False
         monograph.visible = False
 
-        request.rel_db_session.add(evaluation)        
+        request.rel_db_session.add(evaluation)
         monograph.save(request.db)
 
         #TODO! catch exception
@@ -566,7 +566,7 @@ def ajax_action_unpublish(request):
 def ajax_action_delete(request):
     if request.method == 'POST':
         evaluation_isbn = request.POST.get('evaluation', None)
-        
+
         if evaluation_isbn is None:
             return Respose('insufficient params')
 
@@ -574,13 +574,13 @@ def ajax_action_delete(request):
         evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
 
         try:
-            parts = [part['doc'] for part in request.db.view('scielobooks/monographs_and_parts', 
+            parts = [part['doc'] for part in request.db.view('scielobooks/monographs_and_parts',
                 include_docs=True, startkey=[evaluation.monograph_sbid, 0], endkey=[evaluation.monograph_sbid, 1])]
         except couchdbkit.ResourceNotFound:
             raise exceptions.NotFound()
 
         request.rel_db_session.delete(evaluation)
-                
+
         #TODO! catch exception
         try:
             request.rel_db_session.commit()
@@ -596,7 +596,7 @@ def ajax_action_delete(request):
 def ajax_action_delete_part(request):
     if request.method == 'POST':
         part_sbid = request.POST.get('part', None)
-        
+
         if part_sbid is None:
             return Respose('insufficient params')
 
