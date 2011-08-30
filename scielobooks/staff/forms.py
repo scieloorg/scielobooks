@@ -54,6 +54,8 @@ class MonographForm():
         base_schema['book'].description = localizer.translate(_('Book'))
         base_schema['serie'].title = localizer.translate(_('Serie'))
         base_schema['serie'].description = localizer.translate(_('serie'))
+        base_schema['use_licence'].title = localizer.translate(_('Use Licence'))
+        base_schema['use_licence'].description = localizer.translate(_('Use Licence'))
         base_schema['pdf_file'].title = localizer.translate(_('Book in PDF'))
         base_schema['pdf_file'].description = localizer.translate(_('Full book PDF'))
         base_schema['cover'].title = localizer.translate(_('Book Cover'))
