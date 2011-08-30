@@ -6,7 +6,7 @@ _ = TranslationStringFactory('scielobooks')
 import datetime
 import deform
 import colander
-
+from ..utilities import functions
 
 class MonographForm():
 
@@ -101,7 +101,7 @@ class PublisherForm():
 
 class EvaluationForm():
     @classmethod
-    def get_form(cls, localizer):        
+    def get_form(cls, localizer):
         class Schema(colander.Schema):
             title = colander.SchemaNode(
                 colander.String(),
@@ -143,7 +143,7 @@ class EvaluationForm():
 
 class MeetingForm():
     @classmethod
-    def get_form(cls, localizer):
+    def get_form(cls, localizer, default_css=None, **kwargs):
         class Schema(colander.Schema):
             date = colander.SchemaNode(
                     colander.Date(),
@@ -166,5 +166,6 @@ class MeetingForm():
                 default= localizer.locale_name,
             )
         schema = Schema()
-
-        return deform.Form(schema, buttons=('submit',))
+        form = deform.Form(schema, buttons=('submit',))
+        functions.customize_form_css_class(form, default_css, **kwargs)
+        return form

@@ -5,6 +5,7 @@ import Image
 import StringIO
 import tempfile
 import os
+import deform
 try:
     import gfx
 except ImportError:
@@ -17,7 +18,7 @@ def slugify(text, delim=u'-'):
     Originally from:
     http://flask.pocoo.org/snippets/5/
     Generating Slugs
-    By Armin Ronacher filed in URLs 
+    By Armin Ronacher filed in URLs
     """
     result = []
     for word in _punct_re.split(text.lower()):
@@ -31,13 +32,13 @@ def create_thumbnail(img, size=None):
 
     if not size:
         size = (160, 160)
-    
+
     if not isinstance(img, basestring):
         try:
             img = img.read()
         except AttributeError:
             return None
-    
+
     img_thumb = Image.open(StringIO.StringIO(img))
     img_thumb.thumbnail(size, Image.ANTIALIAS)
     buf = StringIO.StringIO()
@@ -46,7 +47,7 @@ def create_thumbnail(img, size=None):
     return buf
 
 def convert_pdf2swf(pdf_doc):
-    
+
     if not isinstance(pdf_doc, basestring):
         try:
             pdf_doc = pdf_doc.read()
@@ -57,7 +58,7 @@ def convert_pdf2swf(pdf_doc):
 
     pdf_temp_filename = pdf_temp_file.name
     swf_temp_filename = swf_temp_file.name
-    
+
     pdf_temp_file.write(pdf_doc)
     pdf_temp_file.close()
     swf_temp_file.close()
@@ -73,5 +74,20 @@ def convert_pdf2swf(pdf_doc):
     swf.save(swf_temp_filename)
 
     os.unlink(pdf_temp_filename)
-    
+
     return open(swf_temp_filename, 'r')
+
+def customize_form_css_class(form, default_css=None, **kwargs):
+    """
+    Sets CSS classes to form widgets.
+
+    If a ``default_css`` arg is passed, all widgets' css_class attr
+    will be set with it, except field names in kwargs.
+    """
+    if not isinstance(form, deform.form.Form):
+        raise TypeError('Expecting an instance of deform.form.Form')
+
+    if default_css or kwargs:
+        for field in form:
+            field.widget.css_class = kwargs[field.name] if field.name in kwargs else default_css
+
