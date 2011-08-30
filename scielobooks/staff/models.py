@@ -6,7 +6,7 @@ import urllib2
 class Monograph(model.CouchdbDocument):
     title = model.TextProperty(required=True)
     isbn = model.TextProperty(required=True)
-    creators = model.MultiCompositeTextProperty(subkeys=['role','full_name'])
+    creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'])
     publisher = model.TextProperty(required=True)
     publisher_url = model.TextProperty()
     language = model.TextProperty(choices=(('pt', 'portugues'), ('en', 'ingles')))
@@ -17,7 +17,6 @@ class Monograph(model.CouchdbDocument):
     collection = model.TextProperty()
     format = model.CompositeTextProperty(subkeys=['height', 'width'])
     book = model.TextProperty()
-    about_author = model.MultiCompositeTextProperty(subkeys=['full_name','about',])
     serie = model.TextProperty()
     pdf_file = model.FileProperty()
     cover = model.FileProperty()
