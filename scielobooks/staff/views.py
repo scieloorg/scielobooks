@@ -31,7 +31,11 @@ MIMETYPES = {
     'application/pdf':'pdf',
     'application/epub':'epub',
 }
-STATUS_CHOICES = ['in-process','accepted', 'accepted-with-condition', 'rejected']
+STATUS_CHOICES = {'under-evaluation': _('Under Evaluation'),
+                  'accepted': _('Accepted'),
+                  'accepted-with-condition': _('Accepted with Condition'),
+                  'rejected': _('Rejected'),
+                  }
 
 def get_logged_user(request):
     userid = authenticated_userid(request)
@@ -223,11 +227,7 @@ def panel(request):
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
-    committee_decisions = [{'text':_('In Process'), 'value':'in-process'},
-                           {'text':_('Accepted'), 'value':'accepted'},
-                           {'text':_('Accepted with Condition'), 'value':'accepted-with-condition'},
-                           {'text':_('Rejected'), 'value':'rejected'},
-                          ]
+    committee_decisions = [{'text':label,'value':k} for k, label in STATUS_CHOICES.items()]
 
     return {'evaluations': evaluations,
             'meetings': meetings,
@@ -349,7 +349,7 @@ def new_book(request):
         del(appstruct['__LOCALE__'])
         publisher_slug = appstruct.pop('publisher')
         publisher = request.rel_db_session.query(rel_models.Publisher).filter_by(name_slug=publisher_slug).one()
-        appstruct['status'] = 'in-process'
+        appstruct['status'] = 'under-evaluation'
         evaluation = rel_models.Evaluation(**appstruct)
 
         evaluation.publisher = publisher
