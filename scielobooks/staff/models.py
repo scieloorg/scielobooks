@@ -18,6 +18,7 @@ class Monograph(model.CouchdbDocument):
     format = model.CompositeTextProperty(subkeys=['height', 'width'])
     book = model.TextProperty()
     serie = model.TextProperty()
+    use_licence = model.TextProperty()
     pdf_file = model.FileProperty()
     cover = model.FileProperty()
     toc = model.FileProperty()
