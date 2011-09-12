@@ -53,16 +53,16 @@ def login(request):
 
     b64_caller = request.params.get('caller', None)
     caller = base64.b64decode(b64_caller) if b64_caller is not None else referrer
-    
+
     if request.method == 'POST':
-        
+
         controls = request.POST.items()
         try:
             appstruct = login_form.validate(controls)
         except deform.ValidationFailure, e:
-            
-            return {'content':e.render(), 
-                    'main':main, 
+
+            return {'content':e.render(),
+                    'main':main,
                     'form_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
@@ -78,7 +78,7 @@ def login(request):
                     headers = remember(request, user.id)
                     return HTTPFound(location=caller, headers=headers)
             else:
-                request.session.flash(_("Username/password doesn't match"))             
+                request.session.flash(_("Username/password doesn't match"))
 
     return {
             'main':main,
@@ -102,22 +102,28 @@ def signup(request):
     signup_form = SignupForm.get_form(localizer,publisher)
 
     if request.method == 'POST':
-                
+
         controls = request.POST.items()
         try:
             appstruct = signup_form.validate(controls)
         except deform.ValidationFailure, e:
-            
-            return {'content':e.render(), 
-                    'main':main, 
-                    'form_stuff':{'form_title':FORM_TITLE},
+
+            return {'content':e.render(),
+                    'main':main,
+                    'form_stuff':{'form_title':FORM_TITLE,
+                                  'breadcrumb': [
+                                     (_('Dashboard'), request.route_url('staff.panel')),
+                                     (_('Manage Users'), request.route_url('users.list')),
+                                     (_('New User'), None),
+                                   ]
+                                 },
                     'user':get_logged_user(request),
                     }
 
         del(appstruct['__LOCALE__'])
 
         appstruct['publisher'] = request.rel_db_session.query(models.Publisher).filter_by(name_slug=appstruct['publisher']).one()
-        
+
         #FIXME! so bizarre!
         try:
             group = request.rel_db_session.query(users.Group).filter_by(name=appstruct['group']).one()
@@ -128,13 +134,13 @@ def signup(request):
         finally:
             group_name = appstruct['group']
             del(appstruct['group'])
-     
+
         if group_name == 'editor':
             user = models.Editor(group=group,**appstruct)
         elif group_name == 'admin':
             del(appstruct['publisher'])
             user = models.Admin(group=group,**appstruct)
-        
+
         registration_profile = users.RegistrationProfile(user)
 
         RegistrationProfileManager.clean_expired(request)
@@ -149,10 +155,16 @@ def signup(request):
             request.session.flash(_('This username already exists.'))
             return {'content':signup_form.render(appstruct),
                     'main':main,
-                    'form_stuff':{'form_title':FORM_TITLE},
+                    'form_stuff':{'form_title':FORM_TITLE,
+                                  'breadcrumb': [
+                                    (_('Dashboard'), request.route_url('staff.panel')),
+                                    (_('Manage Users'), request.route_url('users.list')),
+                                    (_('New User'), None),
+                                  ]
+                                 },
                     'user':get_logged_user(request),
                     }
-        else:            
+        else:
             RegistrationProfileManager.send_activation_mail(user, request)
 
 
@@ -160,7 +172,13 @@ def signup(request):
         return HTTPFound(location=request.route_url('staff.panel'))
 
     return {'content':signup_form.render(),
-            'form_stuff':{'form_title':FORM_TITLE},
+            'form_stuff':{'form_title':FORM_TITLE,
+                          'breadcrumb': [
+                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('Manage Users'), request.route_url('users.list')),
+                            (_('New User'), None),
+                          ]
+                         },
             'main':main,
             'user':get_logged_user(request),
             }
@@ -171,7 +189,7 @@ def activation(request):
     activation_key = request.params.get('key', None)
     if activation_key is None:
         raise exceptions.NotFound()
-    
+
     try:
         user = RegistrationProfileManager.activate_user(activation_key, request)
     except InvalidActivationKey:
@@ -194,9 +212,9 @@ def forgot_password(request):
         controls = request.POST.items()
         try:
             appstruct = forgot_password_form.validate(controls)
-        except deform.ValidationFailure, e:            
-            return {'content':e.render(), 
-                    'main':main, 
+        except deform.ValidationFailure, e:
+            return {'content':e.render(),
+                    'main':main,
                     'form_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
@@ -211,7 +229,7 @@ def forgot_password(request):
                     'form_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
-        
+
         account = users.AccountRecovery(user)
         request.rel_db_session.add(account)
 
@@ -246,14 +264,14 @@ def recover_password(request):
     recovery_key = request.params.get('key', None)
     if recovery_key is None:
         raise exceptions.NotFound()
-    
+
     if request.method == 'POST':
         controls = request.POST.items()
         try:
             appstruct = recovery_form.validate(controls)
-        except deform.ValidationFailure, e:            
-            return {'content':e.render(), 
-                    'main':main, 
+        except deform.ValidationFailure, e:
+            return {'content':e.render(),
+                    'main':main,
                     'form_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
@@ -273,15 +291,15 @@ def recover_password(request):
             account = request.rel_db_session.query(users.AccountRecovery).filter_by(recovery_key=recovery_key).one()
         except NoResultFound:
             raise exceptions.NotFound()
-        
+
     return {'content':recovery_form.render({'recovery_key':recovery_key}),
-            'main':main, 
+            'main':main,
             'form_stuff':{'form_title':FORM_TITLE},
             'user':get_logged_user(request),
             }
 
 def users_list(request):
-    main = get_renderer(BASE_TEMPLATE).implementation()    
+    main = get_renderer(BASE_TEMPLATE).implementation()
     user_list = request.rel_db_session.query(users.User).all()
 
     return {'users':user_list,
@@ -301,18 +319,24 @@ def edit_user(request):
         try:
             appstruct = edit_user_form.validate(controls)
         except deform.ValidationFailure, e:
-            
-            return {'content':e.render(), 
-                    'main':main, 
-                    'form_stuff':{'form_title':FORM_TITLE},
+
+            return {'content':e.render(),
+                    'main':main,
+                    'form_stuff':{'form_title':FORM_TITLE,
+                                  'breadcrumb': [
+                                    (_('Dashboard'), request.route_url('staff.panel')),
+                                    (_('Manage Users'), request.route_url('users.list')),
+                                    (FORM_TITLE, None),
+                                  ]
+                                 },
                     'user':get_logged_user(request),
                     }
-        
+
         try:
             user = request.rel_db_session.query(users.User).filter_by(id=appstruct['_id']).one()
         except NoResultFound:
             raise exceptions.NotFound()
-        
+
         if appstruct['password'] is not None:
             user.password = SHA256.new(appstruct['password']).hexdigest()
             user.password_encryption = 'SHA256'
@@ -322,7 +346,7 @@ def edit_user(request):
 
         if appstruct['group'] != user.group.name:
             group = request.rel_db_session.query(users.Group).filter_by(name=appstruct['group']).one()
-            user.group = group            
+            user.group = group
 
         request.rel_db_session.add(user)
         try:
@@ -347,24 +371,30 @@ def edit_user(request):
 
         return {'content':edit_user_form.render(appstruct),
                 'main':main,
-                'form_stuff':{'form_title':FORM_TITLE},                
+                'form_stuff':{'form_title':FORM_TITLE,
+                              'breadcrumb': [
+                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (_('Manage Users'), request.route_url('users.list')),
+                                (FORM_TITLE, None),
+                              ]
+                             },
                 'user':get_logged_user(request),
                 }
-    
+
     raise exceptions.NotFound()
 
 def ajax_set_active(request):
     user_id = request.POST.get('id', None)
     if user_id is None:
         return Respose('insufficient params')
-    
+
     try:
         user = request.rel_db_session.query(users.User).filter_by(id=user_id).one()
     except NoResultFound:
         return Respose('nothing to do')
 
     activation_key = user.registration_profile.activation_key
-    
+
     try:
         user = RegistrationProfileManager.activate_user(activation_key, request)
     except InvalidActivationKey:
@@ -377,16 +407,16 @@ def ajax_set_active(request):
                 request.rel_db_session.rollback()
                 return Response('error')
 
-    except ActivationError:        
+    except ActivationError:
         return Response('error')
-  
+
     return Response('done')
 
 def ajax_set_inactive(request):
     user_id = request.POST.get('id', None)
     if user_id is None:
         return Respose('insufficient params')
-    
+
     try:
         user = request.rel_db_session.query(users.User).filter_by(id=user_id).one()
     except NoResultFound:

@@ -104,7 +104,13 @@ def edit_book(request):
         return {'content':monograph_form.render(appstruct),
                 'main':main,
                 'user':get_logged_user(request),
-                'form_stuff':{'form_title':FORM_TITLE % monograph.title},
+                'form_stuff':{'form_title':FORM_TITLE % monograph.title,
+                              'breadcrumb': [
+                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (monograph.title, request.route_url('staff.book_details', sbid=monograph._id)),
+                                (_('Edit'), None),
+                              ]
+                             },
                 }
 
     raise exceptions.NotFound
@@ -292,7 +298,13 @@ def new_publisher(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+                    'form_stuff':{'form_title':FORM_TITLE_NEW,
+                                  'breadcrumb': [
+                                    (_('Dashboard'), request.route_url('staff.panel')),
+                                    (_('Manage Publishers'), request.route_url('staff.publishers_list')),
+                                    (_('New Publisher'), None),
+                                  ]
+                                },
                     }
         del(appstruct['__LOCALE__'])
         session = request.rel_db_session
@@ -319,7 +331,13 @@ def new_publisher(request):
             return {'content':publisher_form.render(appstruct),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+                    'form_stuff':{'form_title':FORM_TITLE_NEW,
+                                  'breadcrumb': [
+                                    (_('Dashboard'), request.route_url('staff.panel')),
+                                    (_('Manage Publishers'), request.route_url('staff.publishers_list')),
+                                    (_('New Publisher'), None),
+                                  ]
+                                 },
                     }
 
         request.session.flash(_('Successfully added.'))
@@ -337,13 +355,25 @@ def new_publisher(request):
         return {'content': publisher_form.render(publisher.as_dict()),
                 'main':main,
                 'user':get_logged_user(request),
-                'form_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name},
+                'form_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name,
+                              'breadcrumb': [
+                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (_('Manage Publishers'), request.route_url('staff.publishers_list')),
+                                (FORM_TITLE_EDIT % publisher.name, None),
+                              ]
+                            },
                 }
 
     return {'content': publisher_form.render(),
             'main':main,
             'user':get_logged_user(request),
-            'form_stuff':{'form_title':FORM_TITLE_NEW},
+            'form_stuff':{'form_title':FORM_TITLE_NEW,
+                          'breadcrumb': [
+                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('Manage Publishers'), request.route_url('staff.publishers_list')),
+                            (_('New Publisher'), None),
+                          ]
+                        },
             }
 
 def publishers_list(request):
@@ -415,7 +445,12 @@ def new_book(request):
     return {'content': evaluation_form.render(),
             'main':main,
             'user':get_logged_user(request),
-            'form_stuff':{'form_title':FORM_TITLE_NEW},
+            'form_stuff':{'form_title':FORM_TITLE_NEW,
+                          'breadcrumb': [
+                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('New Submission'), None),
+                          ]
+                         },
             }
 
 def delete_book(request):
@@ -446,7 +481,7 @@ def delete_book(request):
 
 def new_meeting(request):
     FORM_TITLE_NEW = _('New Meeting')
-    FORM_TITLE_EDIT = _('Editing %s meeting')
+    FORM_TITLE_EDIT = _('Editing %s')
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -462,8 +497,14 @@ def new_meeting(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
-                    }
+                    'form_stuff':{'form_title':FORM_TITLE_NEW,
+                                  'breadcrumb': [
+                                    (_('Dashboard'), request.route_url('staff.panel')),
+                                    (_('Manage Meetings'), request.route_url('staff.meetings_list')),
+                                    (_('New Meeting'), None),
+                                  ]
+                                 },
+                                }
 
         del(appstruct['__LOCALE__'])
         appstruct['admin'] = get_logged_user(request)
@@ -491,13 +532,25 @@ def new_meeting(request):
         return {'content':meeting_form.render(appstruct),
                 'main':main,
                 'user':get_logged_user(request),
-                'form_stuff':{'form_title':FORM_TITLE_EDIT % str(meeting.date)},
+                'form_stuff':{'form_title':FORM_TITLE_EDIT % unicode(meeting.description),
+                              'breadcrumb': [
+                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (_('Manage Meetings'), request.route_url('staff.meetings_list')),
+                                (FORM_TITLE_EDIT % unicode(meeting.description), None),
+                              ]
+                             },
                 }
 
     return {'content':meeting_form.render({'date':date.today()}),
             'main':main,
             'user':get_logged_user(request),
-            'form_stuff':{'form_title':FORM_TITLE_NEW},
+            'form_stuff':{'form_title':FORM_TITLE_NEW,
+                          'breadcrumb': [
+                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('Manage Meetings'), request.route_url('staff.meetings_list')),
+                            (_('New Meeting'), None),
+                          ]
+                         },
             }
 
 def meetings_list(request):

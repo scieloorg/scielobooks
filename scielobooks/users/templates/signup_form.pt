@@ -7,7 +7,7 @@
         $(document).ready(function(){
 
             $('[name="group"]').change(function(){
-                
+
                 var selected = $('option:selected', this).val();
 
                 if(selected=='admin'){
@@ -35,6 +35,17 @@
   </div>
 
   <div class="middle" metal:fill-slot="middle">
+    <div class="breadcrumb" tal:condition="form_stuff.breadcrumb | default">
+      <span tal:omit-tag="" tal:repeat="breadcrumb_level form_stuff.breadcrumb">
+        <a tal:condition="not repeat.breadcrumb_level.end"
+           tal:attributes="href breadcrumb_level[1]">
+           ${breadcrumb_level[0]} /
+        </a>
+        <span tal:condition="repeat.breadcrumb_level.end"
+              tal:replace="breadcrumb_level[0]"></span>
+      </span>
+    </div>
+
     <h2 class="form-title" tal:content="form_stuff.form_title"></h2>
 
     <ul class="form-menu" tal:condition="'form_menu' in form_stuff">
