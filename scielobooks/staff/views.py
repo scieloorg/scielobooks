@@ -76,12 +76,18 @@ def edit_book(request):
         try:
             appstruct = monograph_form.validate(controls)
         except deform.ValidationFailure, e:
-            # FIXME: There is a less expensive way to get the monograph title?
+
             monograph = Monograph.get(request.db, request.matchdict['sbid'])
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'general_stuff':{},
+                    'general_stuff':{'form_title':FORM_TITLE % monograph.title,
+                              'breadcrumb': [
+                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (monograph.title, request.route_url('staff.book_details', sbid=monograph._id)),
+                                (_('Edit'), None),
+                              ]
+                             },
                     }
 
         if appstruct['cover'] and appstruct['cover']['fp'] is not None:

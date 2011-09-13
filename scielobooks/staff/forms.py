@@ -18,6 +18,26 @@ def isbn_validate_factory(message=None):
             raise colander.Invalid(node,message)
     return isbn_validator
 
+def year_validate_factory(message=None):
+    def year_validator(node, value):
+        try:
+            i = int(value)
+        except ValueError:
+            raise colander.Invalid(node,message)
+        if i < 100 or i > 9999:
+            raise colander.Invalid(node,message)
+    return year_validator
+
+def integer_validate_factory(message=None):
+    def year_validator(node, value):
+        try:
+            i = int(value)
+        except ValueError:
+            raise colander.Invalid(node,message)
+        if i < 0:
+            raise colander.Invalid(node,message)
+    return year_validator
+
 class MonographForm():
 
     @classmethod
@@ -53,15 +73,19 @@ class MonographForm():
         base_schema['synopsis'].description = localizer.translate(_('Short synopsis'))
         base_schema['year'].title = localizer.translate(_('Year'))
         base_schema['year'].description = localizer.translate(_('Publication year'))
+        base_schema['year'].validator = year_validate_factory(message=localizer.translate(_('Invalid year format. Must be YYYY')))
         base_schema['pages'].title = localizer.translate(_('Pages'))
         base_schema['pages'].description = localizer.translate(_('Number of pages'))
+        base_schema['pages'].validator = integer_validate_factory(message=localizer.translate(_('Invalid number of pages')))
         base_schema['edition'].title = localizer.translate(_('Edition'))
         base_schema['edition'].description = localizer.translate(_('Edition'))
         base_schema['collection'].title = localizer.translate(_('Collection'))
         base_schema['collection'].description = localizer.translate(_('Collection'))
         base_schema['format'].title = localizer.translate(_('Format'))
         base_schema['format']['height'].title = localizer.translate(_('Height'))
+        base_schema['format']['height'].validator = integer_validate_factory(message=localizer.translate(_('Invalid height')))
         base_schema['format']['width'].title = localizer.translate(_('Width'))
+        base_schema['format']['width'].validator = integer_validate_factory(message=localizer.translate(_('Invalid width')))
         base_schema['book'].title = localizer.translate(_('Book'))
         base_schema['book'].description = localizer.translate(_('Book'))
         base_schema['serie'].title = localizer.translate(_('Serie'))
