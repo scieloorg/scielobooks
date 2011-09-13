@@ -69,6 +69,8 @@ def edit_book(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     if request.method == 'POST':
+        if 'btn_cancel' in request.POST:
+            return HTTPFound(location=request.route_url('staff.book_details', sbid=request.matchdict['sbid']))
 
         controls = request.POST.items()
         try:
@@ -78,7 +80,7 @@ def edit_book(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'general_stuff':{'form_title':FORM_TITLE % monograph.title,},
+                    'general_stuff':{},
                     }
 
         if appstruct['cover'] and appstruct['cover']['fp'] is not None:
@@ -294,6 +296,8 @@ def new_publisher(request):
     publisher_form = PublisherForm.get_form(localizer)
 
     if request.method == 'POST':
+        if 'btn_cancel' in request.POST:
+            return HTTPFound(location=request.route_url('staff.publishers_list'))
 
         controls = request.POST.items()
         try:
@@ -346,7 +350,7 @@ def new_publisher(request):
 
         request.session.flash(_('Successfully added.'))
 
-        return HTTPFound(location=request.route_url('staff.panel'))
+        return HTTPFound(location=request.route_url('staff.publishers_list'))
 
     if 'slug' in request.matchdict:
 
@@ -407,6 +411,8 @@ def new_book(request):
     evaluation_form['publisher'].widget = deform.widget.SelectWidget(values=(publishers), )
 
     if request.method == 'POST':
+        if 'btn_cancel' in request.POST:
+            return HTTPFound(location=request.route_url('staff.panel'))
 
         controls = request.POST.items()
         try:
@@ -497,6 +503,8 @@ def new_meeting(request):
     meeting_form = MeetingForm.get_form(localizer)
 
     if request.method == 'POST':
+        if 'btn_cancel' in request.POST:
+            return HTTPFound(location=request.route_url('staff.meetings_list'))
 
         controls = request.POST.items()
         try:

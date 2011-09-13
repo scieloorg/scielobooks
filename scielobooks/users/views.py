@@ -63,7 +63,7 @@ def login(request):
 
             return {'content':e.render(),
                     'main':main,
-                    'form_stuff':{'form_title':FORM_TITLE},
+                    'general_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
         try:
@@ -83,7 +83,7 @@ def login(request):
     return {
             'main':main,
             'content':login_form.render(),
-            'form_stuff':{'form_title':FORM_TITLE},
+            'general_stuff':{'form_title':FORM_TITLE},
             'user':get_logged_user(request),
            }
 
@@ -102,6 +102,8 @@ def signup(request):
     signup_form = SignupForm.get_form(localizer,publisher)
 
     if request.method == 'POST':
+        if 'btn_cancel' in request.POST:
+            return HTTPFound(location=request.route_url('users.list'))
 
         controls = request.POST.items()
         try:
@@ -110,7 +112,7 @@ def signup(request):
 
             return {'content':e.render(),
                     'main':main,
-                    'form_stuff':{'form_title':FORM_TITLE,
+                    'general_stuff':{'form_title':FORM_TITLE,
                                   'breadcrumb': [
                                      (_('Dashboard'), request.route_url('staff.panel')),
                                      (_('Manage Users'), request.route_url('users.list')),
@@ -155,7 +157,7 @@ def signup(request):
             request.session.flash(_('This username already exists.'))
             return {'content':signup_form.render(appstruct),
                     'main':main,
-                    'form_stuff':{'form_title':FORM_TITLE,
+                    'general_stuff':{'form_title':FORM_TITLE,
                                   'breadcrumb': [
                                     (_('Dashboard'), request.route_url('staff.panel')),
                                     (_('Manage Users'), request.route_url('users.list')),
@@ -172,7 +174,7 @@ def signup(request):
         return HTTPFound(location=request.route_url('staff.panel'))
 
     return {'content':signup_form.render(),
-            'form_stuff':{'form_title':FORM_TITLE,
+            'general_stuff':{'form_title':FORM_TITLE,
                           'breadcrumb': [
                             (_('Dashboard'), request.route_url('staff.panel')),
                             (_('Manage Users'), request.route_url('users.list')),
@@ -209,13 +211,16 @@ def forgot_password(request):
     forgot_password_form = ForgotPasswordForm.get_form(localizer)
 
     if request.method == 'POST':
+        if 'btn_cancel' in request.POST:
+            return HTTPFound(location=request.route_url('users.login'))
+
         controls = request.POST.items()
         try:
             appstruct = forgot_password_form.validate(controls)
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
-                    'form_stuff':{'form_title':FORM_TITLE},
+                    'general_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
 
@@ -226,7 +231,7 @@ def forgot_password(request):
             request.session.flash(_("Username doesn't exist."))
             return {'content':forgot_password_form.render(appstruct),
                     'main':main,
-                    'form_stuff':{'form_title':FORM_TITLE},
+                    'general_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
 
@@ -240,7 +245,7 @@ def forgot_password(request):
             request.session.flash(_('Problems occured when trying to redefine the user password. Please try again.'))
             return {'content':forgot_password_form.render(appstruct),
                     'main':main,
-                    'form_stuff':{'form_title':FORM_TITLE},
+                    'general_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
         else:
@@ -251,7 +256,7 @@ def forgot_password(request):
 
     return {'content':forgot_password_form.render(),
             'main':main,
-            'form_stuff':{'form_title':FORM_TITLE},
+            'general_stuff':{'form_title':FORM_TITLE},
             'user':get_logged_user(request),
             }
 
@@ -272,7 +277,7 @@ def recover_password(request):
         except deform.ValidationFailure, e:
             return {'content':e.render(),
                     'main':main,
-                    'form_stuff':{'form_title':FORM_TITLE},
+                    'general_stuff':{'form_title':FORM_TITLE},
                     'user':get_logged_user(request),
                     }
 
@@ -294,7 +299,7 @@ def recover_password(request):
 
     return {'content':recovery_form.render({'recovery_key':recovery_key}),
             'main':main,
-            'form_stuff':{'form_title':FORM_TITLE},
+            'general_stuff':{'form_title':FORM_TITLE},
             'user':get_logged_user(request),
             }
 
@@ -315,6 +320,9 @@ def edit_user(request):
     edit_user_form = EditUserForm.get_form(localizer,publishers)
 
     if request.method == 'POST':
+        if 'btn_cancel' in request.POST:
+            return HTTPFound(location=request.route_url('users.list'))
+
         controls = request.POST.items()
         try:
             appstruct = edit_user_form.validate(controls)
@@ -322,7 +330,7 @@ def edit_user(request):
 
             return {'content':e.render(),
                     'main':main,
-                    'form_stuff':{'form_title':FORM_TITLE,
+                    'general_stuff':{'form_title':FORM_TITLE,
                                   'breadcrumb': [
                                     (_('Dashboard'), request.route_url('staff.panel')),
                                     (_('Manage Users'), request.route_url('users.list')),
@@ -371,7 +379,7 @@ def edit_user(request):
 
         return {'content':edit_user_form.render(appstruct),
                 'main':main,
-                'form_stuff':{'form_title':FORM_TITLE,
+                'general_stuff':{'form_title':FORM_TITLE,
                               'breadcrumb': [
                                 (_('Dashboard'), request.route_url('staff.panel')),
                                 (_('Manage Users'), request.route_url('users.list')),

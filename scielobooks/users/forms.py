@@ -8,12 +8,12 @@ import colander
 class SignupForm():
     @classmethod
     def get_form(cls, localizer, publishers):
-        
+
         def validate_username(node, value):
             msg = _("Username must not contains non alphanumeric digits",)
             if not value.isalnum():
                 raise colander.Invalid(node, msg)
-            
+
         class Schema(colander.Schema):
             username = colander.SchemaNode(
                 colander.String(),
@@ -53,12 +53,17 @@ class SignupForm():
             )
         schema = Schema()
 
-        return deform.Form(schema, buttons=('submit',))
+        btn_cancel = deform.form.Button(name='btn_cancel', title=localizer.translate(_('Cancel')),
+                               type='submit', value='cancel', disabled=False)
+        btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
+                               type='submit', value='submit', disabled=False)
+
+        return deform.Form(schema, buttons=(btn_cancel, btn_submit))
 
 class EditUserForm():
     @classmethod
     def get_form(cls, localizer, publishers):
-        class Schema(colander.Schema):            
+        class Schema(colander.Schema):
             password = colander.SchemaNode(
                 colander.String(),
                 validator=colander.Length(min=5),
@@ -93,16 +98,21 @@ class EditUserForm():
             )
             _id = colander.SchemaNode(
                 colander.String(),
-                widget = deform.widget.HiddenWidget(),                
+                widget = deform.widget.HiddenWidget(),
             )
         schema = Schema()
 
-        return deform.Form(schema, buttons=('submit',))
+        btn_cancel = deform.form.Button(name='btn_cancel', title=localizer.translate(_('Cancel')),
+                               type='submit', value='cancel', disabled=False)
+        btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
+                               type='submit', value='submit', disabled=False)
+
+        return deform.Form(schema, buttons=(btn_cancel, btn_submit))
 
 class LoginForm():
     @classmethod
     def get_form(cls, localizer):
-        
+
         class Schema(colander.Schema):
             username = colander.SchemaNode(
                 colander.String(),
@@ -122,18 +132,21 @@ class LoginForm():
             )
         schema = Schema()
 
-        return deform.Form(schema, buttons=('submit',))
+        btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
+                               type='submit', value='submit', disabled=False)
+
+        return deform.Form(schema, buttons=(btn_submit,))
 
 class ForgotPasswordForm():
     @classmethod
     def get_form(cls, localizer):
-        
+
         class Schema(colander.Schema):
             username = colander.SchemaNode(
                 colander.String(),
                 title=localizer.translate(_('Username')),
                 description=localizer.translate(_('User name')),
-            )            
+            )
             __LOCALE__ = colander.SchemaNode(
                 colander.String(),
                 widget = deform.widget.HiddenWidget(),
@@ -141,12 +154,17 @@ class ForgotPasswordForm():
             )
         schema = Schema()
 
-        return deform.Form(schema, buttons=('submit',))
+        btn_cancel = deform.form.Button(name='btn_cancel', title=localizer.translate(_('Cancel')),
+                               type='submit', value='cancel', disabled=False)
+        btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
+                               type='submit', value='submit', disabled=False)
+
+        return deform.Form(schema, buttons=(btn_cancel, btn_submit))
 
 class RecoverPasswordForm():
     @classmethod
     def get_form(cls, localizer):
-        
+
         class Schema(colander.Schema):
             new_password = colander.SchemaNode(
                 colander.String(),
@@ -156,7 +174,7 @@ class RecoverPasswordForm():
             )
             recovery_key = colander.SchemaNode(
                 colander.String(),
-                widget = deform.widget.HiddenWidget(),                
+                widget = deform.widget.HiddenWidget(),
             )
             __LOCALE__ = colander.SchemaNode(
                 colander.String(),
@@ -165,4 +183,9 @@ class RecoverPasswordForm():
             )
         schema = Schema()
 
-        return deform.Form(schema, buttons=('submit',))
+        btn_cancel = deform.form.Button(name='btn_cancel', title=localizer.translate(_('Cancel')),
+                               type='submit', value='cancel', disabled=False)
+        btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
+                               type='submit', value='submit', disabled=False)
+
+        return deform.Form(schema, buttons=(btn_cancel, btn_submit))

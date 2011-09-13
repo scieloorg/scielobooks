@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
-  <title metal:fill-slot="custom_title">${general_stuff.form_title}</title>
+  <title metal:fill-slot="custom_title" tal:condition="general_stuff.form_title | default">${general_stuff.form_title}</title>
 
   <div metal:fill-slot="custom_script">
     <script type="text/javascript" src="/deform_static/scripts/deform.js"></script>
@@ -28,7 +28,7 @@
   </div>
 
   <div class="middle" metal:fill-slot="middle">
-    <h2 class="form-title" tal:content="general_stuff.form_title"></h2>
+    <h2 class="form-title" tal:condition="general_stuff.form_title | default" tal:content="general_stuff.form_title"></h2>
 
     <ul class="form-menu" tal:condition="'form_menu' in general_stuff">
       <li tal:repeat="item general_stuff.form_menu">
