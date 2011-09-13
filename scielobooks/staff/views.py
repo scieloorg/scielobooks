@@ -74,7 +74,8 @@ def edit_book(request):
         try:
             appstruct = monograph_form.validate(controls)
         except deform.ValidationFailure, e:
-
+            # FIXME: There is a less expensive way to get the monograph title?
+            monograph = Monograph.get(request.db, request.matchdict['sbid'])
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),

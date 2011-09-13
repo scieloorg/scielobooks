@@ -6,7 +6,17 @@ _ = TranslationStringFactory('scielobooks')
 import datetime
 import deform
 import colander
-from ..utilities import functions
+from ..utilities import functions, isbn
+
+def url_validate_factory(message=None):
+    url_re = "^(?#Protocol)(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?#Username:Password)(?:\w+:\w+@)?(?#Subdomains)(?:(?:[-\w]+\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\d]{1,5})?(?#Directories)(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?#Query)(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?#Anchor)(?:#(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)?$"
+    return colander.Regex(url_re,message)
+
+def isbn_validate_factory(message=None):
+    def isbn_validator(node, value):
+        if not isbn.isValidISBN(value):
+            raise colander.Invalid(node,message)
+    return isbn_validator
 
 class MonographForm():
 
@@ -29,12 +39,14 @@ class MonographForm():
         base_schema['title'].description = localizer.translate(_('Title'))
         base_schema['isbn'].title = localizer.translate(_('ISBN'))
         base_schema['isbn'].description = localizer.translate(_('ISBN 13'))
+        base_schema['isbn'].validator = isbn_validate_factory(localizer.translate(_('Not a valid ISBN number')))
         base_schema['creators'].title = localizer.translate(_('Creators'))
         base_schema['creators'].description = localizer.translate(_('Authors, translators, editors...'))
         base_schema['publisher'].title = localizer.translate(_('Publisher'))
         base_schema['publisher'].description = localizer.translate(_('Select the publisher'))
         base_schema['publisher_url'].title = localizer.translate(_('Publisher\'s Catalog URL'))
         base_schema['publisher_url'].description = localizer.translate(_('URL to the refered book, at the publisher\'s catalog'))
+        base_schema['publisher_url'].validator = url_validate_factory(localizer.translate(_('Not a valid URL')))
         base_schema['language'].title = localizer.translate(_('Language'))
         base_schema['language'].description = localizer.translate(_('Book language'))
         base_schema['synopsis'].title = localizer.translate(_('Synopsis'))
@@ -86,6 +98,7 @@ class PublisherForm():
             )
             publisher_url = colander.SchemaNode(
                 colander.String(),
+                validator=url_validate_factory(message=localizer.translate(_('Not a valid url'))),
                 missing=None,
                 title=localizer.translate(_('Institutional Site')),
                 description=localizer.translate(_('URL to publisher\'s institutional site')),
@@ -111,6 +124,7 @@ class EvaluationForm():
             )
             isbn = colander.SchemaNode(
                 colander.String(),
+                validator=isbn_validate_factory(message=localizer.translate(_('Invalid ISBN number'))),
                 title=localizer.translate(_('ISBN')),
                 description=localizer.translate(_('ISBN 13')),
             )
@@ -124,6 +138,7 @@ class EvaluationForm():
             publisher_catalog_url = colander.SchemaNode(
                 colander.String(),
                 missing=None,
+                validator=url_validate_factory(message=localizer.translate(_('Not a valid url'))),
                 title=localizer.translate(_('Publisher\'s Catalog URL')),
                 description=localizer.translate(_('URL to the refered book, at the publisher\'s catalog')),
             )
