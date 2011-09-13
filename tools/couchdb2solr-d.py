@@ -9,7 +9,7 @@ from twisted.web.iweb import IBodyProducer
 
 
 SOLR_URL = 'http://localhost:8080/scielobooks'
-DB_URL = 'http://localhost:5984/scielobooks_1a/'
+DB_URL = 'http://localhost:5984/scielobooks/'
 
 
 class StringProducer(object):

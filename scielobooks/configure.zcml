@@ -65,7 +65,7 @@
     view="scielobooks.staff.views.panel"
     renderer="scielobooks:evaluation/templates/books_list.pt"
     permission="editors"
-  />  
+  />
   <route
     name="evaluation.book_details"
     pattern="/evaluation/id/{sbid}"
@@ -78,6 +78,13 @@
  STAFF APP
 ***********************************
 -->
+  <route
+    name="staff.delete_book"
+    pattern="/staff/book/id/{sbid}"
+    view="scielobooks.staff.views.delete_book"
+    permission="admin"
+    request_method="DELETE"
+  />
   <route
     name="staff.book_details"
     pattern="/staff/book/id/{sbid}"
@@ -199,13 +206,6 @@
     name="staff.ajax_action_unpublish"
     pattern="/staff/function/actionunpublish/"
     view="scielobooks.staff.views.ajax_action_unpublish"
-    xhr="True"
-    permission="admin"
-  />
-  <route
-    name="staff.ajax_action_delete"
-    pattern="/staff/function/actiondelete/"
-    view="scielobooks.staff.views.ajax_action_delete"
     xhr="True"
     permission="admin"
   />
