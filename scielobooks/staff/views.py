@@ -78,7 +78,7 @@ def edit_book(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE % monograph.title,},
+                    'general_stuff':{'form_title':FORM_TITLE % monograph.title,},
                     }
 
         if appstruct['cover'] and appstruct['cover']['fp'] is not None:
@@ -104,7 +104,7 @@ def edit_book(request):
         return {'content':monograph_form.render(appstruct),
                 'main':main,
                 'user':get_logged_user(request),
-                'form_stuff':{'form_title':FORM_TITLE % monograph.title,
+                'general_stuff':{'form_title':FORM_TITLE % monograph.title,
                               'breadcrumb': [
                                 (_('Dashboard'), request.route_url('staff.panel')),
                                 (monograph.title, request.route_url('staff.book_details', sbid=monograph._id)),
@@ -161,7 +161,7 @@ def new_part(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+                    'general_stuff':{'form_title':FORM_TITLE_NEW},
                     }
 
         part = Part.from_python(appstruct)
@@ -183,13 +183,13 @@ def new_part(request):
         return {'content':part_form.render(part.to_python()),
                 'main':main,
                 'user':get_logged_user(request),
-                'form_stuff':{'form_title':FORM_TITLE_EDIT % part.title},
+                'general_stuff':{'form_title':FORM_TITLE_EDIT % part.title},
                 }
 
     return {'content':part_form.render(),
             'main':main,
             'user':get_logged_user(request),
-            'form_stuff':{'form_title':FORM_TITLE_NEW},
+            'general_stuff':{'form_title':FORM_TITLE_NEW},
             }
 
 def book_details(request):
@@ -224,10 +224,14 @@ def book_details(request):
             'book_attachments':book_attachments,
             'main':main,
             'user':get_logged_user(request),
-            'breadcrumb': {'home':request.route_url('staff.panel')},
             'cover_full_url': request.route_url('catalog.cover', sbid=monograph._id),
             'cover_thumb_url': request.route_url('catalog.cover_thumbnail', sbid=monograph._id),
             'add_part_url': request.route_url('staff.new_part', sbid=monograph._id),
+            'general_stuff': {'breadcrumb': [
+                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (monograph.title, None),
+                              ]
+                          }
             }
 
 def panel(request):
@@ -298,7 +302,7 @@ def new_publisher(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW,
+                    'general_stuff':{'form_title':FORM_TITLE_NEW,
                                   'breadcrumb': [
                                     (_('Dashboard'), request.route_url('staff.panel')),
                                     (_('Manage Publishers'), request.route_url('staff.publishers_list')),
@@ -331,7 +335,7 @@ def new_publisher(request):
             return {'content':publisher_form.render(appstruct),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW,
+                    'general_stuff':{'form_title':FORM_TITLE_NEW,
                                   'breadcrumb': [
                                     (_('Dashboard'), request.route_url('staff.panel')),
                                     (_('Manage Publishers'), request.route_url('staff.publishers_list')),
@@ -355,7 +359,7 @@ def new_publisher(request):
         return {'content': publisher_form.render(publisher.as_dict()),
                 'main':main,
                 'user':get_logged_user(request),
-                'form_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name,
+                'general_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name,
                               'breadcrumb': [
                                 (_('Dashboard'), request.route_url('staff.panel')),
                                 (_('Manage Publishers'), request.route_url('staff.publishers_list')),
@@ -367,7 +371,7 @@ def new_publisher(request):
     return {'content': publisher_form.render(),
             'main':main,
             'user':get_logged_user(request),
-            'form_stuff':{'form_title':FORM_TITLE_NEW,
+            'general_stuff':{'form_title':FORM_TITLE_NEW,
                           'breadcrumb': [
                             (_('Dashboard'), request.route_url('staff.panel')),
                             (_('Manage Publishers'), request.route_url('staff.publishers_list')),
@@ -383,7 +387,11 @@ def publishers_list(request):
     return {'publishers':publishers,
             'main':main,
             'user':get_logged_user(request),
-            'breadcrumb': {'home':request.route_url('staff.panel')},
+            'general_stuff':{'breadcrumb': [
+                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('Manage Publishers'), None),
+                          ]
+                         },
             }
 
 
@@ -407,7 +415,7 @@ def new_book(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+                    'general_stuff':{'form_title':FORM_TITLE_NEW},
                     }
 
         del(appstruct['__LOCALE__'])
@@ -435,7 +443,7 @@ def new_book(request):
             return {'content':evaluation_form.render(appstruct),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+                    'general_stuff':{'form_title':FORM_TITLE_NEW},
                     }
 
         monograph.save(request.db)
@@ -445,7 +453,7 @@ def new_book(request):
     return {'content': evaluation_form.render(),
             'main':main,
             'user':get_logged_user(request),
-            'form_stuff':{'form_title':FORM_TITLE_NEW,
+            'general_stuff':{'form_title':FORM_TITLE_NEW,
                           'breadcrumb': [
                             (_('Dashboard'), request.route_url('staff.panel')),
                             (_('New Submission'), None),
@@ -497,7 +505,7 @@ def new_meeting(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW,
+                    'general_stuff':{'form_title':FORM_TITLE_NEW,
                                   'breadcrumb': [
                                     (_('Dashboard'), request.route_url('staff.panel')),
                                     (_('Manage Meetings'), request.route_url('staff.meetings_list')),
@@ -532,7 +540,7 @@ def new_meeting(request):
         return {'content':meeting_form.render(appstruct),
                 'main':main,
                 'user':get_logged_user(request),
-                'form_stuff':{'form_title':FORM_TITLE_EDIT % unicode(meeting.description),
+                'general_stuff':{'form_title':FORM_TITLE_EDIT % unicode(meeting.description),
                               'breadcrumb': [
                                 (_('Dashboard'), request.route_url('staff.panel')),
                                 (_('Manage Meetings'), request.route_url('staff.meetings_list')),
@@ -544,7 +552,7 @@ def new_meeting(request):
     return {'content':meeting_form.render({'date':date.today()}),
             'main':main,
             'user':get_logged_user(request),
-            'form_stuff':{'form_title':FORM_TITLE_NEW,
+            'general_stuff':{'form_title':FORM_TITLE_NEW,
                           'breadcrumb': [
                             (_('Dashboard'), request.route_url('staff.panel')),
                             (_('Manage Meetings'), request.route_url('staff.meetings_list')),
@@ -560,7 +568,11 @@ def meetings_list(request):
     return {'meetings':meetings,
             'main':main,
             'user':get_logged_user(request),
-            'breadcrumb': {'home':request.route_url('staff.panel')},
+            'general_stuff':{'breadcrumb': [
+                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('Manage Meetings'), None),
+                          ]
+                         },
             }
 
 def ajax_set_meeting(request):

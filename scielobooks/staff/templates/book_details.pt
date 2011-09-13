@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
-  
+
   <div metal:fill-slot="custom_top" class="userbox">
     <span tal:condition="user" >
       <span tal:replace="user.username">Loro José</span> <a href="/logout">logout</a>
@@ -16,14 +16,14 @@
       $(document).ready(function(){
         $('.delete').click(function(){
           var part = $(this).attr('id');
-        
+
           if(confirm("Please, confirm you are deleting the book part" )){
             /* $('#actions_load_icon_'+evaluation).show(); */
             $.post("/staff/function/actiondeletepart/",
                  {"part":part}, function(res){
                      /* $('#actions_load_icon_'+evaluation).hide(); */
                      location.reload();
-            });  
+            });
           }
 
         })
@@ -40,11 +40,9 @@
 
     <span class="notice" i18n:translate="">Attention! Any change in the data will be immediately reflected in the records, including those already published.</span>
     <br/>
-    <div class="breadcrumb">
-      <a href="/" tal:attributes="href breadcrumb.home" i18n:translate="">Dashboard</a> / <span tal:replace="document.title">Le Petit Prince</span>
-    </div>
+
     <div class="leftCol">
-      &#160;    
+      &#160;
     </div>
 
     <div class="contentCol">
@@ -54,24 +52,24 @@
             <img tal:attributes="src cover_thumb_url" src="/static/images/fakecover.jpg" />
           </a>
         </div>
-        
+
         <h3>
           ${document.title}
           <span class="edit"><a href="${request.route_url('staff.edit_book', sbid=request.matchdict['sbid'])}" i18n:translate="">Edit</a></span>
         </h3>
-          
-        
+
+
         <dl class="metadata">
           <span tal:omit-tag="" tal:condition="getattr(document, 'creators', None)">
           <dt i18n:translate="">Author:</dt>
             <dd tal:repeat="person document.creators" tal:content="person.full_name">Soares, Sandra Regina</dd>
           </span>
-  
+
           <span tal:omit-tag="" tal:condition="getattr(document, 'publisher', None)">
           <dt i18n:translate="">Publisher:</dt>
             <dd tal:content="document.publisher">EDUSP</dd>
           </span>
-              
+
           <span tal:omit-tag="" tal:condition="getattr(document, 'language', None)">
           <dt i18n:translate="">Language:</dt>
             <dd tal:content="document.language">Português |</dd>
@@ -120,7 +118,7 @@
         <span tal:omit-tag="" tal:condition="getattr(document, 'synopsis', None)">
         <div class="synopsis">
           <strong i18n:translate="">Synopsis</strong>
-          <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>          
+          <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
         </div>
         <div class="spacer"></div>
         </span>
@@ -148,7 +146,7 @@
                   </span>
                 </td>
             </tr>
-          </table>          
+          </table>
         </div>
         <div class="spacer"></div>
 
@@ -170,6 +168,6 @@
         </div>
 
       </div>
-    </div>    
+    </div>
   </div>
 </p>
