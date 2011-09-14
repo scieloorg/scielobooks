@@ -21,7 +21,7 @@
     </div>
 
     <div class="middle" metal:fill-slot="middle">
-        
+
         <h2 i18n:translate="">Meetings</h2>
 
         <ul class="menu">
@@ -43,8 +43,11 @@
                 <tr tal:repeat="meeting meetings">
                     <td tal:content="meeting.date">2011-02-17</td>
                     <td>
-                      ${meeting.description}
-                      <span class="edit"><a href="${request.route_url('staff.edit_meeting', id=meeting.id)}">Edit</a></span>
+                      <strong>${meeting.description}</strong>
+
+                      <ul class="actions">
+                        <li><a href="${request.route_url('staff.edit_meeting', id=meeting.id)}" i18n:translate="">Edit</a></li>
+                      </ul>
                     </td>
                     <td><a href="${request.route_url('evaluation.books_list')}?meeting=${str(meeting.date)}">permalink</a></td>
 

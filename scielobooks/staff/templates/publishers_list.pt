@@ -21,11 +21,11 @@
     </div>
 
     <div class="middle" metal:fill-slot="middle">
-       
+
         <h2 i18n:translate="">Publishers</h2>
 
         <ul class="menu">
-          <li><a href="${request.route_url('staff.new_publisher')}" 
+          <li><a href="${request.route_url('staff.new_publisher')}"
                    i18n:translate="">New publisher</a></li>
         </ul>
 
@@ -42,8 +42,14 @@
             <tbody>
                 <tr tal:repeat="publisher publishers">
                     <td>
-                      ${publisher.name}
-                      <span class="edit"><a href="${request.route_url('staff.edit_publisher', slug=publisher.name_slug)}">Edit</a></span>
+                      <strong>${publisher.name}</strong>
+
+                      <ul class="actions">
+                        <li>
+                            <a href="${request.route_url('staff.edit_publisher', slug=publisher.name_slug)}" i18n:translate="">Edit</a>
+                        </li>
+                      </ul>
+
                     </td>
                     <td><a href="mailto:${publisher.email}" tal:content="publisher.email"></a></td>
                     <td><a href="${publisher.publisher_url}">${publisher.publisher_url}</a></td>

@@ -78,16 +78,16 @@
                           <li tal:condition="(evaluation.status == 'accepted' or evaluation.status == 'accepted-with-condition') and evaluation.is_published != True">
                             <a href="javascript: void(0);"
                                class="action_publish"
-                               id="${evaluation.isbn}_action-publish" i18n:translate="">publish</a>
+                               id="${evaluation.isbn}_action-publish" i18n:translate="">Publish</a>
                           </li>
                           <li><a tal:condition="evaluation.is_published == True"
                                  href="javascript: void(0);"
                                  class="action_unpublish"
-                                 id="${evaluation.isbn}_action-unpublish" i18n:translate="">unpublish</a>
+                                 id="${evaluation.isbn}_action-unpublish" i18n:translate="">Unpublish</a>
                           </li>
                           <li><a href="javascript: void(0);"
                                  class="action_delete"
-                                 id="${evaluation.monograph_sbid}_${evaluation.isbn}_action-delete" i18n:translate="">delete</a>
+                                 id="${evaluation.monograph_sbid}_${evaluation.isbn}_action-delete" i18n:translate="">Delete</a>
                           </li>
                         </ul>
 
