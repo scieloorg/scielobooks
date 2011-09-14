@@ -42,12 +42,19 @@ class MonographForm():
 
     @classmethod
     def get_form(cls, localizer):
-        role_values = [('author','Author'),('translator','Translator'),('editor','Editor')]
+        role_values = [('individual_author',localizer.translate(_('Individual author'))),
+                       ('corporate_author',localizer.translate(_('Corporate author'))),
+                       ('translator',localizer.translate(_('Translator'))),
+                       ('editor',localizer.translate(_('Editor')))]
+        language_values = [('pt', localizer.translate(_('Portuguese'))),
+                           ('en', localizer.translate(_('English')))]
 
         base_schema = Monograph.get_schema()
         base_schema['synopsis'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
-        base_schema['individual_authors'].children[0].children[0].widget = deform.widget.SelectWidget(values=role_values)
-        base_schema['corporate_authors'].children[0].children[0].widget = deform.widget.SelectWidget(values=role_values)
+        base_schema['creators'].children[0]['role'].widget = deform.widget.SelectWidget(values=role_values)
+        base_schema['creators'].children[0]['role'].title = localizer.translate(_('Role'))
+        base_schema['creators'].children[0]['full_name'].title = localizer.translate(_('Full name'))
+        base_schema['creators'].children[0]['link_resume'].title = localizer.translate(_('Resume link'))
 
         #i18n
         base_schema.add(colander.SchemaNode(
@@ -61,15 +68,14 @@ class MonographForm():
         base_schema['isbn'].title = localizer.translate(_('ISBN'))
         base_schema['isbn'].description = localizer.translate(_('ISBN 13'))
         base_schema['isbn'].validator = isbn_validate_factory(localizer.translate(_('Invalid ISBN number')))
-        base_schema['individual_authors'].title = localizer.translate(_('Individual author'))
-        base_schema['individual_authors'].description = localizer.translate(_('Authors, translators, editors...'))
-        base_schema['corporate_authors'].title = localizer.translate(_('Creators'))
-        base_schema['corporate_authors'].description = localizer.translate(_('Authors, translators, editors...'))
+        base_schema['creators'].title = localizer.translate(_('Creator'))
+        base_schema['creators'].description = localizer.translate(_('Authors, translators, editors...'))
         base_schema['publisher'].title = localizer.translate(_('Publisher'))
         base_schema['publisher'].description = localizer.translate(_('Select the publisher'))
         base_schema['publisher_url'].title = localizer.translate(_('Publisher\'s Catalog URL'))
         base_schema['publisher_url'].description = localizer.translate(_('URL to the refered book, at the publisher\'s catalog'))
         base_schema['publisher_url'].validator = url_validate_factory(localizer.translate(_('Invalid URL')))
+        base_schema['language'].widget = deform.widget.SelectWidget(values=language_values)
         base_schema['language'].title = localizer.translate(_('Language'))
         base_schema['language'].description = localizer.translate(_('Book language'))
         base_schema['synopsis'].title = localizer.translate(_('Synopsis'))
@@ -90,7 +96,11 @@ class MonographForm():
         base_schema['edition'].title = localizer.translate(_('Edition'))
         base_schema['edition'].description = localizer.translate(_('Edition'))
         base_schema['collection'].title = localizer.translate(_('Collection'))
-        base_schema['collection'].description = localizer.translate(_('Collection'))
+        base_schema['collection']['individual_author'].title = localizer.translate(_('Individual author'))
+        base_schema['collection']['corporate_author'].title = localizer.translate(_('Corporate author'))
+        base_schema['collection']['title'].title = localizer.translate(_('Title'))
+        base_schema['collection']['english_translated_title'].title = localizer.translate(_('English translated title'))
+        base_schema['collection']['total_number_of_volumes'].title = localizer.translate(_('Total number of volumes'))
         base_schema['format'].title = localizer.translate(_('Format'))
         base_schema['format']['height'].title = localizer.translate(_('Height'))
         base_schema['format']['height'].validator = integer_validate_factory(message=localizer.translate(_('Invalid height')))
@@ -99,7 +109,9 @@ class MonographForm():
         base_schema['book'].title = localizer.translate(_('Book'))
         base_schema['book'].description = localizer.translate(_('Book'))
         base_schema['serie'].title = localizer.translate(_('Serie'))
-        base_schema['serie'].description = localizer.translate(_('serie'))
+        base_schema['serie']['title'].title = localizer.translate(_('Title'))
+        base_schema['serie']['issue'].title = localizer.translate(_('Issue'))
+        base_schema['serie']['issue_number'].title = localizer.translate(_('Issue Number'))
         base_schema['use_licence'].title = localizer.translate(_('Use Licence'))
         base_schema['use_licence'].description = localizer.translate(_('Use Licence'))
         base_schema['pdf_file'].title = localizer.translate(_('Book in PDF'))
