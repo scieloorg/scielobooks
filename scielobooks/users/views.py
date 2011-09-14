@@ -309,7 +309,11 @@ def users_list(request):
 
     return {'users':user_list,
             'main':main,
-            'breadcrumb': {'home':request.route_url('staff.panel')},
+            'general_stuff':{'breadcrumb': [
+                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (_('Manage Users'), None),
+                              ]
+                             },
             }
 
 def edit_user(request):
