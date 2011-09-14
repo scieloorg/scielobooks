@@ -55,6 +55,7 @@ class MonographForm():
         base_schema['creators'].children[0]['role'].title = localizer.translate(_('Role'))
         base_schema['creators'].children[0]['full_name'].title = localizer.translate(_('Full name'))
         base_schema['creators'].children[0]['link_resume'].title = localizer.translate(_('Resume link'))
+        base_schema['creators'].children[0]['link_resume'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
 
         #i18n
         base_schema.add(colander.SchemaNode(
@@ -101,6 +102,7 @@ class MonographForm():
         base_schema['collection']['title'].title = localizer.translate(_('Title'))
         base_schema['collection']['english_translated_title'].title = localizer.translate(_('English translated title'))
         base_schema['collection']['total_number_of_volumes'].title = localizer.translate(_('Total number of volumes'))
+        base_schema['collection']['total_number_of_volumes'].validator = integer_validate_factory(message=localizer.translate(_('Invalid number')))
         base_schema['format'].title = localizer.translate(_('Format'))
         base_schema['format']['height'].title = localizer.translate(_('Height'))
         base_schema['format']['height'].validator = integer_validate_factory(message=localizer.translate(_('Invalid height')))
