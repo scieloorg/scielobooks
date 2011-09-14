@@ -1,6 +1,6 @@
 
 '''
-These view callables use request.route_path instead of request.route_url, because of the 
+These view callables use request.route_path instead of request.route_url, because of the
 integration needs with the wordpress based app (apache proxy rules).
 '''
 from pyramid.view import view_config
@@ -19,7 +19,7 @@ import couchdbkit
 import urllib2
 import deform
 
-BASE_TEMPLATE = 'scielobooks:templates/base.pt'
+BASE_TEMPLATE = 'scielobooks:templates/base-public.pt'
 MIMETYPES = {
     'application/pdf':'PDF',
     'application/epub':'ePub',
@@ -41,20 +41,20 @@ def get_book_parts(monograph_sbid, request):
        parts = request.db.view('scielobooks/monographs_and_parts', include_docs=True, key=[monograph_sbid, 1])
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
-    
+
     monograph_parts = []
     for i,part in enumerate(parts):
         partnumber = str(i).zfill(2)
         part_meta = {'part_sbid':part['id'],
                      'partnumber':partnumber,
-                     'title':part['doc']['title'],                     
+                     'title':part['doc']['title'],
                      'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_sbid, part=partnumber),
                      'preview_url':request.route_path('catalog.chapter_details',sbid=monograph_sbid, chapter=partnumber),
                      'swf_url': request.route_path('catalog.swf_file', sbid=monograph_sbid, part=partnumber),
                      'edit_url':request.route_path('staff.edit_part', sbid=monograph_sbid, part_id=part['id']),
                      }
         monograph_parts.append(part_meta)
-    
+
     return monograph_parts
 
 def book_details(request):
@@ -63,7 +63,7 @@ def book_details(request):
         monograph = Monograph.get(request.db, sbid)
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
-        
+
     if not monograph.visible:
         raise exceptions.NotFound()
 
@@ -75,7 +75,7 @@ def book_details(request):
         book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
 
     main = get_renderer(BASE_TEMPLATE).implementation()
-    
+
     return {'document':monograph,
             'book_attachments':book_attachments,
             'parts':parts,
@@ -95,7 +95,7 @@ def chapter_details(request):
         monograph = Monograph.get(request.db, sbid)
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
-        
+
     if not monograph.visible:
         raise exceptions.NotFound()
 
@@ -111,7 +111,7 @@ def chapter_details(request):
     return {'document':monograph,
             'document_pdf_url': request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn),
             'parts':parts,
-            'part':part,            
+            'part':part,
             'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
             'breadcrumb':{'home':request.registry.settings['solr_url'],
                           'book':request.route_path('catalog.book_details', sbid=sbid),},
@@ -128,7 +128,7 @@ def cover(request):
             img = request.db.fetch_attachment(monograph,monograph['cover']['filename'], stream=True)
     except (couchdbkit.ResourceNotFound, KeyError):
         img = urllib2.urlopen(static_url('scielobooks:static/images/fakecover.jpg', request))
-    
+
     response = Response(content_type='image/jpeg')
     response.app_iter = img
 
@@ -148,7 +148,7 @@ def pdf_file(request):
         parts = get_book_parts(monograph._id, request)
         try:
             selected_part = parts[int(req_part)]
-        except (IndexError, ValueError):            
+        except (IndexError, ValueError):
             raise exceptions.NotFound()
 
         part = Part.get(request.db, selected_part['part_sbid'])
@@ -165,7 +165,7 @@ def pdf_file(request):
 def swf_file(request):
     sbid = request.matchdict['sbid']
     req_part = request.matchdict['part']
-    
+
     monograph = Monograph.get(request.db, sbid)
     if req_part == monograph.isbn:
         try:
@@ -176,7 +176,7 @@ def swf_file(request):
         parts = get_book_parts(monograph._id, request)
         try:
             selected_part = parts[int(req_part)]
-        except (IndexError, ValueError):            
+        except (IndexError, ValueError):
             raise exceptions.NotFound()
 
         part = Part.get(request.db, selected_part['part_sbid'])

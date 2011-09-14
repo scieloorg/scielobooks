@@ -22,15 +22,15 @@
 
     <div class="middle" metal:fill-slot="middle">
         <div class="breadcrumb"></div>
-             
+
         <h2 i18n:translate="">Administrative Dashboard</h2>
 
         <ul class="menu">
-            <li id="newSubmission"><a href="${request.route_url('staff.new_book')}" 
+            <li id="newSubmission"><a href="${request.route_url('staff.new_book')}"
                    i18n:translate="">New Submission</a></li>
-            <li id="manageSubmission"><a href="${request.route_url('staff.meetings_list')}" 
+            <li id="manageSubmission"><a href="${request.route_url('staff.meetings_list')}"
                    i18n:translate="">Manage Meetings</a></li>
-            <li id="managePublishers"><a href="${request.route_url('staff.publishers_list')}" 
+            <li id="managePublishers"><a href="${request.route_url('staff.publishers_list')}"
                    i18n:translate="">Manage Publishers</a></li>
             <li id="manageUsers"><a href="${request.route_url('users.list')}"
                    i18n:translate="">Manage Users</a></li>
@@ -66,33 +66,51 @@
                       <th i18n:translate="">Meeting</th>
                       <th i18n:translate="">Committee Decision</th>
                       <th i18n:translate="">Publication Status</th>
-                      <th i18n:translate="">Action</th>
                   </tr>
               </thead>
               <tbody>
                   <tr tal:repeat="evaluation evaluations">
                       <td tal:content="evaluation.publisher.name">FAFIMUNDO</td>
                       <td >
-                          <a href="${request.route_url('staff.book_details', sbid=evaluation.monograph_sbid)}"><strong>${evaluation.title}</strong></a>
+                        <a href="${request.route_url('staff.book_details', sbid=evaluation.monograph_sbid)}"><strong>${evaluation.title}</strong></a>
+
+                        <ul class="actions">
+                          <li tal:condition="(evaluation.status == 'accepted' or evaluation.status == 'accepted-with-condition') and evaluation.is_published != True">
+                            <a href="javascript: void(0);"
+                               class="action_publish"
+                               id="${evaluation.isbn}_action-publish" i18n:translate="">Publish</a>
+                          </li>
+                          <li><a tal:condition="evaluation.is_published == True"
+                                 href="javascript: void(0);"
+                                 class="action_unpublish"
+                                 id="${evaluation.isbn}_action-unpublish" i18n:translate="">Unpublish</a>
+                          </li>
+                          <li><a href="javascript: void(0);"
+                                 class="action_delete"
+                                 id="${evaluation.monograph_sbid}_${evaluation.isbn}_action-delete" i18n:translate="">Delete</a>
+                          </li>
+                        </ul>
+
+                        <img id="actions_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
                       </td>
                       <td >
-                          <select class="meetings">
-                              <option value="nothing">---</option>
-                              <option tal:repeat="meeting meetings"
-                                      tal:content="meeting.description if meeting.description else meeting.date"
-                                      value="${evaluation.isbn}_${meeting.id}"
-                                      tal:attributes="selected evaluation.meeting == meeting"></option>
-                          </select>
-                          <img id="meeting_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
+                        <select class="meetings">
+                          <option value="nothing">---</option>
+                          <option tal:repeat="meeting meetings"
+                                  tal:content="meeting.description if meeting.description else meeting.date"
+                                  value="${evaluation.isbn}_${meeting.id}"
+                                  tal:attributes="selected evaluation.meeting == meeting"></option>
+                        </select>
+                        <img id="meeting_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
                       </td>
                       <td>
-                          <select class="committee-decision">
-                              <option tal:repeat="decision committee_decisions"
-                                    tal:content="decision.text"
-                                    value="${evaluation.isbn}_${decision.value}"
-                                    tal:attributes="selected evaluation.status == decision.value">Accepted</option>
-                          </select>
-                          <img id="committee-decision_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
+                        <select class="committee-decision">
+                          <option tal:repeat="decision committee_decisions"
+                                  tal:content="decision.text"
+                                  value="${evaluation.isbn}_${decision.value}"
+                                  tal:attributes="selected evaluation.status == decision.value">Accepted</option>
+                        </select>
+                        <img id="committee-decision_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
                       </td>
                       <td>
                           <span tal:condition="evaluation.is_published == True"
@@ -100,27 +118,14 @@
                           <span tal:condition="evaluation.is_published != True"
                                 class="status-false pub-status" title="Not Published"></span>
                       </td>
-                      <td>
-                          <ul class="actions">
-                              <li tal:condition="evaluation.status == 'accepted' or evaluation.status == 'accepted-with-condition'"><a tal:condition="evaluation.is_published != True"
-                                     href="javascript: void(0);"
-                                     class="action_publish"
-                                     id="${evaluation.isbn}_action-publish" i18n:translate="">publish</a></li>
-                              <li><a tal:condition="evaluation.is_published == True"
-                                     href="javascript: void(0);"
-                                     class="action_unpublish"
-                                     id="${evaluation.isbn}_action-unpublish" i18n:translate="">unpublish</a></li>
-                              <li><a href="javascript: void(0);"
-                                     class="action_delete"
-                                     id="${evaluation.monograph_sbid}_${evaluation.isbn}_action-delete" i18n:translate="">delete</a></li>
-                          </ul>
-                          <img id="actions_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
-                      </td>
                   </tr>
               </tbody>
           </table>
           <p class="pagination">
-            <span tal:repeat="page_no pagination" tal:attributes="class 'selected_page' if page_no.pg_number == page else default"><a href="${request.route_url('staff.panel')}?${page_no.url}">${page_no.pg_number}</a></span>
+            <span tal:repeat="page_no pagination"
+                  tal:attributes="class 'selected_page' if page_no.pg_number == page else default">
+              <a href="${request.route_url('staff.panel')}?${page_no.url}">${page_no.pg_number}</a>
+            </span>
           </p>
         </span>
         <div class="spacer"></div>
