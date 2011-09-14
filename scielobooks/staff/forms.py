@@ -41,7 +41,7 @@ def integer_validate_factory(message=None):
 class MonographForm():
 
     @classmethod
-    def get_form(cls, localizer):
+    def get_form(cls, localizer, **kwargs):
         role_values = [('individual_author',localizer.translate(_('Individual author'))),
                        ('corporate_author',localizer.translate(_('Corporate author'))),
                        ('translator',localizer.translate(_('Translator'))),
@@ -55,6 +55,7 @@ class MonographForm():
         base_schema['creators'].children[0]['role'].title = localizer.translate(_('Role'))
         base_schema['creators'].children[0]['full_name'].title = localizer.translate(_('Full name'))
         base_schema['creators'].children[0]['link_resume'].title = localizer.translate(_('Resume link'))
+        base_schema['creators'].children[0]['link_resume'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
 
         #i18n
         base_schema.add(colander.SchemaNode(
@@ -72,6 +73,7 @@ class MonographForm():
         base_schema['creators'].description = localizer.translate(_('Authors, translators, editors...'))
         base_schema['publisher'].title = localizer.translate(_('Publisher'))
         base_schema['publisher'].description = localizer.translate(_('Select the publisher'))
+        base_schema['publisher'].widget = deform.widget.SelectWidget(values=kwargs.get('publisher_values'))
         base_schema['publisher_url'].title = localizer.translate(_('Publisher\'s Catalog URL'))
         base_schema['publisher_url'].description = localizer.translate(_('URL to the refered book, at the publisher\'s catalog'))
         base_schema['publisher_url'].validator = url_validate_factory(localizer.translate(_('Invalid URL')))
@@ -101,6 +103,7 @@ class MonographForm():
         base_schema['collection']['title'].title = localizer.translate(_('Title'))
         base_schema['collection']['english_translated_title'].title = localizer.translate(_('English translated title'))
         base_schema['collection']['total_number_of_volumes'].title = localizer.translate(_('Total number of volumes'))
+        base_schema['collection']['total_number_of_volumes'].validator = integer_validate_factory(message=localizer.translate(_('Invalid number')))
         base_schema['format'].title = localizer.translate(_('Format'))
         base_schema['format']['height'].title = localizer.translate(_('Height'))
         base_schema['format']['height'].validator = integer_validate_factory(message=localizer.translate(_('Invalid height')))
