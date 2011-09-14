@@ -19,11 +19,11 @@
 
   <div metal:fill-slot="custom_top" class="userbox">
     <span tal:condition="user" >
-      <span tal:replace="user.username">Loro José</span> <a href="/logout" i18n:translate="">logout</a>
+      <span tal:content="user.username" class="userName">Loro José</span> <a href="/logout" class="logout" i18n:translate=""><span>logout</span></a>
     </span>
     <span tal:condition="not user">
-      <a href="/login" i18n:translate="">login</a>
-      <a href="/users/forgot_password" i18n:translate="">forgot your password?</a>
+      <a href="/login" class="login" i18n:translate="">login</a>
+      <a href="/users/forgot_password" class="forgotPass" i18n:translate="">forgot your password?</a>
     </span>
   </div>
 

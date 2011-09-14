@@ -3,7 +3,7 @@ body {
     color: #000;
     margin: 0px;
     padding: 0px;
-    background: url(/static/images/bodyBg.jpg) repeat-x;
+    background: url(/static/images/body_bg.jpg) repeat-x;
 }
 a {
     color: #2F2F2F;
@@ -15,10 +15,13 @@ a:hover {
 .container {
     width: 1004px;
     margin: 0px auto;
+	background: url("/static/images/watermark.png") no-repeat scroll 140px 0 transparent;
+	min-height: 500px;
 }
 .top {
     margin-bottom: 5px;
     border-bottom: 1px solid #a21c1d;
+	height: 108px;
 }
 .top H1, .top H2 {
     float: left;
@@ -27,7 +30,7 @@ a:hover {
     border: 0px;
 }
 .top H1 {
-    margin: 12px 0px 0px 12px;
+    margin: 0px;
 }
 .top H2 {
     margin: 52px 0px 0px 30px;
@@ -35,12 +38,91 @@ a:hover {
 }
 .top H1 A {
     display: block;
-    width: 78px;
-    height: 73px;
-    background: url(/static/images/logo_scielo_small.png) no-repeat;
+    width: 133px;
+    height: 134px;
+    background: url(/static/images/logo_SciELO.png) no-repeat;
 }
 .top H1 A SPAN {
     display: none;
+}
+
+h2 {
+	color: #A21C1D;
+	margin: 0px;
+	clear: both;
+}
+.userbox {
+	text-align: right;
+	font-size: 12px;
+	padding: 5px;
+	margin-bottom: 60px;
+}
+.userbox .userName {
+	font-weight: bold;
+    background: url(/static/images/icon_user.gif) top left no-repeat;
+	padding: 3px 15px 0 22px;
+}
+.userbox a.logout {
+	font-weight: bold;
+    background: url(/static/images/icon_logout.gif) top left no-repeat;
+	padding: 3px 0px 0 22px;
+}
+.userbox .login {
+	font-weight: bold;
+    background: url(/static/images/icon_login.gif) top left no-repeat;
+	padding: 3px 0px 0 20px;
+	margin-right: 15px;
+}
+.userbox .forgotPass {
+	font-weight: bold;
+    background: url(/static/images/icon_pass.gif) top left no-repeat;
+	padding: 3px 0px 0 16px;
+}
+#form_language {
+}
+#form_language ul {
+	margin: 0px;
+}
+#form_language li {
+	margin-left: 5px;
+	border-left: 1px solid #cecece;
+	padding-left: 5px;
+}
+#form_language li:first-child {
+	border: none;
+}
+
+ul.menu {
+	margin: 0px;
+	margin-bottom: 35px;
+	padding: 0px;
+	list-style: none;
+}
+ul.menu li {
+	color: #FFF;
+	font-size: 13px;
+	background: #DFDFDF;
+	float: left;
+	margin: 0px;
+	border-left: 1px solid #BFBFBF;
+}
+ul.menu li:first-child {
+	border-left: none;
+}
+ul.menu li:last-child {
+	border-right: 1px solid #BFBFBF;
+}
+ul.menu li a {
+	padding: 5px 15px;
+	display: block;
+	font-weight: bold;
+}
+ul.menu li a:hover {
+	background-color: #BFBFBF;
+	border-bottom: none;
+}
+fieldset {
+	clear: both;
 }
 .middle .leftCol, .contentCol {
     float: left;
@@ -54,6 +136,7 @@ a:hover {
 }
 .breadcrumb {
     font-size: 80%;
+	clear: both;
 }
 .breadcrumb A {
     color: #A21C1D;
