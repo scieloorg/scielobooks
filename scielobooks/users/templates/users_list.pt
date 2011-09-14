@@ -12,18 +12,12 @@
     <link rel="stylesheet" href="/static/css/style-tablesorter.css" type="text/css" media="screen"></link>
   </div>
 
-  <div class="middle" metal:fill-slot="middle">
-    <div class="breadcrumb">
-      <a href="/" tal:attributes="href breadcrumb.home" i18n:translate="">Dashboard</a> / <span i18n:translate="">Manage Users</span>
-    </div>
-    <div class="leftCol">
-        &#160;
-    </div>
 
+  <div class="middle" metal:fill-slot="middle">       
     <h2 i18n:translate="">Manage Users</h2>
 
-    <ul>
-      <li><a href="${request.route_url('users.signup')}">New User</a></li>
+    <ul class="menu">
+      <li><a href="${request.route_url('users.signup')}">Add user</a></li>
     </ul>
 
     <table cellspacing="0" class="tablesorter tablePanel" id="users-list-table">
