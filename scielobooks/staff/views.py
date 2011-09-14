@@ -25,7 +25,7 @@ import colander
 import urllib
 
 from .models import Monograph, Part
-from ..utilities.functions import create_thumbnail
+from ..utilities.functions import create_thumbnail, slugify
 
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'
 MIMETYPES = {
@@ -64,7 +64,8 @@ def edit_book(request):
     FORM_TITLE = _('Submission of %s')
 
     localizer = get_localizer(request)
-    monograph_form = MonographForm.get_form(localizer)
+    publishers = request.rel_db_session.query(rel_models.Publisher.name_slug, rel_models.Publisher.name).all()
+    monograph_form = MonographForm.get_form(localizer, publisher_values=publishers)
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -109,6 +110,11 @@ def edit_book(request):
     if 'sbid' in request.matchdict:
         monograph = Monograph.get(request.db, request.matchdict['sbid'])
         appstruct = monograph.to_python()
+
+        try:
+            appstruct['publisher'] = [key for key, value in publishers if value == appstruct['publisher']][0]
+        except IndexError:
+            appstruct['publisher'] = slugify(appstruct['publisher'])
 
         return {'content':monograph_form.render(appstruct),
                 'main':main,

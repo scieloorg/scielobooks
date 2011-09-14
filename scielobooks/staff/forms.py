@@ -41,7 +41,7 @@ def integer_validate_factory(message=None):
 class MonographForm():
 
     @classmethod
-    def get_form(cls, localizer):
+    def get_form(cls, localizer, **kwargs):
         role_values = [('individual_author',localizer.translate(_('Individual author'))),
                        ('corporate_author',localizer.translate(_('Corporate author'))),
                        ('translator',localizer.translate(_('Translator'))),
@@ -73,6 +73,7 @@ class MonographForm():
         base_schema['creators'].description = localizer.translate(_('Authors, translators, editors...'))
         base_schema['publisher'].title = localizer.translate(_('Publisher'))
         base_schema['publisher'].description = localizer.translate(_('Select the publisher'))
+        base_schema['publisher'].widget = deform.widget.SelectWidget(values=kwargs.get('publisher_values'))
         base_schema['publisher_url'].title = localizer.translate(_('Publisher\'s Catalog URL'))
         base_schema['publisher_url'].description = localizer.translate(_('URL to the refered book, at the publisher\'s catalog'))
         base_schema['publisher_url'].validator = url_validate_factory(localizer.translate(_('Invalid URL')))
