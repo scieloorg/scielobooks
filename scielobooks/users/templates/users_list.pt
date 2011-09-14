@@ -13,7 +13,7 @@
   </div>
 
 
-  <div class="middle" metal:fill-slot="middle">       
+  <div class="middle" metal:fill-slot="middle">
     <h2 i18n:translate="">Manage Users</h2>
 
     <ul class="menu">
@@ -26,32 +26,34 @@
           <th>Role</th>
           <th>Username</th>
           <th>Email</th>
-          <th>Active</th>
-          <th>Actions</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
         <tr tal:repeat="user users">
           <td tal:content="user.group.name"></td>
           <td>
-            <a href="${request.route_url('users.edit_user', id=user.id)}"><strong tal:content="user.username"></strong></a>
+            <strong tal:content="user.username"></strong>
+
+            <ul class="actions">
+              <li>
+                <a href="${request.route_url('users.edit_user', id=user.id)}" i18n:translate="">Edit</a>
+              </li>
+              <li tal:condition="not user.is_active">
+                <a href="javascript: void(0);" class="action_activate" id="${user.id}">Activate</a>
+              </li>
+              <li tal:condition="user.is_active">
+                <a href="javascript: void(0);" class="action_deactivate" id="${user.id}">Deactivate</a>
+              </li>
+            </ul>
+
+            <img id="actions_load_icon_${user.id}" src="/static/images/ajax-loader.gif" style="display:none"/>
           </td>
           <td>
             <a href="mailto:${user.email}" tal:content="user.email"></a>
           </td>
           <td style="text-align:center;">
             <span tal:attributes="class 'status-true' if user.is_active else 'status-false';title 'active' if user.is_active else 'inactive'"></span>
-          </td>
-          <td>
-            <ul class="actions">
-              <li tal:condition="not user.is_active">
-                <a href="javascript: void(0);" class="action_activate" id="${user.id}">activate</a>
-              </li>
-              <li tal:condition="user.is_active">
-                <a href="javascript: void(0);" class="action_deactivate" id="${user.id}">deactivate</a>
-              </li>
-            </ul>
-            <img id="actions_load_icon_${user.id}" src="/static/images/ajax-loader.gif" style="display:none"/>
           </td>
         </tr>
       </tbody>

@@ -53,7 +53,7 @@ class Catalog(object):
 
     @property
     def total_pages(self):
-        return (self.total_items/self._limit)
+        return (self.total_items + self._limit // 2) // self._limit
 
 def get_logged_user(request):
     userid = authenticated_userid(request)
