@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
 
-    <div metal:fill-slot="custom_script" tal:omit-tag="">        
+    <div metal:fill-slot="custom_script" tal:omit-tag="">
         <script src="/static/js/jquery.tablesorter.js"></script>
         <script src="/static/js/evaluation-books_list.js"></script>
     </div>
@@ -21,19 +21,16 @@
     </div>
 
     <div class="middle" metal:fill-slot="middle">
-        <div class="breadcrumb">
-          <a href="/" tal:attributes="href breadcrumb.home" i18n:translate="">Dashboard</a> / <span i18n:translate="">Manage Meetings</span>
-        </div>      
         
         <h2 i18n:translate="">Meetings</h2>
 
         <ul class="menu">
-          <li><a href="${request.route_url('staff.new_meeting')}" 
-                   i18n:translate="">New Meeting</a></li>
+          <li><a href="${request.route_url('staff.new_meeting')}"
+                 i18n:translate="">New Meeting</a></li>
         </ul>
 
         <p tal:condition="len(meetings) == 0">There are no records.</p>
-        <table cellspacing="0" tal:condition="meetings | nothing" 
+        <table cellspacing="0" tal:condition="meetings | nothing"
                class="tablesorter tablePanel" id="meetings-table">
             <thead>
                 <tr>

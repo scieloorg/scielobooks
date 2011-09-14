@@ -65,7 +65,12 @@ class MonographForm():
         base_schema['editorial_decision'].title = localizer.translate(_('Editorial Decision'))
         base_schema['editorial_decision'].description = localizer.translate(_('Editorial Decision in PDF'))
 
-        return deform.Form(base_schema, buttons=('submit',))
+        btn_cancel = deform.form.Button(name='btn_cancel', title=localizer.translate(_('Cancel')),
+                               type='submit', value='cancel', disabled=False)
+        btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
+                               type='submit', value='submit', disabled=False)
+
+        return deform.Form(base_schema, buttons=(btn_cancel, btn_submit,))
 
 
 class PublisherForm():
@@ -97,7 +102,12 @@ class PublisherForm():
             )
         schema = Schema()
 
-        return deform.Form(schema, buttons=('submit',))
+        btn_cancel = deform.form.Button(name='btn_cancel', title=localizer.translate(_('Cancel')),
+                               type='submit', value='cancel', disabled=False)
+        btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
+                               type='submit', value='submit', disabled=False)
+
+        return deform.Form(schema, buttons=(btn_cancel, btn_submit,))
 
 
 class EvaluationForm():
@@ -140,7 +150,12 @@ class EvaluationForm():
             )
         schema = Schema()
 
-        return deform.Form(schema, buttons=(localizer.translate(_('submit')),))
+        btn_cancel = deform.form.Button(name='btn_cancel', title=localizer.translate(_('Cancel')),
+                               type='submit', value='cancel', disabled=False)
+        btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
+                               type='submit', value='submit', disabled=False)
+
+        return deform.Form(schema, buttons=(btn_cancel, btn_submit,))
 
 class MeetingForm():
     @classmethod
@@ -167,6 +182,12 @@ class MeetingForm():
                 default= localizer.locale_name,
             )
         schema = Schema()
-        form = deform.Form(schema, buttons=('submit',))
-        functions.customize_form_css_class(form, default_css, **kwargs)
+
+        btn_cancel = deform.form.Button(name='btn_cancel', title=localizer.translate(_('Cancel')),
+                               type='submit', value='cancel', disabled=False)
+        btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
+                               type='submit', value='submit', disabled=False)
+
+        form = deform.Form(schema, buttons=(btn_cancel, btn_submit,))
+        #functions.customize_form_css_class(form, default_css, **kwargs)
         return form

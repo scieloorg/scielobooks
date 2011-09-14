@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:tal="http://xml.zope.org/namespaces/tal"  
-  xmlns:i18n="http://xml.zope.org/namespaces/i18n"  
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   i18n:domain="scielobooks">
 
   <head>
@@ -24,10 +24,10 @@
       tal:content="msg" />
   </div>
   <div class="middle">
-    <h2 class="form-title" tal:content="form_stuff.form_title"></h2>
+    <h2 class="form-title" tal:content="general_stuff.form_title"></h2>
 
-    <ul class="form-menu" tal:condition="'form_menu' in form_stuff">
-      <li tal:repeat="item form_stuff.form_menu">
+    <ul class="form-menu" tal:condition="'form_menu' in general_stuff">
+      <li tal:repeat="item general_stuff.form_menu">
         <a tal:attributes="href item.url" tal:content="item.text"/>
       </li>
     </ul>

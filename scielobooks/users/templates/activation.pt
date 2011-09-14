@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
   <title metal:fill-slot="custom_title" i18n:translate="">Username activation</title>
-    
+
   <div class="middle" metal:fill-slot="middle" tal:condition="active | nothing">
     <h2 i18n:translate="">Welcome to SciELOBooks staff. What do you want to do?</h2>
     <ul>

@@ -22,6 +22,7 @@ from ..catalog import views as catalog_views
 import couchdbkit
 import deform
 import colander
+import urllib
 
 from .models import Monograph, Part
 from ..utilities.functions import create_thumbnail
@@ -37,11 +38,27 @@ STATUS_CHOICES = {'under-evaluation': _('Under Evaluation'),
                   'rejected': _('Rejected'),
                   }
 
+class Catalog(object):
+    """
+    Represents a paginated set of evaluation records
+    """
+    def __init__(self, queryset, limit=10):
+        self._queryset = queryset
+        self._limit = int(limit)
+        self.total_items = self._queryset.count()
+
+    def page(self, page_number):
+        offset = (page_number - 1) * self._limit
+        return self._queryset.limit(self._limit).offset(offset).all()
+
+    @property
+    def total_pages(self):
+        return (self.total_items/self._limit)
+
 def get_logged_user(request):
     userid = authenticated_userid(request)
     if userid:
         return request.rel_db_session.query(user_models.User).get(userid)
-
 
 def edit_book(request):
     FORM_TITLE = _('Submission of %s')
@@ -52,6 +69,8 @@ def edit_book(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     if request.method == 'POST':
+        if 'btn_cancel' in request.POST:
+            return HTTPFound(location=request.route_url('staff.book_details', sbid=request.matchdict['sbid']))
 
         controls = request.POST.items()
         try:
@@ -61,7 +80,7 @@ def edit_book(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE % monograph.title,},
+                    'general_stuff':{},
                     }
 
         if appstruct['cover'] and appstruct['cover']['fp'] is not None:
@@ -87,7 +106,13 @@ def edit_book(request):
         return {'content':monograph_form.render(appstruct),
                 'main':main,
                 'user':get_logged_user(request),
-                'form_stuff':{'form_title':FORM_TITLE % monograph.title},
+                'general_stuff':{'form_title':FORM_TITLE % monograph.title,
+                              'breadcrumb': [
+                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (monograph.title, request.route_url('staff.book_details', sbid=monograph._id)),
+                                (_('Edit'), None),
+                              ]
+                             },
                 }
 
     raise exceptions.NotFound
@@ -138,7 +163,7 @@ def new_part(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+                    'general_stuff':{'form_title':FORM_TITLE_NEW},
                     }
 
         part = Part.from_python(appstruct)
@@ -160,13 +185,13 @@ def new_part(request):
         return {'content':part_form.render(part.to_python()),
                 'main':main,
                 'user':get_logged_user(request),
-                'form_stuff':{'form_title':FORM_TITLE_EDIT % part.title},
+                'general_stuff':{'form_title':FORM_TITLE_EDIT % part.title},
                 }
 
     return {'content':part_form.render(),
             'main':main,
             'user':get_logged_user(request),
-            'form_stuff':{'form_title':FORM_TITLE_NEW},
+            'general_stuff':{'form_title':FORM_TITLE_NEW},
             }
 
 def book_details(request):
@@ -201,26 +226,46 @@ def book_details(request):
             'book_attachments':book_attachments,
             'main':main,
             'user':get_logged_user(request),
-            'breadcrumb': {'home':request.route_url('staff.panel')},
             'cover_full_url': request.route_url('catalog.cover', sbid=monograph._id),
             'cover_thumb_url': request.route_url('catalog.cover_thumbnail', sbid=monograph._id),
             'add_part_url': request.route_url('staff.new_part', sbid=monograph._id),
+            'general_stuff': {'breadcrumb': [
+                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (monograph.title, None),
+                              ]
+                          }
             }
-
 
 def panel(request):
     filter_publisher = request.params.get('publisher', None)
     filter_meeting = request.params.get('meeting', None)
+    try:
+        page = int(request.params.get('page', 1))
+    except ValueError:
+        page = 1
+
     if filter_publisher is not None and len(filter_publisher) > 0:
         if filter_meeting is not None and len(filter_meeting) > 0:
-            evaluations = request.rel_db_session.query(rel_models.Evaluation).join(rel_models.Publisher).join(rel_models.Meeting).filter(rel_models.Publisher.name_slug==filter_publisher and rel_models.Meeting.date==filter_meeting).all()
+            evaluations = request.rel_db_session.query(rel_models.Evaluation).join(rel_models.Publisher).join(rel_models.Meeting).filter(rel_models.Publisher.name_slug==filter_publisher and rel_models.Meeting.date==filter_meeting)
         else:
-            evaluations = request.rel_db_session.query(rel_models.Evaluation).join(rel_models.Publisher).filter(rel_models.Publisher.name_slug==filter_publisher).all()
+            evaluations = request.rel_db_session.query(rel_models.Evaluation).join(rel_models.Publisher).filter(rel_models.Publisher.name_slug==filter_publisher)
     else:
         if filter_meeting is not None and len(filter_meeting) > 0:
-            evaluations = request.rel_db_session.query(rel_models.Evaluation).join(rel_models.Meeting).filter(rel_models.Meeting.date==filter_meeting).all()
+            evaluations = request.rel_db_session.query(rel_models.Evaluation).join(rel_models.Meeting).filter(rel_models.Meeting.date==filter_meeting)
         else:
-            evaluations = request.rel_db_session.query(rel_models.Evaluation).all()
+            evaluations = request.rel_db_session.query(rel_models.Evaluation)
+
+    filters = {'publisher':filter_publisher if filter_publisher is not None else 'nothing',
+               'meeting':filter_meeting if filter_meeting is not None else 'nothing',}
+
+    catalog = Catalog(evaluations, limit=request.registry.settings['pagination.items_per_page'])
+
+    pagination_filters = dict([k, v] for k, v in filters.items() if v != 'nothing')
+    pagination = []
+    for k in range(catalog.total_pages):
+        querystring_params = pagination_filters.copy()
+        querystring_params['page'] = k+1
+        pagination.append({'pg_number':k+1, 'url':urllib.urlencode(querystring_params)})
 
     meetings = request.rel_db_session.query(rel_models.Meeting).all()
     publishers = request.rel_db_session.query(rel_models.Publisher).all()
@@ -229,15 +274,16 @@ def panel(request):
 
     committee_decisions = [{'text':label,'value':k} for k, label in STATUS_CHOICES.items()]
 
-    return {'evaluations': evaluations,
+    return {'evaluations': catalog.page(page),
+            'evaluations_total': catalog.total_items,
+            'page':page,
+            'pagination': pagination,
             'meetings': meetings,
             'publishers':publishers,
             'committee_decisions':committee_decisions,
             'main':main,
             'user':get_logged_user(request),
-            'filters':{'publisher':filter_publisher if filter_publisher is not None else 'nothing',
-                       'meeting':filter_meeting if filter_meeting is not None else 'nothing',
-                      }
+            'filters': filters,
             }
 
 def new_publisher(request):
@@ -250,6 +296,8 @@ def new_publisher(request):
     publisher_form = PublisherForm.get_form(localizer)
 
     if request.method == 'POST':
+        if 'btn_cancel' in request.POST:
+            return HTTPFound(location=request.route_url('staff.publishers_list'))
 
         controls = request.POST.items()
         try:
@@ -258,7 +306,13 @@ def new_publisher(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+                    'general_stuff':{'form_title':FORM_TITLE_NEW,
+                                  'breadcrumb': [
+                                    (_('Dashboard'), request.route_url('staff.panel')),
+                                    (_('Manage Publishers'), request.route_url('staff.publishers_list')),
+                                    (_('New Publisher'), None),
+                                  ]
+                                },
                     }
         del(appstruct['__LOCALE__'])
         session = request.rel_db_session
@@ -285,12 +339,18 @@ def new_publisher(request):
             return {'content':publisher_form.render(appstruct),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+                    'general_stuff':{'form_title':FORM_TITLE_NEW,
+                                  'breadcrumb': [
+                                    (_('Dashboard'), request.route_url('staff.panel')),
+                                    (_('Manage Publishers'), request.route_url('staff.publishers_list')),
+                                    (_('New Publisher'), None),
+                                  ]
+                                 },
                     }
 
         request.session.flash(_('Successfully added.'))
 
-        return HTTPFound(location=request.route_url('staff.panel'))
+        return HTTPFound(location=request.route_url('staff.publishers_list'))
 
     if 'slug' in request.matchdict:
 
@@ -303,13 +363,25 @@ def new_publisher(request):
         return {'content': publisher_form.render(publisher.as_dict()),
                 'main':main,
                 'user':get_logged_user(request),
-                'form_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name},
+                'general_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name,
+                              'breadcrumb': [
+                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (_('Manage Publishers'), request.route_url('staff.publishers_list')),
+                                (FORM_TITLE_EDIT % publisher.name, None),
+                              ]
+                            },
                 }
 
     return {'content': publisher_form.render(),
             'main':main,
             'user':get_logged_user(request),
-            'form_stuff':{'form_title':FORM_TITLE_NEW},
+            'general_stuff':{'form_title':FORM_TITLE_NEW,
+                          'breadcrumb': [
+                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('Manage Publishers'), request.route_url('staff.publishers_list')),
+                            (_('New Publisher'), None),
+                          ]
+                        },
             }
 
 def publishers_list(request):
@@ -319,7 +391,11 @@ def publishers_list(request):
     return {'publishers':publishers,
             'main':main,
             'user':get_logged_user(request),
-            'breadcrumb': {'home':request.route_url('staff.panel')},
+            'general_stuff':{'breadcrumb': [
+                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('Manage Publishers'), None),
+                          ]
+                         },
             }
 
 
@@ -335,6 +411,8 @@ def new_book(request):
     evaluation_form['publisher'].widget = deform.widget.SelectWidget(values=(publishers), )
 
     if request.method == 'POST':
+        if 'btn_cancel' in request.POST:
+            return HTTPFound(location=request.route_url('staff.panel'))
 
         controls = request.POST.items()
         try:
@@ -343,7 +421,7 @@ def new_book(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+                    'general_stuff':{'form_title':FORM_TITLE_NEW},
                     }
 
         del(appstruct['__LOCALE__'])
@@ -371,7 +449,7 @@ def new_book(request):
             return {'content':evaluation_form.render(appstruct),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
+                    'general_stuff':{'form_title':FORM_TITLE_NEW},
                     }
 
         monograph.save(request.db)
@@ -381,12 +459,43 @@ def new_book(request):
     return {'content': evaluation_form.render(),
             'main':main,
             'user':get_logged_user(request),
-            'form_stuff':{'form_title':FORM_TITLE_NEW},
+            'general_stuff':{'form_title':FORM_TITLE_NEW,
+                          'breadcrumb': [
+                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('New Submission'), None),
+                          ]
+                         },
             }
+
+def delete_book(request):
+    monograph_sbid = request.matchdict.get('sbid', None)
+
+    if monograph_sbid is None:
+        return Respose(status=204)
+
+    #TODO! catch exception
+    evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph_sbid).one()
+
+    try:
+        parts = [part['doc'] for part in request.db.view('scielobooks/monographs_and_parts',
+            include_docs=True, startkey=[evaluation.monograph_sbid, 0], endkey=[evaluation.monograph_sbid, 1])]
+    except couchdbkit.ResourceNotFound:
+        raise exceptions.NotFound()
+
+    request.rel_db_session.delete(evaluation)
+
+    try:
+        request.rel_db_session.commit()
+        request.db.delete_docs(parts, all_or_nothing=True)
+        request.session.flash(_('Successfully deleted.'))
+    except:
+        request.rel_db_session.rollback()
+
+    return Response(status=200)
 
 def new_meeting(request):
     FORM_TITLE_NEW = _('New Meeting')
-    FORM_TITLE_EDIT = _('Editing %s meeting')
+    FORM_TITLE_EDIT = _('Editing %s')
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -394,6 +503,8 @@ def new_meeting(request):
     meeting_form = MeetingForm.get_form(localizer)
 
     if request.method == 'POST':
+        if 'btn_cancel' in request.POST:
+            return HTTPFound(location=request.route_url('staff.meetings_list'))
 
         controls = request.POST.items()
         try:
@@ -402,8 +513,14 @@ def new_meeting(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'form_stuff':{'form_title':FORM_TITLE_NEW},
-                    }
+                    'general_stuff':{'form_title':FORM_TITLE_NEW,
+                                  'breadcrumb': [
+                                    (_('Dashboard'), request.route_url('staff.panel')),
+                                    (_('Manage Meetings'), request.route_url('staff.meetings_list')),
+                                    (_('New Meeting'), None),
+                                  ]
+                                 },
+                                }
 
         del(appstruct['__LOCALE__'])
         appstruct['admin'] = get_logged_user(request)
@@ -431,13 +548,25 @@ def new_meeting(request):
         return {'content':meeting_form.render(appstruct),
                 'main':main,
                 'user':get_logged_user(request),
-                'form_stuff':{'form_title':FORM_TITLE_EDIT % str(meeting.date)},
+                'general_stuff':{'form_title':FORM_TITLE_EDIT % unicode(meeting.description),
+                              'breadcrumb': [
+                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (_('Manage Meetings'), request.route_url('staff.meetings_list')),
+                                (FORM_TITLE_EDIT % unicode(meeting.description), None),
+                              ]
+                             },
                 }
 
     return {'content':meeting_form.render({'date':date.today()}),
             'main':main,
             'user':get_logged_user(request),
-            'form_stuff':{'form_title':FORM_TITLE_NEW},
+            'general_stuff':{'form_title':FORM_TITLE_NEW,
+                          'breadcrumb': [
+                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('Manage Meetings'), request.route_url('staff.meetings_list')),
+                            (_('New Meeting'), None),
+                          ]
+                         },
             }
 
 def meetings_list(request):
@@ -447,7 +576,11 @@ def meetings_list(request):
     return {'meetings':meetings,
             'main':main,
             'user':get_logged_user(request),
-            'breadcrumb': {'home':request.route_url('staff.panel')},
+            'general_stuff':{'breadcrumb': [
+                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('Manage Meetings'), None),
+                          ]
+                         },
             }
 
 def ajax_set_meeting(request):
@@ -558,36 +691,6 @@ def ajax_action_unpublish(request):
             request.rel_db_session.rollback()
             monograph.visible = True
             monograph.save(request.db)
-
-        return Response('done')
-
-    return Response('nothing to do')
-
-def ajax_action_delete(request):
-    if request.method == 'POST':
-        evaluation_isbn = request.POST.get('evaluation', None)
-
-        if evaluation_isbn is None:
-            return Respose('insufficient params')
-
-        #TODO! catch exception
-        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
-
-        try:
-            parts = [part['doc'] for part in request.db.view('scielobooks/monographs_and_parts',
-                include_docs=True, startkey=[evaluation.monograph_sbid, 0], endkey=[evaluation.monograph_sbid, 1])]
-        except couchdbkit.ResourceNotFound:
-            raise exceptions.NotFound()
-
-        request.rel_db_session.delete(evaluation)
-
-        #TODO! catch exception
-        try:
-            request.rel_db_session.commit()
-            request.db.delete_docs(parts, all_or_nothing=True)
-            request.session.flash(_('Successfully deleted.'))
-        except:
-            request.rel_db_session.rollback()
 
         return Response('done')
 
