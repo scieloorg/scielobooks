@@ -46,7 +46,8 @@ class MonographForm():
 
         base_schema = Monograph.get_schema()
         base_schema['synopsis'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
-        base_schema['creators'].children[0].children[0].widget = deform.widget.SelectWidget(values=role_values)
+        base_schema['individual_authors'].children[0].children[0].widget = deform.widget.SelectWidget(values=role_values)
+        base_schema['corporate_authors'].children[0].children[0].widget = deform.widget.SelectWidget(values=role_values)
 
         #i18n
         base_schema.add(colander.SchemaNode(
@@ -60,8 +61,10 @@ class MonographForm():
         base_schema['isbn'].title = localizer.translate(_('ISBN'))
         base_schema['isbn'].description = localizer.translate(_('ISBN 13'))
         base_schema['isbn'].validator = isbn_validate_factory(localizer.translate(_('Invalid ISBN number')))
-        base_schema['creators'].title = localizer.translate(_('Creators'))
-        base_schema['creators'].description = localizer.translate(_('Authors, translators, editors...'))
+        base_schema['individual_authors'].title = localizer.translate(_('Individual author'))
+        base_schema['individual_authors'].description = localizer.translate(_('Authors, translators, editors...'))
+        base_schema['corporate_authors'].title = localizer.translate(_('Creators'))
+        base_schema['corporate_authors'].description = localizer.translate(_('Authors, translators, editors...'))
         base_schema['publisher'].title = localizer.translate(_('Publisher'))
         base_schema['publisher'].description = localizer.translate(_('Select the publisher'))
         base_schema['publisher_url'].title = localizer.translate(_('Publisher\'s Catalog URL'))
