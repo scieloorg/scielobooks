@@ -4,11 +4,12 @@ import couchdbkit
 import urllib2
 from datetime import datetime
 import pickle
+import argparse
 
 class IndexingDaemon(object):
     """
     A daemon that monitors activities in a given CouchDB database
-    and keeps its search indexes updated.
+    and keeps its Solr search indexes updated.
     """
 
     def __init__(self, db_uri, db_name, solr_uri, feed_type, callback=None):
@@ -124,9 +125,21 @@ class IndexingDaemon(object):
 
 if __name__ == '__main__':
 
-    DB_URI = 'http://localhost:5984'
-    DB_NAME = 'scielobooks'
-    SOLR_URI = 'http://localhost:8080/scielobooks'
+    parser = argparse.ArgumentParser(
+        description='A daemon that monitors activities in a given CouchDB database and keeps its Solr search indexes updated.')
 
-    daemon = IndexingDaemon(DB_URI, DB_NAME, SOLR_URI, 'continuous')
-    daemon.start_listening(heartbeat=5000)
+    parser.add_argument('couchdb_uri', metavar='CouchDB-Server-URI', help='CouchDB Server to monitor changes')
+    parser.add_argument('db_name', metavar='CouchDB-Database', help='CouchDB Database name')
+    parser.add_argument('solr_uri', metavar='Solr-Server-URI', help='Solr Indexing Server')
+    parser.add_argument('-hb', '--heartbeat', action='store_true',
+                        help='Heartbeat to keep the connection with couchdb alive')
+    parser.add_argument('-t', '--feedtype', action='store_true',
+                        help='Feed type to monitor changes in a CouchDB Database (continuous|longpoll)')
+
+    args = parser.parse_args()
+
+    heartbeat = args.heartbeat if args.heartbeat else 10000
+    feedtype = args.feedtype if args.feedtype else 'continuous'
+
+    daemon = IndexingDaemon(args.couchdb_uri, args.db_name, args.solr_uri, feedtype)
+    daemon.start_listening(heartbeat=heartbeat)
