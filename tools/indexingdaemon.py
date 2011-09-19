@@ -54,8 +54,8 @@ class IndexingDaemon(object):
 
 
     def store_last_activity(self):
-        f = open('indexingdaemon.data', 'w')
-        pickle.dump(self.last_activity, f)
+        with open('indexingdaemon.data', 'w') as f:
+            pickle.dump(self.last_activity, f)
 
 
     @property
@@ -63,7 +63,7 @@ class IndexingDaemon(object):
         if self.__last_activity is None:
             try:
                 return pickle.load(open('indexingdaemon.data'))
-            except EOFError:
+            except (EOFError, IOError):
                 return 0
         else:
             return self.__last_activity
