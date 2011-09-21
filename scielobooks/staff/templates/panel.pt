@@ -36,23 +36,43 @@
                    i18n:translate="">Manage Users</a></li>
         </ul>
         <div class="filters">
-          <span class="label" i18n:translate="">Filters</span>
-          <span i18n:translate="">Publisher:</span>
-	          <select class="filter-by-publisher">
-	              <option value="nothing" i18n:translate="">Show all</option>
-	              <option tal:repeat="publisher publishers"
-	                      tal:content="publisher.name"
-	                      value="${publisher.name_slug}"
-	                      tal:attributes="selected publisher.name_slug == filters.publisher">BIREME Press</option>
-	          </select>
-	          <span i18n:translate="">Meeting:</span>
-	          <select class="filter-by-meeting">
-	              <option value="nothing" i18n:translate="">Show all</option>
-	              <option tal:repeat="meeting meetings"
-	                      tal:content="meeting.date"
-	                      value="${meeting.date}"
-	                      tal:attributes="selected str(meeting.date) == filters.meeting">2011-07-07</option>
-	          </select>
+          <form action="${request.route_url('staff.panel')}" method="GET">
+            <label for="publ" i18n:translate="">Publisher</label>
+            <select name="publ" class="filter-by-publisher">
+                <option value="">---</option>
+                <option tal:repeat="publisher publishers"
+                        tal:content="publisher.name"
+                        value="${publisher.name_slug}"
+                        tal:attributes="selected publisher.name_slug == filters.publ">BIREME Press</option>
+            </select>
+            <label for="meet" i18n:translate="">Meeting</label>
+            <select name="meet" class="filter-by-meeting">
+                <option value="">---</option>
+                <option tal:repeat="meeting meetings"
+                        tal:content="meeting.description if meeting.description else meeting.date"
+                        value="${meeting.date}"
+                        tal:attributes="selected str(meeting.date) == filters.meet">2011-07-07</option>
+            </select>
+            <label for="cdec" i18n:translate="">Committee Decision</label>
+            <select name="cdec" class="filter-by-committee-decision">
+              <option value="">---</option>
+              <option tal:repeat="decision committee_decisions"
+                      tal:content="decision.text"
+                      value="${decision.value}"
+                      tal:attributes="selected decision.value == filters.cdec">Accepted</option>
+            </select>
+            <label for="ispub" i18n:translate="">Publication Status</label>
+            <select name="ispub" class="filter-by-publication-status">
+              <option value="">---</option>
+              <option value="true"
+                      tal:attributes="selected 'true' == filters.ispub"
+                      i18n:translate="">Published</option>
+              <option value="false"
+                      tal:attributes="selected 'false' == filters.ispub"
+                      i18n:translate="">Unpublished</option>
+            </select>
+            <input type="submit" value="Filter"/>
+          </form>
         </div>
         <p tal:condition="len(evaluations) == 0">There are no records.</p>
 
