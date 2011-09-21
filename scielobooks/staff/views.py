@@ -250,7 +250,6 @@ def book_details(request):
             }
 
 def panel(request):
-    #filter_q = request.params.get('q', None)
     filter_publisher = request.params.get('publ', None)
     filter_meeting = request.params.get('meet', None)
     filter_committee_decision = request.params.get('cdec', None)
