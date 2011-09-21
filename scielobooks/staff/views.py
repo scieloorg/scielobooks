@@ -250,23 +250,26 @@ def book_details(request):
             }
 
 def panel(request):
-    filter_publisher = request.params.get('publisher', None)
-    filter_meeting = request.params.get('meeting', None)
+    #filter_q = request.params.get('q', None)
+    filter_publisher = request.params.get('publ', None)
+    filter_meeting = request.params.get('meet', None)
+    filter_committee_decision = request.params.get('cdec', None)
+    filter_status = request.params.get('ispub', None)
+
     try:
         page = int(request.params.get('page', 1))
     except ValueError:
         page = 1
 
-    if filter_publisher is not None and len(filter_publisher) > 0:
-        if filter_meeting is not None and len(filter_meeting) > 0:
-            evaluations = request.rel_db_session.query(rel_models.Evaluation).join(rel_models.Publisher).join(rel_models.Meeting).filter(rel_models.Publisher.name_slug==filter_publisher and rel_models.Meeting.date==filter_meeting)
-        else:
-            evaluations = request.rel_db_session.query(rel_models.Evaluation).join(rel_models.Publisher).filter(rel_models.Publisher.name_slug==filter_publisher)
-    else:
-        if filter_meeting is not None and len(filter_meeting) > 0:
-            evaluations = request.rel_db_session.query(rel_models.Evaluation).join(rel_models.Meeting).filter(rel_models.Meeting.date==filter_meeting)
-        else:
-            evaluations = request.rel_db_session.query(rel_models.Evaluation)
+    evaluations = request.rel_db_session.query(rel_models.Evaluation)
+    if filter_publisher is not None:
+        evaluations = evaluations.join(rel_models.Publisher).filter(rel_models.Publisher.name_slug==filter_publisher)
+    if filter_meeting is not None and len(filter_meeting) > 0:
+        evaluations = evaluations.join(rel_models.Meeting).filter(rel_models.Meeting.date==filter_meeting)
+    if filter_committee_decision is not None and len(filter_committee_decision) > 0:
+        evaluations = evaluations.filter(rel_models.Evaluation.status==filter_committee_decision)
+    if filter_status is not None and len(filter_status) > 0:
+        evaluations = evaluations.filter(rel_models.Evaluation.is_published==filter_status)
 
     filters = {'publisher':filter_publisher if filter_publisher is not None else 'nothing',
                'meeting':filter_meeting if filter_meeting is not None else 'nothing',}
