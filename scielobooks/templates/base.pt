@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
       </metal:block>
     </head>
-    <body>
+    <body class="backoffice">
       <div class="container">
         <div class="top">
           <h1><a href="#"><span>SciELO Livros</span></a></h1>

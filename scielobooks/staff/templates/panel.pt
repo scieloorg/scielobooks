@@ -35,25 +35,25 @@
             <li id="manageUsers"><a href="${request.route_url('users.list')}"
                    i18n:translate="">Manage Users</a></li>
         </ul>
-        <fieldset>
-          <legend i18n:translate="">Filters</legend>
+        <div class="filters">
+          <span class="label" i18n:translate="">Filters</span>
           <span i18n:translate="">Publisher:</span>
-          <select class="filter-by-publisher">
-              <option value="nothing" i18n:translate="">Show all</option>
-              <option tal:repeat="publisher publishers"
-                      tal:content="publisher.name"
-                      value="${publisher.name_slug}"
-                      tal:attributes="selected publisher.name_slug == filters.publisher">BIREME Press</option>
-          </select>
-          <span i18n:translate="">Meeting:</span>
-          <select class="filter-by-meeting">
-              <option value="nothing" i18n:translate="">Show all</option>
-              <option tal:repeat="meeting meetings"
-                      tal:content="meeting.date"
-                      value="${meeting.date}"
-                      tal:attributes="selected str(meeting.date) == filters.meeting">2011-07-07</option>
-          </select>
-        </fieldset>
+	          <select class="filter-by-publisher">
+	              <option value="nothing" i18n:translate="">Show all</option>
+	              <option tal:repeat="publisher publishers"
+	                      tal:content="publisher.name"
+	                      value="${publisher.name_slug}"
+	                      tal:attributes="selected publisher.name_slug == filters.publisher">BIREME Press</option>
+	          </select>
+	          <span i18n:translate="">Meeting:</span>
+	          <select class="filter-by-meeting">
+	              <option value="nothing" i18n:translate="">Show all</option>
+	              <option tal:repeat="meeting meetings"
+	                      tal:content="meeting.date"
+	                      value="${meeting.date}"
+	                      tal:attributes="selected str(meeting.date) == filters.meeting">2011-07-07</option>
+	          </select>
+        </div>
         <p tal:condition="len(evaluations) == 0">There are no records.</p>
 
         <span tal:omit-tag="" tal:condition="evaluations | nothing">
