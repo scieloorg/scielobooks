@@ -66,9 +66,11 @@
             <select name="ispub" class="filter-by-publication-status">
               <option value="">---</option>
               <option value="true"
-                      tal:attributes="selected 'true' == filters.ispub">Published</option>
+                      tal:attributes="selected 'true' == filters.ispub"
+                      i18n:translate="">Published</option>
               <option value="false"
-                      tal:attributes="selected 'false' == filters.ispub">Unpublished</option>
+                      tal:attributes="selected 'false' == filters.ispub"
+                      i18n:translate="">Unpublished</option>
             </select>
             <input type="submit" value="Filter"/>
           </form>
