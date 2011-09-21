@@ -262,7 +262,7 @@ def panel(request):
         page = 1
 
     evaluations = request.rel_db_session.query(rel_models.Evaluation)
-    if filter_publisher is not None:
+    if filter_publisher is not None and len(filter_publisher) > 0:
         evaluations = evaluations.join(rel_models.Publisher).filter(rel_models.Publisher.name_slug==filter_publisher)
     if filter_meeting is not None and len(filter_meeting) > 0:
         evaluations = evaluations.join(rel_models.Meeting).filter(rel_models.Meeting.date==filter_meeting)
@@ -271,12 +271,15 @@ def panel(request):
     if filter_status is not None and len(filter_status) > 0:
         evaluations = evaluations.filter(rel_models.Evaluation.is_published==filter_status)
 
-    filters = {'publisher':filter_publisher if filter_publisher is not None else 'nothing',
-               'meeting':filter_meeting if filter_meeting is not None else 'nothing',}
+    filters = {'publ':filter_publisher if filter_publisher is not None else '',
+               'meet':filter_meeting if filter_meeting is not None else '',
+               'cdec':filter_committee_decision if filter_committee_decision is not None else '',
+               'ispub':filter_status if filter_status is not None else '',
+    }
 
     catalog = Catalog(evaluations, limit=request.registry.settings['pagination.items_per_page'])
 
-    pagination_filters = dict([k, v] for k, v in filters.items() if v != 'nothing')
+    pagination_filters = dict([k, v] for k, v in filters.items() if v != '')
     pagination = []
     for k in range(catalog.total_pages):
         querystring_params = pagination_filters.copy()
