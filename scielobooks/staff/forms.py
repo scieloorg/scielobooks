@@ -1,4 +1,4 @@
-from models import Monograph
+from models import Monograph, Part
 
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
@@ -7,6 +7,7 @@ import datetime
 import deform
 import colander
 from ..utilities import functions, isbn
+
 
 def url_validate_factory(message=None):
     url_re = "^(?#Protocol)(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?#Username:Password)(?:\w+:\w+@)?(?#Subdomains)(?:(?:[-\w]+\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\d]{1,5})?(?#Directories)(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?#Query)(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?#Anchor)(?:#(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)?$"
@@ -251,5 +252,42 @@ class MeetingForm():
                                type='submit', value='submit', disabled=False)
 
         form = deform.Form(schema, buttons=(btn_cancel, btn_submit,))
+        #functions.customize_form_css_class(form, default_css, **kwargs)
+        return form
+
+class PartForm():
+    @classmethod
+    def get_form(cls, localizer, default_css=None, **kwargs):
+        role_values = [('individual_author',localizer.translate(_('Individual author'))),
+                       ('corporate_author',localizer.translate(_('Corporate author'))),
+                       ('translator',localizer.translate(_('Translator'))),
+                       ('editor',localizer.translate(_('Editor')))]
+
+        base_schema = Part.get_schema()
+
+        base_schema['creators'].children[0]['role'].widget = deform.widget.SelectWidget(values=role_values)
+        base_schema['creators'].children[0]['role'].title = localizer.translate(_('Role'))
+        base_schema['creators'].children[0]['full_name'].title = localizer.translate(_('Full name'))
+        base_schema['creators'].children[0]['link_resume'].title = localizer.translate(_('Resume link'))
+        base_schema['creators'].children[0]['link_resume'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
+
+        base_schema['title'].title = localizer.translate(_('Title'))
+        base_schema['title'].description = localizer.translate(_('Title'))
+        base_schema['order'].title = localizer.translate(_('Order'))
+        base_schema['order'].description = localizer.translate(_('Sequential chapter order'))
+        base_schema['creators'].title = localizer.translate(_('Creator'))
+        base_schema['creators'].description = localizer.translate(_('Authors, translators, editors...'))
+        base_schema['pages'].title = localizer.translate(_('Page range'))
+        base_schema['pages']['initial'].title = localizer.translate(_('First page'))
+        base_schema['pages']['initial'].description = localizer.translate(_('First page'))
+        base_schema['pages']['final'].title = localizer.translate(_('Last page'))
+        base_schema['pages']['final'].description = localizer.translate(_('Last page'))
+        base_schema['pdf_file'].title = localizer.translate(_('Book in PDF'))
+        base_schema['pdf_file'].description = localizer.translate(_('Full book PDF'))
+
+        btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
+                               type='submit', value='submit', disabled=False)
+
+        form = deform.Form(base_schema, buttons=(btn_submit,))
         #functions.customize_form_css_class(form, default_css, **kwargs)
         return form

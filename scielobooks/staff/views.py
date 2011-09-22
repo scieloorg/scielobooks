@@ -14,7 +14,7 @@ _ = TranslationStringFactory('scielobooks')
 from sqlalchemy.exc import IntegrityError
 from datetime import date
 
-from forms import MonographForm, PublisherForm, EvaluationForm, MeetingForm
+from forms import MonographForm, PublisherForm, EvaluationForm, MeetingForm, PartForm
 from ..models import models as rel_models
 from ..users import models as user_models
 from ..catalog import views as catalog_views
@@ -162,8 +162,8 @@ def new_part(request):
 
     monograph_id = request.matchdict['sbid']
 
-    part_schema = Part.get_schema()
-    part_form = deform.Form(part_schema, buttons=('submit',))
+    localizer = get_localizer(request)
+    part_form = PartForm.get_form(localizer)
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
