@@ -19,7 +19,6 @@ class Monograph(model.CouchdbDocument):
     edition = model.TextProperty()
     collection = model.CompositeTextProperty(subkeys=['individual_author', 'corporate_author', 'title', 'english_translated_title', 'total_number_of_volumes'])
     format = model.CompositeTextProperty(subkeys=['height', 'width'])
-    book = model.TextProperty()
     serie = model.CompositeTextProperty(subkeys=['title', 'issue', 'issue_number', 'issn'])
     use_licence = model.TextProperty()
     pdf_file = model.FileProperty()
@@ -39,8 +38,7 @@ class Monograph(model.CouchdbDocument):
 class Part(model.CouchdbDocument):
     title = model.TextProperty(required=True)
     order = model.TextProperty()
-    creators = model.MultiCompositeTextProperty(required=False, subkeys=['full_name', 'role'])
-    institutional_creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'])
+    creators = model.MultiCompositeTextProperty(required=False, subkeys=['role','full_name', 'link_resume'])
     pages = model.CompositeTextProperty(subkeys=['initial','final',])
     pdf_file = model.FileProperty()
 

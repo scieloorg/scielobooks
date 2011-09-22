@@ -1,4 +1,4 @@
-from models import Monograph
+from models import Monograph, Part
 
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
@@ -7,6 +7,7 @@ import datetime
 import deform
 import colander
 from ..utilities import functions, isbn
+
 
 def url_validate_factory(message=None):
     url_re = "^(?#Protocol)(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?#Username:Password)(?:\w+:\w+@)?(?#Subdomains)(?:(?:[-\w]+\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\d]{1,5})?(?#Directories)(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?#Query)(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?#Anchor)(?:#(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)?$"
@@ -69,7 +70,7 @@ class MonographForm():
         base_schema['isbn'].title = localizer.translate(_('ISBN'))
         base_schema['isbn'].description = localizer.translate(_('ISBN 13'))
         base_schema['isbn'].validator = isbn_validate_factory(localizer.translate(_('Invalid ISBN number')))
-        base_schema['creators'].title = localizer.translate(_('Creator'))
+        base_schema['creators'].title = localizer.translate(_('Authors'))
         base_schema['creators'].description = localizer.translate(_('Authors, translators, editors...'))
         base_schema['publisher'].title = localizer.translate(_('Publisher'))
         base_schema['publisher'].description = localizer.translate(_('Select the publisher'))
@@ -78,17 +79,17 @@ class MonographForm():
         base_schema['publisher_url'].description = localizer.translate(_('URL to the refered book, at the publisher\'s catalog'))
         base_schema['publisher_url'].validator = url_validate_factory(localizer.translate(_('Invalid URL')))
         base_schema['language'].widget = deform.widget.SelectWidget(values=language_values)
-        base_schema['language'].title = localizer.translate(_('Language'))
-        base_schema['language'].description = localizer.translate(_('Book language'))
-        base_schema['synopsis'].title = localizer.translate(_('Synopsis'))
-        base_schema['synopsis'].description = localizer.translate(_('Short synopsis'))
-        base_schema['year'].title = localizer.translate(_('Year'))
-        base_schema['year'].description = localizer.translate(_('Publication year'))
+        base_schema['language'].title = localizer.translate(_('Text language'))
+        base_schema['language'].description = localizer.translate(_('Text language'))
+        base_schema['synopsis'].title = localizer.translate(_('Abstract'))
+        base_schema['synopsis'].description = localizer.translate(_('Abstract'))
+        base_schema['year'].title = localizer.translate(_('Date of publication'))
+        base_schema['year'].description = localizer.translate(_('Year in YYYY format'))
         base_schema['year'].validator = year_validate_factory(message=localizer.translate(_('Invalid year format. Must be YYYY')))
-        base_schema['city'].title = localizer.translate(_('City'))
+        base_schema['city'].title = localizer.translate(_('City of publication'))
         base_schema['city'].description = localizer.translate(_('City'))
-        base_schema['country'].title = localizer.translate(_('Country'))
-        base_schema['country'].description = localizer.translate(_('Country'))
+        base_schema['country'].title = localizer.translate(_('Country of publication'))
+        base_schema['country'].description = localizer.translate(_('Country of publication'))
         base_schema['pages'].title = localizer.translate(_('Pages'))
         base_schema['pages'].description = localizer.translate(_('Number of pages'))
         base_schema['pages'].validator = integer_validate_factory(message=localizer.translate(_('Invalid number of pages')))
@@ -109,8 +110,6 @@ class MonographForm():
         base_schema['format']['height'].validator = integer_validate_factory(message=localizer.translate(_('Invalid height')))
         base_schema['format']['width'].title = localizer.translate(_('Width'))
         base_schema['format']['width'].validator = integer_validate_factory(message=localizer.translate(_('Invalid width')))
-        base_schema['book'].title = localizer.translate(_('Book'))
-        base_schema['book'].description = localizer.translate(_('Book'))
         base_schema['serie'].title = localizer.translate(_('Serie'))
         base_schema['serie']['title'].title = localizer.translate(_('Title'))
         base_schema['serie']['issue'].title = localizer.translate(_('Issue'))
@@ -253,5 +252,42 @@ class MeetingForm():
                                type='submit', value='submit', disabled=False)
 
         form = deform.Form(schema, buttons=(btn_cancel, btn_submit,))
+        #functions.customize_form_css_class(form, default_css, **kwargs)
+        return form
+
+class PartForm():
+    @classmethod
+    def get_form(cls, localizer, default_css=None, **kwargs):
+        role_values = [('individual_author',localizer.translate(_('Individual author'))),
+                       ('corporate_author',localizer.translate(_('Corporate author'))),
+                       ('translator',localizer.translate(_('Translator'))),
+                       ('editor',localizer.translate(_('Editor')))]
+
+        base_schema = Part.get_schema()
+
+        base_schema['creators'].children[0]['role'].widget = deform.widget.SelectWidget(values=role_values)
+        base_schema['creators'].children[0]['role'].title = localizer.translate(_('Role'))
+        base_schema['creators'].children[0]['full_name'].title = localizer.translate(_('Full name'))
+        base_schema['creators'].children[0]['link_resume'].title = localizer.translate(_('Resume link'))
+        base_schema['creators'].children[0]['link_resume'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
+
+        base_schema['title'].title = localizer.translate(_('Title'))
+        base_schema['title'].description = localizer.translate(_('Title'))
+        base_schema['order'].title = localizer.translate(_('Order'))
+        base_schema['order'].description = localizer.translate(_('Sequential chapter order'))
+        base_schema['creators'].title = localizer.translate(_('Authors'))
+        base_schema['creators'].description = localizer.translate(_('Authors, translators, editors...'))
+        base_schema['pages'].title = localizer.translate(_('Page range'))
+        base_schema['pages']['initial'].title = localizer.translate(_('First page'))
+        base_schema['pages']['initial'].description = localizer.translate(_('First page'))
+        base_schema['pages']['final'].title = localizer.translate(_('Last page'))
+        base_schema['pages']['final'].description = localizer.translate(_('Last page'))
+        base_schema['pdf_file'].title = localizer.translate(_('Book in PDF'))
+        base_schema['pdf_file'].description = localizer.translate(_('Full book PDF'))
+
+        btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
+                               type='submit', value='submit', disabled=False)
+
+        form = deform.Form(base_schema, buttons=(btn_submit,))
         #functions.customize_form_css_class(form, default_css, **kwargs)
         return form
