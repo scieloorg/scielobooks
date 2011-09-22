@@ -85,7 +85,7 @@
                       <th i18n:translate="">Title</th>
                       <th i18n:translate="">Meeting</th>
                       <th i18n:translate="">Committee Decision</th>
-                      <th i18n:translate="">Publication Status</th>
+                      <th i18n:translate="">Status</th>
                   </tr>
               </thead>
               <tbody>
