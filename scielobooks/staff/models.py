@@ -19,7 +19,6 @@ class Monograph(model.CouchdbDocument):
     edition = model.TextProperty()
     collection = model.CompositeTextProperty(subkeys=['individual_author', 'corporate_author', 'title', 'english_translated_title', 'total_number_of_volumes'])
     format = model.CompositeTextProperty(subkeys=['height', 'width'])
-    book = model.TextProperty()
     serie = model.CompositeTextProperty(subkeys=['title', 'issue', 'issue_number', 'issn'])
     use_licence = model.TextProperty()
     pdf_file = model.FileProperty()

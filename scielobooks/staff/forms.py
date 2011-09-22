@@ -109,8 +109,6 @@ class MonographForm():
         base_schema['format']['height'].validator = integer_validate_factory(message=localizer.translate(_('Invalid height')))
         base_schema['format']['width'].title = localizer.translate(_('Width'))
         base_schema['format']['width'].validator = integer_validate_factory(message=localizer.translate(_('Invalid width')))
-        base_schema['book'].title = localizer.translate(_('Book'))
-        base_schema['book'].description = localizer.translate(_('Book'))
         base_schema['serie'].title = localizer.translate(_('Serie'))
         base_schema['serie']['title'].title = localizer.translate(_('Title'))
         base_schema['serie']['issue'].title = localizer.translate(_('Issue'))
