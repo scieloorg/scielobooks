@@ -67,7 +67,14 @@ h2 {
 	margin: 0px;
 	clear: both;
 }
+.staffTitle h2 {
+	float: left;
+}
 
+.staffTitle .btnLink {
+	margin: 4px 10px;
+	float: left;
+}
 h4 {
 	margin: 10px 0px 0px 0px;
 }
@@ -129,7 +136,7 @@ h4 {
 
 ul.menu {
 	margin: 0px;
-	margin-bottom: 35px;
+	margin-bottom: 15px;
 	padding: 0px;
 	list-style: none;
 }
@@ -405,7 +412,7 @@ TD.chpTitle {
 .btnText{
 	color: #FFFFFF;
 	background-color: #A21C1D;
-	padding: 4px;
+	padding: 3px 4;
 	-webkit-border-radius: 7px;
 	-moz-border-radius: 7px;
 	border-radius: 7px;
@@ -415,11 +422,9 @@ TD.chpTitle {
 	border: 1px solid #590f0f;
 	color: #EAF2FA;
 	background: #8d1617;
-	padding: 3px;
-	margin: 1px;
 }
 
-span.edit a, span.add a, a.delete, a.deformSeqAdd {
+span.edit a, span.add a, a.delete, a.deformSeqAdd, span.btnLink a {
     font-family: Arial;
     font-size: 11px;
     font-weight: normal;
@@ -429,7 +434,7 @@ span.edit a, span.add a, a.delete, a.deformSeqAdd {
 	padding: 1px 3px;
 }
 
-span.edit a, span.add a, a.deformSeqAdd {
+span.edit a, span.add a, a.deformSeqAdd, .btnLink a {
     color: #FFFFFF;
 	background-color: #A21C1D;
 	border: 1px solid #ae2829;
@@ -472,4 +477,9 @@ body.frameBox {
 body.frameBox .deformFormFieldset {
 	border: none;
 	margin-bottom: 10px;
+}
+
+.spacer {
+	clear: both;
+	height: 1px;
 }

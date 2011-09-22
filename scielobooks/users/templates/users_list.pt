@@ -14,11 +14,13 @@
 
 
   <div class="middle" metal:fill-slot="middle">
-    <h2 i18n:translate="">Manage Users</h2>
-
-    <ul class="menu">
-      <li><a href="${request.route_url('users.signup')}">Add user</a></li>
-    </ul>
+    <div class="staffTitle">
+		<h2 i18n:translate="">Manage Users</h2>
+	    	<span class="btnLink">
+		      <a href="${request.route_url('users.signup')}">Add user</a>
+	        </span>
+	        <div class="spacer"></div>
+		</div>
 
     <table cellspacing="0" class="tablesorter tablePanel" id="users-list-table">
       <thead>

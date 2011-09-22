@@ -1,3 +1,0 @@
-{{#tags}}
-  <a style="font-size:{{size}}px;" href="{{link}}">{{tag}}</a>
-{{/tags}}
