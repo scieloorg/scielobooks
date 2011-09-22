@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: scielobooks 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-09-22 14:07-0300\n"
-"PO-Revision-Date: 2011-09-22 14:13-0300\n"
+"POT-Creation-Date: 2011-09-22 14:45-0300\n"
+"PO-Revision-Date: 2011-09-22 14:47-0300\n"
 "Last-Translator: Gustavo Fonseca <gustavofons@gmail.com>\n"
 "Language-Team: pt <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -47,7 +47,6 @@ msgstr "Tabela de Conteúdos"
 
 #: scielobooks/catalog/templates/book_details.pt:86
 #: scielobooks/evaluation/templates/book_details.pt:96
-#: scielobooks/staff/forms.py:84
 #: scielobooks/staff/templates/book_details.pt:120
 msgid "Synopsis"
 msgstr "Sinopse"
@@ -152,7 +151,6 @@ msgid "Book Parts"
 msgstr "Partes do Livro"
 
 #: scielobooks/evaluation/templates/book_details.pt:91
-#| msgid "URL to publisher's institutional site"
 msgid "Link to the Institutional Catalog"
 msgstr "Link para o Catálogo Institucional"
 
@@ -252,8 +250,9 @@ msgstr "ISBN inválido"
 
 #: scielobooks/staff/forms.py:73
 #: scielobooks/staff/forms.py:278
-msgid "Creator"
-msgstr "Criadores"
+#| msgid "Author:"
+msgid "Authors"
+msgstr "Autores"
 
 #: scielobooks/staff/forms.py:74
 #: scielobooks/staff/forms.py:279
@@ -275,38 +274,40 @@ msgid "URL to the refered book, at the publisher's catalog"
 msgstr "URL do livro no catálogo da editora"
 
 #: scielobooks/staff/forms.py:82
-msgid "Language"
-msgstr "Idioma"
-
 #: scielobooks/staff/forms.py:83
-msgid "Book language"
-msgstr "Idioma do livro"
+#| msgid "Book language"
+msgid "Text language"
+msgstr "Idioma do texto"
 
+#: scielobooks/staff/forms.py:84
 #: scielobooks/staff/forms.py:85
-msgid "Short synopsis"
-msgstr "Sinopse"
+msgid "Abstract"
+msgstr "Resumo"
 
 #: scielobooks/staff/forms.py:86
-msgid "Year"
-msgstr "Ano"
+msgid "Date of publication"
+msgstr "Data da publicação"
 
 #: scielobooks/staff/forms.py:87
-msgid "Publication year"
-msgstr "Ano de publicação"
+msgid "Year in YYYY format"
+msgstr "Ano no formato YYYY"
 
 #: scielobooks/staff/forms.py:88
 msgid "Invalid year format. Must be YYYY"
 msgstr "Formato de ano inválido. Deve ser AAAA"
 
 #: scielobooks/staff/forms.py:89
+msgid "City of publication"
+msgstr "Cidade de publicação"
+
 #: scielobooks/staff/forms.py:90
 msgid "City"
 msgstr "Cidade"
 
 #: scielobooks/staff/forms.py:91
 #: scielobooks/staff/forms.py:92
-msgid "Country"
-msgstr "País"
+msgid "Country of publication"
+msgstr "País de publicação"
 
 #: scielobooks/staff/forms.py:93
 msgid "Pages"
@@ -861,3 +862,20 @@ msgstr "Bem vindo à equipe SciELOBooks. O que deseja fazer?"
 msgid "Username activation"
 msgstr "Ativação do usuário"
 
+#~ msgid "Creator"
+#~ msgstr "Criadores"
+
+#~ msgid "Language"
+#~ msgstr "Idioma"
+
+#~ msgid "Short synopsis"
+#~ msgstr "Sinopse"
+
+#~ msgid "Year"
+#~ msgstr "Ano"
+
+#~ msgid "Publication year"
+#~ msgstr "Ano de publicação"
+
+#~ msgid "Country"
+#~ msgstr "País"

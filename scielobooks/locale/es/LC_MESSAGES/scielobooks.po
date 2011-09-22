@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: scielobooks 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-09-22 14:07-0300\n"
+"POT-Creation-Date: 2011-09-22 14:45-0300\n"
 "PO-Revision-Date: 2011-04-01 16:15-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: es <LL@li.org>\n"
@@ -43,7 +43,6 @@ msgstr ""
 
 #: scielobooks/catalog/templates/book_details.pt:86
 #: scielobooks/evaluation/templates/book_details.pt:96
-#: scielobooks/staff/forms.py:84
 #: scielobooks/staff/templates/book_details.pt:120
 msgid "Synopsis"
 msgstr ""
@@ -229,7 +228,7 @@ msgid "Invalid ISBN number"
 msgstr ""
 
 #: scielobooks/staff/forms.py:73 scielobooks/staff/forms.py:278
-msgid "Creator"
+msgid "Authors"
 msgstr ""
 
 #: scielobooks/staff/forms.py:74 scielobooks/staff/forms.py:279
@@ -248,36 +247,36 @@ msgstr ""
 msgid "URL to the refered book, at the publisher's catalog"
 msgstr ""
 
-#: scielobooks/staff/forms.py:82
-msgid "Language"
+#: scielobooks/staff/forms.py:82 scielobooks/staff/forms.py:83
+msgid "Text language"
 msgstr ""
 
-#: scielobooks/staff/forms.py:83
-msgid "Book language"
-msgstr ""
-
-#: scielobooks/staff/forms.py:85
-msgid "Short synopsis"
+#: scielobooks/staff/forms.py:84 scielobooks/staff/forms.py:85
+msgid "Abstract"
 msgstr ""
 
 #: scielobooks/staff/forms.py:86
-msgid "Year"
+msgid "Date of publication"
 msgstr ""
 
 #: scielobooks/staff/forms.py:87
-msgid "Publication year"
+msgid "Year in YYYY format"
 msgstr ""
 
 #: scielobooks/staff/forms.py:88
 msgid "Invalid year format. Must be YYYY"
 msgstr ""
 
-#: scielobooks/staff/forms.py:89 scielobooks/staff/forms.py:90
+#: scielobooks/staff/forms.py:89
+msgid "City of publication"
+msgstr ""
+
+#: scielobooks/staff/forms.py:90
 msgid "City"
 msgstr ""
 
 #: scielobooks/staff/forms.py:91 scielobooks/staff/forms.py:92
-msgid "Country"
+msgid "Country of publication"
 msgstr ""
 
 #: scielobooks/staff/forms.py:93
@@ -780,4 +779,25 @@ msgstr ""
 #: scielobooks/users/templates/activation.pt:3
 msgid "Username activation"
 msgstr ""
+
+#~ msgid "Creator"
+#~ msgstr ""
+
+#~ msgid "Language"
+#~ msgstr ""
+
+#~ msgid "Book language"
+#~ msgstr ""
+
+#~ msgid "Short synopsis"
+#~ msgstr ""
+
+#~ msgid "Year"
+#~ msgstr ""
+
+#~ msgid "Publication year"
+#~ msgstr ""
+
+#~ msgid "Country"
+#~ msgstr ""
 
