@@ -100,10 +100,10 @@
                                class="action_publish"
                                id="${evaluation.isbn}_action-publish" i18n:translate="">Publish</a>
                           </li>
-                          <li><a tal:condition="evaluation.is_published == True"
-                                 href="javascript: void(0);"
-                                 class="action_unpublish"
-                                 id="${evaluation.isbn}_action-unpublish" i18n:translate="">Unpublish</a>
+                          <li tal:condition="evaluation.is_published == True">
+                            <a href="javascript: void(0);"
+                               class="action_unpublish"
+                               id="${evaluation.isbn}_action-unpublish" i18n:translate="">Unpublish</a>
                           </li>
                           <li><a href="javascript: void(0);"
                                  class="action_delete"
