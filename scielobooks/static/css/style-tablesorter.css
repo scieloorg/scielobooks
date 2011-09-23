@@ -36,3 +36,29 @@ table.tablesorter thead tr .headerSortDown {
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
 background-color: #BFBFBF;
 }
+
+ul.actions {
+	margin: 5px;
+	padding: 0px;
+}
+ul.actions li {
+	padding: 0px 5px;
+	border-right: 1px solid #919191;
+	visibility: hidden;
+	margin-right: 5px;
+	font-weight: bold;
+}
+ul.actions li:last-child {
+	border: none;
+}
+tr:hover td {
+	background: #efefef !important;
+}
+
+tr:hover ul.actions li {
+	visibility: visible;
+}
+ul.actions li a:hover {
+	color: #990000;
+}
+

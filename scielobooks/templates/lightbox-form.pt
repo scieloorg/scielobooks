@@ -17,21 +17,22 @@
     <link rel="stylesheet" href="/deform_static/css/beautify.css" type="text/css"></link>
     <link rel="stylesheet" href="/deform_static/css/ui-lightness/jquery-ui-1.8.11.custom.css" type="text/css"></link>
   </head>
-
-  <div class="messages">
-    <span class="notice"
-      tal:repeat="msg request.session.pop_flash()"
-      tal:content="msg" />
-  </div>
-  <div class="middle">
-    <h2 class="form-title" tal:content="general_stuff.form_title"></h2>
-
-    <ul class="form-menu" tal:condition="'form_menu' in general_stuff">
-      <li tal:repeat="item general_stuff.form_menu">
-        <a tal:attributes="href item.url" tal:content="item.text"/>
-      </li>
-    </ul>
-
-    <span tal:replace="structure content"></span>
-  </div>
+  <body class="frameBox">
+	  <div class="messages">
+	    <span class="notice"
+	      tal:repeat="msg request.session.pop_flash()"
+	      tal:content="msg" />
+	  </div>
+	  <div class="middle">
+	    <h2 class="form-title" tal:content="general_stuff.form_title"></h2>
+	
+	    <ul class="form-menu" tal:condition="'form_menu' in general_stuff">
+	      <li tal:repeat="item general_stuff.form_menu">
+	        <a tal:attributes="href item.url" tal:content="item.text"/>
+	      </li>
+	    </ul>
+	
+	    <span tal:replace="structure content"></span>
+	  </div>
+  </body>
 </html>

@@ -5,6 +5,9 @@ body {
     padding: 0px;
     background: url(/static/images/body_bg.jpg) repeat-x;
 }
+body.backoffice {
+	background: #FFFFFF;
+}
 a {
     color: #2F2F2F;
     text-decoration: none;
@@ -18,10 +21,16 @@ a:hover {
 	background: url("/static/images/watermark.png") no-repeat scroll 140px 0 transparent;
 	min-height: 500px;
 }
+.backoffice .container {
+	background: none;
+}
 .top {
     margin-bottom: 5px;
     border-bottom: 1px solid #a21c1d;
 	height: 108px;
+}
+.backoffice .top {
+	height: 60px;
 }
 .top H1, .top H2 {
     float: left;
@@ -33,7 +42,7 @@ a:hover {
     margin: 0px;
 }
 .top H2 {
-    margin: 52px 0px 0px 30px;
+    /*margin: 52px 0px 0px 30px;*/
     font-size: 110%;
 }
 .top H1 A {
@@ -41,6 +50,13 @@ a:hover {
     width: 133px;
     height: 134px;
     background: url(/static/images/logo_SciELO.png) no-repeat;
+}
+.backoffice .top H1 A {
+    display: block;
+    width: 50px;
+    height: 50px;
+    background: url(/static/images/logo_50px.png) no-repeat;
+	
 }
 .top H1 A SPAN {
     display: none;
@@ -51,11 +67,37 @@ h2 {
 	margin: 0px;
 	clear: both;
 }
+.staffTitle h2 {
+	float: left;
+}
+
+.staffTitle .btnLink {
+	margin: 4px 10px;
+	float: left;
+}
+h4 {
+	margin: 10px 0px 0px 0px;
+}
+
+.filters {
+	font-size: 11px;	
+	margin-top: 20px;
+}
+.filters .label {
+	font-weight: bold;
+	margin-right: 5px;
+}
+.filters select {
+	margin-right: 15px;
+}
 .userbox {
 	text-align: right;
 	font-size: 12px;
 	padding: 5px;
 	margin-bottom: 60px;
+}
+.backoffice .userbox {
+	margin-bottom: 10px;
 }
 .userbox .userName {
 	font-weight: bold;
@@ -94,7 +136,7 @@ h2 {
 
 ul.menu {
 	margin: 0px;
-	margin-bottom: 35px;
+	margin-bottom: 15px;
 	padding: 0px;
 	list-style: none;
 }
@@ -167,6 +209,9 @@ fieldset {
 }
 .thumb img {
     padding: 0px 15px;
+}
+.thumb a img {
+	border: none;
 }
 .metadata, .metadata DT, .metadata DD {
     float: left;
@@ -307,15 +352,25 @@ TD.chpTitle {
     padding-left: 0px;
     list-style: none;
 }
-.TOC_preview LI {
-    padding: 0px 0 4px 14px;
-}
-.TOC_preview LI.bookmark {
-    background: url(/static/images/bookmark.gif) no-repeat 0px 6px;
-    padding-left: 14px;
-}
 .TOC_preview LI A {
     font-size: 70%;
+}
+
+.chpTitle  a {
+    background: url(/static/images/icon_arrow_gray.png) no-repeat 4px 7px;
+	margin: 0px;
+	font-weight: bold;
+	display: block;
+	padding: 3px 0px 3px 15px;
+}
+.chpTitle  a:hover {
+    background: url(/static/images/icon_arrow_red.png) no-repeat 4px 7px;
+	border: none;
+	color: #A21C1D;
+}
+.chpTitle.bookmark a {
+    background: url(/static/images/icon_arrow_red.png) no-repeat 4px 7px;
+	color: #A21C1D;
 }
 .spacer {
    clear: both;
@@ -350,13 +405,81 @@ TD.chpTitle {
 .actions li {
     display: inline;
 }
-.edit a, .add a{
+.book-parts, .synopsis, .evaluation-info {
+    margin-top: 20px;
+}
+
+.btnText{
+	color: #FFFFFF;
+	background-color: #A21C1D;
+	padding: 3px 4;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	border: 1px solid #ae2829;
+}
+.btnText:hover {
+	border: 1px solid #590f0f;
+	color: #EAF2FA;
+	background: #8d1617;
+}
+
+span.edit a, span.add a, a.delete, a.deformSeqAdd, span.btnLink a {
     font-family: Arial;
     font-size: 11px;
     font-weight: normal;
-    margin-left: .5em;
-    color: #A21C1D;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	padding: 1px 3px;
 }
-.book-parts, .synopsis, .evaluation-info {
-    margin-top: 20px;
+
+span.edit a, span.add a, a.deformSeqAdd, .btnLink a {
+    color: #FFFFFF;
+	background-color: #A21C1D;
+	border: 1px solid #ae2829;
+	padding: 1px 3px;
+}
+span.edit a:hover, span.add a:hover, .deformSeqAdd:hover {
+	border: 1px solid #590f0f;
+	color: #EAF2FA;
+	background: #8d1617;
+}
+
+a.delete {
+    color: #FFFFFF;
+	background-color: #4e4e4e;
+	border: 1px solid #797979;
+	
+}
+.delete:hover {
+    color: #FFFFFF;
+	background-color: #825757;
+	border: 1px solid #797979;
+}
+
+.book-parts tr {
+	border: 1px solid red;
+}
+.book-parts tr td {
+	padding: 5px 10px;
+}
+
+.book-parts tr td span.edit, span.add {
+	margin: 0px 5px;
+}
+
+body.frameBox {
+	background: none;
+	margin: 0 auto;
+	width: 90%;
+}
+body.frameBox .deformFormFieldset {
+	border: none;
+	margin-bottom: 10px;
+}
+
+.spacer {
+	clear: both;
+	height: 1px;
 }

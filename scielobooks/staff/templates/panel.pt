@@ -22,38 +22,60 @@
 
     <div class="middle" metal:fill-slot="middle">
         <div class="breadcrumb"></div>
-
-        <h2 i18n:translate="">Administrative Dashboard</h2>
-
         <ul class="menu">
-            <li id="newSubmission"><a href="${request.route_url('staff.new_book')}"
-                   i18n:translate="">New Submission</a></li>
             <li id="manageSubmission"><a href="${request.route_url('staff.meetings_list')}"
                    i18n:translate="">Manage Meetings</a></li>
             <li id="managePublishers"><a href="${request.route_url('staff.publishers_list')}"
                    i18n:translate="">Manage Publishers</a></li>
             <li id="manageUsers"><a href="${request.route_url('users.list')}"
                    i18n:translate="">Manage Users</a></li>
+            <div class="spacer"></div>
         </ul>
-        <fieldset>
-          <legend i18n:translate="">Filters</legend>
-          <span i18n:translate="">Publisher:</span>
-          <select class="filter-by-publisher">
-              <option value="nothing" i18n:translate="">Show all</option>
-              <option tal:repeat="publisher publishers"
-                      tal:content="publisher.name"
-                      value="${publisher.name_slug}"
-                      tal:attributes="selected publisher.name_slug == filters.publisher">BIREME Press</option>
-          </select>
-          <span i18n:translate="">Meeting:</span>
-          <select class="filter-by-meeting">
-              <option value="nothing" i18n:translate="">Show all</option>
-              <option tal:repeat="meeting meetings"
-                      tal:content="meeting.date"
-                      value="${meeting.date}"
-                      tal:attributes="selected str(meeting.date) == filters.meeting">2011-07-07</option>
-          </select>
-        </fieldset>
+		<div class="staffTitle">
+	        <h2 i18n:translate="">Administrative Dashboard</h2>
+	    	<span class="btnLink" id="newSubmission"><a href="${request.route_url('staff.new_book')}"
+	           i18n:translate="">New Submission</a></span>
+	          <div class="spacer"></div>
+		</div>
+        <div class="filters">
+          <form action="${request.route_url('staff.panel')}" method="GET">
+            <label for="publ" i18n:translate="">Publisher</label>
+            <select name="publ" class="filter-by-publisher">
+                <option value="">---</option>
+                <option tal:repeat="publisher publishers"
+                        tal:content="publisher.name"
+                        value="${publisher.name_slug}"
+                        tal:attributes="selected publisher.name_slug == filters.publ">BIREME Press</option>
+            </select>
+            <label for="meet" i18n:translate="">Meeting</label>
+            <select name="meet" class="filter-by-meeting">
+                <option value="">---</option>
+                <option tal:repeat="meeting meetings"
+                        tal:content="meeting.description if meeting.description else meeting.date"
+                        value="${meeting.date}"
+                        tal:attributes="selected str(meeting.date) == filters.meet">2011-07-07</option>
+            </select>
+            <label for="cdec" i18n:translate="">Committee Decision</label>
+            <select name="cdec" class="filter-by-committee-decision">
+              <option value="">---</option>
+              <option tal:repeat="decision committee_decisions"
+                      tal:content="decision.text"
+                      value="${decision.value}"
+                      tal:attributes="selected decision.value == filters.cdec">Accepted</option>
+            </select>
+            <label for="ispub" i18n:translate="">Publication Status</label>
+            <select name="ispub" class="filter-by-publication-status">
+              <option value="">---</option>
+              <option value="true"
+                      tal:attributes="selected 'true' == filters.ispub"
+                      i18n:translate="">Published</option>
+              <option value="false"
+                      tal:attributes="selected 'false' == filters.ispub"
+                      i18n:translate="">Unpublished</option>
+            </select>
+            <input class="btnText" type="submit" value="Filter"/>
+          </form>
+        </div>
         <p tal:condition="len(evaluations) == 0">There are no records.</p>
 
         <span tal:omit-tag="" tal:condition="evaluations | nothing">
@@ -65,7 +87,7 @@
                       <th i18n:translate="">Title</th>
                       <th i18n:translate="">Meeting</th>
                       <th i18n:translate="">Committee Decision</th>
-                      <th i18n:translate="">Publication Status</th>
+                      <th i18n:translate="">Status</th>
                   </tr>
               </thead>
               <tbody>
@@ -80,10 +102,10 @@
                                class="action_publish"
                                id="${evaluation.isbn}_action-publish" i18n:translate="">Publish</a>
                           </li>
-                          <li><a tal:condition="evaluation.is_published == True"
-                                 href="javascript: void(0);"
-                                 class="action_unpublish"
-                                 id="${evaluation.isbn}_action-unpublish" i18n:translate="">Unpublish</a>
+                          <li tal:condition="evaluation.is_published == True">
+                            <a href="javascript: void(0);"
+                               class="action_unpublish"
+                               id="${evaluation.isbn}_action-unpublish" i18n:translate="">Unpublish</a>
                           </li>
                           <li><a href="javascript: void(0);"
                                  class="action_delete"
