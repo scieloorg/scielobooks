@@ -12,6 +12,7 @@ from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
 
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import NoResultFound
 from datetime import date
 
 from forms import MonographForm, PublisherForm, EvaluationForm, MeetingForm, PartForm
@@ -401,6 +402,28 @@ def new_publisher(request):
                           ]
                         },
             }
+
+def delete_publisher(request):
+    slug = request.matchdict.get('slug', None)
+
+    if slug is None:
+        return Respose(status=204)
+
+    try:
+        publisher = request.rel_db_session.query(rel_models.Publisher).filter_by(name_slug=slug).one()
+    except NoResultFound:
+        return Respose(status=204)
+
+    request.rel_db_session.delete(publisher)
+
+    try:
+        request.rel_db_session.commit()
+        request.session.flash(_('Successfully deleted.'))
+    except:
+        request.rel_db_session.rollback()
+        request.session.flash(_('Oops! An error occurred. Please try again.'))
+
+    return Response(status=200)
 
 def publishers_list(request):
     main = get_renderer(BASE_TEMPLATE).implementation()

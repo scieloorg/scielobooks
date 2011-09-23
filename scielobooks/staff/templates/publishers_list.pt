@@ -3,7 +3,7 @@
 
     <div metal:fill-slot="custom_script" tal:omit-tag="">
         <script src="/static/js/jquery.tablesorter.js"></script>
-        <script src="/static/js/evaluation-books_list.js"></script>
+        <script src="/static/js/publishers_list.js"></script>
     </div>
 
     <div metal:fill-slot="css" tal:omit-tag="">
@@ -47,7 +47,14 @@
 
                       <ul class="actions">
                         <li>
-                            <a href="${request.route_url('staff.edit_publisher', slug=publisher.name_slug)}" i18n:translate="">Edit</a>
+                            <a href="${request.route_url('staff.edit_publisher', slug=publisher.name_slug)}"
+                               i18n:translate="">Edit</a>
+                        </li>
+                        <li>
+                            <a id="${publisher.name_slug}_action-delete"
+                               href="javascript: void(0);"
+                               class="action_delete"
+                               i18n:translate="">Delete</a>
                         </li>
                       </ul>
 
