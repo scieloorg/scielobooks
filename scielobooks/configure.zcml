@@ -183,6 +183,13 @@
     renderer="scielobooks:staff/templates/meetings_list.pt"
     permission="admin"
   />
+  <route
+    name="staff.delete_meeting"
+    pattern="/staff/meeting/{id}"
+    view="scielobooks.staff.views.delete_meeting"
+    permission="admin"
+    request_method="DELETE"
+  />
   <!--
   ***************
    AJAX FUNCTIONS

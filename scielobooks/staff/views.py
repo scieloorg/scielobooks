@@ -610,6 +610,28 @@ def new_meeting(request):
                          },
             }
 
+def delete_meeting(request):
+    id = request.matchdict.get('id', None)
+
+    if id is None:
+        return Respose(status=204)
+
+    try:
+        meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=id).one()
+    except NoResultFound:
+        return Respose(status=204)
+
+    request.rel_db_session.delete(meeting)
+
+    try:
+        request.rel_db_session.commit()
+        request.session.flash(_('Successfully deleted.'))
+    except:
+        request.rel_db_session.rollback()
+        request.session.flash(_('Oops! An error occurred. Please try again.'))
+
+    return Response(status=200)
+
 def meetings_list(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
     meetings = request.rel_db_session.query(rel_models.Meeting).all()
