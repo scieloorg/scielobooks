@@ -3,7 +3,7 @@
 
     <div metal:fill-slot="custom_script" tal:omit-tag="">
         <script src="/static/js/jquery.tablesorter.js"></script>
-        <script src="/static/js/evaluation-books_list.js"></script>
+        <script src="/static/js/meetings_list.js"></script>
     </div>
 
     <div metal:fill-slot="css" tal:omit-tag="">
@@ -49,6 +49,12 @@
 
                       <ul class="actions">
                         <li><a href="${request.route_url('staff.edit_meeting', id=meeting.id)}" i18n:translate="">Edit</a></li>
+                        <li>
+                            <a id="${meeting.id}_action-delete"
+                               href="javascript: void(0);"
+                               class="action_delete"
+                               i18n:translate="">Delete</a>
+                        </li>
                       </ul>
                     </td>
                     <td><a href="${request.route_url('evaluation.books_list')}?meeting=${str(meeting.date)}">permalink</a></td>

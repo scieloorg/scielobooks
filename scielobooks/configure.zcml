@@ -156,6 +156,13 @@
     permission="admin"
   />
   <route
+    name="staff.delete_publisher"
+    pattern="/staff/publisher/{slug}"
+    view="scielobooks.staff.views.delete_publisher"
+    permission="admin"
+    request_method="DELETE"
+  />
+  <route
     name="staff.new_meeting"
     pattern="/staff/meeting/new"
     view="scielobooks.staff.views.new_meeting"
@@ -175,6 +182,13 @@
     view="scielobooks.staff.views.meetings_list"
     renderer="scielobooks:staff/templates/meetings_list.pt"
     permission="admin"
+  />
+  <route
+    name="staff.delete_meeting"
+    pattern="/staff/meeting/{id}"
+    view="scielobooks.staff.views.delete_meeting"
+    permission="admin"
+    request_method="DELETE"
   />
   <!--
   ***************
