@@ -123,44 +123,16 @@
     <!-- default values for query parameters -->
      <lst name="defaults">
        <str name="echoParams">explicit</str>
-     </lst>  
+     </lst>
 	 <lst name="invariants">
-		 <str name="facet">true</str>
-		 <str name="facet.field">type</str>
-         <str name="facet.field">clinical_aspect</str>
-         <str name="facet.field">fulltext</str>
-         <str name="facet.field">type_of_study</str>
-		 <str name="facet.field">mh_cluster</str>
-		 <str name="facet.field">limit</str>
-		 <str name="facet.field">ta_cluster</str>
-		 <str name="facet.field">la</str>
-		 <str name="facet.field">year_cluster</str>
-		 <str name="facet.limit">20</str>
-		 <str name="facet.mincount">1</str>
+      <str name="facet">true</str>
+      <str name="facet.field">type</str>
+      <str name="facet.field">publisher</str>
+      <str name="facet.field">year</str>
+      <str name="facet.limit">20</str>
+      <str name="facet.mincount">1</str>
 	 </lst>
   </requestHandler>
-
-  <requestHandler name="bvs" class="solr.StandardRequestHandler">
-    <!-- default values for query parameters -->
-    <lst name="defaults">
-      <str name="echoParams">explicit</str>
-    </lst>
-    
-    <lst name="invariants">
-        <str name="facet">true</str>
-        <str name="facet.field">type</str>
-        <str name="facet.field">clinical_aspect</str>
-        <str name="facet.field">fulltext</str>
-        <str name="facet.field">type_of_study</str>
-        <str name="facet.field">mh_cluster</str>
-        <str name="facet.field">limit</str>
-        <str name="facet.field">ta_cluster</str>
-        <str name="facet.field">la</str>
-        <str name="facet.field">year_cluster</str>
-        <str name="facet.limit">20</str>
-        <str name="facet.mincount">1</str>
-    </lst>
- </requestHandler>
 
  <!-- Update request handler.
 
