@@ -21,7 +21,7 @@ function(doc, req) {
         }
     }
     for each(var value in doc.format){
-        format.push({'type':value});        
+        format.push({'type':value});
     }
     var result = {
                 sbid: doc._id,
@@ -33,7 +33,8 @@ function(doc, req) {
                 publisher: doc.publisher,
                 language: doc.language,
                 year: doc.year,
-                chapterorder: doc.order
+                chapterorder: doc.order,
+                is_public: doc.visible
                 }
 
     if(doc.TYPE == 'Part'){
