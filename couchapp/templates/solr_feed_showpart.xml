@@ -18,6 +18,7 @@
             <field name="format">{{type}}</field>
         {{/format}}
         <field name="type">{{type}}</field>
+        <field name="is_public">{{is_public}}</field>
     </doc>
 </add>
 
