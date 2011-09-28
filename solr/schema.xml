@@ -74,7 +74,7 @@
    <field name="sbid" type="string" indexed="true" stored="true"/>
    <field name="shortname" type="string" indexed="false" stored="true"/>
    <field name="title" type="text" indexed="true" stored="true"/>
-   <field name="book_title" type="text" indexed="false" stored="true"/>
+   <field name="book_title" type="text" indexed="true" stored="true"/>
    <field name="isbn" type="string" indexed="true" stored="true"/>
    <field name="author" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="publisher" type="string" indexed="true" stored="true"/>
