@@ -91,3 +91,5 @@ def customize_form_css_class(form, default_css=None, **kwargs):
         for field in form:
             field.widget.css_class = kwargs[field.name] if field.name in kwargs else default_css
 
+def remove_none_values_from_dict(d):
+    return dict([(key,d[key]) for key in d if d[key]])
