@@ -8,6 +8,7 @@
     <script type="text/javascript">
       deform.load()
     </script>
+    <script type="text/javascript" src="/static/js/remove_none.js"></script>
   </div>
 
   <div metal:fill-slot="css">
@@ -31,7 +32,7 @@
   <div class="middle" metal:fill-slot="middle">
     <h2 class="form-title" tal:condition="general_stuff.form_title | default" tal:content="general_stuff.form_title"></h2>
 
-    <ul class="form-menu" tal:condition="'form_menu' in general_stuff">
+    <ul id="main_form" class="form-menu" tal:condition="'form_menu' in general_stuff">
       <li tal:repeat="item general_stuff.form_menu">
         <a tal:attributes="href item.url" tal:content="item.text"/>
       </li>
