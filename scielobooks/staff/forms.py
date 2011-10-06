@@ -118,6 +118,8 @@ class MonographForm():
         base_schema['use_licence'].description = localizer.translate(_('Use Licence'))
         base_schema['pdf_file'].title = localizer.translate(_('Book in PDF'))
         base_schema['pdf_file'].description = localizer.translate(_('Full book PDF'))
+        base_schema['epub_file'].title = localizer.translate(_('Book in ePub'))
+        base_schema['epub_file'].description = localizer.translate(_('Full book ePub'))
         base_schema['cover'].title = localizer.translate(_('Book Cover'))
         base_schema['cover'].description = localizer.translate(_('Book cover in high resolution'))
         base_schema['toc'].title = localizer.translate(_('Table of Contents'))
@@ -284,6 +286,11 @@ class PartForm():
         base_schema['pages']['final'].description = localizer.translate(_('Last page'))
         base_schema['pdf_file'].title = localizer.translate(_('Book in PDF'))
         base_schema['pdf_file'].description = localizer.translate(_('Full book PDF'))
+        base_schema['descriptive_information'].title = localizer.translate(_('Descriptive Information'))
+        base_schema['descriptive_information'].description = localizer.translate(_('Descriptive Information'))
+        base_schema['text_language'].title = localizer.translate(_('Text Language'))
+        base_schema['text_language'].description = localizer.translate(_('Text Language'))
+
 
         btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
                                type='submit', value='submit', disabled=False)
