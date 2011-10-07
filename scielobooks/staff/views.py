@@ -26,7 +26,7 @@ import colander
 import urllib
 
 from .models import Monograph, Part
-from ..utilities.functions import create_thumbnail, slugify, remove_none_values_from_dict
+from ..utilities.functions import create_thumbnail, slugify
 
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'
 MIMETYPES = {
@@ -117,7 +117,7 @@ def edit_book(request):
         except IndexError:
             appstruct['publisher'] = slugify(appstruct['publisher'])
 
-        return {'content':monograph_form.render(remove_none_values_from_dict(appstruct)),
+        return {'content':monograph_form.render(appstruct),
                 'main':main,
                 'user':get_logged_user(request),
                 'general_stuff':{'form_title':FORM_TITLE % monograph.title,
@@ -196,7 +196,7 @@ def new_part(request):
     if 'part_id' in request.matchdict:
         part = Part.get(request.db, request.matchdict['part_id'])
 
-        return {'content':part_form.render(remove_none_values_from_dict(part.to_python())),
+        return {'content':part_form.render(part.to_python()),
                 'main':main,
                 'user':get_logged_user(request),
                 'general_stuff':{'form_title':FORM_TITLE_EDIT % part.title},
@@ -229,6 +229,10 @@ def book_details(request):
     if getattr(monograph, 'pdf_file', None):
         pdf_file_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.pdf_file['filename'])
         book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
+
+    if getattr(monograph, 'epub_file', None):
+        epub_file_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.epub_file['filename'])
+        book_attachments.append({'url':epub_file_url, 'text':_('Book in epub')})
 
     evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph._id).one()
 
@@ -355,7 +359,7 @@ def new_publisher(request):
         except IntegrityError:
             session.rollback()
             request.session.flash(_('This record already exists! Please check the data and try again.'))
-            return {'content':publisher_form.render(remove_none_values_from_dict(appstruct)),
+            return {'content':publisher_form.render(appstruct),
                     'main':main,
                     'user':get_logged_user(request),
                     'general_stuff':{'form_title':FORM_TITLE_NEW,
@@ -379,7 +383,7 @@ def new_publisher(request):
 
         publisher_form['name'].widget = deform.widget.TextInputWidget(disabled="disabled")
 
-        return {'content': publisher_form.render(remove_none_values_from_dict(publisher.as_dict())),
+        return {'content': publisher_form.render(publisher.as_dict()),
                 'main':main,
                 'user':get_logged_user(request),
                 'general_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name,
@@ -487,7 +491,7 @@ def new_book(request):
         except IntegrityError:
             request.rel_db_session.rollback()
             request.session.flash(_('This record already exists! Please check the data and try again.'))
-            return {'content':evaluation_form.render(remove_none_values_from_dict(appstruct)),
+            return {'content':evaluation_form.render(appstruct),
                     'main':main,
                     'user':get_logged_user(request),
                     'general_stuff':{'form_title':FORM_TITLE_NEW},
@@ -586,7 +590,7 @@ def new_meeting(request):
         meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=request.matchdict['id']).one()
         appstruct = {'date':meeting.date, 'description':meeting.description}
 
-        return {'content':meeting_form.render(remove_none_values_from_dict(appstruct)),
+        return {'content':meeting_form.render(appstruct),
                 'main':main,
                 'user':get_logged_user(request),
                 'general_stuff':{'form_title':FORM_TITLE_EDIT % unicode(meeting.description),
