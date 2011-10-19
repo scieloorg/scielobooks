@@ -48,7 +48,8 @@ class MonographForm():
                        ('translator',localizer.translate(_('Translator'))),
                        ('coordinator',localizer.translate(_('Coordinator'))),
                        ('editor',localizer.translate(_('Editor'))),
-                       ('other',localizer.translate(_('Other'))),]
+                       ('other',localizer.translate(_('Other'))),
+                       ('organizer',localizer.translate(_('Organizer'))),]
 
         language_values = [('pt', localizer.translate(_('Portuguese'))),
                            ('en', localizer.translate(_('English')))]
