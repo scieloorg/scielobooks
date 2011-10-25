@@ -43,6 +43,7 @@ class Part(model.CouchdbDocument):
     pdf_file = model.FileProperty()
 
     monograph = model.TextProperty(required=False)
+    visible = model.BooleanProperty()
 
     class Meta:
-        hide = ('monograph',)
+        hide = ('monograph', 'visible')
