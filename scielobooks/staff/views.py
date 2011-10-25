@@ -182,6 +182,7 @@ def new_part(request):
 
         part = Part.from_python(appstruct)
         part.monograph = monograph_id
+        part.visible = False
 
         is_new = True if getattr(part, '_rev', None) is None else False
 
@@ -694,6 +695,14 @@ def ajax_set_committee_decision(request):
 
     return Response('nothing to do')
 
+def update_part(part, key, value):
+    """
+    Function used by views ajax_action_publish/ajax_action_unpublish
+    to set the visible option
+    """
+    part[key] = value
+    return part
+
 def ajax_action_publish(request):
     if request.method == 'POST':
         evaluation_isbn = request.POST.get('evaluation', None)
@@ -710,21 +719,21 @@ def ajax_action_publish(request):
         if evaluation.is_published:
             return Response('nothing to do')
 
-        monograph = Monograph.get(request.db, evaluation.monograph_sbid)
+        try:
+            parts = [update_part(part['doc'], 'visible', True) for part in request.db.view('scielobooks/monographs_and_parts',
+                include_docs=True, startkey=[evaluation.monograph_sbid, 0], endkey=[evaluation.monograph_sbid, 1])]
+        except couchdbkit.ResourceNotFound:
+            raise exceptions.NotFound()
 
         evaluation.is_published = True
-        monograph.visible = True
-
         request.rel_db_session.add(evaluation)
-        monograph.save(request.db)
 
         #TODO! catch exception
         try:
             request.rel_db_session.commit()
+            request.db.save_docs(parts, all_or_nothing=True)
         except:
             request.rel_db_session.rollback()
-            monograph.visible = False
-            monograph.save(request.db)
 
         return Response('done')
 
@@ -743,21 +752,21 @@ def ajax_action_unpublish(request):
         if not evaluation.is_published:
             return Response('nothing to do')
 
-        monograph = Monograph.get(request.db, evaluation.monograph_sbid)
+        try:
+            parts = [update_part(part['doc'], 'visible', False) for part in request.db.view('scielobooks/monographs_and_parts',
+                include_docs=True, startkey=[evaluation.monograph_sbid, 0], endkey=[evaluation.monograph_sbid, 1])]
+        except couchdbkit.ResourceNotFound:
+            raise exceptions.NotFound()
 
         evaluation.is_published = False
-        monograph.visible = False
-
         request.rel_db_session.add(evaluation)
-        monograph.save(request.db)
 
         #TODO! catch exception
         try:
             request.rel_db_session.commit()
+            request.db.save_docs(parts, all_or_nothing=True)
         except:
             request.rel_db_session.rollback()
-            monograph.visible = True
-            monograph.save(request.db)
 
         return Response('done')
 

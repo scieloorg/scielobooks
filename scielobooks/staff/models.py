@@ -46,6 +46,7 @@ class Part(model.CouchdbDocument):
     text_language = model.TextProperty()
 
     monograph = model.TextProperty(required=False)
+    visible = model.BooleanProperty()
 
     class Meta:
-        hide = ('monograph',)
+        hide = ('monograph', 'visible')
