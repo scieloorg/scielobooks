@@ -230,6 +230,10 @@ def book_details(request):
         pdf_file_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.pdf_file['filename'])
         book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
 
+    if getattr(monograph, 'epub_file', None):
+        epub_file_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.epub_file['filename'])
+        book_attachments.append({'url':epub_file_url, 'text':_('Book in epub')})
+
     evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph._id).one()
 
     parts = catalog_views.get_book_parts(monograph._id, request)
@@ -476,7 +480,7 @@ def new_book(request):
         monograph = Monograph(title=evaluation.title,
                               isbn=evaluation.isbn,
                               publisher=evaluation.publisher.name,
-                              publisher_url=evaluation.publisher_catalog_url,
+                              publisher_url=evaluation.publisher_catalog_url if evaluation.publisher_catalog_url else '',
                               visible=False,
                               )
 

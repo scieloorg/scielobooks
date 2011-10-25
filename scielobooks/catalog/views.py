@@ -15,6 +15,8 @@ _ = TranslationStringFactory('scielobooks')
 from ..staff.models import Monograph, Part
 from scielobooks.utilities import functions
 
+from operator import itemgetter
+
 import couchdbkit
 import urllib2
 import deform
@@ -44,7 +46,7 @@ def get_book_parts(monograph_sbid, request):
 
     monograph_parts = []
     for i,part in enumerate(parts):
-        partnumber = str(i).zfill(2)
+        partnumber = part['doc']['order'].zfill(2)
         part_meta = {'part_sbid':part['id'],
                      'partnumber':partnumber,
                      'title':part['doc']['title'],
@@ -54,6 +56,8 @@ def get_book_parts(monograph_sbid, request):
                      'edit_url':request.route_path('staff.edit_part', sbid=monograph_sbid, part_id=part['id']),
                      }
         monograph_parts.append(part_meta)
+
+    monograph_parts = sorted(monograph_parts, key=itemgetter('partnumber'))
 
     return monograph_parts
 
@@ -70,9 +74,14 @@ def book_details(request):
     parts = get_book_parts(monograph._id, request)
 
     book_attachments = []
+
     if getattr(monograph, 'pdf_file', None):
         pdf_file_url = request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn)
         book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
+
+    if getattr(monograph, 'epub_file', None):
+        epub_file_url = request.route_path('catalog.epub_file', sbid=monograph._id)
+        book_attachments.append({'url':epub_file_url, 'text':_('Book in ePub')})
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -134,6 +143,7 @@ def cover(request):
 
     return response
 
+
 def pdf_file(request):
     sbid = request.matchdict['sbid']
     req_part = request.matchdict['part']
@@ -161,6 +171,22 @@ def pdf_file(request):
     response.app_iter = pdf_file
 
     return response
+
+
+def epub_file(request):
+    sbid = request.matchdict['sbid']
+
+    monograph = Monograph.get(request.db, sbid)
+    try:
+        epub_file = request.db.fetch_attachment(monograph._id, monograph.epub_file['filename'], stream=True)
+    except (couchdbkit.ResourceNotFound, AttributeError):
+        raise exceptions.NotFound()
+
+    response = Response(content_type='application/epub')
+    response.app_iter = epub_file
+
+    return response
+
 
 def swf_file(request):
     sbid = request.matchdict['sbid']
