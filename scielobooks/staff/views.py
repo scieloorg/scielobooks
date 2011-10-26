@@ -62,7 +62,7 @@ def get_logged_user(request):
         return request.rel_db_session.query(user_models.User).get(userid)
 
 def edit_book(request):
-    FORM_TITLE = _('Submission of %s')
+    FORM_TITLE = _('%s')
 
     localizer = get_localizer(request)
     publishers = request.rel_db_session.query(rel_models.Publisher.name_slug, rel_models.Publisher.name).all()
