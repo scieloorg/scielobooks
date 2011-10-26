@@ -34,8 +34,12 @@ function(doc, req) {
                 language: doc.language,
                 year: doc.year,
                 chapterorder: doc.order,
-                is_public: doc.visible
                 }
+    if (doc.visible==true){
+        result['is_public'] = true;
+    } else {
+        result['is_public'] = false;
+    }
 
     if(doc.TYPE == 'Part'){
         result.type = "part";

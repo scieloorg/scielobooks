@@ -85,7 +85,7 @@
    <field name="type" type="string" indexed="true" stored="true"/>
    <field name="chapterorder" type="string" indexed="false" stored="true"/>
    <field name="monographsbid" type="string" indexed="false" stored="true"/>
-   <field name="is_public" type="string" indexed="true" stored="true"/>
+   <field name="is_public" type="boolean" indexed="true" stored="true"/>
 
 
     <!-- catchall field, containing all other searchable text fields (implemented
