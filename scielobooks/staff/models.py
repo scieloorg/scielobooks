@@ -48,6 +48,7 @@ class Part(model.CouchdbDocument):
     monograph = model.TextProperty(required=False)
     monograph_title = model.TextProperty(required=False)
     monograph_isbn = model.TextProperty(required=True)
+    monograph_creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'])
     monograph_publisher = model.TextProperty(required=True)
     monograph_language = model.TextProperty()
     monograph_year = model.TextProperty()

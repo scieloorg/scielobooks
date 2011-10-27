@@ -189,6 +189,7 @@ def new_part(request):
                 'visible': monograph.visible,
                 'monograph_title': monograph.title,
                 'monograph_isbn': monograph.isbn,
+                'monograph_creators': monograph.creators,
                 'monograph_publisher': monograph.publisher,})
         part = Part.from_python(appstruct)
 
