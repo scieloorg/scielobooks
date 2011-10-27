@@ -179,10 +179,23 @@ def new_part(request):
                     'user':get_logged_user(request),
                     'general_stuff':{'form_title':FORM_TITLE_NEW},
                     }
+        try:
+           monograph = Monograph.get(request.db, monograph_id)
+        except couchdbkit.ResourceNotFound:
+            raise exceptions.NotFound()
 
+        appstruct.update({
+                'monograph':monograph._id,
+                'visible': monograph.visible,
+                'monograph_title': monograph.title,
+                'monograph_isbn': monograph.isbn,
+                'monograph_publisher': monograph.publisher,})
         part = Part.from_python(appstruct)
-        part.monograph = monograph_id
-        part.visible = False
+
+        if monograph.language:
+            part.monograph_language = monograph.language
+        if monograph.year:
+            part.monograph_year = monograph.year
 
         is_new = True if getattr(part, '_rev', None) is None else False
 
