@@ -46,7 +46,14 @@ class Part(model.CouchdbDocument):
     text_language = model.TextProperty()
 
     monograph = model.TextProperty(required=False)
+    monograph_title = model.TextProperty(required=False)
+    monograph_isbn = model.TextProperty(required=True)
+    monograph_creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'])
+    monograph_publisher = model.TextProperty(required=True)
+    monograph_language = model.TextProperty()
+    monograph_year = model.TextProperty()
     visible = model.BooleanProperty()
 
     class Meta:
-        hide = ('monograph', 'visible')
+        hide = ('monograph', 'monograph_title', 'monograph_isbn', 'monograph_creators',
+            'monograph_publisher', 'monograph_language', 'monograph_year', 'visible')
