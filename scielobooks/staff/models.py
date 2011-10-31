@@ -55,5 +55,5 @@ class Part(model.CouchdbDocument):
     visible = model.BooleanProperty()
 
     class Meta:
-        hide = ('monograph', 'monograph_title', 'monograph_isbn',
+        hide = ('monograph', 'monograph_title', 'monograph_isbn', 'monograph_creators',
             'monograph_publisher', 'monograph_language', 'monograph_year', 'visible')

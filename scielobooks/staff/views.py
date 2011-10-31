@@ -104,6 +104,20 @@ def edit_book(request):
         monograph = Monograph.from_python(existing_doc_appstruct)
         monograph.save(request.db)
 
+        #update monographic data that lives on each part
+        monograph_as_python = monograph.to_python()
+        monographic_data = {'monograph_title': monograph_as_python['title'],
+                            'monograph_isbn': monograph_as_python['isbn'],
+                            'monograph_creators': monograph_as_python['creators'],
+                            'monograph_publisher': monograph_as_python['publisher'],}
+        try:
+            parts = [update_part(part['doc'], monographic_data) for part in request.db.view('scielobooks/monographs_and_parts',
+                include_docs=True, key=[monograph._id, 1])]
+        except couchdbkit.ResourceNotFound:
+            raise exceptions.NotFound()
+
+        request.db.save_docs(parts, all_or_nothing=True)
+
         request.session.flash(_('Successfully updated.'))
 
         return HTTPFound(location=request.route_url('staff.book_details', sbid=monograph._id))
@@ -709,12 +723,12 @@ def ajax_set_committee_decision(request):
 
     return Response('nothing to do')
 
-def update_part(part, key, value):
+def update_part(part, new_values):
     """
     Function used by views ajax_action_publish/ajax_action_unpublish
     to set the visible option
     """
-    part[key] = value
+    part.update(new_values)
     return part
 
 def ajax_action_publish(request):
@@ -734,7 +748,7 @@ def ajax_action_publish(request):
             return Response('nothing to do')
 
         try:
-            parts = [update_part(part['doc'], 'visible', True) for part in request.db.view('scielobooks/monographs_and_parts',
+            parts = [update_part(part['doc'], {'visible': True}) for part in request.db.view('scielobooks/monographs_and_parts',
                 include_docs=True, startkey=[evaluation.monograph_sbid, 0], endkey=[evaluation.monograph_sbid, 1])]
         except couchdbkit.ResourceNotFound:
             raise exceptions.NotFound()
@@ -767,7 +781,7 @@ def ajax_action_unpublish(request):
             return Response('nothing to do')
 
         try:
-            parts = [update_part(part['doc'], 'visible', False) for part in request.db.view('scielobooks/monographs_and_parts',
+            parts = [update_part(part['doc'], {'visible': False}) for part in request.db.view('scielobooks/monographs_and_parts',
                 include_docs=True, startkey=[evaluation.monograph_sbid, 0], endkey=[evaluation.monograph_sbid, 1])]
         except couchdbkit.ResourceNotFound:
             raise exceptions.NotFound()
