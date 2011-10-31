@@ -48,7 +48,8 @@ class MonographForm():
                        ('translator',localizer.translate(_('Translator'))),
                        ('coordinator',localizer.translate(_('Coordinator'))),
                        ('editor',localizer.translate(_('Editor'))),
-                       ('other',localizer.translate(_('Other'))),]
+                       ('other',localizer.translate(_('Other'))),
+                       ('organizer',localizer.translate(_('Organizer'))),]
 
         language_values = [('pt', localizer.translate(_('Portuguese'))),
                            ('en', localizer.translate(_('English')))]
@@ -117,6 +118,7 @@ class MonographForm():
         base_schema['serie']['title'].title = localizer.translate(_('Title'))
         base_schema['serie']['issue'].title = localizer.translate(_('Issue'))
         base_schema['serie']['issue_number'].title = localizer.translate(_('Issue Number'))
+        base_schema['serie']['issn'].title = 'ISSN'
         base_schema['use_licence'].title = localizer.translate(_('Use Licence'))
         base_schema['use_licence'].description = localizer.translate(_('Use Licence'))
         base_schema['pdf_file'].title = localizer.translate(_('Book in PDF'))
