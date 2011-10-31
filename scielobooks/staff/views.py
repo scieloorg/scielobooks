@@ -62,7 +62,7 @@ def get_logged_user(request):
         return request.rel_db_session.query(user_models.User).get(userid)
 
 def edit_book(request):
-    FORM_TITLE = _('Submission of %s')
+    FORM_TITLE = '%s'
 
     localizer = get_localizer(request)
     publishers = request.rel_db_session.query(rel_models.Publisher.name_slug, rel_models.Publisher.name).all()
@@ -173,7 +173,7 @@ def parts_list(request):
 
 def new_part(request):
     FORM_TITLE_NEW = _('New Book Part')
-    FORM_TITLE_EDIT = _('Editing %s')
+    FORM_TITLE_EDIT = '%s'
 
     monograph_id = request.matchdict['sbid']
 
@@ -340,7 +340,7 @@ def panel(request):
 
 def new_publisher(request):
     FORM_TITLE_NEW = _('New Publisher')
-    FORM_TITLE_EDIT = _('Editing %s')
+    FORM_TITLE_EDIT = '%s'
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -569,7 +569,7 @@ def delete_book(request):
 
 def new_meeting(request):
     FORM_TITLE_NEW = _('New Meeting')
-    FORM_TITLE_EDIT = _('Editing %s')
+    FORM_TITLE_EDIT = '%s'
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
