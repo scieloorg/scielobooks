@@ -99,6 +99,10 @@ def edit_book(request):
                                }
             appstruct['cover_thumbnail'] = cover_thumbnail
 
+        publisher_slug = appstruct.pop('publisher')
+        publisher = request.rel_db_session.query(rel_models.Publisher).filter_by(name_slug=publisher_slug).one()
+        appstruct['publisher'] = publisher.name
+
         existing_doc_appstruct = Monograph.get(request.db, appstruct['_id']).to_python()
         existing_doc_appstruct.update(appstruct)
         monograph = Monograph.from_python(existing_doc_appstruct)
