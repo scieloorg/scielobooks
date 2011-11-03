@@ -1,6 +1,7 @@
 from isis import model
 import deform
 import urllib2
+from collections import OrderedDict
 
 
 class Monograph(model.CouchdbDocument):
@@ -35,6 +36,20 @@ class Monograph(model.CouchdbDocument):
     class Meta:
         hide = ('cover_thumbnail', 'visible', 'creation_date', 'created_by')
 
+    def formatted_creators(self, formatting_func=None):
+        # {'author': 'Babbage, Charles; Turing, Alan.'}
+        if formatting_func is None:
+            def formatting_func(creators):
+                """
+                accept a list of creators and returns it in a formatted form.
+                """
+                return '; '.join(creators) + '.'
+
+        creators_by_role = OrderedDict()
+        for creator in self.creators:
+            creators_by_role.setdefault(creator['role'], []).append(creator['full_name'])
+
+        return OrderedDict((key, formatting_func(value)) for key, value in creators_by_role.items())
 
 class Part(model.CouchdbDocument):
     title = model.TextProperty(required=True)

@@ -60,9 +60,15 @@
 
 
         <dl class="metadata">
-          <span tal:omit-tag="" tal:condition="getattr(document, 'creators', None)">
-          <dt i18n:translate="">Author:</dt>
-            <dd tal:repeat="person document.creators" tal:content="person.full_name">Soares, Sandra Regina</dd>
+          <span tal:omit-tag="" tal:repeat="creator creators" tal:define="creators document.formatted_creators()">
+            <dt tal:condition="creator.lower() == 'individual_author'" i18n:translate="">Author:</dt>
+            <dt tal:condition="creator.lower() == 'corporate_author'" i18n:translate="">Corporate Author:</dt>
+            <dt tal:condition="creator.lower() == 'translator'" i18n:translate="">Translator:</dt>
+            <dt tal:condition="creator.lower() == 'coordinator'" i18n:translate="">Coordinator:</dt>
+            <dt tal:condition="creator.lower() == 'editor'" i18n:translate="">Editor:</dt>
+            <dt tal:condition="creator.lower() == 'other'" i18n:translate="">Other:</dt>
+            <dt tal:condition="creator.lower() == 'organizer'" i18n:translate="">Organizer:</dt>
+              <dd tal:content="creators[creator]"></dd>
           </span>
 
           <span tal:omit-tag="" tal:condition="getattr(document, 'publisher', None)">
