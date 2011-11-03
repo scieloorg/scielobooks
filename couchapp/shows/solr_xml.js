@@ -9,24 +9,27 @@ function(doc, req) {
         var supposed_name = '';
         var is_author = false;
         for each(var item in value){
-            if(item[0] == '_'){
+            if(item[0] == 'full_name'){
                 supposed_name = item[1];
             }
-            if(item[0] == 'role' && item[1] == 'author'){
+            if(item[0] == 'role' && item[1].search('author$') >= 0){
                 is_author = true;
             }
             if(supposed_name.length > 0 && is_author == true){
-                authors.push({'name':supposed_name});
+                authors.push(supposed_name);
+                break;
             }
         }
     }
+    var formatted_creators = authors.join('; ') + '.';
+
     for each(var value in doc.format){
         format.push({'type':value});
     }
     var result = {
                 sbid: doc._id,
                 monographsbid: doc.monograph,
-                authors: authors,
+                authors: formatted_creators,
                 format: format,
                 shortname: doc.shortname,
                 isbn: doc.isbn,

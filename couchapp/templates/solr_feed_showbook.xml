@@ -5,9 +5,7 @@
         <field name="shortname">{{shortname}}</field>
         <field name="title">{{title}}</field>
         <field name="isbn">{{isbn}}</field>
-        {{#authors}}
-            <field name="author">{{name}}</field>
-        {{/authors}}
+        <field name="author">{{authors}}</field>
         {{#chapters_list}}
             <field name="chaptertitle">{{title}}</field>
         {{/chapters_list}}
