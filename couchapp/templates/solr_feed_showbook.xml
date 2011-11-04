@@ -13,9 +13,7 @@
         <field name="language">{{language}}</field>
         <field name="year">{{year}}</field>
         <field name="synopsis">{{synopsis}}</field>
-        {{#format}}
-            <field name="format">{{type}}</field>
-        {{/format}}
+        <field name="format">{{format}}</field>
         <field name="type">{{type}}</field>
         <field name="is_public">{{is_public}}</field>
     </doc>
