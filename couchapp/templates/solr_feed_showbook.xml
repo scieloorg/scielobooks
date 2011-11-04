@@ -6,9 +6,6 @@
         <field name="title">{{title}}</field>
         <field name="isbn">{{isbn}}</field>
         <field name="author">{{authors}}</field>
-        {{#chapters_list}}
-            <field name="chaptertitle">{{title}}</field>
-        {{/chapters_list}}
         <field name="publisher">{{publisher}}</field>
         <field name="language">{{language}}</field>
         <field name="year">{{year}}</field>
