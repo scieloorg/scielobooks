@@ -61,6 +61,7 @@ class MonographForm():
         base_schema['creators'].children[0]['full_name'].title = localizer.translate(_('Full name'))
         base_schema['creators'].children[0]['link_resume'].title = localizer.translate(_('Resume link'))
         base_schema['creators'].children[0]['link_resume'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
+        base_schema['notes'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
 
         #i18n
         base_schema.add(colander.SchemaNode(
@@ -123,6 +124,8 @@ class MonographForm():
         base_schema['use_licence'].description = localizer.translate(_('Use Licence'))
         base_schema['doi_number'].title = localizer.translate(_('DOI'))
         base_schema['doi_number'].description = localizer.translate(_('Digital Object Identifier'))
+        base_schema['notes'].title = localizer.translate(_('Notes'))
+        base_schema['notes'].description = localizer.translate(_('Notes'))
         base_schema['pdf_file'].title = localizer.translate(_('Book in PDF'))
         base_schema['pdf_file'].description = localizer.translate(_('Full book PDF'))
         base_schema['epub_file'].title = localizer.translate(_('Book in ePub'))
@@ -276,6 +279,7 @@ class PartForm():
                        ('organizer',localizer.translate(_('Organizer'))),]
 
         base_schema = Part.get_schema()
+        base_schema['notes'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
 
         base_schema['creators'].children[0]['role'].widget = deform.widget.SelectWidget(values=role_values)
         base_schema['creators'].children[0]['role'].title = localizer.translate(_('Role'))
@@ -300,7 +304,8 @@ class PartForm():
         base_schema['descriptive_information'].description = localizer.translate(_('Descriptive Information'))
         base_schema['text_language'].title = localizer.translate(_('Text Language'))
         base_schema['text_language'].description = localizer.translate(_('Text Language'))
-
+        base_schema['notes'].title = localizer.translate(_('Notes'))
+        base_schema['notes'].description = localizer.translate(_('Notes'))
 
         btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
                                type='submit', value='submit', disabled=False)
