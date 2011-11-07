@@ -22,6 +22,7 @@ class Monograph(model.CouchdbDocument):
     format = model.CompositeTextProperty(subkeys=['height', 'width'])
     serie = model.CompositeTextProperty(subkeys=['title', 'issue', 'issue_number', 'issn'])
     use_licence = model.TextProperty()
+    doi_number = model.TextProperty()
     pdf_file = model.FileProperty()
     epub_file = model.FileProperty()
     cover = model.FileProperty()

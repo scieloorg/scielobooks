@@ -121,6 +121,8 @@ class MonographForm():
         base_schema['serie']['issn'].title = 'ISSN'
         base_schema['use_licence'].title = localizer.translate(_('Use Licence'))
         base_schema['use_licence'].description = localizer.translate(_('Use Licence'))
+        base_schema['doi_number'].title = localizer.translate(_('DOI'))
+        base_schema['doi_number'].description = localizer.translate(_('Digital Object Identifier'))
         base_schema['pdf_file'].title = localizer.translate(_('Book in PDF'))
         base_schema['pdf_file'].description = localizer.translate(_('Full book PDF'))
         base_schema['epub_file'].title = localizer.translate(_('Book in ePub'))
