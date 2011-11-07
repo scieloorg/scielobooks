@@ -24,6 +24,7 @@ import couchdbkit
 import deform
 import colander
 import urllib
+import math
 
 from .models import Monograph, Part
 from ..utilities.functions import create_thumbnail, slugify
@@ -54,7 +55,7 @@ class Catalog(object):
 
     @property
     def total_pages(self):
-        return (self.total_items + self._limit // 2) // self._limit
+        return int(math.ceil(self.total_items / float(self._limit)))
 
 def get_logged_user(request):
     userid = authenticated_userid(request)
@@ -298,7 +299,7 @@ def panel(request):
     except ValueError:
         page = 1
 
-    evaluations = request.rel_db_session.query(rel_models.Evaluation)
+    evaluations = request.rel_db_session.query(rel_models.Evaluation).order_by(rel_models.Evaluation.title.asc())
     if filter_publisher is not None and len(filter_publisher) > 0:
         evaluations = evaluations.join(rel_models.Publisher).filter(rel_models.Publisher.name_slug==filter_publisher)
     if filter_meeting is not None and len(filter_meeting) > 0:
