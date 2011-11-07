@@ -268,7 +268,10 @@ class PartForm():
         role_values = [('individual_author',localizer.translate(_('Individual author'))),
                        ('corporate_author',localizer.translate(_('Corporate author'))),
                        ('translator',localizer.translate(_('Translator'))),
-                       ('editor',localizer.translate(_('Editor')))]
+                       ('coordinator',localizer.translate(_('Coordinator'))),
+                       ('editor',localizer.translate(_('Editor'))),
+                       ('other',localizer.translate(_('Other'))),
+                       ('organizer',localizer.translate(_('Organizer'))),]
 
         base_schema = Part.get_schema()
 
