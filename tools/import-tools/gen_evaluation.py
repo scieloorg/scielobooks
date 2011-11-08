@@ -8,8 +8,8 @@ from sqlalchemy.exc import IntegrityError
 from scielobooks.models import models
 
 db_uri = 'http://localhost:5984'
-db_name = 'scielobooks_1a'
-rdbms_dsn = 'sqlite:///../../database.db'
+db_name = 'scielobooks'
+rdbms_dsn = 'postgresql+psycopg2://postgres:ash2so4@localhost/scielobooks'
 
 orphan_books = []
 integrity_error = []
@@ -25,7 +25,7 @@ def get_publisher_or_create(publisher_name):
             session.commit()
 
         known_publishers[publisher_name] = publisher
-    
+
     return known_publishers[publisher_name]
 
 def get_monographs():
@@ -42,17 +42,17 @@ def get_monographs():
              'monograph_sbid':book['id'],
              'publisher':get_publisher_or_create(book['value']['publisher']),
              'status':'accepted',
-             'is_published':True}
+             'is_published':book['value']['visible']}
         books.append(b)
 
     return books
 
-def create_evaluation(monograph):    
+def create_evaluation(monograph):
     evaluation = models.Evaluation(**monograph)
     session.add(evaluation)
     try:
         session.commit()
-    except IntegrityError:        
+    except IntegrityError:
         session.rollback()
         integrity_error.append(monograph['monograph_sbid'])
     except e:
@@ -70,7 +70,7 @@ if __name__ == '__main__':
 
     for monograph in get_monographs():
         create_evaluation(monograph)
-    
+
     print 'done'
     print 'Orphan books: ', orphan_books
     print 'Integrity error: ', integrity_error
