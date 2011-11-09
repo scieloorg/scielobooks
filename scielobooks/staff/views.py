@@ -252,21 +252,13 @@ def book_details(request):
         raise exceptions.NotFound()
 
     book_attachments = []
-    if getattr(monograph, 'toc', None):
-        toc_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.toc['filename'])
-        book_attachments.append({'url':toc_url, 'text':_('Table of Contents')})
-
-    if getattr(monograph, 'editorial_decision', None):
-        editorial_decision_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.editorial_decision['filename'])
-        book_attachments.append({'url':editorial_decision_url, 'text':_('Parecer da Editora')})
-
-    if getattr(monograph, 'pdf_file', None):
-        pdf_file_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.pdf_file['filename'])
-        book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
-
-    if getattr(monograph, 'epub_file', None):
-        epub_file_url = static_url('scielobooks:database/%s/%s', request) % (monograph._id, monograph.epub_file['filename'])
-        book_attachments.append({'url':epub_file_url, 'text':_('Book in epub')})
+    for attach in [('toc', _('Table of Contents')), ('editorial_decision', _('Editorial Decision')),
+                   ('pdf_file', _('Book in PDF')), ('epub_file', _('Book in epub'))]:
+        if getattr(monograph, attach[0], None):
+            file_url = request.route_path('staff.evaluation_attachments',
+                                          sbid=monograph._id,
+                                          filename=getattr(monograph, attach[0])['filename'])
+            book_attachments.append({'url':file_url, 'text': attach[1]})
 
     evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph._id).one()
 
@@ -287,6 +279,21 @@ def book_details(request):
                               ]
                           }
             }
+
+def evaluation_attachments(request):
+    sbid = request.matchdict['sbid']
+    filename = request.matchdict['filename']
+
+    monograph = Monograph.get(request.db, sbid)
+    try:
+        attachment = request.db.fetch_attachment(monograph._id, filename, stream=True)
+    except couchdbkit.ResourceNotFound:
+        raise exceptions.NotFound()
+
+    response = Response(content_type='application/octet-stream')
+    response.app_iter = attachment
+
+    return response
 
 def panel(request):
     filter_publisher = request.params.get('publ', None)

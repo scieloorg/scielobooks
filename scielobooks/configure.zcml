@@ -190,6 +190,12 @@
     permission="admin"
     request_method="DELETE"
   />
+  <route
+    name="staff.evaluation_attachments"
+    pattern="/staff/book/id/{sbid}/attachs/{filename}"
+    view="scielobooks.staff.views.evaluation_attachments"
+    permission="editors"
+  />
   <!--
   ***************
    AJAX FUNCTIONS
