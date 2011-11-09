@@ -105,6 +105,7 @@ def edit_book(request):
         appstruct['publisher'] = publisher.name
 
         existing_doc_appstruct = Monograph.get(request.db, appstruct['_id']).to_python()
+
         existing_doc_appstruct.update(appstruct)
         monograph = Monograph.from_python(existing_doc_appstruct)
         monograph.save(request.db)
@@ -203,13 +204,14 @@ def new_part(request):
         except couchdbkit.ResourceNotFound:
             raise exceptions.NotFound()
 
+        monograph_as_python = monograph.to_python()
         appstruct.update({
-                'monograph':monograph._id,
-                'visible': monograph.visible,
-                'monograph_title': monograph.title,
-                'monograph_isbn': monograph.isbn,
-                'monograph_creators': monograph.creators,
-                'monograph_publisher': monograph.publisher,})
+                'monograph':monograph_as_python['_id'],
+                'visible': monograph_as_python['visible'],
+                'monograph_title': monograph_as_python['title'],
+                'monograph_isbn': monograph_as_python['isbn'],
+                'monograph_creators': monograph_as_python['creators'],
+                'monograph_publisher': monograph_as_python['publisher'],})
         part = Part.from_python(appstruct)
 
         if monograph.language:
