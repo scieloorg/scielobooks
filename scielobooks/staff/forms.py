@@ -99,6 +99,7 @@ class MonographForm():
         base_schema['country'].widget = deform.widget.SelectWidget(values=country_values)
         base_schema['country'].title = localizer.translate(_('Country of publication'))
         base_schema['country'].description = localizer.translate(_('Country of publication'))
+        base_schema['country'].default = 'BR'
         base_schema['pages'].title = localizer.translate(_('Pages'))
         base_schema['pages'].description = localizer.translate(_('Number of pages'))
         base_schema['pages'].validator = integer_validate_factory(message=localizer.translate(_('Invalid number of pages')))
