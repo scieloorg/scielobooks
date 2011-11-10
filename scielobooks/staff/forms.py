@@ -7,7 +7,7 @@ import datetime
 import deform
 import colander
 from ..utilities import functions, isbn
-
+from ..utilities.countries import Countries
 
 def url_validate_factory(message=None):
     url_re = "^(?#Protocol)(?:(?:ht|f)tp(?:s?)\:\/\/|~\/|\/)?(?#Username:Password)(?:\w+:\w+@)?(?#Subdomains)(?:(?:[-\w]+\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\d]{1,5})?(?#Directories)(?:(?:(?:\/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|\/)+|\?|#)?(?#Query)(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=?(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?#Anchor)(?:#(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)?$"
@@ -54,6 +54,9 @@ class MonographForm():
         language_values = [('pt', localizer.translate(_('Portuguese'))),
                            ('en', localizer.translate(_('English')))]
 
+        l10n_countries = Countries(localizer.locale_name)
+        country_values = l10n_countries.items()
+
         base_schema = Monograph.get_schema()
         base_schema['synopsis'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
         base_schema['creators'].children[0]['role'].widget = deform.widget.SelectWidget(values=role_values)
@@ -93,6 +96,7 @@ class MonographForm():
         base_schema['year'].validator = year_validate_factory(message=localizer.translate(_('Invalid year format. Must be YYYY')))
         base_schema['city'].title = localizer.translate(_('City of publication'))
         base_schema['city'].description = localizer.translate(_('City'))
+        base_schema['country'].widget = deform.widget.SelectWidget(values=country_values)
         base_schema['country'].title = localizer.translate(_('Country of publication'))
         base_schema['country'].description = localizer.translate(_('Country of publication'))
         base_schema['pages'].title = localizer.translate(_('Pages'))
