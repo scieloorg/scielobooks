@@ -278,6 +278,9 @@ class PartForm():
                        ('other',localizer.translate(_('Other'))),
                        ('organizer',localizer.translate(_('Organizer'))),]
 
+        language_values = [('pt', localizer.translate(_('Portuguese'))),
+                           ('en', localizer.translate(_('English')))]
+
         base_schema = Part.get_schema()
         base_schema['notes'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
 
@@ -302,8 +305,9 @@ class PartForm():
         base_schema['pdf_file'].description = localizer.translate(_('Full book PDF'))
         base_schema['descriptive_information'].title = localizer.translate(_('Descriptive Information'))
         base_schema['descriptive_information'].description = localizer.translate(_('Descriptive Information'))
-        base_schema['text_language'].title = localizer.translate(_('Text Language'))
-        base_schema['text_language'].description = localizer.translate(_('Text Language'))
+        base_schema['text_language'].widget = deform.widget.SelectWidget(values=language_values)
+        base_schema['text_language'].title = localizer.translate(_('Text language'))
+        base_schema['text_language'].description = localizer.translate(_('Text language'))
         base_schema['notes'].title = localizer.translate(_('Notes'))
         base_schema['notes'].description = localizer.translate(_('Notes'))
 
