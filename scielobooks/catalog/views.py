@@ -80,7 +80,7 @@ def book_details(request):
         book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
 
     if getattr(monograph, 'epub_file', None):
-        epub_file_url = request.route_path('catalog.epub_file', sbid=monograph._id)
+        epub_file_url = request.route_path('catalog.epub_file', sbid=monograph._id, part=monograph.isbn)
         book_attachments.append({'url':epub_file_url, 'text':_('Book in ePub')})
 
     main = get_renderer(BASE_TEMPLATE).implementation()
