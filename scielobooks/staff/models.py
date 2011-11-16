@@ -2,12 +2,12 @@ from isis import model
 import deform
 import urllib2
 from collections import OrderedDict
-
+import copy
 
 class Monograph(model.CouchdbDocument):
     title = model.TextProperty(required=True)
     isbn = model.TextProperty(required=True)
-    creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'])
+    creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'], required=True)
     publisher = model.TextProperty(required=True)
     publisher_url = model.TextProperty()
     language = model.TextProperty()
@@ -38,6 +38,13 @@ class Monograph(model.CouchdbDocument):
     class Meta:
         hide = ('cover_thumbnail', 'visible', 'creation_date', 'created_by')
 
+    def _creators_by_roles(self):
+        creators_by_role = OrderedDict()
+        for creator in self.creators:
+            creators_by_role.setdefault(creator['role'], []).append(creator['full_name'])
+
+        return copy.deepcopy(creators_by_role)
+
     def formatted_creators(self, formatting_func=None):
         # {'author': 'Babbage, Charles; Turing, Alan.'}
         if formatting_func is None:
@@ -47,11 +54,24 @@ class Monograph(model.CouchdbDocument):
                 """
                 return '; '.join(creators)
 
-        creators_by_role = OrderedDict()
-        for creator in self.creators:
-            creators_by_role.setdefault(creator['role'], []).append(creator['full_name'])
+        creators_by_role = self._creators_by_roles()
 
         return OrderedDict((key, formatting_func(value)) for key, value in creators_by_role.items())
+
+    @property
+    def shortname(self):
+        shortname_format = '%s-%s'
+        creators_by_role = self._creators_by_roles()
+        if 'corporate_author' in creators_by_role:
+            return shortname_format % (creators_by_role['corporate_author'][0].lower(), self.isbn)
+        elif 'individual_author' in creators_by_role:
+            first_author = creators_by_role['individual_author'][0]
+            first_author_lastname = first_author[:first_author.find(',')] if ',' in first_author else first_author_lastname.split()[0]
+
+            return shortname_format % (first_author_lastname.lower(), self.isbn)
+        else:
+            raise AttributeError()
+
 
 class Part(model.CouchdbDocument):
     title = model.TextProperty(required=True)

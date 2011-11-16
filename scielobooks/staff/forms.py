@@ -64,6 +64,7 @@ class MonographForm():
         base_schema['creators'].children[0]['full_name'].title = localizer.translate(_('Full name'))
         base_schema['creators'].children[0]['link_resume'].title = localizer.translate(_('Resume link'))
         base_schema['creators'].children[0]['link_resume'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
+        base_schema['creators'].children[0]['link_resume'].missing = None
         base_schema['notes'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
 
         #i18n
