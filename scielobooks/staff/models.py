@@ -45,7 +45,7 @@ class Monograph(model.CouchdbDocument):
                 """
                 accept a list of creators and returns it in a formatted form.
                 """
-                return '; '.join(creators) + '.'
+                return '; '.join(creators)
 
         creators_by_role = OrderedDict()
         for creator in self.creators:
