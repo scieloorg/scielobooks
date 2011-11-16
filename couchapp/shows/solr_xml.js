@@ -22,7 +22,7 @@ function(doc, req) {
             }
         }
     }
-    var formatted_creators = authors.join('; ') + '.';
+    var formatted_creators = authors.join('; ');
 
     // format
     var supposed_height = null;
@@ -39,7 +39,7 @@ function(doc, req) {
     if(supposed_height !== null && supposed_width !== null){
         format.push(supposed_height);
         format.push(supposed_width);
-        formatted_format = format.join(' x ') + '.';
+        formatted_format = format.join(' x ');
     }
 
     // common data
