@@ -44,13 +44,14 @@ def get_book_parts(monograph_sbid, request):
     except couchdbkit.ResourceNotFound:
         raise exceptions.NotFound()
 
+    monograph = Monograph.get(request.db, monograph_sbid)
     monograph_parts = []
     for i,part in enumerate(parts):
         partnumber = part['doc']['order'].zfill(2)
         part_meta = {'part_sbid':part['id'],
                      'partnumber':partnumber,
                      'title':part['doc']['title'],
-                     'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_sbid, part=partnumber),
+                     'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_sbid, part=monograph.shortname+'-'+partnumber),
                      'preview_url':request.route_path('catalog.chapter_details',sbid=monograph_sbid, chapter=partnumber),
                      'swf_url': request.route_path('catalog.swf_file', sbid=monograph_sbid, part=partnumber),
                      'edit_url':request.route_path('staff.edit_part', sbid=monograph_sbid, part_id=part['id']),
@@ -76,11 +77,11 @@ def book_details(request):
     book_attachments = []
 
     if getattr(monograph, 'pdf_file', None):
-        pdf_file_url = request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn)
+        pdf_file_url = request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.shortname)
         book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
 
     if getattr(monograph, 'epub_file', None):
-        epub_file_url = request.route_path('catalog.epub_file', sbid=monograph._id, part=monograph.isbn)
+        epub_file_url = request.route_path('catalog.epub_file', sbid=monograph._id, part=monograph.shortname)
         book_attachments.append({'url':epub_file_url, 'text':_('Book in ePub')})
 
     main = get_renderer(BASE_TEMPLATE).implementation()
@@ -146,10 +147,10 @@ def cover(request):
 
 def pdf_file(request):
     sbid = request.matchdict['sbid']
-    req_part = request.matchdict['part']
+    req_part = request.matchdict['part'].split('-')
 
     monograph = Monograph.get(request.db, sbid)
-    if req_part == monograph.isbn:
+    if len(req_part) == 2 and req_part[1] == monograph.isbn:
         try:
             pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
         except (couchdbkit.ResourceNotFound, AttributeError):
@@ -157,7 +158,7 @@ def pdf_file(request):
     else:
         parts = get_book_parts(monograph._id, request)
         try:
-            selected_part = parts[int(req_part)]
+            selected_part = parts[int(req_part[2])]
         except (IndexError, ValueError):
             raise exceptions.NotFound()
 
@@ -179,7 +180,7 @@ def epub_file(request):
     monograph = Monograph.get(request.db, sbid)
     try:
         epub_file = request.db.fetch_attachment(monograph._id, monograph.epub_file['filename'], stream=True)
-    except (couchdbkit.ResourceNotFound, AttributeError):
+    except (couchdbkit.ResourceNotFound, AttributeError, KeyError):
         raise exceptions.NotFound()
 
     response = Response(content_type='application/epub')
