@@ -62,13 +62,13 @@ class Monograph(model.CouchdbDocument):
     def shortname(self):
         shortname_format = '%s-%s'
         creators_by_role = self._creators_by_roles()
-        if 'corporate_author' in creators_by_role:
-            return shortname_format % (creators_by_role['corporate_author'][0].lower(), self.isbn)
-        elif 'individual_author' in creators_by_role:
-            first_author = creators_by_role['individual_author'][0]
-            first_author_lastname = first_author[:first_author.find(',')] if ',' in first_author else first_author_lastname.split()[0]
+        precedence = ('individual_author', 'organizer', 'coordinator', 'translator', 'editor', 'corporate_author', 'other')
+        for role in precedence:
+            if role in creators_by_role:
+                first_author = creators_by_role[role][0]
+                first_author_lastname = first_author[:first_author.find(',')] if ',' in first_author else first_author_lastname.split()[0]
 
-            return shortname_format % (first_author_lastname.lower(), self.isbn)
+                return shortname_format % (first_author_lastname.lower(), self.isbn)
         else:
             raise AttributeError()
 
