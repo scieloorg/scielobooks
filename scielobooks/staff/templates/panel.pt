@@ -23,22 +23,22 @@
     <div class="middle" metal:fill-slot="middle">
         <div class="breadcrumb"></div>
         <ul class="menu">
-            <li id="manageSubmission"><a href="${request.route_url('staff.meetings_list')}"
+            <li id="manageSubmission"><a href="${request.route_path('staff.meetings_list')}"
                    i18n:translate="">Manage Meetings</a></li>
-            <li id="managePublishers"><a href="${request.route_url('staff.publishers_list')}"
+            <li id="managePublishers"><a href="${request.route_path('staff.publishers_list')}"
                    i18n:translate="">Manage Publishers</a></li>
-            <li id="manageUsers"><a href="${request.route_url('users.list')}"
+            <li id="manageUsers"><a href="${request.route_path('users.list')}"
                    i18n:translate="">Manage Users</a></li>
             <div class="spacer"></div>
         </ul>
 		<div class="staffTitle">
 	        <h2 i18n:translate="">Administrative Dashboard</h2>
-	    	<span class="btnLink" id="newSubmission"><a href="${request.route_url('staff.new_book')}"
+	    	<span class="btnLink" id="newSubmission"><a href="${request.route_path('staff.new_book')}"
 	           i18n:translate="">New Submission</a></span>
 	          <div class="spacer"></div>
 		</div>
         <div class="filters">
-          <form action="${request.route_url('staff.panel')}" method="GET">
+          <form action="${request.route_path('staff.panel')}" method="GET">
             <label for="publ" i18n:translate="">Publisher</label>
             <select name="publ" class="filter-by-publisher">
                 <option value="">---</option>
@@ -94,7 +94,7 @@
                   <tr tal:repeat="evaluation evaluations">
                       <td tal:content="evaluation.publisher.name">FAFIMUNDO</td>
                       <td >
-                        <a href="${request.route_url('staff.book_details', sbid=evaluation.monograph_sbid)}"><strong>${evaluation.title}</strong></a>
+                        <a href="${request.route_path('staff.book_details', sbid=evaluation.monograph_sbid)}"><strong>${evaluation.title}</strong></a>
 
                         <ul class="actions">
                           <li tal:condition="(evaluation.status == 'accepted' or evaluation.status == 'accepted-with-condition') and evaluation.is_published != True">
@@ -146,7 +146,7 @@
           <p class="pagination">
             <span tal:repeat="page_no pagination"
                   tal:attributes="class 'selected_page' if page_no.pg_number == page else default">
-              <a href="${request.route_url('staff.panel')}?${page_no.url}">${page_no.pg_number}</a>
+              <a href="${request.route_path('staff.panel')}?${page_no.url}">${page_no.pg_number}</a>
             </span>
           </p>
         </span>
