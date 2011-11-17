@@ -142,7 +142,7 @@
             <tr tal:repeat="part document_parts">
                 <td tal:content="part.partnumber" />
                 <td tal:content="part.title" />
-                <td><a class="PDF" href="#" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
+                <td><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
                 <td>
                   <span class="edit">
                     <a href="${part.edit_url}?KeepThis=true&amp;TB_iframe=true&amp;height=570&amp;width=600" class="thickbox" i18n:translate="">Edit</a>
