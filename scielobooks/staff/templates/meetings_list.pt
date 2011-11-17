@@ -24,7 +24,7 @@
 		<div class="staffTitle">
 	        <h2 i18n:translate="">Meetings</h2>
 	    	<span class="btnLink">
-          <a href="${request.route_url('staff.new_meeting')}"
+          <a href="${request.route_path('staff.new_meeting')}"
                  i18n:translate="">New Meeting</a>
 	        </span>
 	        <div class="spacer"></div>
@@ -48,7 +48,7 @@
                       <strong>${meeting.description}</strong>
 
                       <ul class="actions">
-                        <li><a href="${request.route_url('staff.edit_meeting', id=meeting.id)}" i18n:translate="">Edit</a></li>
+                        <li><a href="${request.route_path('staff.edit_meeting', id=meeting.id)}" i18n:translate="">Edit</a></li>
                         <li>
                             <a id="${meeting.id}_action-delete"
                                href="javascript: void(0);"
@@ -57,7 +57,7 @@
                         </li>
                       </ul>
                     </td>
-                    <td><a href="${request.route_url('evaluation.books_list')}?meeting=${str(meeting.date)}">permalink</a></td>
+                    <td><a href="${request.route_path('evaluation.books_list')}?meeting=${str(meeting.date)}">permalink</a></td>
 
                 </tr>
             </tbody>

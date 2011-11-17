@@ -30,5 +30,4 @@ def custom_forbidden_view(request):
     caller_url = base64.b64encode(request.url)
     request.session.flash(_('You are not authorized to access this page. Try logging in before proceed.'))
 
-    return HTTPFound(location=request.route_url('users.login')+'?caller=%s' % caller_url)
-    
+    return HTTPFound(location=request.route_path('users.login')+'?caller=%s' % caller_url)

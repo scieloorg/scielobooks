@@ -35,7 +35,7 @@
 
 
         <div class="filters">
-          <form action="${request.route_url('staff.panel')}" method="GET">
+          <form action="${request.route_path('staff.panel')}" method="GET">
             <label for="publ" i18n:translate="">Publisher</label>
             <select name="publ" class="filter-by-publisher">
                 <option value="">---</option>
@@ -61,7 +61,7 @@
                 <tr tal:repeat="evaluation evaluations">
                     <td tal:content="evaluation.publisher.name">FAFIMUNDO</td>
                     <td >
-                        <a href="${request.route_url('evaluation.book_details', sbid=evaluation.monograph_sbid)}"><strong>${evaluation.title}</strong></a>
+                        <a href="${request.route_path('evaluation.book_details', sbid=evaluation.monograph_sbid)}"><strong>${evaluation.title}</strong></a>
                     </td>
                 </tr>
             </tbody>

@@ -6,7 +6,7 @@
     <h2 i18n:translate="">Welcome to SciELOBooks staff. What do you want to do?</h2>
     <ul>
       <li>
-        <a href="${request.route_url('staff.panel')}" i18n:translate="">Login</a>
+        <a href="${request.route_path('staff.panel')}" i18n:translate="">Login</a>
       </li>
       <li i18n:translate="">Help</li>
     </ul>
