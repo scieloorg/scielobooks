@@ -24,7 +24,7 @@
 		<div class="staffTitle">
 	        <h2 i18n:translate="">Publishers</h2>
 	    	<span class="btnLink">
-          <a href="${request.route_url('staff.new_publisher')}"
+          <a href="${request.route_path('staff.new_publisher')}"
                    i18n:translate="">New publisher</a>
 	        </span>
 	        <div class="spacer"></div>
@@ -47,7 +47,7 @@
 
                       <ul class="actions">
                         <li>
-                            <a href="${request.route_url('staff.edit_publisher', slug=publisher.name_slug)}"
+                            <a href="${request.route_path('staff.edit_publisher', slug=publisher.name_slug)}"
                                i18n:translate="">Edit</a>
                         </li>
                         <li>

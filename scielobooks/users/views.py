@@ -103,7 +103,7 @@ def signup(request):
 
     if request.method == 'POST':
         if 'btn_cancel' in request.POST:
-            return HTTPFound(location=request.route_url('users.list'))
+            return HTTPFound(location=request.route_path('users.list'))
 
         controls = request.POST.items()
         try:
@@ -114,8 +114,8 @@ def signup(request):
                     'main':main,
                     'general_stuff':{'form_title':FORM_TITLE,
                                   'breadcrumb': [
-                                     (_('Dashboard'), request.route_url('staff.panel')),
-                                     (_('Manage Users'), request.route_url('users.list')),
+                                     (_('Dashboard'), request.route_path('staff.panel')),
+                                     (_('Manage Users'), request.route_path('users.list')),
                                      (_('New User'), None),
                                    ]
                                  },
@@ -159,8 +159,8 @@ def signup(request):
                     'main':main,
                     'general_stuff':{'form_title':FORM_TITLE,
                                   'breadcrumb': [
-                                    (_('Dashboard'), request.route_url('staff.panel')),
-                                    (_('Manage Users'), request.route_url('users.list')),
+                                    (_('Dashboard'), request.route_path('staff.panel')),
+                                    (_('Manage Users'), request.route_path('users.list')),
                                     (_('New User'), None),
                                   ]
                                  },
@@ -171,13 +171,13 @@ def signup(request):
 
 
         request.session.flash(_('Successfully added.'))
-        return HTTPFound(location=request.route_url('staff.panel'))
+        return HTTPFound(location=request.route_path('staff.panel'))
 
     return {'content':signup_form.render(),
             'general_stuff':{'form_title':FORM_TITLE,
                           'breadcrumb': [
-                            (_('Dashboard'), request.route_url('staff.panel')),
-                            (_('Manage Users'), request.route_url('users.list')),
+                            (_('Dashboard'), request.route_path('staff.panel')),
+                            (_('Manage Users'), request.route_path('users.list')),
                             (_('New User'), None),
                           ]
                          },
@@ -212,7 +212,7 @@ def forgot_password(request):
 
     if request.method == 'POST':
         if 'btn_cancel' in request.POST:
-            return HTTPFound(location=request.route_url('users.login'))
+            return HTTPFound(location=request.route_path('users.login'))
 
         controls = request.POST.items()
         try:
@@ -252,7 +252,7 @@ def forgot_password(request):
             AccountRecoveryManager.send_recovery_mail(user, request)
 
         request.session.flash(_('You will receive an email with instructions on how to reset your account password.'))
-        return HTTPFound(location=request.route_url('users.forgot_password'))
+        return HTTPFound(location=request.route_path('users.forgot_password'))
 
     return {'content':forgot_password_form.render(),
             'main':main,
@@ -290,7 +290,7 @@ def recover_password(request):
         except ActivationError:
             request.session.flash(_('Problems occured when trying to redefine the user password. Please try again.'))
 
-        return HTTPFound(location=request.route_url('users.login'))
+        return HTTPFound(location=request.route_path('users.login'))
     else:
         try:
             account = request.rel_db_session.query(users.AccountRecovery).filter_by(recovery_key=recovery_key).one()
@@ -310,7 +310,7 @@ def users_list(request):
     return {'users':user_list,
             'main':main,
             'general_stuff':{'breadcrumb': [
-                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (_('Dashboard'), request.route_path('staff.panel')),
                                 (_('Manage Users'), None),
                               ]
                              },
@@ -325,7 +325,7 @@ def edit_user(request):
 
     if request.method == 'POST':
         if 'btn_cancel' in request.POST:
-            return HTTPFound(location=request.route_url('users.list'))
+            return HTTPFound(location=request.route_path('users.list'))
 
         controls = request.POST.items()
         try:
@@ -336,8 +336,8 @@ def edit_user(request):
                     'main':main,
                     'general_stuff':{'form_title':FORM_TITLE,
                                   'breadcrumb': [
-                                    (_('Dashboard'), request.route_url('staff.panel')),
-                                    (_('Manage Users'), request.route_url('users.list')),
+                                    (_('Dashboard'), request.route_path('staff.panel')),
+                                    (_('Manage Users'), request.route_path('users.list')),
                                     (FORM_TITLE, None),
                                   ]
                                  },
@@ -369,7 +369,7 @@ def edit_user(request):
         else:
             request.session.flash(_('Successfully updated.'))
 
-        return HTTPFound(location=request.route_url('users.edit_user', id=user.id))
+        return HTTPFound(location=request.route_path('users.edit_user', id=user.id))
 
     if 'id' in request.matchdict:
         try:
@@ -385,8 +385,8 @@ def edit_user(request):
                 'main':main,
                 'general_stuff':{'form_title':FORM_TITLE,
                               'breadcrumb': [
-                                (_('Dashboard'), request.route_url('staff.panel')),
-                                (_('Manage Users'), request.route_url('users.list')),
+                                (_('Dashboard'), request.route_path('staff.panel')),
+                                (_('Manage Users'), request.route_path('users.list')),
                                 (FORM_TITLE, None),
                               ]
                              },

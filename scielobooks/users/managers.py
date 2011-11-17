@@ -28,7 +28,7 @@ class RegistrationProfileManager(object):
     def activate_user(activation_key, request):
         if activation_key == ACTIVATED:
             raise InvalidActivationKey()
-            
+
         try:
             reg_profile = request.rel_db_session.query(models.RegistrationProfile).filter_by(activation_key=activation_key).one()
         except NoResultFound:
@@ -47,15 +47,15 @@ class RegistrationProfileManager(object):
         except IntegrityError:
             request.rel_db_session.rollback()
             raise ActivationError()
-        
+
         return reg_profile.user
-    
+
     @staticmethod
     def send_activation_mail(user, request, message=None):
         if user.registration_profile.activation_key == ACTIVATED:
             raise InvalidActivationKey()
 
-        activation_url = request.route_url('users.activation') + '?key=%s' % user.registration_profile.activation_key        
+        activation_url = request.route_path('users.activation') + '?key=%s' % user.registration_profile.activation_key
         if message is None:
             message = "Hello %s, to activate your account please visit %s" % (user.username, activation_url)
 
@@ -68,11 +68,11 @@ class RegistrationProfileManager(object):
 
     @staticmethod
     def clean_expired(request):
-        try:        
+        try:
             exclude_total = request.rel_db_session.query(models.RegistrationProfile).filter(models.RegistrationProfile.activation_key != ACTIVATED and models.RegistrationProfile.expiration_date < datetime.now()).delete()
         except:
             pass
-        
+
         return exclude_total
 
 
@@ -81,7 +81,7 @@ class AccountRecoveryManager(object):
     def redefine_password(recovery_key, new_password, request):
         if recovery_key == RECOVERED:
             raise InvalidActivationKey()
-            
+
         try:
             account = request.rel_db_session.query(models.AccountRecovery).filter_by(recovery_key=recovery_key).one()
         except NoResultFound:
@@ -101,7 +101,7 @@ class AccountRecoveryManager(object):
         except IntegrityError:
             request.rel_db_session.rollback()
             raise ActivationError()
-        
+
         return account.user
 
     @staticmethod
@@ -109,7 +109,7 @@ class AccountRecoveryManager(object):
         if user.account_recovery[-1].recovery_key == RECOVERED:
             raise InvalidActivationKey()
 
-        recovery_url = request.route_url('users.recover_password') + '?key=%s' % user.account_recovery[-1].recovery_key
+        recovery_url = request.route_path('users.recover_password') + '?key=%s' % user.account_recovery[-1].recovery_key
         if message is None:
             message = "Hello %s, to recover your account please visit %s" % (user.username, recovery_url)
 
@@ -119,7 +119,7 @@ class AccountRecoveryManager(object):
                   body=message)
         request.registry['mailer'].send(message)
         transaction.commit()
-    
+
     @staticmethod
     def clean_expired(request):
         pass

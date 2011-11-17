@@ -17,7 +17,7 @@
     <div class="staffTitle">
 		<h2 i18n:translate="">Manage Users</h2>
 	    	<span class="btnLink">
-		      <a href="${request.route_url('users.signup')}">Add user</a>
+		      <a href="${request.route_path('users.signup')}">Add user</a>
 	        </span>
 	        <div class="spacer"></div>
 		</div>
@@ -39,7 +39,7 @@
 
             <ul class="actions">
               <li>
-                <a href="${request.route_url('users.edit_user', id=user.id)}" i18n:translate="">Edit</a>
+                <a href="${request.route_path('users.edit_user', id=user.id)}" i18n:translate="">Edit</a>
               </li>
               <li tal:condition="not user.is_active">
                 <a href="javascript: void(0);" class="action_activate" id="${user.id}">Activate</a>

@@ -73,7 +73,7 @@ def edit_book(request):
 
     if request.method == 'POST':
         if 'btn_cancel' in request.POST:
-            return HTTPFound(location=request.route_url('staff.book_details', sbid=request.matchdict['sbid']))
+            return HTTPFound(location=request.route_path('staff.book_details', sbid=request.matchdict['sbid']))
 
         controls = request.POST.items()
         try:
@@ -86,8 +86,8 @@ def edit_book(request):
                     'user':get_logged_user(request),
                     'general_stuff':{'form_title':FORM_TITLE % monograph.title,
                               'breadcrumb': [
-                                (_('Dashboard'), request.route_url('staff.panel')),
-                                (monograph.title, request.route_url('staff.book_details', sbid=monograph._id)),
+                                (_('Dashboard'), request.route_path('staff.panel')),
+                                (monograph.title, request.route_path('staff.book_details', sbid=monograph._id)),
                                 (_('Edit'), None),
                               ]
                              },
@@ -126,7 +126,7 @@ def edit_book(request):
 
         request.session.flash(_('Successfully updated.'))
 
-        return HTTPFound(location=request.route_url('staff.book_details', sbid=monograph._id))
+        return HTTPFound(location=request.route_path('staff.book_details', sbid=monograph._id))
 
     if 'sbid' in request.matchdict:
         monograph = Monograph.get(request.db, request.matchdict['sbid'])
@@ -142,8 +142,8 @@ def edit_book(request):
                 'user':get_logged_user(request),
                 'general_stuff':{'form_title':FORM_TITLE % monograph.title,
                               'breadcrumb': [
-                                (_('Dashboard'), request.route_url('staff.panel')),
-                                (monograph.title, request.route_url('staff.book_details', sbid=monograph._id)),
+                                (_('Dashboard'), request.route_path('staff.panel')),
+                                (monograph.title, request.route_path('staff.book_details', sbid=monograph._id)),
                                 (_('Edit'), None),
                               ]
                              },
@@ -164,8 +164,8 @@ def parts_list(request):
                      'title':part['doc']['title'],
                      'order':part['doc']['order'],
                      'creators':part['doc']['creators'],
-                     'pdf_url':request.route_url('catalog.pdf_file', sbid=monograph_id, part=part['doc']['order']),
-                     'edit_url':request.route_url('staff.edit_part', sbid=monograph_id, part_id=part['id']),
+                     'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_id, part=part['doc']['order']),
+                     'edit_url':request.route_path('staff.edit_part', sbid=monograph_id, part_id=part['id']),
                      }
 
         documents.append(part_meta)
@@ -227,7 +227,7 @@ def new_part(request):
         else:
             request.session.flash(_('Successfully updated.'))
 
-        return HTTPFound(location=request.route_url('staff.edit_part', sbid=part.monograph, part_id=part._id))
+        return HTTPFound(location=request.route_path('staff.edit_part', sbid=part.monograph, part_id=part._id))
 
     if 'part_id' in request.matchdict:
         part = Part.get(request.db, request.matchdict['part_id'])
@@ -272,11 +272,11 @@ def book_details(request):
             'book_attachments':book_attachments,
             'main':main,
             'user':get_logged_user(request),
-            'cover_full_url': request.route_url('catalog.cover', sbid=monograph._id),
-            'cover_thumb_url': request.route_url('catalog.cover_thumbnail', sbid=monograph._id),
-            'add_part_url': request.route_url('staff.new_part', sbid=monograph._id),
+            'cover_full_url': request.route_path('catalog.cover', sbid=monograph._id),
+            'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
+            'add_part_url': request.route_path('staff.new_part', sbid=monograph._id),
             'general_stuff': {'breadcrumb': [
-                                (_('Dashboard'), request.route_url('staff.panel')),
+                                (_('Dashboard'), request.route_path('staff.panel')),
                                 (monograph.title, None),
                               ]
                           }
@@ -363,7 +363,7 @@ def new_publisher(request):
 
     if request.method == 'POST':
         if 'btn_cancel' in request.POST:
-            return HTTPFound(location=request.route_url('staff.publishers_list'))
+            return HTTPFound(location=request.route_path('staff.publishers_list'))
 
         controls = request.POST.items()
         try:
@@ -374,8 +374,8 @@ def new_publisher(request):
                     'user':get_logged_user(request),
                     'general_stuff':{'form_title':FORM_TITLE_NEW,
                                   'breadcrumb': [
-                                    (_('Dashboard'), request.route_url('staff.panel')),
-                                    (_('Manage Publishers'), request.route_url('staff.publishers_list')),
+                                    (_('Dashboard'), request.route_path('staff.panel')),
+                                    (_('Manage Publishers'), request.route_path('staff.publishers_list')),
                                     (_('New Publisher'), None),
                                   ]
                                 },
@@ -407,8 +407,8 @@ def new_publisher(request):
                     'user':get_logged_user(request),
                     'general_stuff':{'form_title':FORM_TITLE_NEW,
                                   'breadcrumb': [
-                                    (_('Dashboard'), request.route_url('staff.panel')),
-                                    (_('Manage Publishers'), request.route_url('staff.publishers_list')),
+                                    (_('Dashboard'), request.route_path('staff.panel')),
+                                    (_('Manage Publishers'), request.route_path('staff.publishers_list')),
                                     (_('New Publisher'), None),
                                   ]
                                  },
@@ -416,7 +416,7 @@ def new_publisher(request):
 
         request.session.flash(_('Successfully added.'))
 
-        return HTTPFound(location=request.route_url('staff.publishers_list'))
+        return HTTPFound(location=request.route_path('staff.publishers_list'))
 
     if 'slug' in request.matchdict:
 
@@ -431,8 +431,8 @@ def new_publisher(request):
                 'user':get_logged_user(request),
                 'general_stuff':{'form_title':FORM_TITLE_EDIT % publisher.name,
                               'breadcrumb': [
-                                (_('Dashboard'), request.route_url('staff.panel')),
-                                (_('Manage Publishers'), request.route_url('staff.publishers_list')),
+                                (_('Dashboard'), request.route_path('staff.panel')),
+                                (_('Manage Publishers'), request.route_path('staff.publishers_list')),
                                 (FORM_TITLE_EDIT % publisher.name, None),
                               ]
                             },
@@ -443,8 +443,8 @@ def new_publisher(request):
             'user':get_logged_user(request),
             'general_stuff':{'form_title':FORM_TITLE_NEW,
                           'breadcrumb': [
-                            (_('Dashboard'), request.route_url('staff.panel')),
-                            (_('Manage Publishers'), request.route_url('staff.publishers_list')),
+                            (_('Dashboard'), request.route_path('staff.panel')),
+                            (_('Manage Publishers'), request.route_path('staff.publishers_list')),
                             (_('New Publisher'), None),
                           ]
                         },
@@ -480,7 +480,7 @@ def publishers_list(request):
             'main':main,
             'user':get_logged_user(request),
             'general_stuff':{'breadcrumb': [
-                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('Dashboard'), request.route_path('staff.panel')),
                             (_('Manage Publishers'), None),
                           ]
                          },
@@ -500,7 +500,7 @@ def new_book(request):
 
     if request.method == 'POST':
         if 'btn_cancel' in request.POST:
-            return HTTPFound(location=request.route_url('staff.panel'))
+            return HTTPFound(location=request.route_path('staff.panel'))
 
         controls = request.POST.items()
         try:
@@ -542,14 +542,14 @@ def new_book(request):
 
         monograph.save(request.db)
 
-        return HTTPFound(location=request.route_url('staff.edit_book', sbid=monograph._id))
+        return HTTPFound(location=request.route_path('staff.edit_book', sbid=monograph._id))
 
     return {'content': evaluation_form.render(),
             'main':main,
             'user':get_logged_user(request),
             'general_stuff':{'form_title':FORM_TITLE_NEW,
                           'breadcrumb': [
-                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('Dashboard'), request.route_path('staff.panel')),
                             (_('New Submission'), None),
                           ]
                          },
@@ -592,7 +592,7 @@ def new_meeting(request):
 
     if request.method == 'POST':
         if 'btn_cancel' in request.POST:
-            return HTTPFound(location=request.route_url('staff.meetings_list'))
+            return HTTPFound(location=request.route_path('staff.meetings_list'))
 
         controls = request.POST.items()
         try:
@@ -603,8 +603,8 @@ def new_meeting(request):
                     'user':get_logged_user(request),
                     'general_stuff':{'form_title':FORM_TITLE_NEW,
                                   'breadcrumb': [
-                                    (_('Dashboard'), request.route_url('staff.panel')),
-                                    (_('Manage Meetings'), request.route_url('staff.meetings_list')),
+                                    (_('Dashboard'), request.route_path('staff.panel')),
+                                    (_('Manage Meetings'), request.route_path('staff.meetings_list')),
                                     (_('New Meeting'), None),
                                   ]
                                  },
@@ -627,7 +627,7 @@ def new_meeting(request):
         #TODO! catch exception
         request.rel_db_session.commit()
 
-        return HTTPFound(location=request.route_url('staff.meetings_list'))
+        return HTTPFound(location=request.route_path('staff.meetings_list'))
 
     if 'id' in request.matchdict:
         meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=request.matchdict['id']).one()
@@ -638,8 +638,8 @@ def new_meeting(request):
                 'user':get_logged_user(request),
                 'general_stuff':{'form_title':FORM_TITLE_EDIT % unicode(meeting.description),
                               'breadcrumb': [
-                                (_('Dashboard'), request.route_url('staff.panel')),
-                                (_('Manage Meetings'), request.route_url('staff.meetings_list')),
+                                (_('Dashboard'), request.route_path('staff.panel')),
+                                (_('Manage Meetings'), request.route_path('staff.meetings_list')),
                                 (FORM_TITLE_EDIT % unicode(meeting.description), None),
                               ]
                              },
@@ -650,8 +650,8 @@ def new_meeting(request):
             'user':get_logged_user(request),
             'general_stuff':{'form_title':FORM_TITLE_NEW,
                           'breadcrumb': [
-                            (_('Dashboard'), request.route_url('staff.panel')),
-                            (_('Manage Meetings'), request.route_url('staff.meetings_list')),
+                            (_('Dashboard'), request.route_path('staff.panel')),
+                            (_('Manage Meetings'), request.route_path('staff.meetings_list')),
                             (_('New Meeting'), None),
                           ]
                          },
@@ -687,7 +687,7 @@ def meetings_list(request):
             'main':main,
             'user':get_logged_user(request),
             'general_stuff':{'breadcrumb': [
-                            (_('Dashboard'), request.route_url('staff.panel')),
+                            (_('Dashboard'), request.route_path('staff.panel')),
                             (_('Manage Meetings'), None),
                           ]
                          },
