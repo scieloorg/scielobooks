@@ -51,11 +51,16 @@ def get_book_parts(monograph_sbid, request):
         part_meta = {'part_sbid':part['id'],
                      'partnumber':partnumber,
                      'title':part['doc']['title'],
-                     'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_sbid, part=monograph.shortname+'-'+partnumber),
                      'preview_url':request.route_path('catalog.chapter_details',sbid=monograph_sbid, chapter=partnumber),
                      'swf_url': request.route_path('catalog.swf_file', sbid=monograph_sbid, part=partnumber),
                      'edit_url':request.route_path('staff.edit_part', sbid=monograph_sbid, part_id=part['id']),
                      }
+        try:
+            part_meta.update({'pdf_url':request.route_path('catalog.pdf_file', sbid=monograph_sbid, part=monograph.shortname+'-'+partnumber)})
+        except AttributeError:
+            # some mandatory data is missing. do not make the link public
+            pass
+
         monograph_parts.append(part_meta)
 
     monograph_parts = sorted(monograph_parts, key=itemgetter('partnumber'))
@@ -77,12 +82,22 @@ def book_details(request):
     book_attachments = []
 
     if getattr(monograph, 'pdf_file', None):
-        pdf_file_url = request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.shortname)
-        book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
+        try:
+            pdf_file_url = request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.shortname)
+        except AttributeError:
+            # some mandatory data is missing. do not make the link public
+            pass
+        else:
+            book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
 
     if getattr(monograph, 'epub_file', None):
-        epub_file_url = request.route_path('catalog.epub_file', sbid=monograph._id, part=monograph.shortname)
-        book_attachments.append({'url':epub_file_url, 'text':_('Book in ePub')})
+        try:
+            epub_file_url = request.route_path('catalog.epub_file', sbid=monograph._id, part=monograph.shortname)
+        except AttributeError:
+            # some mandatory data is missing. do not make the link public
+            pass
+        else:
+            book_attachments.append({'url':epub_file_url, 'text':_('Book in ePub')})
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
