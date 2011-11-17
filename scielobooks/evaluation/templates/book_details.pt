@@ -108,7 +108,7 @@
             <tr tal:repeat="part document_parts">
                 <td tal:content="part.partnumber" />
                 <td tal:content="part.title" />
-                <td><a class="PDF" href="#" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
+                <td><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
             </tr>
           </table>
 

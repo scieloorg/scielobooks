@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
 
-    <div metal:fill-slot="custom_script" tal:omit-tag="">        
+    <div metal:fill-slot="custom_script" tal:omit-tag="">
         <script src="/static/js/jquery.tablesorter.js"></script>
         <script src="/static/js/evaluation-books_list.js"></script>
     </div>
@@ -24,32 +24,37 @@
         <div class="breadcrumb"></div>
         <div class="leftCol">
             &#160;
-        </div>       
-        
+        </div>
+
         <h2 i18n:translate="">Evaluation Records</h2>
 
         <div class="list-total">
           <p><span tal:omit-tag="" i18n:translate="">Total of records found:</span>&nbsp;<span>${len(evaluations)}</span></p>
         </div>
 
-        <fieldset>
-          <legend i18n:translate="">Filters</legend>
-          <span i18n:translate="">Publisher:</span>
-          <select class="filter-by-publisher">
-              <option value="nothing" i18n:translate="">Show all</option>
-              <option tal:repeat="publisher publishers" 
-                      tal:content="publisher.name" 
-                      value="${publisher.name_slug}"
-                      tal:attributes="selected publisher.name_slug == filters.publisher">BIREME Press</option>
-          </select>          
-        </fieldset>
+
+
+        <div class="filters">
+          <form action="${request.route_url('staff.panel')}" method="GET">
+            <label for="publ" i18n:translate="">Publisher</label>
+            <select name="publ" class="filter-by-publisher">
+                <option value="">---</option>
+                <option tal:repeat="publisher publishers"
+                        tal:content="publisher.name"
+                        value="${publisher.name_slug}"
+                        tal:attributes="selected publisher.name_slug == filters.publ">BIREME Press</option>
+            </select>
+            <input class="btnText" type="submit" value="Filter"/>
+          </form>
+        </div>
         <p tal:condition="len(evaluations) == 0">There are no records.</p>
-        <table cellspacing="0" tal:condition="evaluations | nothing" 
+
+        <table cellspacing="0" tal:condition="evaluations | nothing"
                class="tablesorter tablePanel" id="evaluation-table">
             <thead>
                 <tr>
                     <th i18n:translate="">Publisher</th>
-                    <th i18n:translate="">Title</th>                    
+                    <th i18n:translate="">Title</th>
                 </tr>
             </thead>
             <tbody>
