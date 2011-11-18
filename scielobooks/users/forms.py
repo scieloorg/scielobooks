@@ -1,11 +1,12 @@
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
-
+from ..utilities import functions
 import datetime
 import deform
 import colander
 
 class SignupForm():
+
     @classmethod
     def get_form(cls, localizer, publishers):
 
@@ -60,7 +61,9 @@ class SignupForm():
 
         return deform.Form(schema, buttons=(btn_cancel, btn_submit))
 
+
 class EditUserForm():
+
     @classmethod
     def get_form(cls, localizer, publishers):
         class Schema(colander.Schema):
@@ -109,7 +112,9 @@ class EditUserForm():
 
         return deform.Form(schema, buttons=(btn_cancel, btn_submit))
 
+
 class LoginForm():
+
     @classmethod
     def get_form(cls, localizer):
 
@@ -135,9 +140,11 @@ class LoginForm():
         btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
                                type='submit', value='submit', disabled=False)
 
-        return deform.Form(schema, buttons=(btn_submit,))
+        return deform.Form(schema, buttons=(btn_submit))
+
 
 class ForgotPasswordForm():
+
     @classmethod
     def get_form(cls, localizer):
 
@@ -161,7 +168,9 @@ class ForgotPasswordForm():
 
         return deform.Form(schema, buttons=(btn_cancel, btn_submit))
 
+
 class RecoverPasswordForm():
+
     @classmethod
     def get_form(cls, localizer):
 

@@ -40,6 +40,7 @@ def integer_validate_factory(message=None):
     return year_validator
 
 class MonographForm():
+    widget_classes = {'title':'fullSizeInput'}
 
     @classmethod
     def get_form(cls, localizer, **kwargs):
@@ -62,7 +63,11 @@ class MonographForm():
         base_schema['creators'].children[0]['role'].widget = deform.widget.SelectWidget(values=role_values)
         base_schema['creators'].children[0]['role'].title = localizer.translate(_('Role'))
         base_schema['creators'].children[0]['full_name'].title = localizer.translate(_('Full name'))
+        base_schema['creators'].children[0]['full_name'].widget = deform.widget.TextInputWidget()
+        base_schema['creators'].children[0]['full_name'].widget.css_class = 'fullSizeInput'
         base_schema['creators'].children[0]['link_resume'].title = localizer.translate(_('Resume link'))
+        base_schema['creators'].children[0]['link_resume'].widget = deform.widget.TextInputWidget()
+        base_schema['creators'].children[0]['link_resume'].widget.css_class = 'fullSizeInput'
         base_schema['creators'].children[0]['link_resume'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
         base_schema['creators'].children[0]['link_resume'].missing = None
         base_schema['notes'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
@@ -111,10 +116,20 @@ class MonographForm():
         base_schema['edition'].description = localizer.translate(_('Edition'))
         base_schema['collection'].title = localizer.translate(_('Collection'))
         base_schema['collection']['individual_author'].title = localizer.translate(_('Individual author'))
+        base_schema['collection']['individual_author'].widget = deform.widget.TextInputWidget()
+        base_schema['collection']['individual_author'].widget.css_class = 'fullSizeInput'
         base_schema['collection']['corporate_author'].title = localizer.translate(_('Corporate author'))
+        base_schema['collection']['corporate_author'].widget = deform.widget.TextInputWidget()
+        base_schema['collection']['corporate_author'].widget.css_class = 'fullSizeInput'
         base_schema['collection']['title'].title = localizer.translate(_('Title'))
+        base_schema['collection']['title'].widget = deform.widget.TextInputWidget()
+        base_schema['collection']['title'].widget.css_class = 'fullSizeInput'
         base_schema['collection']['english_translated_title'].title = localizer.translate(_('English translated title'))
+        base_schema['collection']['english_translated_title'].widget = deform.widget.TextInputWidget()
+        base_schema['collection']['english_translated_title'].widget.css_class = 'fullSizeInput'
         base_schema['collection']['total_number_of_volumes'].title = localizer.translate(_('Total number of volumes'))
+        base_schema['collection']['total_number_of_volumes'].widget = deform.widget.TextInputWidget()
+        base_schema['collection']['total_number_of_volumes'].widget.css_class = 'formInput'
         base_schema['collection']['total_number_of_volumes'].validator = integer_validate_factory(message=localizer.translate(_('Invalid number')))
         base_schema['format'].title = localizer.translate(_('Format'))
         base_schema['format']['height'].title = localizer.translate(_('Height'))
@@ -123,6 +138,8 @@ class MonographForm():
         base_schema['format']['width'].validator = integer_validate_factory(message=localizer.translate(_('Invalid width')))
         base_schema['serie'].title = localizer.translate(_('Serie'))
         base_schema['serie']['title'].title = localizer.translate(_('Title'))
+        base_schema['serie']['title'].widget = deform.widget.TextInputWidget()
+        base_schema['serie']['title'].widget.css_class = 'fullSizeInput'
         base_schema['serie']['issue'].title = localizer.translate(_('Issue'))
         base_schema['serie']['issue_number'].title = localizer.translate(_('Issue Number'))
         base_schema['serie']['issn'].title = 'ISSN'
@@ -148,7 +165,10 @@ class MonographForm():
         btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
                                type='submit', value='submit', disabled=False)
 
-        return deform.Form(base_schema, buttons=(btn_cancel, btn_submit,))
+        form = deform.Form(base_schema, buttons=(btn_cancel, btn_submit))
+        functions.customize_form_css_class(form, **cls.widget_classes)
+
+        return form
 
 
 class PublisherForm():
@@ -190,6 +210,9 @@ class PublisherForm():
 
 
 class EvaluationForm():
+    widget_classes = {'title':'fullSizeInput', 'isbn':'formInput',
+        'subject':'formInput', 'publisher_catalog_url':'fullSizeInput', 'publisher':'formInput'}
+
     @classmethod
     def get_form(cls, localizer):
         class Schema(colander.Schema):
@@ -236,7 +259,10 @@ class EvaluationForm():
         btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
                                type='submit', value='submit', disabled=False)
 
-        return deform.Form(schema, buttons=(btn_cancel, btn_submit,))
+        form = deform.Form(schema, buttons=(btn_cancel, btn_submit))
+        functions.customize_form_css_class(form, **cls.widget_classes)
+
+        return form
 
 class MeetingForm():
     @classmethod
@@ -274,6 +300,8 @@ class MeetingForm():
         return form
 
 class PartForm():
+    widget_classes = {'title':'fullSizeInput'}
+
     @classmethod
     def get_form(cls, localizer, default_css=None, **kwargs):
         role_values = [('individual_author',localizer.translate(_('Individual author'))),
@@ -293,8 +321,13 @@ class PartForm():
         base_schema['creators'].children[0]['role'].widget = deform.widget.SelectWidget(values=role_values)
         base_schema['creators'].children[0]['role'].title = localizer.translate(_('Role'))
         base_schema['creators'].children[0]['full_name'].title = localizer.translate(_('Full name'))
+        base_schema['creators'].children[0]['full_name'].widget = deform.widget.TextInputWidget()
+        base_schema['creators'].children[0]['full_name'].widget.css_class = 'fullSizeInput'
         base_schema['creators'].children[0]['link_resume'].title = localizer.translate(_('Resume link'))
+        base_schema['creators'].children[0]['link_resume'].widget = deform.widget.TextInputWidget()
+        base_schema['creators'].children[0]['link_resume'].widget.css_class = 'fullSizeInput'
         base_schema['creators'].children[0]['link_resume'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
+        base_schema['creators'].children[0]['link_resume'].missing = None
 
         base_schema['title'].title = localizer.translate(_('Title'))
         base_schema['title'].description = localizer.translate(_('Title'))
@@ -321,5 +354,6 @@ class PartForm():
                                type='submit', value='submit', disabled=False)
 
         form = deform.Form(base_schema, buttons=(btn_submit,))
-        #functions.customize_form_css_class(form, default_css, **kwargs)
+        functions.customize_form_css_class(form, **cls.widget_classes)
+
         return form
