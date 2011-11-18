@@ -56,7 +56,7 @@ a:hover {
     width: 50px;
     height: 50px;
     background: url(/static/images/logo_50px.png) no-repeat;
-	
+
 }
 .top H1 A SPAN {
     display: none;
@@ -80,7 +80,7 @@ h4 {
 }
 
 .filters {
-	font-size: 11px;	
+	font-size: 11px;
 	margin-top: 20px;
 }
 .filters .label {
@@ -294,7 +294,7 @@ fieldset {
     background: url(/static/images/epub.gif) top left no-repeat;
 }
 .status-true {
-    background: url(/static/images/icon-yes.gif) top left no-repeat;    
+    background: url(/static/images/icon-yes.gif) top left no-repeat;
 }
 .status-false {
     background: url(/static/images/icon-no.gif) top left no-repeat;
@@ -417,6 +417,7 @@ TD.chpTitle {
 	-moz-border-radius: 7px;
 	border-radius: 7px;
 	border: 1px solid #ae2829;
+    width: auto;
 }
 .btnText:hover {
 	border: 1px solid #590f0f;
@@ -450,7 +451,7 @@ a.delete {
     color: #FFFFFF;
 	background-color: #4e4e4e;
 	border: 1px solid #797979;
-	
+
 }
 .delete:hover {
     color: #FFFFFF;
@@ -486,10 +487,18 @@ body.frameBox .deformFormFieldset {
 
 /****  FORM STYLE *****/
 
-.formInput {
+form input, .formInput {
 	width: 300px;
 	font-size: 12px;
 	padding: 3px;
+}
+
+.fullSizeInput {
+    width: 100%;
+}
+
+.halfSizeInput {
+    width: 50%;
 }
 
 .deform .req{
