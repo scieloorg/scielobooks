@@ -140,7 +140,7 @@ class LoginForm():
         btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
                                type='submit', value='submit', disabled=False)
 
-        return deform.Form(schema, buttons=(btn_submit))
+        return deform.Form(schema, buttons=(btn_submit,))
 
 
 class ForgotPasswordForm():
