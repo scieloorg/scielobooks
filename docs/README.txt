@@ -204,10 +204,18 @@ Rules to reverse proxy some requests::
         Allow from all
     </Proxy>
 
-    ProxyPassMatch ^/id/(.*)$ http://admin.books.scielo.org/id/$1
-    ProxyPassMatch ^/static/(.*)$ http://admin.books.scielo.org/static/$1
-    ProxyPassMatch ^/deform_static/(.*)$ http://admin.books.scielo.org/deform_static/$1
-    ProxyPassMatch ^/setlang/$ http://admin.books.scielo.org/
+    ProxyPassMatch ^/staff/(.*)$ http://homolog.backoffice.books.scielo.org/staff/$1
+    ProxyPassMatch ^/id/(.*)$ http://homolog.backoffice.books.scielo.org/id/$1
+    ProxyPassMatch ^/static/(.*)$ http://homolog.backoffice.books.scielo.org/static/$1
+    ProxyPassMatch ^/deform_static/(.*)$ http://homolog.backoffice.books.scielo.org/deform_static/$1
+    ProxyPassMatch ^/setlang/$ http://homolog.backoffice.books.scielo.org/
+    ProxyPassMatch ^/login(.*)$ http://homolog.backoffice.books.scielo.org/login$1
+    ProxyPassMatch ^/logout(.*)$ http://homolog.backoffice.books.scielo.org/logout$1
+
+    ProxyPass /admin http://homolog.backoffice.books.scielo.org/login
+
+    ProxyPassReverse /admin http://homolog.backoffice.books.scielo.org/login
+    ProxyPassReverse /staff http://homolog.backoffice.books.scielo.org/staff
 
 
 Troubleshooting
