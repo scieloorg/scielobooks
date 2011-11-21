@@ -287,10 +287,18 @@ Note: The application comes with 2 virtual hosts base templates. You can simply 
     Allow from all
 &lt;/Proxy&gt;
 
-ProxyPassMatch ^/id/(.*)$ http://admin.books.scielo.org/id/$1
-ProxyPassMatch ^/static/(.*)$ http://admin.books.scielo.org/static/$1
-ProxyPassMatch ^/deform_static/(.*)$ http://admin.books.scielo.org/deform_static/$1
-ProxyPassMatch ^/setlang/$ http://admin.books.scielo.org/</pre>
+ProxyPassMatch ^/staff/(.*)$ http://homolog.backoffice.books.scielo.org/staff/$1
+ProxyPassMatch ^/id/(.*)$ http://homolog.backoffice.books.scielo.org/id/$1
+ProxyPassMatch ^/static/(.*)$ http://homolog.backoffice.books.scielo.org/static/$1
+ProxyPassMatch ^/deform_static/(.*)$ http://homolog.backoffice.books.scielo.org/deform_static/$1
+ProxyPassMatch ^/setlang/$ http://homolog.backoffice.books.scielo.org/
+ProxyPassMatch ^/login(.*)$ http://homolog.backoffice.books.scielo.org/login$1
+ProxyPassMatch ^/logout(.*)$ http://homolog.backoffice.books.scielo.org/logout$1
+
+ProxyPass /admin http://homolog.backoffice.books.scielo.org/login
+
+ProxyPassReverse /admin http://homolog.backoffice.books.scielo.org/login
+ProxyPassReverse /staff http://homolog.backoffice.books.scielo.org/staff</pre>
 </div>
 </div>
 <div class="section" id="troubleshooting">
