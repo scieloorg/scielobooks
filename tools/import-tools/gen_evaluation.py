@@ -6,10 +6,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 from scielobooks.models import models
-
-db_uri = 'http://localhost:5984'
-db_name = 'scielobooks'
-rdbms_dsn = 'postgresql+psycopg2://postgres:ash2so4@localhost/scielobooks'
+import ConfigParser
+import sys
 
 orphan_books = []
 integrity_error = []
@@ -61,8 +59,17 @@ def create_evaluation(monograph):
 
 
 if __name__ == '__main__':
-    server = couchdbkit.Server(db_uri)
-    db = server.get_or_create_db(db_name)
+    try:
+        config_file = sys.argv[1]
+    except IndexError:
+        sys.exit('Missing application config file')
+
+    config = ConfigParser.ConfigParser()
+    config.read(config_file)
+
+    server = couchdbkit.Server(config.get('app:scielobooks', 'db_uri'))
+    db = server[config.get('app:scielobooks', 'db_name')]
+    rdbms_dsn = config.get('app:scielobooks', 'sqlalchemy.url')
 
     engine = sqlalchemy.create_engine(rdbms_dsn, echo=False)
     Session = sessionmaker(bind=engine)
