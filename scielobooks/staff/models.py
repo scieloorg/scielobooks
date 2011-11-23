@@ -2,6 +2,7 @@ from isis import model
 import deform
 import urllib2
 from collections import OrderedDict
+from ..utilities import functions
 import copy
 
 class Monograph(model.CouchdbDocument):
@@ -58,6 +59,9 @@ class Monograph(model.CouchdbDocument):
 
         return OrderedDict((key, formatting_func(value)) for key, value in creators_by_role.items())
 
+    def __get_cleaned_lastname(self, author):
+        return functions.slugify(author).split('-')[0]
+
     @property
     def shortname(self):
         shortname_format = '%s-%s'
@@ -66,9 +70,9 @@ class Monograph(model.CouchdbDocument):
         for role in precedence:
             if role in creators_by_role:
                 first_author = creators_by_role[role][0]
-                first_author_lastname = first_author[:first_author.find(',')] if ',' in first_author else first_author_lastname.split()[0]
+                first_author_lastname = self.__get_cleaned_lastname(first_author)
 
-                return shortname_format % (first_author_lastname.lower(), self.isbn)
+                return shortname_format % (first_author_lastname, self.isbn)
         else:
             raise AttributeError()
 
