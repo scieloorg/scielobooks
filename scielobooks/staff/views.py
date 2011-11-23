@@ -214,9 +214,9 @@ def new_part(request):
                 'monograph_publisher': monograph_as_python['publisher'],})
         part = Part.from_python(appstruct)
 
-        if monograph.language:
+        if hasattr(monograph, 'language') and monograph.language:
             part.monograph_language = monograph.language
-        if monograph.year:
+        if hasattr(monograph, 'year') and monograph.year:
             part.monograph_year = monograph.year
 
         is_new = True if getattr(part, '_rev', None) is None else False
