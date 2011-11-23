@@ -7,7 +7,7 @@ import copy
 class Monograph(model.CouchdbDocument):
     title = model.TextProperty(required=True)
     isbn = model.TextProperty(required=True)
-    creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'], required=True)
+    creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'])
     publisher = model.TextProperty(required=True)
     publisher_url = model.TextProperty()
     language = model.TextProperty()
