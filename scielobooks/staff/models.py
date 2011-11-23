@@ -7,17 +7,20 @@ import copy
 
 class Monograph(model.CouchdbDocument):
     title = model.TextProperty(required=True)
+    translated_titles = model.MultiCompositeTextProperty(subkeys=['title','language'])
     isbn = model.TextProperty(required=True)
     creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'])
     publisher = model.TextProperty(required=True)
     publisher_url = model.TextProperty()
     language = model.TextProperty()
     synopsis = model.TextProperty()
+    translated_synopses = model.MultiCompositeTextProperty(subkeys=['synopsis','language'])
     year = model.TextProperty()
     city = model.TextProperty()
     country = model.TextProperty()
     pages = model.TextProperty()
     primary_descriptor = model.TextProperty()
+    translated_primary_descriptors = model.MultiCompositeTextProperty(subkeys=['primary_descriptor','language'])
     edition = model.TextProperty()
     collection = model.CompositeTextProperty(subkeys=['individual_author', 'corporate_author', 'title', 'english_translated_title', 'total_number_of_volumes'])
     format = model.CompositeTextProperty(subkeys=['height', 'width'])
@@ -79,6 +82,7 @@ class Monograph(model.CouchdbDocument):
 
 class Part(model.CouchdbDocument):
     title = model.TextProperty(required=True)
+    translated_titles = model.MultiCompositeTextProperty(subkeys=['title','language'])
     order = model.TextProperty(required=True)
     creators = model.MultiCompositeTextProperty(required=False, subkeys=['role','full_name', 'link_resume'])
     pages = model.CompositeTextProperty(subkeys=['initial','final',])
