@@ -79,7 +79,7 @@ class Monograph(model.CouchdbDocument):
 
 class Part(model.CouchdbDocument):
     title = model.TextProperty(required=True)
-    order = model.TextProperty()
+    order = model.TextProperty(required=True)
     creators = model.MultiCompositeTextProperty(required=False, subkeys=['role','full_name', 'link_resume'])
     pages = model.CompositeTextProperty(subkeys=['initial','final',])
     pdf_file = model.FileProperty()
