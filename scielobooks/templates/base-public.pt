@@ -50,6 +50,42 @@
         </div>
 
         <div class="middle" metal:define-slot="middle"/>
-      </div><!--/container -->
+
+        <div class="footer">
+          <p>
+            SciELO - Scientific Electronic Library Online | <a href="http://www.fapesp.br/en/">FAPESP</a> - <a target="_blank"
+            href="http://www.cnpq.br/english/cnpq/index.htm">CNPq</a> - <a target="_blank" href="http://www.fapunifesp.edu.br/">FapUnifesp</a> - <a target="_blank" href="http://regional.bvsalud.org/bvs/bireme/I/homepage.htm">BIREME</a>
+            <br/>
+            Rua Machado Bittencourt, 430 - Vila Clementino  04044-001 São Paulo SP -  Brazil
+            <br/>
+            Tel.: (55 11) 3369-4080 - Email: <a href="mailto:scielo.books@scielo.org">scielo.books@scielo.org</a>
+          </p>
+          <ul>
+            <li>
+              <img src="http://books.scielo.org/wp-content/themes/ebooks/images/fapUNIFESP.png" alt="FapUNIFESP" />
+            </li>
+            <li>
+              <a href="http://regional.bvsalud.org/php/index.php?lang=pt">
+                <img src="http://books.scielo.org/wp-content/themes/ebooks/images/bvs.gif" alt="Biblioteca Virtual em Saúde" title="Biblioteca Virtual em Saúde" />
+              </a>
+            </li>
+            <li>
+              <a href="http://regional.bvsalud.org/bvs/bireme/homepage.htm" target="_blank">
+                <img src="http://books.scielo.org/wp-content/themes/ebooks/images/ops-oms.gif" alt="Organização Pan-Americana da Saúde" title="Organização Pan-Americana da Saúde" />
+              </a>
+            </li>
+            <li>
+              <a href="http://www.cnpq.br/" target="_blank">
+                <img src="http://books.scielo.org/wp-content/themes/ebooks/images/cnpq.gif" alt="CNPq" title="CNPq" />
+              </a>
+            </li>
+            <li>
+              <a href="http://www.fapesp.br/" target="_blank">
+                <img src="http://books.scielo.org/wp-content/themes/ebooks/images/fapesp.gif" alt="FAPESP" title="FAPESP" />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </body>
 </html>
