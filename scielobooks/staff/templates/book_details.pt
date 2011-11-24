@@ -102,16 +102,16 @@
           </span>
         </dl>
 
-        <div class="download"
-             tal:condition="book_attachments | nothing">
-          <fieldset>
-            <legend>Download</legend>
-            <div tal:repeat="attach book_attachments">
-              <a tal:attributes="href attach.url"
-                 tal:content="attach.text"
-                 href="#">Livro em PDF</a>
-            </div>
-          </fieldset>
+        <div class="download_box">
+         <div class="download"
+              tal:condition="book_attachments | nothing">
+           <fieldset>
+             <legend>Download</legend>
+             <div tal:repeat="attach book_attachments">
+               <a class="" tal:attributes="href attach.url" tal:content="attach.text" href="#">Livro em PDF</a>
+             </div>
+           </fieldset>
+         </div>
         </div>
 
         <div class="actions"></div>
@@ -132,7 +132,7 @@
         <div class="book-parts">
           <strong>
             <span  i18n:translate="" tal:omit-tag="">Book Parts</span>
-            <span class="add"><a href="${add_part_url}?KeepThis=true&amp;TB_iframe=true&amp;height=570&amp;width=600" class="thickbox" i18n:translate="">Add</a></span>
+            <span class="add"><a href="${add_part_url}" i18n:translate="">Add</a></span>
           </strong>
           <table>
             <tr>
@@ -145,7 +145,7 @@
                 <td><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
                 <td>
                   <span class="edit">
-                    <a href="${part.edit_url}?KeepThis=true&amp;TB_iframe=true&amp;height=570&amp;width=600" class="thickbox" i18n:translate="">Edit</a>
+                    <a href="${part.edit_url}" i18n:translate="">Edit</a>
                   </span>
                   <span>
                     <a id="${part.part_sbid}" class="delete" href="javascript: void(0);" i18n:translate="">Delete</a>
