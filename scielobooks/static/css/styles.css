@@ -134,6 +134,8 @@ h4 {
 	border: none;
 }
 
+
+
 ul.menu {
 	margin: 0px;
 	margin-bottom: 15px;
@@ -571,4 +573,35 @@ div.deformReplaces {
 
 .deform p.error {
     font-size: 70%;
+}
+
+/* footer style */
+.footer {
+    text-align: center;
+    font-size: 10.8px;
+    color: #666666;
+    line-height: 130%
+    margin-bottom: 20px;
+    clear: both;
+    width: 100%;
+}
+
+.footer ul {
+    margin: 0 auto;
+    width: 280px;
+    list-style-image: none;
+}
+
+.footer ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.footer a {
+    color: #666666;
+}
+
+.footer a:hover {
+    color: #B12727;
+    border-bottom: none;
 }
