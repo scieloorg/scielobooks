@@ -212,7 +212,7 @@ fieldset {
 .thumb img {
     padding: 0px 15px;
 }
-.thumb a img {
+a img {
 	border: none;
 }
 .metadata, .metadata DT, .metadata DD {
@@ -577,16 +577,19 @@ div.deformReplaces {
 
 /* footer style */
 .footer {
+    clear: both;
+    padding: 18px 0;
+    margin: 20px auto;
     text-align: center;
     font-size: 10.8px;
     color: #666666;
-    line-height: 130%
-    margin-bottom: 20px;
-    clear: both;
-    width: 100%;
+    line-height: 130%;
+    width: 940px;
+    border-top:1px solid #B12727;
 }
 
 .footer ul {
+    padding: 18px 0;
     margin: 0 auto;
     width: 280px;
     list-style-image: none;
