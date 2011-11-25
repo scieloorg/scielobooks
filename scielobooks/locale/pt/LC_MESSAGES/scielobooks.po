@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: scielobooks 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-11-23 14:54-0200\n"
-"PO-Revision-Date: 2011-11-23 14:55-0300\n"
+"POT-Creation-Date: 2011-11-25 10:05-0200\n"
+"PO-Revision-Date: 2011-11-25 10:05-0300\n"
 "Last-Translator: Gustavo Fonseca <gustavofons@gmail.com>\n"
 "Language-Team: pt <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -134,6 +134,11 @@ msgstr "Autor institucional:"
 #: scielobooks/staff/templates/book_details.pt:64
 msgid "Author:"
 msgstr "Autor:"
+
+#: scielobooks/catalog/templates/book_details.pt:18
+#: scielobooks/catalog/templates/chapter_details.pt:59
+msgid "Search"
+msgstr "Pesquisa"
 
 #: scielobooks/evaluation/templates/book_details.pt:128
 #: scielobooks/staff/templates/book_details.pt:169
@@ -304,7 +309,6 @@ msgstr "Idioma"
 
 #: scielobooks/staff/forms.py:85
 #: scielobooks/staff/forms.py:86
-#| msgid "Translated Titles"
 msgid "Translated Synopses"
 msgstr "Resumos Traduzidos"
 
@@ -316,7 +320,6 @@ msgstr "Resumo"
 
 #: scielobooks/staff/forms.py:92
 #: scielobooks/staff/forms.py:93
-#| msgid "Primary Descriptor"
 msgid "Translated Primary Descriptors"
 msgstr "Descritores Primários Traduzidos"
 
