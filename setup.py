@@ -31,6 +31,7 @@ requires = [
     'couchapp',
     'chameleon<1.999',
     'psycopg2',
+    'setuptools-git',
     ]
 
 setup(name = 'scielobooks',
@@ -66,4 +67,4 @@ setup(name = 'scielobooks',
 
       )
 
-# ``pip install setuptools-git`` in order to build packages based on git repositories (dev only).
+# ``setuptools-git`` in order to build packages based on git repositories.
