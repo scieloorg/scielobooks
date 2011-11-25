@@ -39,6 +39,7 @@
             <dt tal:condition="creator.lower() == 'editor'" i18n:translate="">Editor:</dt>
             <dt tal:condition="creator.lower() == 'other'" i18n:translate="">Other:</dt>
             <dt tal:condition="creator.lower() == 'organizer'" i18n:translate="">Organizer:</dt>
+            <dt tal:condition="creator.lower() == 'collaborator'" i18n:translate="">Collaborator:</dt>
               <dd tal:content="creators[creator]"></dd>
           </span>
 
