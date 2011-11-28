@@ -1,3 +1,8 @@
+v1rc6
+---
+    See changelog at:
+    http://reddes.bvsalud.org/projects/scielo-books/query?status=closed&group=resolution&milestone=version+1rc6
+
 0.1 (evaluation_01)
 ---
     Prepared a sample of evaluation bound to monograph records(#25)
