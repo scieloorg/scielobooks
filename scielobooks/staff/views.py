@@ -287,7 +287,7 @@ def book_details(request):
             file_url = request.route_path('staff.evaluation_attachments',
                                           sbid=monograph._id,
                                           filename=getattr(monograph, attach[0])['filename'])
-            book_attachments.append({'url':file_url, 'text': attach[1]})
+            book_attachments.append({'url':file_url, 'text': attach[1], 'css_class': attach[0]})
 
     evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph._id).one()
 
