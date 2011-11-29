@@ -182,6 +182,10 @@ def new_part(request):
     FORM_TITLE_EDIT = '%s'
 
     monograph_id = request.matchdict['sbid']
+    try:
+       monograph = Monograph.get(request.db, monograph_id)
+    except couchdbkit.ResourceNotFound:
+        raise exceptions.NotFound()
 
     localizer = get_localizer(request)
     part_form = PartForm.get_form(localizer)
@@ -189,6 +193,8 @@ def new_part(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     if request.method == 'POST':
+        if 'btn_cancel' in request.POST:
+            return HTTPFound(location=request.route_path('staff.book_details', sbid=request.matchdict['sbid']))
 
         controls = request.POST.items()
         try:
@@ -197,7 +203,13 @@ def new_part(request):
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
-                    'general_stuff':{'form_title':FORM_TITLE_NEW},
+                    'general_stuff':{'form_title':FORM_TITLE_NEW,
+                              'breadcrumb': [
+                                (_('Dashboard'), request.route_path('staff.panel')),
+                                (monograph.title, request.route_path('staff.book_details', sbid=monograph_id)),
+                                (_('New Book Part'), None),
+                              ]
+                             },
                     }
         try:
            monograph = Monograph.get(request.db, monograph_id)
@@ -227,7 +239,7 @@ def new_part(request):
         else:
             request.session.flash(_('Successfully updated.'))
 
-        return HTTPFound(location=request.route_path('staff.edit_part', sbid=part.monograph, part_id=part._id))
+        return HTTPFound(location=request.route_path('staff.book_details', sbid=request.matchdict['sbid']))
 
     if 'part_id' in request.matchdict:
         part = Part.get(request.db, request.matchdict['part_id'])
@@ -235,14 +247,29 @@ def new_part(request):
         return {'content':part_form.render(part.to_python()),
                 'main':main,
                 'user':get_logged_user(request),
-                'general_stuff':{'form_title':FORM_TITLE_EDIT % part.title},
+                'general_stuff':{'form_title':FORM_TITLE_EDIT % part.title,
+                              'breadcrumb': [
+                                (_('Dashboard'), request.route_path('staff.panel')),
+                                (monograph.title, request.route_path('staff.book_details', sbid=monograph_id)),
+                                (part.title, None),
+                              ]
+                             },
                 }
 
     return {'content':part_form.render(),
             'main':main,
             'user':get_logged_user(request),
-            'general_stuff':{'form_title':FORM_TITLE_NEW},
+            'general_stuff':{'form_title':FORM_TITLE_NEW,
+                              'breadcrumb': [
+                                (_('Dashboard'), request.route_path('staff.panel')),
+                                (monograph.title, request.route_path('staff.book_details', sbid=monograph_id)),
+                                (_('New Book Part'), None),
+                              ]
+                             },
             }
+
+
+
 
 def book_details(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
@@ -260,7 +287,7 @@ def book_details(request):
             file_url = request.route_path('staff.evaluation_attachments',
                                           sbid=monograph._id,
                                           filename=getattr(monograph, attach[0])['filename'])
-            book_attachments.append({'url':file_url, 'text': attach[1]})
+            book_attachments.append({'url':file_url, 'text': attach[1], 'css_class': attach[0]})
 
     evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph._id).one()
 

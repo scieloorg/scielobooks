@@ -1,0 +1,388 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>How to install a SciELOBooks instance &mdash; SciELO Books 1.0rc3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0rc3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="SciELO Books 1.0rc3 documentation" href="index.html" />
+    <link rel="prev" title="Welcome to SciELO Books’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to SciELO Books’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">SciELO Books 1.0rc3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="how-to-install-a-scielobooks-instance">
+<h1>How to install a SciELOBooks instance<a class="headerlink" href="#how-to-install-a-scielobooks-instance" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="install-pre-requisites">
+<h2>Install pre-requisites<a class="headerlink" href="#install-pre-requisites" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="before-installing-the-scielo-books-application-install-the-software-listed-below">
+<h3>Before installing the SciELO-Books application, install the software listed below.<a class="headerlink" href="#before-installing-the-scielo-books-application-install-the-software-listed-below" title="Permalink to this headline">¶</a></h3>
+<p>Server software</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="28%" />
+<col width="20%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>software</strong></th>
+<th class="head"><strong>product URL</strong></th>
+<th class="head"><strong>installation method</strong></th>
+<th class="head"><strong>Ubuntu Package name</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Python 2.7</td>
+<td><a class="reference external" href="http://www.python.org/">http://www.python.org/</a></td>
+<td>OS package manager</td>
+<td>python2.7</td>
+</tr>
+<tr class="row-odd"><td>python2.7</td>
+<td><a class="reference external" href="http://www.python.org/">http://www.python.org/</a></td>
+<td>OS package manager</td>
+<td>python2.7-dev</td>
+</tr>
+<tr class="row-even"><td>GNU compiler and tools</td>
+<td><a class="reference external" href="http://www.python.org/">http://www.python.org/</a></td>
+<td>OS package manager</td>
+<td>build-essential</td>
+</tr>
+<tr class="row-odd"><td>Apache HTTP server 2.2</td>
+<td><a class="reference external" href="http://httpd.apache.org/">http://httpd.apache.org/</a></td>
+<td>OS package manager</td>
+<td>apache2</td>
+</tr>
+<tr class="row-even"><td>mod_wsgi - Python adapter(optional)</td>
+<td><a class="reference external" href="http://code.google.com/p/modwsgi/">http://code.google.com/p/modwsgi/</a></td>
+<td>OS package manager</td>
+<td>libapache2-mod-wsgi</td>
+</tr>
+<tr class="row-odd"><td>CouchDB 1.0</td>
+<td><a class="reference external" href="http://couchdb.apache.org/">http://couchdb.apache.org/</a></td>
+<td>OS package manager</td>
+<td>couchdb</td>
+</tr>
+<tr class="row-even"><td>PostgreSQL</td>
+<td><a class="reference external" href="http://www.postgresql.org/">http://www.postgresql.org/</a></td>
+<td>OS package manager</td>
+<td>postgresql</td>
+</tr>
+<tr class="row-odd"><td>GIT</td>
+<td><a class="reference external" href="http://git-scm.com/">http://git-scm.com/</a></td>
+<td>OS package manager</td>
+<td>git-core</td>
+</tr>
+<tr class="row-even"><td>Subversion</td>
+<td><a class="reference external" href="http://subversion.apache.org/">http://subversion.apache.org/</a></td>
+<td>OS package manager</td>
+<td>subversion</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<ol class="arabic simple">
+<li>Install each package below using the recommended installation method above.</li>
+</ol>
+<p>Note: Python comes pre-installed in most Linux distributions. If Python 2.5 or 2.6 is already installed, there is no need to install a newer version.</p>
+<p>Note2: on Ubuntu 10.04 (Lucid) build-essential includes: dpkg-dev, g++, libc6-dev and make</p>
+</div>
+<div class="section" id="system-wide-python-libraries">
+<h3>System-wide Python libraries<a class="headerlink" href="#system-wide-python-libraries" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="34%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>software</strong></th>
+<th class="head"><strong>product URL</strong></th>
+<th class="head"><strong>installation method</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>distribute 0.6.10</td>
+<td><a class="reference external" href="http://pypi.python.org/pypi/distribute">http://pypi.python.org/pypi/distribute</a></td>
+<td>sudo python distribute_setup.py</td>
+</tr>
+<tr class="row-odd"><td>virtualenv</td>
+<td><a class="reference external" href="http://pypi.python.org/pypi/virtualenv">http://pypi.python.org/pypi/virtualenv</a></td>
+<td>sudo easy_install virtualenv</td>
+</tr>
+<tr class="row-even"><td>python gfx module</td>
+<td><a class="reference external" href="http://www.swftools.org/gfx_tutorial.html">http://www.swftools.org/gfx_tutorial.html</a></td>
+<td>installation instruction topic 1.1  Compiling gfx and installing</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<ol class="arabic" start="2">
+<li><p class="first">Download the distribute_setup.py script and use the installed Python interperter to run it as root (this provides the easy_install utility):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># wget http://python-distribute.org/distribute_setup.py</span>
+<span class="c"># python distribute_setup.py</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use easy_install to download and install virtuaenv:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># easy_install virtualenv</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="configure-the-database">
+<h2>Configure the database<a class="headerlink" href="#configure-the-database" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple" start="4">
+<li>Create a <cite>scielobooks_1a</cite> database. The user name and password will not be configured at this time.</li>
+</ol>
+<p>Log in to the Futon&#8217;s web interface:</p>
+<div class="highlight-python"><pre>http://localhost:5984/_utils/</pre>
+</div>
+</div>
+<div class="section" id="install-the-application-environment">
+<h2>Install the application environment<a class="headerlink" href="#install-the-application-environment" title="Permalink to this headline">¶</a></h2>
+<p><strong>Note: all of the remainig steps can be performed by a regular user without root access.</strong></p>
+<ol class="arabic" start="5">
+<li><p class="first">Use virtualenv to create an application environment and activate it:</p>
+<div class="highlight-python"><pre>$ virtualenv --distribute --no-site-packages scielobooks-env
+$ source scielobooks-env/bin/activate
+(scielobooks-env)$   # note that the shell prompt displays the active virtual environment</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="install-the-scielobooks-application">
+<h2>Install the scielobooks application<a class="headerlink" href="#install-the-scielobooks-application" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic" start="6">
+<li><p class="first">Go to a suitable installation directory and check out the application source:</p>
+<div class="highlight-python"><pre>Development(Recommended):
+Read-only:
+(scielobooks-env)$ git clone git://github.com/bireme/scielobooks.git
+Read+write:
+(scielobooks-env)$ git clone git@github.com:bireme/scielobooks.git
+
+Development:
+(scielobooks-env)$ svn co http://svn.reddes.bvsalud.org/scielo-books/trunk/scielobooks
+
+Stable:
+(scielobooks-env)$ svn co http://svn.reddes.bvsalud.org/scielo-books/tags/&lt;VERSION&gt;
+
+
+user: anonymous
+password: 4guests@</pre>
+</div>
+</li>
+<li><p class="first">With the <cite>scielobooks-env</cite> environment active, use <cite>setuptools</cite> to automagically download and install all the dependencies:</p>
+<div class="highlight-python"><pre>(scielobooks-env)$ python setup.py install</pre>
+</div>
+</li>
+<li><p class="first">Run automated tests (NOT WORKING):</p>
+<div class="highlight-python"><pre>(scielobooks-env)$ python setup.py test -q</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-application">
+<h2>Running the application<a class="headerlink" href="#running-the-application" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="paster">
+<h3>Paster<a class="headerlink" href="#paster" title="Permalink to this headline">¶</a></h3>
+<p>The Pyramid web framework already comes with Paster. So, in order to run it you simply need to:</p>
+<ol class="arabic">
+<li><p class="first">Create a paster .ini configuration file:</p>
+<div class="highlight-python"><pre>Development:
+$ cp development-TEMPLATE.ini development.ini
+
+Production:
+$ cp production-TEMPLATE.ini production.ini</pre>
+</div>
+</li>
+</ol>
+<p>Note: The application comes with 2 base templates, for development and for production environments.</p>
+<p>See <a class="reference external" href="http://pythonpaste.org/script/#configuration">http://pythonpaste.org/script/#configuration</a> for more information about PasteScript.</p>
+<ol class="arabic" start="2">
+<li><p class="first">Run:</p>
+<div class="highlight-python"><pre>$ paster serve production.ini --daemon</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="apache-with-mod-wsgi">
+<h3>Apache with mod_wsgi<a class="headerlink" href="#apache-with-mod-wsgi" title="Permalink to this headline">¶</a></h3>
+<p>1. Create and configure a paster .ini configuration file.
+Note: The application comes with 2 base templates, for development and for production environments.</p>
+<p>Development:</p>
+<div class="highlight-python"><pre>$ cp development-TEMPLATE.ini development.ini</pre>
+</div>
+<p>Production:</p>
+<div class="highlight-python"><pre>$ cp production-TEMPLATE.ini production.ini</pre>
+</div>
+<p>See <a class="reference external" href="http://pythonpaste.org/script/#configuration">http://pythonpaste.org/script/#configuration</a> for more information about PasteScript.</p>
+<p>2. Create and configure a .wsgi configuration file.
+Note: The application comes with a directory named <em>apache</em>, containing templates for deployments using Apache with mod_wsgi</p>
+<p>Development:</p>
+<div class="highlight-python"><pre>$ cp apache/app/devel-TEMPLATE.wsgi apache/app/devel.wsgi</pre>
+</div>
+<p>Production:</p>
+<div class="highlight-python"><pre>$ cp apache/app/production-TEMPLATE.wsgi apache/app/production.wsgi</pre>
+</div>
+<p>Note: The .wsgi configuration file must be configured to point to the previously created .ini file, to match the application&#8217;s entry point.</p>
+<p>3. Configure the Apache WebServer
+Note: The application comes with 2 virtual hosts base templates. You can simply create a symlink to the apache&#8217;s available sites.</p>
+<p>Development:</p>
+<div class="highlight-python"><pre>$ cp apache/httpd-devel-TEMPLATE.conf apache/httpd-devel.conf</pre>
+</div>
+<p>Production:</p>
+<div class="highlight-python"><pre>$ cp apache/httpd-TEMPLATE.conf apache/httpd.conf</pre>
+</div>
+<p>See <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/1.0/tutorials/modwsgi/index.html">http://docs.pylonsproject.org/projects/pyramid/1.0/tutorials/modwsgi/index.html</a> for more information about deploying a Pyramid app using mod_wsgi.</p>
+</div>
+</div>
+<div class="section" id="wordpress-integration">
+<h2>WordPress Integration<a class="headerlink" href="#wordpress-integration" title="Permalink to this headline">¶</a></h2>
+<p>In order to both applications, the main site (Wordpress) and the details site (Python), coexist transparently, we need to add some rules in the webserver.</p>
+<p>Basically, the catalog package must be accessible from the Wordpress domain, i.e. <em>http://books.scielo.org/id/w2</em> must resolve to <em>http://admin.books.scielo.org/id/w2</em>. The latter should not be accessible for users.</p>
+<p>Rules to reverse proxy some requests:</p>
+<div class="highlight-python"><pre># wordpress app virtualhost
+&lt;Proxy *&gt;
+    Allow from all
+&lt;/Proxy&gt;
+
+ProxyPassMatch ^/staff/(.*)$ http://homolog.backoffice.books.scielo.org/staff/$1
+ProxyPassMatch ^/id/(.*)$ http://homolog.backoffice.books.scielo.org/id/$1
+ProxyPassMatch ^/static/(.*)$ http://homolog.backoffice.books.scielo.org/static/$1
+ProxyPassMatch ^/deform_static/(.*)$ http://homolog.backoffice.books.scielo.org/deform_static/$1
+ProxyPassMatch ^/setlang/$ http://homolog.backoffice.books.scielo.org/
+ProxyPassMatch ^/login(.*)$ http://homolog.backoffice.books.scielo.org/login$1
+ProxyPassMatch ^/logout(.*)$ http://homolog.backoffice.books.scielo.org/logout$1
+
+ProxyPass /admin http://homolog.backoffice.books.scielo.org/login
+
+ProxyPassReverse /admin http://homolog.backoffice.books.scielo.org/login
+ProxyPassReverse /staff http://homolog.backoffice.books.scielo.org/staff</pre>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-application-is-updated-but-seems-like-the-cache-is-not-even-after-the-apache-mod-wsgi-have-been-restarted">
+<h3>The application is updated but seems like the cache is not (even after the apache+mod_wsgi have been restarted)<a class="headerlink" href="#the-application-is-updated-but-seems-like-the-cache-is-not-even-after-the-apache-mod-wsgi-have-been-restarted" title="Permalink to this headline">¶</a></h3>
+<p>mod_wsgi has an aggressive cache system. to refresh it, you have to update the date of the .wsgi configuration file and restart apache:</p>
+<div class="highlight-python"><pre>$ touch apache/app/production.wsgi</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How to install a SciELOBooks instance</a><ul>
+<li><a class="reference internal" href="#install-pre-requisites">Install pre-requisites</a><ul>
+<li><a class="reference internal" href="#before-installing-the-scielo-books-application-install-the-software-listed-below">Before installing the SciELO-Books application, install the software listed below.</a></li>
+<li><a class="reference internal" href="#system-wide-python-libraries">System-wide Python libraries</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configure-the-database">Configure the database</a></li>
+<li><a class="reference internal" href="#install-the-application-environment">Install the application environment</a></li>
+<li><a class="reference internal" href="#install-the-scielobooks-application">Install the scielobooks application</a></li>
+<li><a class="reference internal" href="#running-the-application">Running the application</a><ul>
+<li><a class="reference internal" href="#paster">Paster</a></li>
+<li><a class="reference internal" href="#apache-with-mod-wsgi">Apache with mod_wsgi</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#wordpress-integration">WordPress Integration</a></li>
+<li><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li><a class="reference internal" href="#the-application-is-updated-but-seems-like-the-cache-is-not-even-after-the-apache-mod-wsgi-have-been-restarted">The application is updated but seems like the cache is not (even after the apache+mod_wsgi have been restarted)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to SciELO Books&#8217;s documentation!</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/README.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to SciELO Books’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">SciELO Books 1.0rc3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, BIREME/OPAS/OMS.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

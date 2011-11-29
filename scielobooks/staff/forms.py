@@ -50,10 +50,12 @@ class MonographForm():
                        ('coordinator',localizer.translate(_('Coordinator'))),
                        ('editor',localizer.translate(_('Editor'))),
                        ('other',localizer.translate(_('Other'))),
-                       ('organizer',localizer.translate(_('Organizer'))),]
+                       ('organizer',localizer.translate(_('Organizer'))),
+                       ('collaborator',localizer.translate(_('Collaborator'))),]
 
         language_values = [('pt', localizer.translate(_('Portuguese'))),
-                           ('en', localizer.translate(_('English')))]
+                           ('en', localizer.translate(_('English'))),
+                           ('es', localizer.translate(_('Spanish'))),]
 
         l10n_countries = Countries(localizer.locale_name)
         country_values = l10n_countries.items()
@@ -71,6 +73,28 @@ class MonographForm():
         base_schema['creators'].children[0]['link_resume'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
         base_schema['creators'].children[0]['link_resume'].missing = None
         base_schema['notes'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
+
+        base_schema['translated_titles'].title = localizer.translate(_('Translated Titles'))
+        base_schema['translated_titles'].description = localizer.translate(_('Translated Titles'))
+        base_schema['translated_titles'].children[0]['title'].title = localizer.translate(_('Title'))
+        base_schema['translated_titles'].children[0]['title'].widget = deform.widget.TextInputWidget()
+        base_schema['translated_titles'].children[0]['title'].widget.css_class = 'fullSizeInput'
+        base_schema['translated_titles'].children[0]['language'].title = localizer.translate(_('Language'))
+        base_schema['translated_titles'].children[0]['language'].widget = deform.widget.SelectWidget(values=language_values)
+
+        base_schema['translated_synopses'].title = localizer.translate(_('Translated Synopses'))
+        base_schema['translated_synopses'].description = localizer.translate(_('Translated Synopses'))
+        base_schema['translated_synopses'].children[0]['synopsis'].title = localizer.translate(_('Abstract'))
+        base_schema['translated_synopses'].children[0]['synopsis'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
+        base_schema['translated_synopses'].children[0]['language'].title = localizer.translate(_('Language'))
+        base_schema['translated_synopses'].children[0]['language'].widget = deform.widget.SelectWidget(values=language_values)
+
+        base_schema['translated_primary_descriptors'].title = localizer.translate(_('Translated Primary Descriptors'))
+        base_schema['translated_primary_descriptors'].description = localizer.translate(_('Translated Primary Descriptors'))
+        base_schema['translated_primary_descriptors'].children[0]['primary_descriptor'].title = localizer.translate(_('Primary Descriptor'))
+        base_schema['translated_primary_descriptors'].children[0]['primary_descriptor'].widget = deform.widget.TextAreaWidget(cols=60, rows=7)
+        base_schema['translated_primary_descriptors'].children[0]['language'].title = localizer.translate(_('Language'))
+        base_schema['translated_primary_descriptors'].children[0]['language'].widget = deform.widget.SelectWidget(values=language_values)
 
         #i18n
         base_schema.add(colander.SchemaNode(
@@ -310,7 +334,8 @@ class PartForm():
                        ('coordinator',localizer.translate(_('Coordinator'))),
                        ('editor',localizer.translate(_('Editor'))),
                        ('other',localizer.translate(_('Other'))),
-                       ('organizer',localizer.translate(_('Organizer'))),]
+                       ('organizer',localizer.translate(_('Organizer'))),
+                       ('collaborator',localizer.translate(_('Collaborator'))),]
 
         language_values = [('pt', localizer.translate(_('Portuguese'))),
                            ('en', localizer.translate(_('English')))]
@@ -328,6 +353,14 @@ class PartForm():
         base_schema['creators'].children[0]['link_resume'].widget.css_class = 'fullSizeInput'
         base_schema['creators'].children[0]['link_resume'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
         base_schema['creators'].children[0]['link_resume'].missing = None
+
+        base_schema['translated_titles'].title = localizer.translate(_('Translated Titles'))
+        base_schema['translated_titles'].description = localizer.translate(_('Translated Titles'))
+        base_schema['translated_titles'].children[0]['title'].title = localizer.translate(_('Title'))
+        base_schema['translated_titles'].children[0]['title'].widget = deform.widget.TextInputWidget()
+        base_schema['translated_titles'].children[0]['title'].widget.css_class = 'fullSizeInput'
+        base_schema['translated_titles'].children[0]['language'].title = localizer.translate(_('Language'))
+        base_schema['translated_titles'].children[0]['language'].widget = deform.widget.SelectWidget(values=language_values)
 
         base_schema['title'].title = localizer.translate(_('Title'))
         base_schema['title'].description = localizer.translate(_('Title'))
@@ -350,10 +383,12 @@ class PartForm():
         base_schema['notes'].title = localizer.translate(_('Notes'))
         base_schema['notes'].description = localizer.translate(_('Notes'))
 
+        btn_cancel = deform.form.Button(name='btn_cancel', title=localizer.translate(_('Cancel')),
+                               type='submit', value='cancel', disabled=False)
         btn_submit = deform.form.Button(name='btn_submit', title=localizer.translate(_('Submit')),
                                type='submit', value='submit', disabled=False)
 
-        form = deform.Form(base_schema, buttons=(btn_submit,))
+        form = deform.Form(base_schema, buttons=(btn_cancel, btn_submit))
         functions.customize_form_css_class(form, **cls.widget_classes)
 
         return form

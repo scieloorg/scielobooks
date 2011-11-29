@@ -51,5 +51,9 @@
 
         <div class="middle" metal:define-slot="middle"/>
       </div><!--/container -->
+
+      <div class="spacer"></div>
+      <small>version: ${request.registry.app_version}. <a href="http://reddes.bvsalud.org/projects/scielo-books/newticket?version=${request.registry.app_version}&amp;type=defect" target="_blank">Report a Bug!</a></small>
+
     </body>
 </html>

@@ -289,10 +289,10 @@ a img {
     font-weight: bold;
     font-size: 13px;
 }
-.PDF {
+.PDF, .pdf_file {
     background: url(/static/images/pdf.gif) top left no-repeat;
 }
-.ePub {
+.ePub, .epub_file {
     background: url(/static/images/epub.gif) top left no-repeat;
 }
 .status-true {
@@ -301,7 +301,7 @@ a img {
 .status-false {
     background: url(/static/images/icon-no.gif) top left no-repeat;
 }
-.PDF, .ePub, .status-true, .status-false {
+.PDF, .ePub, .status-true, .status-false, .pdf_file, .epub_file {
     padding: 3px 2px 2px 20px;
     margin: 0px 0px 4px 0px;
 }

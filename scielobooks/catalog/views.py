@@ -88,7 +88,7 @@ def book_details(request):
             # some mandatory data is missing. do not make the link public
             pass
         else:
-            book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF')})
+            book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF'), 'css_class':'pdf_file'})
 
     if getattr(monograph, 'epub_file', None):
         try:
@@ -97,7 +97,7 @@ def book_details(request):
             # some mandatory data is missing. do not make the link public
             pass
         else:
-            book_attachments.append({'url':epub_file_url, 'text':_('Book in ePub')})
+            book_attachments.append({'url':epub_file_url, 'text':_('Book in ePub'), 'css_class': 'epub_file'})
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -106,7 +106,7 @@ def book_details(request):
             'parts':parts,
             'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
             'cover_full_url': request.route_path('catalog.cover', sbid=monograph._id),
-            'breadcrumb': {'home':request.registry.settings['solr_url'],},
+            'breadcrumb': {'home': '/', 'search': request.registry.settings['solr_url'],},
             'main':main}
 
 def chapter_details(request):
@@ -138,7 +138,8 @@ def chapter_details(request):
             'parts':parts,
             'part':part,
             'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
-            'breadcrumb':{'home':request.registry.settings['solr_url'],
+            'breadcrumb':{'home': '/',
+                          'search':request.registry.settings['solr_url'],
                           'book':request.route_path('catalog.book_details', sbid=sbid),},
             'main':main}
 

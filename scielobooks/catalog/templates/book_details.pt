@@ -15,7 +15,7 @@
 
   <div class="middle" metal:fill-slot="middle">
     <div class="breadcrumb">
-      <a href="/" tal:attributes="href breadcrumb.home">Home</a> / <span tal:replace="document.title">Le Petit Prince</span>
+      <a href="/" tal:attributes="href breadcrumb.home">Home</a> / <a href="" tal:attributes="href breadcrumb.search" i18n:translate="">Search</a> / <span tal:replace="document.title">Le Petit Prince</span>
     </div>
     <div class="leftCol">
     &#160;
@@ -39,6 +39,7 @@
             <dt tal:condition="creator.lower() == 'editor'" i18n:translate="">Editor:</dt>
             <dt tal:condition="creator.lower() == 'other'" i18n:translate="">Other:</dt>
             <dt tal:condition="creator.lower() == 'organizer'" i18n:translate="">Organizer:</dt>
+            <dt tal:condition="creator.lower() == 'collaborator'" i18n:translate="">Collaborator:</dt>
               <dd tal:content="creators[creator]"></dd>
           </span>
 
@@ -78,7 +79,7 @@
           <fieldset>
             <legend>Download</legend>
             <div tal:repeat="attach book_attachments">
-              <a tal:attributes="href attach.url"
+              <a tal:attributes="href attach.url;class attach.css_class"
                  tal:content="attach.text"
                  href="#">Livro em PDF</a>
             </div>

@@ -19,12 +19,15 @@ from .models import initialize_sql
 from scielobooks.request import MyRequest
 
 
+APP_VERSION = 'v1rc7'
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     authentication_policy = AuthTktAuthenticationPolicy('seekrit', callback=groupfinder)
     authorization_policy = ACLAuthorizationPolicy()
-    
+
     engine = engine_from_config(settings, prefix='sqlalchemy.')
     db_maker = sessionmaker(bind=engine)
     settings['rel_db.sessionmaker'] = db_maker
@@ -40,12 +43,13 @@ def main(global_config, **settings):
     config.include('pyramid_mailer')
 
     config.registry['mailer'] = Mailer.from_settings(settings)
+    config.registry['app_version'] = APP_VERSION
 
     db_uri = settings['db_uri']
     conn = couchdbkit.Server(db_uri)
     config.registry.settings['db_conn'] = conn
     config.add_subscriber(add_couch_db, NewRequest)
-    
+
     config.scan('scielobooks.models')
     initialize_sql(engine)
 
@@ -54,7 +58,7 @@ def main(global_config, **settings):
     config.add_static_view('deform_static', 'deform:static')
     config.add_static_view(settings['books_static_url'], 'scielobooks:books')
     config.add_static_view('/'.join((settings['db_uri'], settings['db_name'])), 'scielobooks:database')
-    
+
     config.add_view(custom_forbidden_view, context=Forbidden)
 
     config.add_translation_dirs('scielobooks:locale/')
