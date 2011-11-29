@@ -277,46 +277,29 @@ a img {
     background: url(/static/images/tag.gif) top left no-repeat;
 }
 .download fieldset {
-
     float: right;
     width: 150px;
     margin: 10px 20px 0px 20px;
     border: 0px;
-
 }
 .download {
-
     height: 30px;
     margin-top: 10px;
-
 }
 .download fieldset DIV {
-
     border-bottom: 1px solid #ccc;
-
-        margin-bottom: 10px;
-
-
+    margin-top: 10px;
 }
 .download legend {
-
     font-weight: bold;
     font-size: 16px;
-
-        margin-top: 10px;
-
-
 }
 .download_box {
-
     height: 100px;
     float: right;
-
     width: 191px;
-
-        background-image: url(/static/images/download_box_bg.jpg);
-        margin: 20px 20px 0px 20px;
-
+    background-image: url(/static/images/download_box_bg.jpg);
+    margin: 20px 20px 0px 20px;
 }
 .PDF, .pdf_file {
     background: url(/static/images/pdf.gif) top left no-repeat;
