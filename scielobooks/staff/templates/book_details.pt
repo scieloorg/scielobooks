@@ -108,8 +108,11 @@
               tal:condition="book_attachments | nothing">
            <fieldset>
              <legend>Download</legend>
+
              <div tal:repeat="attach book_attachments">
-               <a class="" tal:attributes="href attach.url" tal:content="attach.text" href="#">Livro em PDF</a>
+               <a tal:attributes="href attach.url;class attach.css_class"
+                  tal:content="attach.text"
+                  href="#">Livro em PDF</a>
              </div>
            </fieldset>
          </div>

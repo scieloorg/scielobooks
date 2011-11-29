@@ -74,16 +74,18 @@
           </span>
       	</dl>
 
-        <div class="download"
-             tal:condition="book_attachments | nothing">
-          <fieldset>
-            <legend>Download</legend>
-            <div tal:repeat="attach book_attachments">
-              <a tal:attributes="href attach.url;class attach.css_class"
-                 tal:content="attach.text"
-                 href="#">Livro em PDF</a>
-            </div>
-          </fieldset>
+        <div class="download_box">
+         <div class="download"
+              tal:condition="book_attachments | nothing">
+           <fieldset>
+             <legend>Download</legend>
+             <div tal:repeat="attach book_attachments">
+               <a tal:attributes="href attach.url;class attach.css_class"
+                  tal:content="attach.text"
+                  href="#">Livro em PDF</a>
+             </div>
+           </fieldset>
+         </div>
         </div>
 
       	<div class="actions"></div>
