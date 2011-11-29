@@ -91,6 +91,7 @@
     <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
    <field name="tw" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="id" type="string" indexed="true" stored="true"/>
 
    <!-- Dynamic field definitions -->
    <dynamicField name="*" type="ignored" multiValued="true"/>
@@ -106,6 +107,7 @@
  <solrQueryParser defaultOperator="AND"/>
 
  <copyField source="*" dest="tw"/>
+ <copyField source="sbid" dest="id"/>
 
 </schema>
 
