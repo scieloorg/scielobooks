@@ -53,6 +53,35 @@
         <span tal:omit-tag="" metal:define-slot="middle"/>
         <div class="spacer"></div>
 
+        <div class="licence">
+          <span tal:omit-tag="" tal:condition="current_language == 'en'">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" rel="license">
+              <img src="http://i.creativecommons.org/l/by-nc-sa/3.0/80x15.png"
+                   style="border-width:0"
+                   alt="Creative Commons License"/>
+            </a>
+            All the contents of this work, except where otherwise noted, is licensed under a <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-Non Commercial-ShareAlike 3.0 Unported.</a>
+          </span>
+
+          <span tal:omit-tag="" tal:condition="current_language == 'pt'">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.pt_BR" rel="license">
+              <img src="http://i.creativecommons.org/l/by-nc-sa/3.0/80x15.png"
+                   alt="Creative Commons License"/>
+            </a>
+            Todo o conteúdo deste trabalho, exceto quando houver ressalva, é publicado sob a licença <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.pt_BR">Creative Commons Atribuição - Uso Não Comercial - Partilha nos Mesmos Termos 3.0 Não adaptada.</a>
+          </span>
+
+          <span tal:omit-tag="" tal:condition="current_language == 'es'">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.es" rel="license">
+              <img src="http://i.creativecommons.org/l/by-nc-sa/3.0/80x15.png"
+                   style="border-width:0"
+                   alt="Creative Commons License"/>
+            </a>
+            Todo el contenido de esta obra, excepto donde se indique lo contrario, está bajo licencia de la licencia <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.es">Creative Commons Reconocimento-NoComercial-CompartirIgual 3.0 Unported.</a>
+          </span>
+        </div>
+
+        <div class="spacer"></div>
 
         <div class="footer">
           <p>
