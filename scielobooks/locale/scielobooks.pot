@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: scielobooks v1rc7\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2011-11-30 16:41-0200\n"
+"POT-Creation-Date: 2011-11-30 17:54-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,12 +32,6 @@ msgstr ""
 
 #: scielobooks/catalog/views.py:120 scielobooks/catalog/views.py:135
 msgid "Not a valid chapter"
-msgstr ""
-
-#: scielobooks/catalog/templates/book_details.pt:118
-msgid ""
-"All the contents of this work, except where otherwise noted, is licensed "
-"under a "
 msgstr ""
 
 #: scielobooks/catalog/templates/book_details.pt:104
