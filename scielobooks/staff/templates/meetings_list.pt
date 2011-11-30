@@ -57,7 +57,7 @@
                         </li>
                       </ul>
                     </td>
-                    <td><a href="${request.route_path('evaluation.books_list')}?meeting=${str(meeting.date)}">permalink</a></td>
+                    <td><a href="${request.route_path('evaluation.books_list')}?meet=${str(meeting.date)}">permalink</a></td>
 
                 </tr>
             </tbody>
