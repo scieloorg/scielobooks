@@ -576,7 +576,7 @@ div.deformReplaces {
 }
 
 /* footer style */
-.footer {
+.footer, .licence {
     clear: both;
     padding: 18px 0;
     margin: 20px auto;
@@ -600,11 +600,15 @@ div.deformReplaces {
     margin-right: 20px;
 }
 
-.footer a {
+.footer a, .licence a {
     color: #666666;
 }
 
-.footer a:hover {
+.footer a:hover, .licence a:hover {
     color: #B12727;
     border-bottom: none;
+}
+
+.licence {
+    border:0;
 }

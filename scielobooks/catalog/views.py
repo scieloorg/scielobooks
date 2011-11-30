@@ -10,6 +10,7 @@ from pyramid.url import route_url, static_url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import get_renderer
 from pyramid.i18n import TranslationStringFactory, negotiate_locale_name
+from pyramid.i18n import get_localizer
 _ = TranslationStringFactory('scielobooks')
 
 from ..staff.models import Monograph, Part
@@ -107,7 +108,9 @@ def book_details(request):
             'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
             'cover_full_url': request.route_path('catalog.cover', sbid=monograph._id),
             'breadcrumb': {'home': '/', 'search': request.registry.settings['solr_url'],},
-            'main':main}
+            'main':main,
+            'current_language': get_localizer(request).locale_name,
+            }
 
 def chapter_details(request):
     sbid = request.matchdict['sbid']
@@ -141,7 +144,8 @@ def chapter_details(request):
             'breadcrumb':{'home': '/',
                           'search':request.registry.settings['solr_url'],
                           'book':request.route_path('catalog.book_details', sbid=sbid),},
-            'main':main}
+            'main':main,
+            'current_language': get_localizer(request).locale_name,}
 
 def cover(request):
     sbid = request.matchdict['sbid']
