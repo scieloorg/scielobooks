@@ -20,13 +20,6 @@
   </div>
 
   <div class="middle" metal:fill-slot="middle">
-    <div class="breadcrumb">
-      <a href="${request.referer}">Evaluation List</a> / <span tal:replace="document.title">Le Petit Prince</span>
-    </div>
-    <div class="leftCol">
-      &#160;
-    </div>
-
     <div class="contentCol">
       <div class="bookDetail">
         <div class="thumb">

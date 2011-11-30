@@ -309,6 +309,14 @@ def book_details(request):
                           }
             }
 
+def book_details_evaluation(request):
+    details = book_details(request)
+    details['general_stuff']['breadcrumb'][0] = (_('Evaluation List'),
+        request.route_path('evaluation.books_list') + '?meet=' + str(details['evaluation'].meeting.date))
+    return details
+
+
+
 def evaluation_attachments(request):
     sbid = request.matchdict['sbid']
     filename = request.matchdict['filename']

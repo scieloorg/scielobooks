@@ -74,7 +74,7 @@
   <route
     name="evaluation.book_details"
     pattern="/evaluation/id/{sbid}"
-    view="scielobooks.staff.views.book_details"
+    view="scielobooks.staff.views.book_details_evaluation"
     renderer="scielobooks:evaluation/templates/book_details.pt"
     permission="editors"
   />

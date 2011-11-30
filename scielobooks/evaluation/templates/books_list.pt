@@ -35,7 +35,8 @@
 
 
         <div class="filters">
-          <form action="${request.route_path('staff.panel')}" method="GET">
+          <form action="${request.route_path('evaluation.books_list')}" method="GET">
+            <input type="hidden" name="meet" value="${request.GET.get('meet')}"/>
             <label for="publ" i18n:translate="">Publisher</label>
             <select name="publ" class="filter-by-publisher">
                 <option value="">---</option>
