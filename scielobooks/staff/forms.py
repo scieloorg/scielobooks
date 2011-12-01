@@ -294,10 +294,10 @@ class MeetingForm():
         class Schema(colander.Schema):
             date = colander.SchemaNode(
                     colander.Date(),
-                    validator=colander.Range(
-                        min=datetime.date.today(),
-                        min_err='${val} is earlier than earliest date ${min}'
-                        ),
+                    # validator=colander.Range(
+                    #     min=datetime.date.today(),
+                    #     min_err='${val} is earlier than earliest date ${min}'
+                    #     ),
                     title=localizer.translate(_('Meeting Date')),
                     description=localizer.translate(_('Select the meeting date')),
             )
