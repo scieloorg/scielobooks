@@ -47,9 +47,9 @@ a:hover {
 }
 .top H1 A {
     display: block;
-    width: 133px;
+    width: 210px;
     height: 134px;
-    background: url(/static/images/logo_SciELO.png) no-repeat;
+    background: url(/static/images/logo_SciELO-Books.png) no-repeat scroll 0 0 transparent;
 }
 .backoffice .top H1 A {
     display: block;
