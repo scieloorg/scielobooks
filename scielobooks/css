@@ -47,9 +47,9 @@ a:hover {
 }
 .top H1 A {
     display: block;
-    width: 210px;
+    width: 133px;
     height: 134px;
-    background: url(/static/images/logo_SciELO-Books.png) no-repeat scroll 0 0 transparent;
+    background: url(/static/images/logo_SciELO.png) no-repeat;
 }
 .backoffice .top H1 A {
     display: block;
@@ -288,11 +288,12 @@ a img {
 }
 .download fieldset DIV {
     border-bottom: 1px solid #ccc;
-    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .download legend {
     font-weight: bold;
     font-size: 16px;
+    margin-top: 10px;
 }
 .download_box {
     height: 100px;
@@ -301,10 +302,10 @@ a img {
     background-image: url(/static/images/download_box_bg.jpg);
     margin: 20px 20px 0px 20px;
 }
-.PDF, .pdf_file {
+.PDF {
     background: url(/static/images/pdf.gif) top left no-repeat;
 }
-.ePub, .epub_file {
+.ePub {
     background: url(/static/images/epub.gif) top left no-repeat;
 }
 .status-true {
@@ -313,7 +314,7 @@ a img {
 .status-false {
     background: url(/static/images/icon-no.gif) top left no-repeat;
 }
-.PDF, .ePub, .status-true, .status-false, .pdf_file, .epub_file {
+.PDF, .ePub, .status-true, .status-false {
     padding: 3px 2px 2px 20px;
     margin: 0px 0px 4px 0px;
 }
@@ -588,7 +589,7 @@ div.deformReplaces {
 }
 
 /* footer style */
-.footer, .licence {
+.footer {
     clear: both;
     padding: 18px 0;
     margin: 20px auto;
@@ -612,15 +613,11 @@ div.deformReplaces {
     margin-right: 20px;
 }
 
-.footer a, .licence a {
+.footer a {
     color: #666666;
 }
 
-.footer a:hover, .licence a:hover {
+.footer a:hover {
     color: #B12727;
     border-bottom: none;
-}
-
-.licence {
-    border:0;
 }
