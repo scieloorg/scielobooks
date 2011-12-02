@@ -49,7 +49,7 @@ function(doc, req) {
                 format: formatted_format,
                 shortname: doc.shortname,
                 language: doc.language,
-                year: doc.year,
+
                 }
 
     // visibility flag
@@ -68,6 +68,7 @@ function(doc, req) {
         result.chapterorder = doc.order;
         result.monographsbid = doc.monograph;
         result.publisher = doc.monograph_publisher;
+        result.year = doc.monograph_year;
         var html = Mustache.to_html(ddoc.templates.solr_feed_showpart, result);
     }
     else{
@@ -76,6 +77,7 @@ function(doc, req) {
         result.title = doc.title;
         result.isbn = doc.isbn;
         result.publisher = doc.publisher;
+        result.year = doc.year;
         var html = Mustache.to_html(ddoc.templates.solr_feed_showbook, result);
     }
 
