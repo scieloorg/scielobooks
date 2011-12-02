@@ -1,3 +1,8 @@
+v1rc7
+---
+    See changelog at:
+    http://reddes.bvsalud.org/projects/scielo-books/query?status=closed&group=resolution&milestone=version+1rc7
+
 v1rc6
 ---
     See changelog at:
