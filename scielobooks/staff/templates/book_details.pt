@@ -146,10 +146,16 @@
                 <th i18n:translate="">Title</th>
             </tr>
             <tr tal:repeat="part document_parts">
-                <td tal:content="part.partnumber" />
-                <td tal:content="part.title" />
-                <td><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
-                <td>
+                <td tal:content="part.partnumber" width="5%"/>
+                <td tal:content="part.title" width="75%"/>
+                <td width="5%">
+                  <a class="PDF" href="#"
+                     tal:condition="part.get('pdf_url', None)"
+                     tal:attributes="href part.pdf_url">
+                    <span>PDF</span>
+                  </a>
+                </td>
+                <td width="15%">
                   <span class="edit">
                     <a href="${part.edit_url}" i18n:translate="">Edit</a>
                   </span>
