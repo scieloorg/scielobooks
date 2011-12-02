@@ -56,6 +56,9 @@ class Monograph(model.CouchdbDocument):
                 """
                 accept a list of creators and returns it in a formatted form.
                 """
+                if len(creators) > 3:
+                    return creators[0] + ' et al.'
+
                 return '; '.join(creators)
 
         creators_by_role = self._creators_by_roles()
