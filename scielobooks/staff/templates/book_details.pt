@@ -79,7 +79,9 @@
 
           <span tal:omit-tag="" tal:condition="getattr(document, 'language', None)">
           <dt i18n:translate="">Language:</dt>
-            <dd tal:content="document.language">Português |</dd>
+            <dd tal:condition="document.language == 'pt'" i18n:translate="">Portuguese</dd>
+            <dd tal:condition="document.language == 'es'" i18n:translate="">Spanish</dd>
+            <dd tal:condition="document.language == 'en'" i18n:translate="">English</dd>
           </span>
 
           <span tal:omit-tag="" tal:condition="getattr(document, 'edition', None)">
