@@ -125,8 +125,7 @@
        <str name="echoParams">explicit</str>
      </lst>
 	 <lst name="invariants">
-      <str name="facet">true</str>
-      <str name="facet.field">type</str>
+      <str name="facet">true</str>      
       <str name="facet.field">publisher</str>
       <str name="facet.field">year</str>
       <str name="facet.limit">20</str>
