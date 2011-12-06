@@ -124,6 +124,18 @@ def edit_book(request):
 
         request.db.save_docs(parts, all_or_nothing=True)
 
+        #update evaluation data
+        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph_as_python['_id']).one()
+        for attr in ['title', 'isbn',]:
+            setattr(evaluation, attr, monograph_as_python[attr])
+
+        request.rel_db_session.add(evaluation)
+        try:
+            request.rel_db_session.commit()
+        except IntegrityError:
+            request.rel_db_session.rollback()
+
+
         request.session.flash(_('Successfully updated.'))
 
         return HTTPFound(location=request.route_path('staff.book_details', sbid=monograph._id))
