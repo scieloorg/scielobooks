@@ -1,4 +1,3 @@
-
 '''
 These view callables use request.route_path instead of request.route_url, because of the
 integration needs with the wordpress based app (apache proxy rules).
@@ -154,16 +153,20 @@ def chapter_details(request):
 def cover(request):
     sbid = request.matchdict['sbid']
 
+    response_headers = {'content_type': 'image/jpeg',}
+
     try:
         monograph = request.db.get(sbid)
         if 'thumbnail' in request.path:
             img = request.db.fetch_attachment(monograph,monograph['cover_thumbnail']['filename'], stream=True)
         else:
-            img = request.db.fetch_attachment(monograph,monograph['cover']['filename'], stream=True)
+            img = request.db.fetch_attachment(monograph,monograph['cover']['filename'], stream=True)            
+        response_headers['expires'] = datetime_rfc822(365)
+        
     except (couchdbkit.ResourceNotFound, KeyError):
         img = urllib2.urlopen(static_url('scielobooks:static/images/fakecover.jpg', request))
 
-    response = Response(content_type='image/jpeg', expires=datetime_rfc822(365))
+    response = Response(**response_headers)
     response.app_iter = img
     try:
         response.etag = str(hash(img))
