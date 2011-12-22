@@ -1,7 +1,10 @@
 import os
 import sys
 from setuptools import setup, find_packages
-from scielobooks import APP_VERSION
+try:
+    from scielobooks import APP_VERSION
+except ImportError:
+    APP_VERSION = ''
 
 
 if sys.version_info[:2] != (2, 7):
@@ -15,7 +18,7 @@ except IOError:
     README = CHANGES = ''
 
 requires = [
-    'pyramid<=1.0',
+    'pyramid<=1.0.2',
     'WebError',
     'Babel',
     'pyramid_zcml',
