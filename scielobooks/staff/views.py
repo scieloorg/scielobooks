@@ -572,6 +572,7 @@ def new_book(request):
                               publisher=evaluation.publisher.name,
                               publisher_url=evaluation.publisher_catalog_url if evaluation.publisher_catalog_url else '',
                               visible=False,
+                              creation_date=str(evaluation.creation_date),
                               )
 
         evaluation.monograph_sbid = monograph._id
