@@ -9,7 +9,8 @@ import deform
 try:
     import gfx
 except ImportError:
-    raise ImportError('http://www.swftools.org/gfx_tutorial.html')
+    # raise ImportError('http://www.swftools.org/gfx_tutorial.html')
+    print 'Whithout gfx module the system is not able to handle pdf to swf conversions'
 
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 
