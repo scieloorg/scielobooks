@@ -17,7 +17,7 @@ try:
 except IOError:
     README = CHANGES = ''
 
-requires = open('requirements.txt').read().split()
+requires = open(os.path.join(here, 'requirements.txt')).read().split()
 
 setup(name = 'scielobooks',
       version = APP_VERSION,
