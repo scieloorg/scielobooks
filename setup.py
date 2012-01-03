@@ -17,25 +17,26 @@ try:
 except IOError:
     README = CHANGES = ''
 
-requires = [
-    'pyramid<=1.0.2',
-    'WebError',
-    'Babel',
-    'pyramid_zcml',
-    'colander',
-    'deform<=0.9.3',
-    'couchdbkit',
-    'PIL',
-    'isisdm',
-    'SQLAlchemy',
-    'pyramid_handlers',
-    'pycrypto',
-    'pyramid_mailer',
-    'couchapp',
-    'chameleon<1.999',
-    'psycopg2',
-    'setuptools-git',
-    ]
+requires = open('requirements.txt').read().split()
+# requires = [
+#     'pyramid<=1.0.2',
+#     'WebError',
+#     'Babel',
+#     'pyramid_zcml',
+#     'colander',
+#     'deform<=0.9.3',
+#     'couchdbkit',
+#     'PIL',
+#     'isisdm',
+#     'SQLAlchemy',
+#     'pyramid_handlers',
+#     'pycrypto',
+#     'pyramid_mailer',
+#     'couchapp',
+#     'chameleon<1.999',
+#     'psycopg2',
+#     'setuptools-git',
+#     ]
 
 setup(name = 'scielobooks',
       version = APP_VERSION,
