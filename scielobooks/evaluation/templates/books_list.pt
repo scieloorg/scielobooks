@@ -70,7 +70,7 @@
         <p class="pagination">
             <span tal:repeat="page_no pagination"
                   tal:attributes="class 'selected_page' if page_no.pg_number == page else default">
-              <a href="${request.route_path('staff.panel')}?${page_no.url}">${page_no.pg_number}</a>
+              <a href="${request.route_path('evaluation.books_list')}?${page_no.url}">${page_no.pg_number}</a>
             </span>
           </p>
         <div class="spacer"></div>

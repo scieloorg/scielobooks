@@ -17,7 +17,12 @@ try:
 except IOError:
     README = CHANGES = ''
 
-requires = open(os.path.join(here, 'requirements.txt')).read().split()
+try:
+  import pyramid
+except ImportError:
+  requires = open('requirements.txt').read().split()
+else:
+  requires = []
 
 setup(name = 'scielobooks',
       version = APP_VERSION,
