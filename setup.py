@@ -17,12 +17,7 @@ try:
 except IOError:
     README = CHANGES = ''
 
-try:
-  import pyramid
-except ImportError:
-  requires = open('requirements.txt').read().split()
-else:
-  requires = []
+requires = []
 
 setup(name = 'scielobooks',
       version = APP_VERSION,
@@ -36,7 +31,7 @@ setup(name = 'scielobooks',
         ],
       author = 'BIREME/OPAS/OMS',
       author_email = 'isisnbp-devel@listas.bireme.br',
-      url = 'http://reddes.bvsalud.org/projects/scielo-books',
+      url = 'http://github.com/bireme/scielobooks',
       keywords = 'web scielo scielobooks',
       packages = find_packages(),
       include_package_data = True,
@@ -56,5 +51,3 @@ setup(name = 'scielobooks',
         },
 
       )
-
-# ``setuptools-git`` in order to build packages based on git repositories.
