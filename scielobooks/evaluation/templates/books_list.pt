@@ -29,7 +29,7 @@
         <h2 i18n:translate="">Evaluation Records</h2>
 
         <div class="list-total">
-          <p><span tal:omit-tag="" i18n:translate="">Total of records found:</span>&nbsp;<span>${len(evaluations)}</span></p>
+          <p><span tal:omit-tag="" i18n:translate="">Total of records found:</span>&nbsp;<span>${evaluations_total}</span></p>
         </div>
 
 
