@@ -19,7 +19,7 @@ from .models import initialize_sql
 from scielobooks.request import MyRequest
 
 
-APP_VERSION = 'v1rc7'
+APP_VERSION = 'v1rc8'
 
 
 def main(global_config, **settings):
