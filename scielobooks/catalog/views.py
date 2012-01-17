@@ -112,7 +112,6 @@ def book_details(request):
             'cover_full_url': request.route_path('catalog.cover', sbid=monograph._id),
             'breadcrumb': {'home': '/', 'search': request.registry.settings['solr_url'],},
             'main':main,
-            'current_language': get_localizer(request).locale_name,
             }
 
 def chapter_details(request):
@@ -148,7 +147,7 @@ def chapter_details(request):
                           'search':request.registry.settings['solr_url'],
                           'book':request.route_path('catalog.book_details', sbid=sbid),},
             'main':main,
-            'current_language': get_localizer(request).locale_name,}
+            }
 
 def cover(request):
     sbid = request.matchdict['sbid']
@@ -160,9 +159,9 @@ def cover(request):
         if 'thumbnail' in request.path:
             img = request.db.fetch_attachment(monograph,monograph['cover_thumbnail']['filename'], stream=True)
         else:
-            img = request.db.fetch_attachment(monograph,monograph['cover']['filename'], stream=True)            
+            img = request.db.fetch_attachment(monograph,monograph['cover']['filename'], stream=True)
         response_headers['expires'] = datetime_rfc822(365)
-        
+
     except (couchdbkit.ResourceNotFound, KeyError):
         img = urllib2.urlopen(static_url('scielobooks:static/images/fakecover.jpg', request))
 

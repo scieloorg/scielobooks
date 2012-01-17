@@ -1,6 +1,8 @@
 from pyramid.config import Configurator
 from pyramid.events import subscriber
-from pyramid.events import NewRequest, NewResponse
+from pyramid.events import NewRequest
+from pyramid.events import NewResponse
+from pyramid.events import BeforeRender
 from pyramid.i18n import get_localizer
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from pyramid.authentication import AuthTktAuthenticationPolicy
@@ -36,7 +38,8 @@ def main(global_config, **settings):
                           root_factory='scielobooks.resources.RootFactory',
                           authentication_policy=authentication_policy,
                           authorization_policy=authorization_policy,
-                          request_factory=MyRequest)
+                          request_factory=MyRequest,
+                          renderer_globals_factory=renderer_globals_factory)
 
     config.include(pyramid_zcml)
     config.load_zcml('configure.zcml')
@@ -87,3 +90,11 @@ def custom_locale_negotiator(request):
         locale = settings['default_locale_name']
 
     return locale
+
+def renderer_globals_factory(system):
+    """
+    Injects values to renderer globals before it is sent to the renderer.
+
+    http://docs.pylonsproject.org/projects/pyramid/en/1.0-branch/narr/hooks.html#adding-renderer-globals
+    """
+    return {'current_language': get_localizer(system['request']).locale_name,}
