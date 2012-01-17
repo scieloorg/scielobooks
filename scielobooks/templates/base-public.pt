@@ -16,7 +16,18 @@
     <body>
       <div class="container">
         <div class="top">
-          <h1><a href="#"><span>SciELO Livros</span></a></h1>
+          <h1>
+              <a href="#"><span>SciELO Livros</span></a>
+              <span tal:condition="current_language == 'pt'"
+                    class="l10n_sitename"
+                    style="background-image: url(/static/images/site_title_pt.png);"></span>
+              <span tal:condition="current_language == 'es'"
+                    class="l10n_sitename"
+                    style="background-image: url(/static/images/site_title_es.png);"></span>
+              <span tal:condition="current_language == 'en'"
+                    class="l10n_sitename"
+                    style="background-image: url(/static/images/site_title_en.png);"></span>
+          </h1>
           <span metal:define-slot="custom_top"></span>
           <form id="form_language" action="/setlang/" method="post">
             <input type="hidden" id="language" name="language"/>

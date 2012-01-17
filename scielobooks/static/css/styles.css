@@ -47,10 +47,21 @@ a:hover {
 }
 .top H1 A {
     display: block;
-    width: 210px;
-    height: 134px;
-    background: url(/static/images/logo_SciELO-Books.png) no-repeat scroll 0 0 transparent;
+    width: 134px;
+    height: 133px;
+    background: url(/static/images/logo_scielo.png) no-repeat scroll 0 0 transparent;
+    float: left;
 }
+.top .l10n_sitename {
+    display: block;
+    width: 234px;
+    height: 100px;
+    background-image: url(/static/images/site_title_en.png);
+    background-repeat: no-repeat;
+    background-position: 12px 26px;
+    float: left;
+}
+
 .backoffice .top H1 A {
     display: block;
     width: 50px;
