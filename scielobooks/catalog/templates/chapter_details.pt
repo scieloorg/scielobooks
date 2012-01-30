@@ -54,6 +54,10 @@
     tal:condition="document.publisher"
     tal:content="document.publisher">EDUSP</h2>
 
+  <div metal:fill-slot="custom_title" tal:omit-tag="">
+    <title>SciELO Books | ${document.title}</title>
+  </div>
+
   <div class="middle" metal:fill-slot="middle">
     <div class="breadcrumb">
       <a href="/" tal:attributes="href breadcrumb.home">Home</a> / <a href="" tal:attributes="href breadcrumb.search" i18n:translate="">Search</a> / <a href="#" tal:attributes="href breadcrumb.book" tal:content="document.title">Book</a> / <span tal:replace="part.title">Le Petit Prince</span>

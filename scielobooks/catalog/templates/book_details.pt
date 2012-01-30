@@ -6,11 +6,16 @@
 
   <div metal:fill-slot="custom_script" tal:omit-tag="">
     <script src="/static/js/thickbox-compressed.js"></script>
+    <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4ee8b6941cb0cf0d"></script>
   </div>
 
   <div metal:fill-slot="css" tal:omit-tag="">
     <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
     <link rel="stylesheet" href="/static/css/thickbox.css" type="text/css" media="screen"></link>
+  </div>
+
+  <div metal:fill-slot="custom_title" tal:omit-tag="">
+    <title>SciELO Books | ${document.title}</title>
   </div>
 
   <div class="middle" metal:fill-slot="middle">
@@ -93,10 +98,17 @@
       	<div class="actions"></div>
       	<div class="spacer"></div>
 
-      	<div tal:condition="getattr(document, 'synopsis', None)">
-      	  <strong i18n:translate="">Synopsis</strong>
-      	  <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-      	</div>
+        <div class="shareBtn addthis_toolbox addthis_default_style">
+          <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+          <a class="addthis_button_tweet"></a>
+          <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+          <a class="addthis_counter addthis_pill_style"></a>
+        </div>
+
+        <div tal:condition="getattr(document, 'synopsis', None)">
+          <strong i18n:translate="">Synopsis</strong>
+          <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        </div>
 
       	<div class="spacer"></div>
 
