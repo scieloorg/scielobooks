@@ -1,9 +1,14 @@
-from isis import model
-import deform
-import urllib2
-from collections import OrderedDict
-from ..utilities import functions
 import copy
+import urllib2
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
+
+import deform
+from isis import model
+
+from ..utilities import functions
 
 class Monograph(model.CouchdbDocument):
     title = model.TextProperty(required=True)
