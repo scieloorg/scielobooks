@@ -16,10 +16,11 @@ a:hover {
     border-bottom: 1px dotted #2f2f2f;
 }
 .container {
-    width: 1004px;
+    width: 940px;
     margin: 0px auto;
 	background: url("/static/images/watermark.png") no-repeat scroll 140px 0 transparent;
 	min-height: 500px;
+	padding: 0 20px;
 }
 .backoffice .container {
 	background: none;
@@ -54,11 +55,11 @@ a:hover {
 }
 .top .l10n_sitename {
     display: block;
-    width: 234px;
+    width: 240px;
     height: 100px;
     background-image: url(/static/images/site_title_en.png);
     background-repeat: no-repeat;
-    background-position: 12px 26px;
+    background-position: 15px 25px;
     float: left;
 }
 
@@ -188,6 +189,7 @@ fieldset {
 }
 .middle .contentCol {
     width: 800px;
+	margin-top: 5px;
 }
 .breadcrumb {
     font-size: 80%;
@@ -310,7 +312,8 @@ a img {
     float: right;
     width: 191px;
     background-image: url(/static/images/download_box_bg.jpg);
-    margin: 20px 20px 0px 20px;
+    margin: 20px 600px 0;
+	position: absolute;
 }
 .PDF, .pdf_file {
     background: url(/static/images/pdf.gif) top left no-repeat;
@@ -329,9 +332,9 @@ a img {
     margin: 0px 0px 4px 0px;
 }
 .tableContents {
-    width: 580px;
+    width: 780px;
     clear: both;
-    margin: 20px 5px;
+    margin: 20px 0;
 }
 div STRONG {
     margin: 6px 0px;
@@ -343,10 +346,11 @@ div STRONG {
 }
 .tableContents TABLE {
     width: 100%;
+	margin-top: 10px;
 }
 .tableContents TABLE TD, .tablePanel TD {
-    padding: 4px 4px;
     border-bottom: 1px solid #ccc;
+	padding: 4px;
 }
 .tablePanel TD {
     text-align: center;
@@ -634,4 +638,19 @@ div.deformReplaces {
 
 .licence {
     border:0;
+}
+.shareBtn {
+	margin-top: 20px;
+}
+.shareBtn a:hover{
+	border-bottom: none;
+}
+.synopsis .tableContents  strong{
+	font-size: 130%
+}
+.synopsis p{
+	margin-top: 10px;
+}
+.right {
+	text-align: right;
 }
