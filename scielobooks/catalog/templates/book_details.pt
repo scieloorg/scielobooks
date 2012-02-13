@@ -99,26 +99,26 @@
       	<div class="spacer"></div>
 
         <div class="shareBtn addthis_toolbox addthis_default_style">
-          <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-          <a class="addthis_button_tweet"></a>
-          <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-          <a class="addthis_counter addthis_pill_style"></a>
+		  <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+		  <a class="addthis_button_tweet"></a>
+		  <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+		  <a class="addthis_counter addthis_pill_style"></a>
         </div>
 
-        <div tal:condition="getattr(document, 'synopsis', None)">
-          <strong i18n:translate="">Synopsis</strong>
+        <div class="synopsis" tal:condition="getattr(document, 'synopsis', None)">
+          <h3 i18n:translate="">Synopsis</h3>
           <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
         </div>
 
       	<div class="spacer"></div>
 
       	<div class="tableContents">
-          <strong i18n:translate="">Table of Contents</strong>
+          <h3 i18n:translate="">Table of Contents</h3>
           <table cellspacing="0">
             <tr tal:repeat="part parts">
               <td class="chpTitle" tal:content="part.title">Chapter 01 Lorem ipsum dolor sit amet, consectetur adipiscing elit</td>
-              <td><a class="preview" href="#" tal:attributes="href part.preview_url"><span i18n:translate="">Preview</span></a></td>
-              <td><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
+              <td class="right"><a class="preview" href="#" tal:attributes="href part.preview_url"><span i18n:translate="">Preview</span></a></td>
+              <td class="right"><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
             </tr>
           </table>
         </div>

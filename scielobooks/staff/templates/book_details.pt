@@ -129,17 +129,17 @@
 
         <span tal:omit-tag="" tal:condition="getattr(document, 'synopsis', None)">
         <div class="synopsis">
-          <strong i18n:translate="">Synopsis</strong>
+          <h3 i18n:translate="">Synopsis</h3>
           <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
         </div>
         <div class="spacer"></div>
         </span>
 
         <div class="book-parts">
-          <strong>
+          <h3>
             <span  i18n:translate="" tal:omit-tag="">Book Parts</span>
             <span class="add"><a href="${add_part_url}" i18n:translate="">Add</a></span>
-          </strong>
+          </h3>
           <table>
             <tr>
                 <th i18n:translate="">Order</th>
