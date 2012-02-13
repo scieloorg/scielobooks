@@ -1,23 +1,27 @@
 import os
 import sys
+
 from setuptools import setup, find_packages
+
+requires = []
+here = os.path.abspath(os.path.dirname(__file__))
+
+
 try:
     from scielobooks import APP_VERSION
 except ImportError:
     APP_VERSION = ''
 
+if sys.version_info[:2] < (2, 7):
+    print('Old Python version. Installing OrderedDict lib from Pypi.')
+    requires.append('ordereddict')
 
-if sys.version_info[:2] != (2, 7):
-    raise RuntimeError('Requires Python 2.7')
-
-here = os.path.abspath(os.path.dirname(__file__))
 try:
     README = open(os.path.join(here, 'README.txt')).read()
     CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 except IOError:
     README = CHANGES = ''
 
-requires = []
 
 setup(name = 'scielobooks',
       version = APP_VERSION,
