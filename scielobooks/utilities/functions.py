@@ -63,7 +63,7 @@ def convert_pdf2swf(pdf_doc):
     pdf_temp_file.write(pdf_doc)
     pdf_temp_file.close()
     swf_temp_file.close()
-
+    gfx.setparameter('poly2bitmap', '1')
     doc = gfx.open("pdf", pdf_temp_filename)
     swf = gfx.SWF()
     buf = StringIO.StringIO()

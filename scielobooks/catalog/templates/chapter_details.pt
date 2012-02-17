@@ -9,32 +9,32 @@
       var swf_version = "10.0.0";
       var flashvars = {
             SwfFile : escape('${part.swf_url}'),
-            Scale : 0.95,
+            Scale : 0.90,
             ZoomTransition : "easeOut",
             ZoomTime : 0.5,
             ZoomInterval : 0.2,
-            FitPageOnLoad : false,
-            FitWidthOnLoad : true,
+            FitPageOnLoad : true,
+            FitWidthOnLoad : false,
             PrintEnabled : true,
             FullScreenAsMaxWindow : false,
             ProgressiveLoading : false,
             MinZoomSize : 0.3,
             MaxZoomSize : 5,
-            PrintToolsVisible : true,
+            PrintToolsVisible : false,
             ViewModeToolsVisible : true,
             ZoomToolsVisible : true,
             FullScreenVisible : true,
             NavToolsVisible : true,
             CursorToolsVisible : true,
             SearchToolsVisible : true,
-            localeChain: "en_US"
+            localeChain: "pt_BR"
       };
 
       var params = {}
       params.quality = "high";
       params.bgcolor = "#ffffff";
       params.allowfullscreen = "true";
-      params.wmode = "opaque";
+      params.allowscriptaccess = "always";
 
       var attributes = {};
       attributes.id = "swf-viewer";
