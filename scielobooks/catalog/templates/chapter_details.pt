@@ -38,7 +38,7 @@
 
       var attributes = {};
       attributes.id = "swf-viewer";
-      attributes.name = "swf-iewer";
+      attributes.name = "swf-viewer";
 
       swfobject.embedSWF(
           "/static/swf/FlexPaperViewer.swf", "viewer",
