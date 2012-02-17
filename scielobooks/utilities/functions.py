@@ -63,9 +63,10 @@ def convert_pdf2swf(pdf_doc):
     pdf_temp_file.write(pdf_doc)
     pdf_temp_file.close()
     swf_temp_file.close()
-    gfx.setparameter('poly2bitmap', '1')
+    gfx.setparameter('poly2bitmap', '1')    
     doc = gfx.open("pdf", pdf_temp_filename)
     swf = gfx.SWF()
+    swf.setparameter('flashversion', '9')
     buf = StringIO.StringIO()
     for pagenr in range(1,doc.pages+1):
         page = doc.getPage(pagenr)

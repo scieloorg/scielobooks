@@ -9,36 +9,37 @@
       var swf_version = "10.0.0";
       var flashvars = {
             SwfFile : escape('${part.swf_url}'),
-            Scale : 0.90,
-            ZoomTransition : "easeOut",
+            Scale : 0.6, 
+            ZoomTransition : 'easeOut',
             ZoomTime : 0.5,
             ZoomInterval : 0.2,
             FitPageOnLoad : true,
             FitWidthOnLoad : false,
-            PrintEnabled : true,
             FullScreenAsMaxWindow : false,
             ProgressiveLoading : false,
-            MinZoomSize : 0.3,
+            MinZoomSize : 0.2,
             MaxZoomSize : 5,
-            PrintToolsVisible : false,
+            SearchMatchAll : false,
+            InitViewMode : 'Portrait',
+            PrintPaperAsBitmap : false,
+
             ViewModeToolsVisible : true,
             ZoomToolsVisible : true,
-            FullScreenVisible : true,
             NavToolsVisible : true,
             CursorToolsVisible : true,
             SearchToolsVisible : true,
-            localeChain: "pt_BR"
+            localeChain: "en_US"
       };
 
       var params = {}
       params.quality = "high";
       params.bgcolor = "#ffffff";
       params.allowfullscreen = "true";
-      params.allowscriptaccess = "always";
+      params.wmode = "opaque";
 
       var attributes = {};
       attributes.id = "swf-viewer";
-      attributes.name = "swf-viewer";
+      attributes.name = "swf-iewer";
 
       swfobject.embedSWF(
           "/static/swf/FlexPaperViewer.swf", "viewer",
