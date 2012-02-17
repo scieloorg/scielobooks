@@ -23,7 +23,10 @@ def slugify(text, delim=u'-'):
     """
     result = []
     for word in _punct_re.split(text.lower()):
-        word = normalize('NFKD', word.decode()).encode('ascii', 'ignore')
+        try:
+            word = normalize('NFKD', word.decode()).encode('ascii', 'ignore')
+        except UnicodeEncodeError:
+            word = normalize('NFKD', word).encode('ascii', 'ignore')
         if word:
             result.append(word)
     return unicode(delim.join(result))
