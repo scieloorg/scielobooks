@@ -8,6 +8,7 @@
     <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
       <title metal:define-slot="custom_title">SciELO Books</title>
+      <link rel="shortcut icon" type="image/x-icon" href="${ request.route_path('general.favicon') }" />
 
       <metal:block define-slot="css">
         <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>

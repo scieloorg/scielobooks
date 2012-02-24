@@ -17,6 +17,11 @@
     pattern="/attach/id/{sbid}/{filename}"
     view="scielobooks.views.attach"
   />
+  <route
+    name="general.favicon"
+    pattern="/favicon.ico"
+    view="scielobooks.views.favicon"
+  />
 <!--
 ***********************************
  CATALOG APP
