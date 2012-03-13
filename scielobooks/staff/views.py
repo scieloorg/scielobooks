@@ -294,7 +294,7 @@ def book_details(request):
 
     book_attachments = []
     for attach in [('toc', _('Table of Contents')), ('editorial_decision', _('Editorial Decision')),
-                   ('pdf_file', _('Book in PDF')), ('epub_file', _('Book in epub'))]:
+                   ('pdf_file', _('Book in PDF')), ('epub_file', _('Book in EPUB'))]:
         if getattr(monograph, attach[0], None):
             file_url = request.route_path('staff.evaluation_attachments',
                                           sbid=monograph._id,
