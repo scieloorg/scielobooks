@@ -86,7 +86,17 @@ class Monograph(model.CouchdbDocument):
                 return shortname_format % (first_author_lastname, self.isbn)
         else:
             raise AttributeError()
+    
+    def html_formatted_creators(self):
+        """
+        Calls self.formatted_creators passing a custom formatting function.
+        """
+        def formatting_func(creators):                
+            if len(creators) > 3:
+                return creators[0] + ' <i>et al.</i>'
 
+            return '; '.join(creators)
+        return self.formatted_creators(formatting_func)
 
 class Part(model.CouchdbDocument):
     title = model.TextProperty(required=True)
