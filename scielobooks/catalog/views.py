@@ -17,6 +17,9 @@ from scielobooks.utilities import functions
 
 from operator import itemgetter
 from datetime import datetime, timedelta
+import hashlib
+import shutil
+import StringIO
 
 import couchdbkit
 import urllib2
@@ -167,11 +170,6 @@ def cover(request):
 
     response = Response(**response_headers)
     response.app_iter = img
-    try:
-        response.etag = str(hash(img))
-    except TypeError:
-        #cannot generate a hash for the object, return it without the ETag
-        pass
 
     return response
 
