@@ -72,7 +72,7 @@
 	<div class="spacer"></div>
 	<div class="previewBookDetail">
 	  <dl class="metadata">
-          <span tal:omit-tag="" tal:repeat="creator creators" tal:define="creators document.formatted_creators()">
+          <span tal:omit-tag="" tal:repeat="creator creators" tal:define="creators document.html_formatted_creators()">
             <dt tal:condition="creator.lower() == 'individual_author'" i18n:translate="">Author:</dt>
             <dt tal:condition="creator.lower() == 'corporate_author'" i18n:translate="">Corporate Author:</dt>
             <dt tal:condition="creator.lower() == 'translator'" i18n:translate="">Translator:</dt>
@@ -81,7 +81,7 @@
             <dt tal:condition="creator.lower() == 'other'" i18n:translate="">Other:</dt>
             <dt tal:condition="creator.lower() == 'organizer'" i18n:translate="">Organizer:</dt>
             <dt tal:condition="creator.lower() == 'collaborator'" i18n:translate="">Collaborator:</dt>
-              <dd tal:content="creators[creator]"></dd>
+              <dd tal:content="structure creators[creator]"></dd>
           </span>
 
           <span tal:omit-tag="" tal:condition="getattr(document, 'publisher', None)">
