@@ -14,6 +14,8 @@ class Monograph(model.CouchdbDocument):
     title = model.TextProperty(required=True)
     translated_titles = model.MultiCompositeTextProperty(subkeys=['title','language'])
     isbn = model.TextProperty(required=True)
+    eisbn = model.TextProperty(required=True)
+    shopping_info = models.MultiCompositeTextProperty(subkeys=['store','book_url','price'])
     creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'])
     publisher = model.TextProperty(required=True)
     publisher_url = model.TextProperty()
