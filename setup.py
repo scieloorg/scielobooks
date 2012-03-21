@@ -55,3 +55,5 @@ setup(name = 'scielobooks',
         },
 
       )
+
+# ``setuptools-git`` in order to build packages based on git repositories.
