@@ -6,6 +6,13 @@
         <field name="title">{{title}}</field>
         <field name="isbn">{{isbn}}</field>
         <field name="author">{{authors}}</field>
+        <field name="corporate_authors">{{corporate_authors}}</field>
+        <field name="translators">{{translators}}</field>
+        <field name="coordinators">{{coordinators}}</field>
+        <field name="editors">{{editors}}</field>
+        <field name="others">{{others}}</field>
+        <field name="organizers">{{organizers}}</field>
+        <field name="collaborators">{{collaborators}}</field>
         <field name="publisher">{{publisher}}</field>
         <field name="language">{{language}}</field>
         <field name="year">{{year}}</field>

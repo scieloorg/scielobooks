@@ -77,6 +77,13 @@
    <field name="book_title" type="text" indexed="true" stored="true"/>
    <field name="isbn" type="string" indexed="true" stored="true"/>
    <field name="author" type="text" indexed="true" stored="true"/>
+   <field name="corporate_authors" type="text" indexed="true" stored="true"/>
+   <field name="translators" type="text" indexed="true" stored="true"/>
+   <field name="coordinators" type="text" indexed="true" stored="true"/>
+   <field name="editors" type="text" indexed="true" stored="true"/>
+   <field name="others" type="text" indexed="true" stored="true"/>
+   <field name="organizers" type="text" indexed="true" stored="true"/>
+   <field name="collaborators" type="text" indexed="true" stored="true"/>
    <field name="publisher" type="string" indexed="true" stored="true"/>
    <field name="language" type="string" indexed="true" stored="true"/>
    <field name="year" type="string" indexed="true" stored="true"/>
