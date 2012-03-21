@@ -66,6 +66,8 @@ class MonographForm():
         base_schema = Monograph.get_schema()
         base_schema['synopsis'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
 
+        base_schema['eisbn'].title = localizer.translate(_('eISBN'))
+
         base_schema['creators'].children[0]['role'].widget = deform.widget.SelectWidget(values=role_values)
         base_schema['creators'].children[0]['role'].title = localizer.translate(_('Role'))
         base_schema['creators'].children[0]['full_name'].title = localizer.translate(_('Full name'))
