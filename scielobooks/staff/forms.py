@@ -57,11 +57,15 @@ class MonographForm():
                            ('en', localizer.translate(_('English'))),
                            ('es', localizer.translate(_('Spanish'))),]
 
+        store_values = [('google', localizer.translate(_('Google Book Store'))),
+                        ('kobo', localizer.translate(_('Kobo Book Store')))]
+                        
         l10n_countries = Countries(localizer.locale_name)
         country_values = l10n_countries.items()
 
         base_schema = Monograph.get_schema()
         base_schema['synopsis'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
+
         base_schema['creators'].children[0]['role'].widget = deform.widget.SelectWidget(values=role_values)
         base_schema['creators'].children[0]['role'].title = localizer.translate(_('Role'))
         base_schema['creators'].children[0]['full_name'].title = localizer.translate(_('Full name'))
@@ -72,6 +76,17 @@ class MonographForm():
         base_schema['creators'].children[0]['link_resume'].widget.css_class = 'fullSizeInput'
         base_schema['creators'].children[0]['link_resume'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
         base_schema['creators'].children[0]['link_resume'].missing = None
+
+        base_schema['shopping_info'].children[0]['store'].title = localizer.translate(_('Store'))
+        base_schema['shopping_info'].children[0]['store'].widget = deform.widget.SelectWidget(values=language_values)
+        base_schema['shopping_info'].children[0]['book_url'].title = localizer.translate(_('Book link'))
+        base_schema['shopping_info'].children[0]['book_url'].widget = deform.widget.TextInputWidget()
+        base_schema['shopping_info'].children[0]['book_url'].widget.css_class = 'fullSizeInput'
+        base_schema['shopping_info'].children[0]['book_url'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
+        base_schema['shopping_info'].children[0]['book_url'].missing = None
+        base_schema['shopping_info'].children[0]['book_price'].title = localizer.translate(_('Book price'))
+        base_schema['shopping_info'].children[0]['book_price'].widget = deform.widget.TextInputWidget()
+
         base_schema['notes'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
 
         base_schema['translated_titles'].title = localizer.translate(_('Translated Titles'))

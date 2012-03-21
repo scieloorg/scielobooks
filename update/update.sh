@@ -11,7 +11,7 @@ echo "[INITIALIZING $name_app UPDATE]"
 
 echo "[----+GENERATING BACKUP FILE AND COPY TO: $path_target]"
 
-tar -c -f $path_target/$name_app$DAY-BKP.tar --totals $path_app
+tar -c -z -f $path_target/$name_app$DAY-BKP.tar --totals $path_app
 
 echo "BACKUP FILE: $path_target/$name_app$DAY-BKP.tar"
 
