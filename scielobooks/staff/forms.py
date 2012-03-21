@@ -59,7 +59,7 @@ class MonographForm():
 
         store_values = [('google', localizer.translate(_('Google Book Store'))),
                         ('kobo', localizer.translate(_('Kobo Book Store')))]
-                        
+
         l10n_countries = Countries(localizer.locale_name)
         country_values = l10n_countries.items()
 
@@ -76,6 +76,8 @@ class MonographForm():
         base_schema['creators'].children[0]['link_resume'].widget.css_class = 'fullSizeInput'
         base_schema['creators'].children[0]['link_resume'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
         base_schema['creators'].children[0]['link_resume'].missing = None
+
+        base_schema['bisac_code'].children[0]['code'].title = localizer.translate(_('Bisac Code'))
 
         base_schema['shopping_info'].children[0]['store'].title = localizer.translate(_('Store'))
         base_schema['shopping_info'].children[0]['store'].widget = deform.widget.SelectWidget(values=language_values)
