@@ -57,8 +57,8 @@ class MonographForm():
                            ('en', localizer.translate(_('English'))),
                            ('es', localizer.translate(_('Spanish'))),]
 
-        store_values = [('google', localizer.translate(_('Google Books'))),
-                        ('kobo', localizer.translate(_('Kobo Books')))]
+        store_values = [('Google Books', localizer.translate(_('Google Books'))),
+                        ('Kobo Books', localizer.translate(_('Kobo Books')))]
 
         l10n_countries = Countries(localizer.locale_name)
         country_values = l10n_countries.items()
