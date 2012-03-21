@@ -80,7 +80,7 @@ class MonographForm():
         base_schema['bisac_code'].children[0]['code'].title = localizer.translate(_('Bisac Code'))
 
         base_schema['shopping_info'].children[0]['store'].title = localizer.translate(_('Store'))
-        base_schema['shopping_info'].children[0]['store'].widget = deform.widget.SelectWidget(values=language_values)
+        base_schema['shopping_info'].children[0]['store'].widget = deform.widget.SelectWidget(values=store_values)
         base_schema['shopping_info'].children[0]['book_url'].title = localizer.translate(_('Book link'))
         base_schema['shopping_info'].children[0]['book_url'].widget = deform.widget.TextInputWidget()
         base_schema['shopping_info'].children[0]['book_url'].widget.css_class = 'fullSizeInput'
