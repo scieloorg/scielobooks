@@ -28,7 +28,7 @@ class Monograph(model.CouchdbDocument):
     pages = model.TextProperty()
     primary_descriptor = model.TextProperty()
     translated_primary_descriptors = model.MultiCompositeTextProperty(subkeys=['primary_descriptor','language'])
-    bisac_code =  model.MultiCompositeTextProperty(required=True, subkeys=['code'])
+    bisac_code =  model.MultiCompositeTextProperty(subkeys=['code'])
     edition = model.TextProperty()
     collection = model.CompositeTextProperty(subkeys=['individual_author', 'corporate_author', 'title', 'english_translated_title', 'total_number_of_volumes'])
     format = model.CompositeTextProperty(subkeys=['height', 'width'])
