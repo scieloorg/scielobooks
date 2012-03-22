@@ -134,8 +134,8 @@
           <table cellspacing="0">
             <tr tal:repeat="part parts">
               <td class="chpTitle" tal:content="part.title">Chapter 01 Lorem ipsum dolor sit amet, consectetur adipiscing elit</td>
-              <td class="right"><a class="preview" href="#" tal:attributes="href part.preview_url"><span i18n:translate=""  tal:condition="not getattr(document, 'shopping_info', None)">Preview</span></a></td>
-              <td class="right"><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
+              <td class="right"><a class="preview" href="#" tal:condition="not getattr(document, 'shopping_info', None)" tal:attributes="href part.preview_url"><span i18n:translate=""  tal:condition="not getattr(document, 'shopping_info', None)">Preview</span></a></td>
+              <td class="right"><span tal:condition="not getattr(document, 'shopping_info', None)"><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></span></td>
             </tr>
           </table>
         </div>
