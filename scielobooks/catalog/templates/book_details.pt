@@ -79,9 +79,14 @@
           <dt i18n:translate="">ISBN:</dt>
             <dd tal:content="document.isbn">0123456789</dd>
           </span>
+
+          <span tal:omit-tag="" tal:condition="getattr(document, 'eisbn', None)">
+          <dt i18n:translate="">eISBN:</dt>
+            <dd tal:content="document.eisbn">0123456789</dd>
+          </span>
       	</dl>
 
-        <div class="download_box" tal:condition="getattr(document, 'shopping_info', None)">
+        <div class="download_box" tal:condition="not getattr(document, 'shopping_info', None)">
          <div class="download"
               tal:condition="book_attachments | nothing">
            <fieldset>
@@ -129,8 +134,8 @@
           <table cellspacing="0">
             <tr tal:repeat="part parts">
               <td class="chpTitle" tal:content="part.title">Chapter 01 Lorem ipsum dolor sit amet, consectetur adipiscing elit</td>
-              <td class="right"><a class="preview" href="#" tal:attributes="href part.preview_url"><span i18n:translate="">Preview</span></a></td>
-              <td class="right"><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
+              <td class="right"><a class="preview" href="#" tal:attributes="href part.preview_url"><span i18n:translate=""  tal:condition="not getattr(document, 'shopping_info', None)">Preview</span></a></td>
+              <td class="right"><a class="PDF" href="#"  tal:condition="not getattr(document, 'shopping_info', None)" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
             </tr>
           </table>
         </div>
