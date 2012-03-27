@@ -95,9 +95,9 @@ Install the scielobooks application
     Read+write:
     (scielobooks-env)$ git clone git@github.com:scieloorg/scielobooks.git
 
-7. With the `scielobooks-env` environment active, use `setuptools` to automagically download and install all the dependencies::
+7. With the `scielobooks-env` environment active, use `pip` to automagically download and install all the dependencies::
 
-    (scielobooks-env)$ python setup.py install
+    (scielobooks-env)$ pip install -r requirements.txt
 
 
 8. Run automated tests (NOT WORKING)::
