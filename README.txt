@@ -13,9 +13,9 @@ Server software
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
  |**software**                         |**product URL**                    |**installation method**  |**Ubuntu Package name**   |
  +=====================================+===================================+=========================+==========================+
- | Python 2.7                          | http://www.python.org/            | OS package manager      | python2.6                |
+ | Python 2.7                          | http://www.python.org/            | OS package manager      | python2.7                |
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
- | python2.x-dev (2.5 or 2.6)          | http://www.python.org/            | OS package manager      | python2.6-dev            |
+ | python2.x-dev                       | http://www.python.org/            | OS package manager      | python2.7-dev            |
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
  | GNU compiler and tools              | http://www.python.org/            | OS package manager      | build-essential          |
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
@@ -35,7 +35,7 @@ Server software
 
 1. Install each package below using the recommended installation method above.
 
-Note: Python comes pre-installed in most Linux distributions. If Python 2.5 or 2.6 is already installed, there is no need to install a newer version.
+Note: Python comes pre-installed in most Linux distributions. If Python 2.7 is already installed, there is no need to install a newer version.
 
 Note2: on Ubuntu 10.04 (Lucid) build-essential includes: dpkg-dev, g++, libc6-dev and make
 
