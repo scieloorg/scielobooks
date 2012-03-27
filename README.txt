@@ -43,7 +43,9 @@ System-wide Python libraries
  +===================+===========================================+==================================================================+
  | distribute 0.6.10 | http://pypi.python.org/pypi/distribute    | sudo python distribute_setup.py                                  |
  +-------------------+-------------------------------------------+------------------------------------------------------------------+
- | virtualenv        | http://pypi.python.org/pypi/virtualenv    | sudo easy_install virtualenv                                     |
+ | pip               | http://pypi.python.org/pypi/pip           | sudo easy_install pip                                            | 
+ +-------------------+-------------------------------------------+------------------------------------------------------------------+
+ | virtualenv        | http://pypi.python.org/pypi/virtualenv    | sudo pip virtualenv                                              |
  +-------------------+-------------------------------------------+------------------------------------------------------------------+
  | python gfx module | http://www.swftools.org/gfx_tutorial.html | installation instruction topic 1.1  Compiling gfx and installing |
  +-------------------+-------------------------------------------+------------------------------------------------------------------+
@@ -56,7 +58,7 @@ System-wide Python libraries
 
 3. Use easy_install to download and install virtuaenv::
 
-    # easy_install virtualenv
+    # pip virtualenv -no-site-packages -p python2.7
 
 
 Configure the database
