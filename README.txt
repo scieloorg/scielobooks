@@ -58,7 +58,7 @@ System-wide Python libraries
 
 3. Use easy_install to download and install virtuaenv::
 
-    # pip virtualenv -no-site-packages -p python2.7
+    # pip install virtualenv
 
 
 Configure the database
@@ -78,7 +78,7 @@ Install the application environment
 
 5. Use virtualenv to create an application environment and activate it::
 
-    $ virtualenv --distribute --no-site-packages scielobooks-env
+    $ virtualenv --distribute --no-site-packages -p python2.7 scielobooks-env
     $ source scielobooks-env/bin/activate
     (scielobooks-env)$   # note that the shell prompt displays the active virtual environment
 
@@ -97,14 +97,6 @@ Install the scielobooks application
 
     Development:
     (scielobooks-env)$ svn co http://svn.reddes.bvsalud.org/scielo-books/trunk/scielobooks
-
-    Stable:
-    (scielobooks-env)$ svn co http://svn.reddes.bvsalud.org/scielo-books/tags/<VERSION>
-
-
-    user: anonymous 
-    password: 4guests@
-
 
 7. With the `scielobooks-env` environment active, use `setuptools` to automagically download and install all the dependencies::
 
