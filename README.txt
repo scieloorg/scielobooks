@@ -13,9 +13,9 @@ Server software
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
  |**software**                         |**product URL**                    |**installation method**  |**Ubuntu Package name**   |
  +=====================================+===================================+=========================+==========================+
- | Python 2.5 or 2.6                   | http://www.python.org/            | OS package manager      | python2.6                |
+ | Python 2.7                          | http://www.python.org/            | OS package manager      | python2.7                |
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
- | python2.x-dev (2.5 or 2.6)          | http://www.python.org/            | OS package manager      | python2.6-dev            |
+ | python2.x-dev                       | http://www.python.org/            | OS package manager      | python2.7-dev            |
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
  | GNU compiler and tools              | http://www.python.org/            | OS package manager      | build-essential          |
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
@@ -29,13 +29,10 @@ Server software
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
  | GIT                                 | http://git-scm.com/               | OS package manager      | git-core                 |
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
- | Subversion                          | http://subversion.apache.org/     | OS package manager      | subversion               |
- +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
-
 
 1. Install each package below using the recommended installation method above.
 
-Note: Python comes pre-installed in most Linux distributions. If Python 2.5 or 2.6 is already installed, there is no need to install a newer version.
+Note: Python comes pre-installed in most Linux distributions. If Python 2.7 is already installed, there is no need to install a newer version.
 
 Note2: on Ubuntu 10.04 (Lucid) build-essential includes: dpkg-dev, g++, libc6-dev and make
 
@@ -46,7 +43,9 @@ System-wide Python libraries
  +===================+===========================================+==================================================================+
  | distribute 0.6.10 | http://pypi.python.org/pypi/distribute    | sudo python distribute_setup.py                                  |
  +-------------------+-------------------------------------------+------------------------------------------------------------------+
- | virtualenv        | http://pypi.python.org/pypi/virtualenv    | sudo easy_install virtualenv                                     |
+ | pip               | http://pypi.python.org/pypi/pip           | sudo easy_install pip                                            | 
+ +-------------------+-------------------------------------------+------------------------------------------------------------------+
+ | virtualenv        | http://pypi.python.org/pypi/virtualenv    | sudo pip virtualenv                                              |
  +-------------------+-------------------------------------------+------------------------------------------------------------------+
  | python gfx module | http://www.swftools.org/gfx_tutorial.html | installation instruction topic 1.1  Compiling gfx and installing |
  +-------------------+-------------------------------------------+------------------------------------------------------------------+
@@ -59,7 +58,7 @@ System-wide Python libraries
 
 3. Use easy_install to download and install virtuaenv::
 
-    # easy_install virtualenv
+    # pip install virtualenv
 
 
 Configure the database
@@ -79,7 +78,7 @@ Install the application environment
 
 5. Use virtualenv to create an application environment and activate it::
 
-    $ virtualenv --distribute --no-site-packages scielobooks-env
+    $ virtualenv --distribute --no-site-packages -p python2.7 scielobooks-env
     $ source scielobooks-env/bin/activate
     (scielobooks-env)$   # note that the shell prompt displays the active virtual environment
 
@@ -92,24 +91,13 @@ Install the scielobooks application
 
     Development(Recommended):
     Read-only:
-    (scielobooks-env)$ git clone git://github.com/bireme/scielobooks.git
+    (scielobooks-env)$ git clone git://github.com/scieloorg/scielobooks.git
     Read+write:
-    (scielobooks-env)$ git clone git@github.com:bireme/scielobooks.git
+    (scielobooks-env)$ git clone git@github.com:scieloorg/scielobooks.git
 
-    Development:
-    (scielobooks-env)$ svn co http://svn.reddes.bvsalud.org/scielo-books/trunk/scielobooks
+7. With the `scielobooks-env` environment active, use `pip` to automagically download and install all the dependencies::
 
-    Stable:
-    (scielobooks-env)$ svn co http://svn.reddes.bvsalud.org/scielo-books/tags/<VERSION>
-
-
-    user: anonymous 
-    password: 4guests@
-
-
-7. With the `scielobooks-env` environment active, use `setuptools` to automagically download and install all the dependencies::
-
-    (scielobooks-env)$ python setup.py install
+    (scielobooks-env)$ pip install -r requirements.txt
 
 
 8. Run automated tests (NOT WORKING)::

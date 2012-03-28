@@ -64,6 +64,11 @@
           <dt i18n:translate="">ISBN:</dt>
             <dd tal:content="document.isbn">0123456789</dd>
           </span>
+
+          <span tal:omit-tag="" tal:condition="getattr(document, 'eisbn', None)">
+          <dt i18n:translate="">eISBN:</dt>
+            <dd tal:content="document.eisbn">0123456789</dd>
+          </span>
         </dl>
 
         <div class="download"

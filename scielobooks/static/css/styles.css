@@ -289,6 +289,34 @@ a img {
 .tags {
     background: url(/static/images/tag.gif) top left no-repeat;
 }
+
+.shopping fieldset {
+    float: right;
+    width: 150px;
+    margin: 10px 20px 0px 20px;
+    border: 0px;
+}
+.shopping {
+    height: 30px;
+    margin-top: 10px;
+}
+.shopping fieldset DIV {
+    border-bottom: 1px solid #ccc;
+    margin-top: 10px;
+}
+.shopping legend {
+    font-weight: bold;
+    font-size: 16px;
+}
+.shopping_box {
+    height: 100px;
+    float: right;
+    width: 191px;
+    background-image: url(/static/images/download_box_bg.jpg);
+    margin: 20px 600px 0;
+    position: absolute;
+}
+
 .download fieldset {
     float: right;
     width: 150px;

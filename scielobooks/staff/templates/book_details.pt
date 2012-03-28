@@ -103,9 +103,14 @@
           <dt i18n:translate="">ISBN:</dt>
             <dd tal:content="document.isbn">0123456789</dd>
           </span>
+
+          <span tal:omit-tag="" tal:condition="getattr(document, 'eisbn', None)">
+          <dt i18n:translate="">eISBN:</dt>
+            <dd tal:content="document.eisbn">0123456789</dd>
+          </span>
         </dl>
 
-        <div class="download_box">
+        <div class="download_box" tal:condition="not getattr(document, 'shopping_info', None)">
          <div class="download"
               tal:condition="book_attachments | nothing">
            <fieldset>
@@ -115,6 +120,18 @@
                <a tal:attributes="href attach.url;class attach.css_class"
                   tal:content="attach.text"
                   href="#">Livro em PDF</a>
+             </div>
+           </fieldset>
+         </div>
+        </div>
+
+        <div class="shopping_box" tal:condition="getattr(document, 'shopping_info', None)">
+         <div class="shopping">
+           <fieldset>
+             <legend i18n:translate="">Buy at:</legend>
+             <div tal:repeat="shopping document.shopping_info">
+              <a tal:attributes="href shopping.book_url; target '_blank'" tal:content="shopping.store" href="#">Store </a>
+              <span tal:content="shopping.price">$0,00</span>
              </div>
            </fieldset>
          </div>

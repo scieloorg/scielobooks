@@ -109,13 +109,9 @@ Install the scielobooks application
 
 7. With the `scielobooks-env` environment active, use `setuptools` to automagically download and install all the dependencies::
 
+    (scielobooks-env)$ pip install -r requirements.txt
+
     (scielobooks-env)$ python setup.py install
-
-
-8. Run automated tests (NOT WORKING)::
-
-    (scielobooks-env)$ python setup.py test -q
-
 
 
 Running the application
