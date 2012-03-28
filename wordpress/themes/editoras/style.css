@@ -30,7 +30,8 @@ body {
 	line-height: 1;
 }
 h1, h2, h3, h4, h5, h6 {
-	clear: both;
+	/* AJUSTADO PARA WIDGET DO TWITTER */
+	/* clear: both; */
 }
 ol, ul {
 	list-style: none;
@@ -68,6 +69,25 @@ DESCRIPTION: Three-column fixed layout
     height: 1px;
     display: block;
 }
+#language_bar {
+	float: right;
+}
+#language_bar A {
+	color: #000000 !important;
+}
+#language_bar A:hover {
+	color: #990000 !important;
+}
+#language_bar ul {
+	list-style: none;
+}
+#language_bar li {
+	float: left;
+	margin-left: 10px;
+}
+#language_bar A:visited {
+	text-decoration: none;
+}
 #container {
 	margin: 0 auto;
 	width: 100%;
@@ -81,6 +101,20 @@ DESCRIPTION: Three-column fixed layout
     float: left;
     width: 185px;
     margin-right: 10px;
+}
+.rightCol a {
+	color: #AA0000;
+}
+
+.rightCol .widget {
+	margin-bottom: 15px;
+}
+.rightCol a:hover {
+	color: #990000;
+	text-decoration:underline;
+}
+.rightCol .textwidget p {
+	margin: 0px 0px 5px 10px;
 }
 #content {
     float: left;
@@ -97,6 +131,16 @@ DESCRIPTION: Three-column fixed layout
 #footer {
 	clear: both;
 	width: 100%;
+}
+/*
+SciELO - CSS para as páginas internas do portal
+*/
+
+#content_insidepage {
+    float: left;
+    width: 95%;
+    padding: 0px 10px;
+	
 }
 
 /*
@@ -164,6 +208,13 @@ code {
 	font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
 }
 
+/* =Breadcrumbs
+-------------------------------------------------------------- */
+.breadcrumbs {
+	margin-top: 30px;
+	margin-bottom: 10px;
+	padding: 0 10px;
+}
 
 /* =Structure
 -------------------------------------------------------------- */
@@ -231,7 +282,6 @@ body {
 body,
 input,
 textarea {
-	color: #666;
 	font-size: 12px;
 	line-height: 18px;
 }
@@ -338,14 +388,16 @@ textarea {
 	padding: 2px;
 }
 a:link {
-	color: #0066cc;
+	color: #990000;
+	text-decoration: none;
 }
 a:visited {
-	color: #743399;
+	color: #990000;
 }
 a:active,
 a:hover {
-	color: #ff4b33;
+	color: #990000;
+	text-decoration: underline;
 }
 
 /* Text meant only for screen readers */
@@ -365,7 +417,7 @@ a:hover {
 }
 .siteDesc {
     float: left;
-    margin: 10px 0px 0px 15px;
+    margin: 25px 0px 0px 15px;
 }
 #site-title {
 	display: block;
@@ -620,6 +672,7 @@ div.menu li {
 .entry-summary {
 	clear: both;
 	padding: 12px 0 0 0;
+	width: 900px;
 }
 #content .entry-summary p:last-child {
 	margin-bottom: 12px;
@@ -1178,7 +1231,7 @@ h3#reply-title {
 	color: #000;
 }
 .widget_rss a.rsswidget:hover {
-	color: #ff4b33;
+	color: #990000;
 }
 .widget_rss .widget-title img {
 	width: 11px;
@@ -1239,7 +1292,6 @@ h3#reply-title {
 }
 #site-generator a {
 	background: url(images/wordpress.png) center left no-repeat;
-	color: #666;
 	display: inline-block;
 	line-height: 16px;
 	padding-left: 20px;
@@ -1261,10 +1313,10 @@ H2.widgettitle {
     font-size: 100%;
 }
 #textEntry1 {
-    width: 330px;
+    width: 325px;
 }
 .inputText {
-    width: 130px;
+    width: 140px;
 }
 .submit {
     background: url(images/searchButton_bg.jpg) no-repeat;
@@ -1288,7 +1340,7 @@ H2.widgettitle {
 }
 
 .leftCol .widget {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 .editors UL, #socialNetwork {
     padding: 0px;
@@ -1507,4 +1559,10 @@ code {
 	.home .sticky {
 		border: none;
 	}
+
+/* =Events Calendar
+-------------------------------------------------------------- */
+#aec-calendar {
+	background: #blue !important;
+}
 

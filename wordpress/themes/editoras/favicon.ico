@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+  
+
+  
+
+
+  
+
+  <head>
+    <title>
+      Attachment –
+      SciELO Books – Trac
+    </title>
+        <link rel="search" href="/projects/scielo-books/search" />
+        <link rel="help" href="/projects/scielo-books/wiki/TracGuide" />
+        <link rel="alternate" href="/projects/scielo-books/raw-attachment/ticket/169/favicon.ico" type="image/x-icon; charset=utf-8" title="Original Format" />
+        <link rel="up" href="/projects/scielo-books/ticket/169" title="Ticket #169" />
+        <link rel="start" href="/projects/scielo-books/wiki" />
+        <link rel="stylesheet" href="/projects/scielo-books/chrome/common/css/trac.css" type="text/css" /><link rel="stylesheet" href="/projects/scielo-books/chrome/common/css/code.css" type="text/css" />
+        <link rel="shortcut icon" href="/projects/scielo-books/chrome/common/trac.ico" type="image/x-icon" />
+        <link rel="icon" href="/projects/scielo-books/chrome/common/trac.ico" type="image/x-icon" />
+      <link type="application/opensearchdescription+xml" rel="search" href="/projects/scielo-books/search/opensearch" title="Search SciELO Books" />
+    <script type="text/javascript" src="/projects/scielo-books/chrome/common/js/jquery.js"></script><script type="text/javascript" src="/projects/scielo-books/chrome/common/js/trac.js"></script><script type="text/javascript" src="/projects/scielo-books/chrome/common/js/search.js"></script>
+    <!--[if lt IE 7]>
+    <script type="text/javascript" src="/projects/scielo-books/chrome/common/js/ie_pre7_hacks.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div id="banner">
+      <div id="header">
+        <a id="logo" href="http://reddes.bvsaude.org"><img src="/projects/scielo-books/chrome/site/logoreddes.gif" alt="RedDes" /></a>
+      </div>
+      <form id="search" action="/projects/scielo-books/search" method="get">
+        <div>
+          <label for="proj-search">Search:</label>
+          <input type="text" id="proj-search" name="q" size="18" value="" />
+          <input type="submit" value="Search" />
+        </div>
+      </form>
+      <div id="metanav" class="nav">
+    <ul>
+      <li class="first"><a href="/projects/scielo-books/login">RedDes Administration Area</a></li><li class="last"><a href="/projects/scielo-books/prefs">Preferences</a></li>
+    </ul>
+  </div>
+    </div>
+    <div id="mainnav" class="nav">
+    <ul>
+      <li class="first"><a href="/projects/scielo-books/wiki">Home</a></li><li><a href="/projects/scielo-books/roadmap">Roadmap</a></li><li><a href="/projects/scielo-books/browser">Browse Source</a></li><li><a href="/projects/scielo-books/report/1">View Tickets</a></li><li><a href="/projects/scielo-books/newticket">New Ticket</a></li><li><a href="/projects/scielo-books/wiki/MailingLists">Mailing Lists</a></li><li><a href="/projects/scielo-books/wiki/Downloads">Downloads</a></li><li class="last"><script language="javascript" type="text/javascript" src="/projects/scielo-books/chrome/Billing/ticket.js"></script></li>
+    </ul>
+  </div>
+    <div id="main">
+      <div id="ctxtnav" class="nav">
+        <h2>Context Navigation</h2>
+          <ul>
+            <li class="first last"><a href="/projects/scielo-books/ticket/169">Back to Ticket #169</a></li>
+          </ul>
+        <hr />
+      </div>
+    <div id="content" class="attachment">
+        <h1><a href="/projects/scielo-books/ticket/169">Ticket #169</a>: favicon.ico</h1>
+        <table id="info" summary="Description">
+          <tbody>
+            <tr>
+              <th scope="col">
+                File favicon.ico, <span title="894 bytes">0.9 kB</span>
+                (added by anonymous,  <a class="timeline" href="/projects/scielo-books/timeline?from=2011-11-30T16%3A10%3A55Z-0200&amp;precision=second" title="2011-11-30T16:10:55Z-0200 in Timeline">2 weeks</a> ago)
+              </th>
+            </tr>
+            <tr>
+              <td class="message searchable">
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="preview" class="searchable">
+    <div class="image-file"><img src="/projects/scielo-books/raw-attachment/ticket/169/favicon.ico" alt="favicon.ico" /></div>
+        </div>
+    </div>
+    <div id="altlinks">
+      <h3>Download in other formats:</h3>
+      <ul>
+        <li class="last first">
+          <a rel="nofollow" href="/projects/scielo-books/raw-attachment/ticket/169/favicon.ico">Original Format</a>
+        </li>
+      </ul>
+    </div>
+    </div>
+    <div id="footer" lang="en" xml:lang="en"><hr />
+      <a id="tracpowered" href="http://trac.edgewall.org/"><img src="/projects/scielo-books/chrome/common/trac_logo_mini.png" height="30" width="107" alt="Trac Powered" /></a>
+      <p class="left">
+        Powered by <a href="/projects/scielo-books/about"><strong>Trac 0.11.1</strong></a><br />
+        By <a href="http://www.edgewall.org/">Edgewall Software</a>.
+      </p>
+      <p class="right">RedDes 2008</p>
+    </div>
+  </body>
+</html>

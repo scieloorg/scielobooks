@@ -1,4 +1,7 @@
 <?php
+
+    $current_language = strtolower(get_bloginfo('language'));
+
     if (function_exists('add_theme_support')) {
             add_theme_support('post-thumbnails');
             set_post_thumbnail_size(190, 140, true);
@@ -6,58 +9,85 @@
     		add_image_size('video_thumb', 290, 170, true);
     }
     if ( function_exists('register_sidebar') )
-    register_sidebar(array('name'=>'leftSlot', 
+    register_sidebar(array('name'=>'leftSlot' . $current_language, 
             'before_widget' => '<div id="%1$s" class="widget %2$s">',
             'after_widget' => '</div>',
             'before_title' => '<h2 class="widgettitle">',
             'after_title' => '</h2>',
         ));
     if ( function_exists('register_sidebar') )
-    register_sidebar(array('name'=>'SearchBox', 
+    register_sidebar(array('name'=>'SearchBox' . $current_language, 
         'before_widget' => '<div id="%1$s" class="widget %2$s">',
         'after_widget' => '</div>',
         'before_title' => '<h2 class="widgettitle">',
         'after_title' => '</h2>',
     ));
     if ( function_exists('register_sidebar') )
-    register_sidebar(array('name'=>'OnSpotlight', 
+    register_sidebar(array('name'=>'OnSpotlight' . $current_language, 
             'before_widget' => '<div id="%1$s" class="widget %2$s">',
             'after_widget' => '</div>',
             'before_title' => '<h2 class="widgettitle">',
             'after_title' => '</h2>',
         ));
     if ( function_exists('register_sidebar') )
-    register_sidebar(array('name'=>'rightSlot1', 
+    register_sidebar(array('name'=>'rightSlot1' . $current_language, 
             'before_widget' => '<div id="%1$s" class="widget %2$s">',
             'after_widget' => '</div>',
             'before_title' => '<h2 class="widgettitle">',
             'after_title' => '</h2>',
         ));
     if ( function_exists('register_sidebar') )
-    register_sidebar(array('name'=>'rightSlot2', 
+    register_sidebar(array('name'=>'rightSlot2' . $current_language, 
             'before_widget' => '<div id="%1$s" class="widget %2$s">',
             'after_widget' => '</div>',
             'before_title' => '<h2 class="widgettitle">',
             'after_title' => '</h2>',
         ));
     if ( function_exists('register_sidebar') )
-    register_sidebar(array('name'=>'footer', 
+    register_sidebar(array('name'=>'footer' . $current_language, 
             'before_widget' => '<div id="%1$s" class="widget %2$s">',
             'after_widget' => '</div>',
             'before_title' => '<h2 class="widgettitle">',
             'after_title' => '</h2>',
         ));
     add_theme_support( 'menus' );
+    add_filter( 'wp_feed_cache_transient_lifetime', create_function( '$a', 'return 300;' ) );
 
 
-$themename = "Editoras";
+$themename = "Site Logos";
 $shortname = "theme";
 $options = array (
 
-   	array(    "name" => "Editora",
+   	array(    "name" => "Site",
             "type" => "titles",),
-    array(    "name" => "<span style='float: left;'>Logo URL:</span>",
-            "id" => $shortname."_logoURL",
+    	
+	array(    "name" => "<span style='float: left;'>Main Logo URL PT:</span>",
+            "id" => $shortname."_mainlogoURL_pt-br",
+            "type" => "text",
+            "std" => "/default.png",
+            ),
+        array(    "name" => "<span style='float: left;'>Main Logo URL ES:</span>",
+            "id" => $shortname."_mainlogoURL_es-es",
+            "type" => "text",
+            "std" => "/default.png",
+            ),
+        array(    "name" => "<span style='float: left;'>Main Logo URL EN:</span>",
+            "id" => $shortname."_mainlogoURL_en-us",
+            "type" => "text",
+            "std" => "/default.png",
+            ),
+        array(    "name" => "<span style='float: left;'>Sub Logo URL PT:</span>",
+            "id" => $shortname."_sublogoURL_pt-br",
+            "type" => "text",
+            "std" => "/default.png",
+            ),
+        array(    "name" => "<span style='float: left;'>Sub Logo URL ES:</span>",
+            "id" => $shortname."_sublogoURL_es-es",
+            "type" => "text",
+            "std" => "/default.png",
+            ),
+        array(    "name" => "<span style='float: left;'>Sub Logo URL EN:</span>",
+            "id" => $shortname."_sublogoURL_en-us",
             "type" => "text",
             "std" => "/default.png",
             ),
@@ -95,7 +125,7 @@ die;
 }
 }
 
-    add_theme_page($themename." Options", "Editora Logo", 'edit_themes', basename(__FILE__), 'mytheme_admin');
+    add_theme_page($themename." Options", "Site Logos", 'edit_themes', basename(__FILE__), 'mytheme_admin');
 
 }
 

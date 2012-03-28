@@ -23,7 +23,6 @@ get_header(); ?>
 
 				<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 					<h2 class="entry-title"><?php the_title(); ?></h2>
-
 					<div class="entry-meta">
 						<?php
 							printf(__('<span class="%1$s">By</span> %2$s', 'twentyten'),
@@ -58,7 +57,8 @@ get_header(); ?>
 							}
 						?>
 						<?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="meta-sep">|</span> <span class="edit-link">', '</span>' ); ?>
-					</div><!-- .entry-meta -->
+					</div>
+<!-- .entry-meta -->
 
 					<div class="entry-content">
 						<div class="entry-attachment">

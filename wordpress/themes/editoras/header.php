@@ -9,7 +9,9 @@
  * @since Twenty Ten 1.0
  */
 ?><!DOCTYPE html>
-<?php $myOptions = get_option('myOptions'); ?>
+<?php $myOptions = get_option('myOptions'); 
+$current_language = strtolower(get_bloginfo('language'));
+?>
 <html <?php language_attributes(); ?>>
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
@@ -51,33 +53,46 @@
 	 */
 	wp_head();
 ?>
+<style type="text/css">
+	html { margin-top: 0px !important; }
+	* html body { margin-top: 0px !important; }
+</style>
+<?php wp_head(); ?>
 </head>
 <style>
-
-#site-title {
-	background: url(<?php echo $myOptions['theme_logoURL'];?>) top left no-repeat;
-	width: 200px;
-	height: 80px;
+#site-title-mainlogo {
+        <?php $background_url = $myOptions['theme_mainlogoURL_'.$current_language]; ?>
+        <?php if(substr($background_url, 0, 1) != '/') {
+            //Gambs. A função get_option altera o valor, retirando a barra inicial para o valor en.
+            $background_url = '/'.$background_url;
+	}?>
+        background: url(<?php echo $background_url ;?>) top left no-repeat;
 }
 
+#site-title-sublogo {
+        background: url(<?php echo $myOptions['theme_sublogoURL_'.$current_language];?>) top left no-repeat;
+        width: 250px;
+        height: 80px;
+}
 </style>
 
 <body <?php body_class(); ?>>
 <div id="wrapper" class="hfeed">
-	<div id="header">
-		<div id="masthead">
-			<div id="branding" role="banner">
-				<div class="logo"><a href="/"><span>SciELO</span></a></div>
-				<div class="siteDesc">
-    				<?php $heading_tag = ( is_home() || is_front_page() ) ? 'h1' : 'div'; ?>
-    				<<?php echo $heading_tag; ?> id="site-title">
-    					<span>
-    						<a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
-    					</span>
-    				</<?php echo $heading_tag; ?>>
-    				<!--div id="site-description"><span><?php bloginfo( 'description' ); ?></span></div-->
+        <div id="header">
+        <!--SciELO Language bar -->
+                <div id="language_bar">
+                        <?php if (function_exists('mlf_links_to_languages')) mlf_links_to_languages(); ?>
                 </div>
-			</div><!-- #branding -->
+                <div id="masthead">
+                        <div id="branding" role="banner">                                <div class="logo"><a href="/" id="site-title-mainlogo"></a></div>
+                                <a href="<?php bloginfo('wpurl'); ?>"> 
+                                        <div class="siteDesc">
+                                        <?php $heading_tag = ( is_home() || is_front_page() ) ? 'h1' : 'div'; ?>
+                                                <<?php echo $heading_tag; ?> id="site-title-sublogo">
+                                                </<?php echo $heading_tag; ?>>
+                                        </div><!--siteDesc-->
+                                </a>
+                        </div><!-- #branding -->
 
 			<!--div id="access" role="navigation">
 			  <?php /*  Allow screen readers / text browsers to skip the navigation menu and get right to the good stuff */ ?>
@@ -87,5 +102,5 @@
 			</div--><!-- #access -->
 		</div><!-- #masthead -->
 	</div><!-- #header -->
-
+	
 	<div id="main">

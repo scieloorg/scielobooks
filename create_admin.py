@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 import sqlalchemy
 from sqlalchemy.exc import IntegrityError
 
-engine = sqlalchemy.create_engine('postgresql+psycopg2://postgres:ash2so4@localhost:5432/scielobooks', echo=True)
+engine = sqlalchemy.create_engine('postgresql+psycopg2://postgres:123456@localhost:5432/scielobooks', echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
 
