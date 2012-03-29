@@ -116,6 +116,7 @@ DESCRIPTION: Three-column fixed layout
 .rightCol .textwidget p {
 	margin: 0px 0px 5px 10px;
 }
+
 #content {
     float: left;
     width: 580px;
@@ -290,12 +291,12 @@ hr {
 	border: 0;
 	clear: both;
 	height: 1px;
-	margin-bottom: 18px;
+	margin-bottom: 10px;
 }
 
 /* Text elements */
 p {
-	margin-bottom: 18px;
+	margin-bottom: 10px;
 }
 ul {
 	list-style: square;
@@ -646,6 +647,7 @@ div.menu li {
 	font-weight: bold;
 	line-height: 1.3em;
 	margin-bottom: 0;
+	width: 900px;
 }
 .entry-title a:link,
 .entry-title a:visited {
@@ -1260,7 +1262,10 @@ h3#reply-title {
 
 /* =Footer
 -------------------------------------------------------------- */
-
+.footer ul li {
+	display: inline;
+	margin-right: 20px;
+}
 #footer {
 	margin-bottom: 20px;
 }
@@ -1272,7 +1277,6 @@ h3#reply-title {
     line-height: 130% !important;
 }
 #colophon UL {
-    width: 280px;
     margin: 0px auto !important;    
 }
 #colophon LI {
@@ -1339,9 +1343,10 @@ H2.widgettitle {
     text-decoration: none;
 }
 
-.leftCol .widget {
-    margin-bottom: 20px;
+.editors li {
+	margin-top: 18px;
 }
+
 .editors UL, #socialNetwork {
     padding: 0px;
     margin: 0px;
