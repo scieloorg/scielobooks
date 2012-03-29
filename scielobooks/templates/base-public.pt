@@ -90,7 +90,37 @@
         </div>
 
         <div class="spacer"></div>
-
+        <div class="footer">
+          <p>SciELO - Scientific Electronic Library Online | <a href="http://www.fapesp.br/en/" target="_blank" class="Corpo_11_bd">FAPESP </a> - <a href="http://www.cnpq.br/english/cnpq/index.htm" target="_blank">CNPq</a> - <a href="http://regional.bvsalud.org/bvs/bireme/I/homepage.htm" target="_blank">BIREME </a> - <a href="http://www.fapunifesp.edu.br/" target="_blank">FapUnifesp</a>
+          <br/>
+          Rua Machado Bittencourt, 430 - Vila Clementino  04044-001 S„o Paulo SP -  Brasil 
+          <br/>
+          Tel.: (55 11) 3369-4080 - Email: <a href="mailto:scielo.books@scielo.org">scielo.books@scielo.org</a>
+          </p>
+          <ul>
+            <li>
+              <a target="_blank" href="http://www.fapesp.br/">
+                <img title="FAPESP" alt="FAPESP" src="http://books.scielo.org/wp-content/uploads/2012/03/fapesp.png"/>
+              </a>
+            </li>
+            <li>
+              <a target="_blank" href="http://www.cnpq.br/">
+                <img title="CNPq" alt="CNPq" src="http://books.scielo.org/wp-content/uploads/2012/03/cnpq.png"/>
+              </a>
+            </li>
+            <li>
+              <a href="http://regional.bvsalud.org">
+                <img title="BVS" alt="BVS" src="http://books.scielo.org/wp-content/uploads/2012/03/bvs.png"/>
+              </a>
+            </li>
+            <li>
+              <a href="http://www.fapunifesp.edu.br/" target="_blank">
+                <img alt="FapUNIFESP" src="http://books.scielo.org/wp-content/uploads/2012/03/fap.png"/>
+              </a>
+            </li>
+          </ul>
+        </div>
+<!--
         <div class="footer">
           <p>
             SciELO - Scientific Electronic Library Online | <a href="http://www.fapesp.br/en/">FAPESP</a> - <a target="_blank"
@@ -126,8 +156,8 @@
             </li>
           </ul>
         </div>
+-->        
       </div>
-
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
       <script src="/static/js/language.js"></script>
       <metal:block define-slot="custom_script"/>
