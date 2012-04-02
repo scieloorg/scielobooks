@@ -48,3 +48,4 @@ zope.event==3.5.1
 zope.i18nmessageid==3.6.1
 zope.interface==3.8.0
 zope.schema==4.0.1
+newrelic==1.2.0.246
