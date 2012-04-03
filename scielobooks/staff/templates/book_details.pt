@@ -110,7 +110,7 @@
           </span>
         </dl>
 
-        <div class="download_box" tal:condition="not getattr(document, 'shopping_info', None)">
+        <div class="download_box" tal:condition="not getattr(document, 'is_comercial', 'false')">
          <div class="download"
               tal:condition="book_attachments | nothing">
            <fieldset>
@@ -125,13 +125,12 @@
          </div>
         </div>
 
-        <div class="shopping_box" tal:condition="getattr(document, 'shopping_info', None)">
+        <div class="shopping_box" tal:condition="getattr(document, 'is_comercial', 'false')">
          <div class="shopping">
            <fieldset>
              <legend i18n:translate="">Buy at:</legend>
              <div tal:repeat="shopping document.shopping_info">
               <a tal:attributes="href shopping.book_url; target '_blank'" tal:content="shopping.store" href="#">Store </a>
-              <span tal:content="shopping.price">$0,00</span>
              </div>
            </fieldset>
          </div>
