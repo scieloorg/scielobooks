@@ -88,9 +88,7 @@ class MonographForm():
         base_schema['shopping_info'].children[0]['book_url'].widget.css_class = 'fullSizeInput'
         base_schema['shopping_info'].children[0]['book_url'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
         base_schema['shopping_info'].children[0]['book_url'].missing = None
-        base_schema['shopping_info'].children[0]['price'].title = localizer.translate(_('Book price'))
-        base_schema['shopping_info'].children[0]['price'].widget = deform.widget.TextInputWidget()
-
+        
         base_schema['notes'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
 
         base_schema['translated_titles'].title = localizer.translate(_('Translated Titles'))
