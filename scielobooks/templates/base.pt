@@ -20,7 +20,7 @@
     <body class="backoffice">
       <div class="container">
         <div class="top">
-          <h1><a href="#"><span>SciELO Livros</span></a></h1>
+          <h1><a href="/"><span>SciELO Livros</span></a></h1>
           <span metal:define-slot="custom_top"></span>
           <form id="form_language" action="/setlang/" method="post">
             <input type="hidden" id="language" name="language"/>
