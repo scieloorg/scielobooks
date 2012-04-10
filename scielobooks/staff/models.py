@@ -47,6 +47,7 @@ class Monograph(model.CouchdbDocument):
     visible = model.BooleanProperty()
     creation_date = model.TextProperty()
     created_by = model.TextProperty() #TODO
+    publication_date = model.TextProperty()
 
     class Meta:
         hide = ('cover_thumbnail', 'visible', 'creation_date', 'created_by')
@@ -121,6 +122,7 @@ class Part(model.CouchdbDocument):
     monograph_language = model.TextProperty()
     monograph_year = model.TextProperty()
     visible = model.BooleanProperty()
+    publication_date = model.TextProperty()
 
     class Meta:
         hide = ('monograph', 'monograph_title', 'monograph_isbn', 'monograph_creators',
