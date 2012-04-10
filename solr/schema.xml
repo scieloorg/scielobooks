@@ -73,17 +73,12 @@
    <!-- http://reddes.bvsalud.org/projects/scielo-books/wiki/ResultadoDeBusca -->
    <field name="sbid" type="string" indexed="true" stored="true"/>
    <field name="shortname" type="string" indexed="false" stored="true"/>
-   <field name="title" type="text" indexed="true" stored="true"/>
+   <field name="title" type="text" indexed="true" stored="true" />
+   <field name="title_sort" type="string" indexed="true" stored="false" multiValued="false"/>
    <field name="book_title" type="text" indexed="true" stored="true"/>
    <field name="isbn" type="string" indexed="true" stored="true"/>
-   <field name="author" type="text" indexed="true" stored="true"/>
-   <field name="corporate_authors" type="text" indexed="true" stored="true"/>
-   <field name="translators" type="text" indexed="true" stored="true"/>
-   <field name="coordinators" type="text" indexed="true" stored="true"/>
-   <field name="editors" type="text" indexed="true" stored="true"/>
-   <field name="others" type="text" indexed="true" stored="true"/>
-   <field name="organizers" type="text" indexed="true" stored="true"/>
-   <field name="collaborators" type="text" indexed="true" stored="true"/>
+   <field name="author" type="text" inexed="true" stored="true"/>
+   <field name="author_sort" type="string" indexed="true" stored="false" multiValued="false"/>
    <field name="publisher" type="string" indexed="true" stored="true"/>
    <field name="language" type="string" indexed="true" stored="true"/>
    <field name="year" type="string" indexed="true" stored="true"/>
@@ -97,6 +92,7 @@
 
     <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
+
    <field name="tw" type="text" indexed="true" stored="false" multiValued="true"/>
    <field name="id" type="string" indexed="true" stored="true"/>
 
@@ -112,6 +108,9 @@
 
  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
  <solrQueryParser defaultOperator="AND"/>
+
+ <copyField source="title" dest="title_sort" /> 
+ <copyField source="author" dest="author_sort" /> 
 
  <copyField source="*" dest="tw"/>
  <copyField source="sbid" dest="id"/>
