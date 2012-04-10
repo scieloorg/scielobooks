@@ -15,6 +15,7 @@
         <field name="format">{{format}}</field>
         <field name="type">{{type}}</field>
         <field name="is_public">{{is_public}}</field>
+        <field name="publication_date">{{publication_date}}</field>
     </doc>
 </add>
 

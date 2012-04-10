@@ -93,7 +93,7 @@
    <field name="chapterorder" type="string" indexed="false" stored="true"/>
    <field name="monographsbid" type="string" indexed="false" stored="true"/>
    <field name="is_public" type="boolean" indexed="true" stored="true"/>
-
+   <field name="publication_date" type="string" indexed="true" stored="true"/>
 
     <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->

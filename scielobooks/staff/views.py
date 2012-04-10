@@ -810,7 +810,7 @@ def ajax_action_publish(request):
             return Response('nothing to do')
 
         try:
-            parts = [update_part(part['doc'], {'visible': True}) for part in request.db.view('scielobooks/monographs_and_parts',
+            parts = [update_part(part['doc'], {'visible': True, 'publication_date': str(date.today())}) for part in request.db.view('scielobooks/monographs_and_parts',
                 include_docs=True, startkey=[evaluation.monograph_sbid, 0], endkey=[evaluation.monograph_sbid, 1])]
         except couchdbkit.ResourceNotFound:
             raise exceptions.NotFound()

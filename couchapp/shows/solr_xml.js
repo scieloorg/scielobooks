@@ -105,6 +105,7 @@ function(doc, req) {
                 format: formatted_format,
                 shortname: doc.shortname,
                 language: doc.language,
+                publication_date: doc.publication_date,
 
     }
 
