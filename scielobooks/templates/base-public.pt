@@ -18,7 +18,7 @@
       <div class="container">
         <div class="top">
           <h1>
-              <a href="#"><span>SciELO Livros</span></a>
+              <a href="/"><span>SciELO Livros</span></a>
               <span tal:condition="current_language == 'pt'"
                     class="l10n_sitename"
                     style="background-image: url(/static/images/site_title_pt.png);"></span>
