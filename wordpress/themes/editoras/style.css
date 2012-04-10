@@ -92,6 +92,9 @@ DESCRIPTION: Three-column fixed layout
 	margin: 0 auto;
 	width: 100%;
 }
+#search {
+	margin-bottom:10px;
+}
 .leftCol {
     float: left;
     width: 135px;
