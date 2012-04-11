@@ -110,7 +110,7 @@
           </span>
         </dl>
 
-        <div class="download_box" tal:condition="not getattr(document, 'is_comercial', 'false')">
+        <div class="download_box" tal:condition="not getattr(document, 'is_comercial', None)">
          <div class="download"
               tal:condition="book_attachments | nothing">
            <fieldset>
@@ -125,7 +125,7 @@
          </div>
         </div>
 
-        <div class="shopping_box" tal:condition="getattr(document, 'is_comercial', 'false')">
+        <div class="shopping_box" tal:condition="getattr(document, 'is_comercial', None)">
          <div class="shopping">
            <fieldset>
              <legend i18n:translate="">Buy at:</legend>
