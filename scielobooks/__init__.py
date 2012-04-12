@@ -47,6 +47,7 @@ def main(global_config, **settings):
     config.include(pyramid_zcml)
     config.load_zcml('configure.zcml')
     config.include('pyramid_mailer')
+    config.include('pyramid_celery')
 
     config.registry['mailer'] = Mailer.from_settings(settings)
     config.registry['app_version'] = APP_VERSION

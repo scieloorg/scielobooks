@@ -1,11 +1,14 @@
 # coding: utf-8
-import re
-from unicodedata import normalize
-import Image
 import StringIO
 import tempfile
 import os
+import re
+from unicodedata import normalize
+
+import Image
 import deform
+import paramiko
+from celery.task import task
 try:
     import gfx
 except ImportError:
@@ -66,7 +69,7 @@ def convert_pdf2swf(pdf_doc):
     pdf_temp_file.write(pdf_doc)
     pdf_temp_file.close()
     swf_temp_file.close()
-    gfx.setparameter('poly2bitmap', '1')    
+    gfx.setparameter('poly2bitmap', '1')
     doc = gfx.open("pdf", pdf_temp_filename)
     swf = gfx.SWF()
     swf.setparameter('flashversion', '9')
@@ -95,4 +98,46 @@ def customize_form_css_class(form, default_css=None, **kwargs):
     if default_css or kwargs:
         for field in form:
             field.widget.css_class = kwargs[field.name] if field.name in kwargs else default_css
+
+
+class StaticDeployChannel(object):
+    """
+    Opens a sftp session to transfer static files to the
+    static webserver
+    """
+    def __init__(self, static_file, remote_path, host, username, password, port=22):
+        """
+        static_file is a file-like object
+
+        sets the following instance variables:
+        * filename -> the temp filename for the given static file
+        """
+        self.remote_path = remote_path
+
+        transport = paramiko.Transport((host, port))
+        transport.connect(username=username, password=password)
+        self._sftp_client = paramiko.SFTPClient.from_transport(transport)
+
+        temp_file = tempfile.NamedTemporaryFile(delete=False)
+        temp_file.write(static_file.read())
+
+        self.filename = temp_file.name
+        temp_file.close()
+
+    def __del__(self):
+        self._sftp_client.close()
+        os.unlink(self.filename)
+
+    def transfer(self):
+        self._sftp_client.put(self.filename, self.remote_path)
+
+@task
+def transfer_static_file(data, book_sbid, filename, filetype, remote_basepath):
+    remote_path = '{3}/{0}/{1}/{2}'.format(book_sbid, filetype, filename, remote_basepath)
+
+    try:
+        sftp = StaticDeployChannel(data, remote_path)
+        sftp.transfer()
+    except:
+        pass #log errors
 
