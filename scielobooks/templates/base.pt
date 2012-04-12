@@ -38,7 +38,7 @@
             tal:content="msg" />
         </div>
 
-        <div class="breadcrumb" tal:condition="general_stuff.breadcrumb | default">
+        <div class="breadcrumb" tal:condition="general_stuff.breadcrumb | None">
           <span tal:omit-tag="" tal:repeat="breadcrumb_level general_stuff.breadcrumb">
             <a tal:condition="not repeat.breadcrumb_level.end"
                tal:attributes="href breadcrumb_level[1]">
