@@ -27,7 +27,7 @@ import urllib
 import math
 
 from .models import Monograph, Part
-from ..utilities.functions import create_thumbnail, slugify
+from scielobooks.utilities.functions import create_thumbnail, slugify, transfer_static_file
 
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'
 MIMETYPES = {
@@ -824,6 +824,11 @@ def ajax_action_publish(request):
             request.db.save_docs(parts, all_or_nothing=True)
         except:
             request.rel_db_session.rollback()
+
+        monograph = Monograph.get(request.db, evaluation.monograph_sbid)
+        pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
+        transfer_static_file(request, pdf_file, monograph._id,
+        monograph.shortname, 'pdf', '/home/gustavo.fonseca')
 
         return Response('done')
 

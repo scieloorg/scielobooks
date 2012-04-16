@@ -100,44 +100,76 @@ def customize_form_css_class(form, default_css=None, **kwargs):
             field.widget.css_class = kwargs[field.name] if field.name in kwargs else default_css
 
 
-class StaticDeployChannel(object):
+class SFTPChannel(object):
     """
     Opens a sftp session to transfer static files to the
     static webserver
     """
-    def __init__(self, static_file, remote_path, host, username, password, port=22):
-        """
-        static_file is a file-like object
+    def __init__(self, remote_host, username, password, port=22):
+        self.remote_host = remote_host
+        self.username = username
+        self.password = password
+        self.port = port
 
-        sets the following instance variables:
-        * filename -> the temp filename for the given static file
-        """
-        self.remote_path = remote_path
+    def __enter__(self):
+        self.transport = paramiko.Transport((self.remote_host, self.port))
+        self.transport.connect(username=self.username, password=self.password) #raises paramiko.SSHException
+        self.sftp = paramiko.SFTPClient.from_transport(self.transport)
+        return self
 
-        transport = paramiko.Transport((host, port))
-        transport.connect(username=username, password=password)
-        self._sftp_client = paramiko.SFTPClient.from_transport(transport)
+    def __exit__(self, exc_type, exc_value, traceback):
+        try:
+            self.transport.close()
+        except:
+            pass
+        
+    def transfer(self, data, remote_path):
+        if not isinstance(data, basestring):
+            data = data.read()
 
-        temp_file = tempfile.NamedTemporaryFile(delete=False)
-        temp_file.write(static_file.read())
+        self.temp_file = tempfile.NamedTemporaryFile(delete=False)
+        self.temp_file.write(data)
+        self.temp_filename = self.temp_file.name
+        self.temp_file.close()
 
-        self.filename = temp_file.name
-        temp_file.close()
+        if remote_path.startswith('/'):
+            splitted_remote_path = remote_path[1:]
+        splitted_remote_path = splitted_remote_path.split('/')[:-1]
 
-    def __del__(self):
-        self._sftp_client.close()
-        os.unlink(self.filename)
+        current_path = '/'
+        for path_segment in splitted_remote_path:
+            current_path += path_segment   
+            try:
+                self.sftp.mkdir(current_path)
+            except IOError:
+                pass #assuming the directory already exists
+            current_path += '/'
+    
+        self.sftp.put(self.temp_filename, remote_path)
 
-    def transfer(self):
-        self._sftp_client.put(self.filename, self.remote_path)
 
-@task
-def transfer_static_file(data, book_sbid, filename, filetype, remote_basepath):
-    remote_path = '{3}/{0}/{1}/{2}'.format(book_sbid, filetype, filename, remote_basepath)
+def transfer_static_file(request, data, book_sbid, filename, filetype, remote_basepath):
+    """
+    Start a celery task to transfer the file to the static webserver.
 
+    We are using a closure just to make the code more simple, because the
+    request object is not serializable by the celery tasks.
+    """
+    remote_path = os.path.join(remote_basepath, book_sbid, filetype,
+    '.'.join([filename, filetype]))
+    fileserver_host = request.registry.settings['fileserver_host']
+    fileserver_username = request.registry.settings['fileserver_username']
+    fileserver_password = request.registry.settings['fileserver_password']
+
+    return transfer_data.delay(data.read(), remote_path, fileserver_host, 
+        fileserver_username, fileserver_password)
+
+@task(name='functions.transfer_data')
+def transfer_data(data, remote_path, fileserver_host, fileserver_username, fileserver_password):
+    logger = transfer_data.get_logger()
     try:
-        sftp = StaticDeployChannel(data, remote_path)
-        sftp.transfer()
-    except:
-        pass #log errors
-
+        with SFTPChannel(fileserver_host, fileserver_username, fileserver_password) as sftp:
+            logger.info('Transfering %s to %s' % (remote_path, fileserver_host))
+            sftp.transfer(data, remote_path)
+    except Exception, exc:
+        logger.error('Error transfering %s to %s: %s' % (remote_path, fileserver_host, exc))

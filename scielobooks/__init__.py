@@ -64,7 +64,7 @@ def main(global_config, **settings):
         config.add_static_view(name='static', path='static')
     config.add_static_view('deform_static', 'deform:static')
     config.add_static_view('/'.join((settings['db_uri'], settings['db_name'])), 'scielobooks:database')
-    config.add_static_view(settings['static_fileserver'], 'scielobooks:fileserver')
+    config.add_static_view(settings['fileserver_url'], 'scielobooks:fileserver')
 
     config.add_view(custom_forbidden_view, context=Forbidden)
 
