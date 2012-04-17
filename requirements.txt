@@ -44,3 +44,5 @@ zope.event==3.5.2
 zope.i18nmessageid==3.6.1
 zope.interface==3.8.0
 zope.schema==4.1.1
+pyramid_celery==1.2
+paramiko==1.7.7.1
