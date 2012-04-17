@@ -827,8 +827,12 @@ def ajax_action_publish(request):
 
         monograph = Monograph.get(request.db, evaluation.monograph_sbid)
         pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
-        transfer_static_file(request, pdf_file, monograph._id,
-        monograph.shortname, 'pdf', '/home/gustavo.fonseca')
+        
+        if request.registry.settings.get('fileserver_sync_enable', 'false').lower() == 'true':
+            #weird. need to find a better way to get boolean values from
+            #settings.
+            transfer_static_file(request, pdf_file, monograph._id,
+                monograph.shortname, 'pdf', request.registry.settings['fileserver_remotebase'])
 
         return Response('done')
 

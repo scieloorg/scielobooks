@@ -173,7 +173,6 @@ def cover(request):
 
     return response
 
-import urllib2
 def pdf_file(request):
     sbid = request.matchdict['sbid']
     req_part = request.matchdict['part'].split('-')
@@ -181,15 +180,22 @@ def pdf_file(request):
     monograph = Monograph.get(request.db, sbid)
     if len(req_part) == 2 and req_part[1] == monograph.isbn:
         try:
-            url = static_url('scielobooks:fileserver/{0}/pdf/{1}'.format(sbid, request.matchdict['part']), request)
+            url = static_url('scielobooks:fileserver/{0}/pdf/{1}.pdf'.format(sbid, request.matchdict['part']), request)
             u = urllib2.urlopen(url)
             return HTTPFound(location=url)
-        except urllib2.HTTPError:
+        except (urllib2.HTTPError, urllib2.URLError):
             #cannot find in static file server, fetch from db
             try:
                 pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
             except (couchdbkit.ResourceNotFound, AttributeError):
                 raise exceptions.NotFound()
+            else:
+                if request.registry.settings.get('fileserver_sync_enable', 'false').lower() == 'true':
+                    #weird. need to find a better way to get boolean values from
+                    #settings.
+                    fresh_pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
+                    functions.transfer_static_file(request, fresh_pdf_file, monograph._id,
+                        monograph.shortname, 'pdf', request.registry.settings['fileserver_remotebase'])
     else:
         parts = get_book_parts(monograph._id, request)
         try:

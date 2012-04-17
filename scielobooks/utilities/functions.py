@@ -111,10 +111,11 @@ class SFTPChannel(object):
         self.password = password
         self.port = port
 
-    def __enter__(self):
         self.transport = paramiko.Transport((self.remote_host, self.port))
         self.transport.connect(username=self.username, password=self.password) #raises paramiko.SSHException
-        self.sftp = paramiko.SFTPClient.from_transport(self.transport)
+        self.sftp = paramiko.SFTPClient.from_transport(self.transport)        
+
+    def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -156,7 +157,7 @@ def transfer_static_file(request, data, book_sbid, filename, filetype, remote_ba
     request object is not serializable by the celery tasks.
     """
     remote_path = os.path.join(remote_basepath, book_sbid, filetype,
-    '.'.join([filename, filetype]))
+        '.'.join([filename, filetype]))
     fileserver_host = request.registry.settings['fileserver_host']
     fileserver_username = request.registry.settings['fileserver_username']
     fileserver_password = request.registry.settings['fileserver_password']
