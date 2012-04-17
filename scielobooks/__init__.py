@@ -47,6 +47,7 @@ def main(global_config, **settings):
     config.include(pyramid_zcml)
     config.load_zcml('configure.zcml')
     config.include('pyramid_mailer')
+    config.include('pyramid_celery')
 
     config.registry['mailer'] = Mailer.from_settings(settings)
     config.registry['app_version'] = APP_VERSION
@@ -62,8 +63,8 @@ def main(global_config, **settings):
     if settings['serve_static_files'] == 'true':
         config.add_static_view(name='static', path='static')
     config.add_static_view('deform_static', 'deform:static')
-    config.add_static_view(settings['books_static_url'], 'scielobooks:books')
     config.add_static_view('/'.join((settings['db_uri'], settings['db_name'])), 'scielobooks:database')
+    config.add_static_view(settings['fileserver_url'], 'scielobooks:fileserver')
 
     config.add_view(custom_forbidden_view, context=Forbidden)
 
