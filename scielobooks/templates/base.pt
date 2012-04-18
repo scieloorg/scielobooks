@@ -17,9 +17,11 @@
         <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
       </metal:block>
 
-      <script type="text/javascript">
+      <script type="text/javascript"
+              tal:condition="getattr(request.registry.settings, 'google_analytics_enable', None) == 'true' and 
+                getattr(request.registry.settings, 'google_analytics_code', None)">
         var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-30855415-1']);
+        _gaq.push(['_setAccount', '${request.registry.settings.google_analytics_code}']);
         _gaq.push(['_trackPageview']);
 
         (function() {
