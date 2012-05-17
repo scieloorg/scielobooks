@@ -88,7 +88,7 @@ class MonographForm():
         base_schema['shopping_info'].children[0]['book_url'].widget.css_class = 'fullSizeInput'
         base_schema['shopping_info'].children[0]['book_url'].validator = url_validate_factory(message=localizer.translate(_('Invalid URL')))
         base_schema['shopping_info'].children[0]['book_url'].missing = None
-        
+
         base_schema['notes'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)
 
         base_schema['translated_titles'].title = localizer.translate(_('Translated Titles'))
@@ -265,8 +265,16 @@ class EvaluationForm():
             isbn = colander.SchemaNode(
                 colander.String(),
                 validator=isbn_validate_factory(message=localizer.translate(_('Invalid ISBN number'))),
+                missing=None,
                 title=localizer.translate(_('ISBN')),
-                description=localizer.translate(_('ISBN 13')),
+                description=localizer.translate(_('Print ISBN 13')),
+            )
+            eisbn = colander.SchemaNode(
+                colander.String(),
+                validator=isbn_validate_factory(message=localizer.translate(_('Invalid ISBN number'))),
+                missing=None,
+                title=localizer.translate(_('eISBN')),
+                description=localizer.translate(_('Ebook ISBN 13')),
             )
             subject = colander.SchemaNode(
                 colander.String(),
