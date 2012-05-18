@@ -113,9 +113,12 @@ def edit_book(request):
         #update monographic data that lives on each part
         monograph_as_python = monograph.to_python()
         monographic_data = {'monograph_title': monograph_as_python['title'],
-                            'monograph_isbn': monograph_as_python['isbn'],
                             'monograph_creators': monograph_as_python['creators'],
                             'monograph_publisher': monograph_as_python['publisher'],}
+
+        if monograph_as_python.get('isbn'):
+            monographic_data.update({'monograph_isbn': monograph_as_python['isbn']})
+
         try:
             parts = [update_part(part['doc'], monographic_data) for part in request.db.view('scielobooks/monographs_and_parts',
                 include_docs=True, key=[monograph._id, 1])]
@@ -127,7 +130,10 @@ def edit_book(request):
         #update evaluation data
         evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph_as_python['_id']).one()
         for attr in ['title', 'isbn',]:
-            setattr(evaluation, attr, monograph_as_python[attr])
+            try:
+                setattr(evaluation, attr, monograph_as_python[attr])
+            except KeyError:
+                setattr(evaluation, attr, None)
 
         request.rel_db_session.add(evaluation)
         try:
@@ -501,12 +507,12 @@ def delete_publisher(request):
     slug = request.matchdict.get('slug', None)
 
     if slug is None:
-        return Respose(status=204)
+        return Response(status=204)
 
     try:
         publisher = request.rel_db_session.query(rel_models.Publisher).filter_by(name_slug=slug).one()
     except NoResultFound:
-        return Respose(status=204)
+        return Response(status=204)
 
     request.rel_db_session.delete(publisher)
 
@@ -550,6 +556,7 @@ def new_book(request):
             return HTTPFound(location=request.route_path('staff.panel'))
 
         controls = request.POST.items()
+
         try:
             appstruct = evaluation_form.validate(controls)
         except deform.ValidationFailure, e:
@@ -563,23 +570,28 @@ def new_book(request):
         publisher_slug = appstruct.pop('publisher')
         publisher = request.rel_db_session.query(rel_models.Publisher).filter_by(name_slug=publisher_slug).one()
         appstruct['status'] = 'under-evaluation'
+        eisbn = appstruct.pop('eisbn') #only exists in couchdb
         evaluation = rel_models.Evaluation(**appstruct)
 
         evaluation.publisher = publisher
 
         monograph = Monograph(title=evaluation.title,
-                              isbn=evaluation.isbn,
                               publisher=evaluation.publisher.name,
                               publisher_url=evaluation.publisher_catalog_url if evaluation.publisher_catalog_url else '',
                               visible=False,
                               creation_date=str(evaluation.creation_date),
                               )
+        if evaluation.isbn:
+            monograph.isbn = evaluation.isbn
+        if eisbn:
+            monograph.eisbn = eisbn
 
         evaluation.monograph_sbid = monograph._id
         request.rel_db_session.add(evaluation)
         try:
             request.rel_db_session.commit()
         except IntegrityError:
+            import pdb; pdb.set_trace()
             request.rel_db_session.rollback()
             request.session.flash(_('This record already exists! Please check the data and try again.'))
             return {'content':evaluation_form.render(appstruct),
@@ -607,7 +619,7 @@ def delete_book(request):
     monograph_sbid = request.matchdict.get('sbid', None)
 
     if monograph_sbid is None:
-        return Respose(status=204)
+        return Response(status=204)
 
     #TODO! catch exception
     evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(monograph_sbid=monograph_sbid).one()
@@ -709,12 +721,12 @@ def delete_meeting(request):
     id = request.matchdict.get('id', None)
 
     if id is None:
-        return Respose(status=204)
+        return Response(status=204)
 
     try:
         meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=id).one()
     except NoResultFound:
-        return Respose(status=204)
+        return Response(status=204)
 
     request.rel_db_session.delete(meeting)
 
@@ -743,15 +755,20 @@ def meetings_list(request):
 
 def ajax_set_meeting(request):
     if request.method == 'POST':
-        evaluation_isbn = request.POST.get('evaluation', None)
+        evaluation_sbid = request.POST.get('sbid', None)
         meeting_id = request.POST.get('meeting', None)
 
-        if evaluation_isbn is None or meeting_id is None:
-            return Respose('insufficient params')
+        if evaluation_sbid is None or meeting_id is None:
+            return Response('insufficient params')
 
         #TODO! catch exception
-        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
-        meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=meeting_id).one()
+        try:
+            evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(
+                monograph_sbid=evaluation_sbid).one()
+            meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(
+                id=meeting_id).one()
+        except NoResultFound:
+            return Response('invalid params')
 
         evaluation.meeting = meeting
         request.rel_db_session.add(evaluation)
@@ -764,17 +781,21 @@ def ajax_set_meeting(request):
 
 def ajax_set_committee_decision(request):
     if request.method == 'POST':
-        evaluation_isbn = request.POST.get('evaluation', None)
+        evaluation_sbid = request.POST.get('sbid', None)
         decision = request.POST.get('decision', None)
 
-        if evaluation_isbn is None or decision is None:
-            return Respose('insufficient params')
+        if evaluation_sbid is None or decision is None:
+            return Response('insufficient params')
 
         if decision not in STATUS_CHOICES:
-            return Respose('invalid params')
+            return Response('invalid params')
 
         #TODO! catch exception
-        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+        try:
+            evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(
+                monograph_sbid=evaluation_sbid).one()
+        except NoResultFound:
+            return Response('invalid params')
 
         evaluation.status = decision
         request.rel_db_session.add(evaluation)
@@ -795,13 +816,17 @@ def update_part(part, new_values):
 
 def ajax_action_publish(request):
     if request.method == 'POST':
-        evaluation_isbn = request.POST.get('evaluation', None)
+        evaluation_sbid = request.POST.get('sbid', None)
 
-        if evaluation_isbn is None:
-            return Respose('insufficient params')
+        if evaluation_sbid is None:
+            return Response('insufficient params')
 
         #TODO! catch exception
-        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+        try:
+            evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(
+                monograph_sbid=evaluation_sbid).one()
+        except NoResultFound:
+            return Response('invalid action')
 
         if evaluation.status != 'accepted' and evaluation.status != 'accepted-with-condition':
             return Response('invalid action')
@@ -818,6 +843,12 @@ def ajax_action_publish(request):
         evaluation.is_published = True
         request.rel_db_session.add(evaluation)
 
+        monograph = Monograph.get(request.db, evaluation.monograph_sbid)
+
+        if not getattr(monograph, 'eisbn', None):
+            # eISBN is required to publish a book
+            return Response('invalid action')
+
         #TODO! catch exception
         try:
             request.rel_db_session.commit()
@@ -825,14 +856,15 @@ def ajax_action_publish(request):
         except:
             request.rel_db_session.rollback()
 
-        monograph = Monograph.get(request.db, evaluation.monograph_sbid)
-        pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
-        
-        if request.registry.settings.get('fileserver_sync_enable', 'false').lower() == 'true':
-            #weird. need to find a better way to get boolean values from
-            #settings.
-            transfer_static_file(request, pdf_file, monograph._id,
-                monograph.shortname, 'pdf', request.registry.settings['fileserver_remotebase'])
+        if hasattr(monograph, 'pdf_file'):
+            # Transfer pdf file to static.scielo.org
+            pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
+
+            if request.registry.settings.get('fileserver_sync_enable', 'false').lower() == 'true':
+                #weird. need to find a better way to get boolean values from
+                #settings.
+                transfer_static_file(request, pdf_file, monograph._id,
+                    monograph.shortname, 'pdf', request.registry.settings['fileserver_remotebase'])
 
         return Response('done')
 
@@ -840,13 +872,14 @@ def ajax_action_publish(request):
 
 def ajax_action_unpublish(request):
     if request.method == 'POST':
-        evaluation_isbn = request.POST.get('evaluation', None)
+        evaluation_sbid = request.POST.get('sbid', None)
 
-        if evaluation_isbn is None:
-            return Respose('insufficient params')
+        if evaluation_sbid is None:
+            return Response('insufficient params')
 
         #TODO! catch exception
-        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(
+            monograph_sbid=evaluation_sbid).one()
 
         if not evaluation.is_published:
             return Response('nothing to do')
@@ -876,7 +909,7 @@ def ajax_action_delete_part(request):
         part_sbid = request.POST.get('part', None)
 
         if part_sbid is None:
-            return Respose('insufficient params')
+            return Response('insufficient params')
 
         request.db.delete_doc(part_sbid)
         request.session.flash(_('Successfully deleted.'))
