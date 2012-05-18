@@ -36,7 +36,7 @@ $(document).ready(function(){
                  {"sbid":sbid}, function(res){
                     $('#actions_load_icon_'+sbid).hide();
                     if(res == "insufficient params"){
-                      alert("This book cannot yet be published. Check for missing data.");
+                      alert("This book yet cannot be published. Check for missing data.");
                     }
                     location.reload();
           });
