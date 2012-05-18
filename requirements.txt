@@ -42,7 +42,6 @@ python-dateutil==1.5
 repoze.lru==0.5
 repoze.sendmail==3.1
 restkit==4.1.2
-scielobooks==v1rc8
 setuptools-git==0.4.2
 six==1.1.0
 socketpool==0.3.0
@@ -58,3 +57,4 @@ zope.event==3.5.2
 zope.i18nmessageid==3.6.1
 zope.interface==3.8.0
 zope.schema==4.1.1
+sqlalchemy-migrate==0.7.2
