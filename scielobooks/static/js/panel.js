@@ -34,8 +34,11 @@ $(document).ready(function(){
           $('#actions_load_icon_'+sbid).show();
           $.post("/staff/function/actionpublish/",
                  {"sbid":sbid}, function(res){
-                     $('#actions_load_icon_'+sbid).hide();
-                     location.reload();
+                    $('#actions_load_icon_'+sbid).hide();
+                    if(res == "insufficient params"){
+                      alert("This book cannot yet be published. Check for missing data.");
+                    }
+                    location.reload();
           });
         }
     });

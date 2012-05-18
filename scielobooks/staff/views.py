@@ -762,9 +762,13 @@ def ajax_set_meeting(request):
             return Response('insufficient params')
 
         #TODO! catch exception
-        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(
-            monograph_sbid=evaluation_sbid).one()
-        meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=meeting_id).one()
+        try:
+            evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(
+                monograph_sbid=evaluation_sbid).one()
+            meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(
+                id=meeting_id).one()
+        except NoResultFound:
+            return Response('invalid params')
 
         evaluation.meeting = meeting
         request.rel_db_session.add(evaluation)
@@ -777,10 +781,10 @@ def ajax_set_meeting(request):
 
 def ajax_set_committee_decision(request):
     if request.method == 'POST':
-        evaluation_isbn = request.POST.get('evaluation', None)
+        evaluation_sbid = request.POST.get('sbid', None)
         decision = request.POST.get('decision', None)
 
-        if evaluation_isbn is None or decision is None:
+        if evaluation_sbid is None or decision is None:
             return Response('insufficient params')
 
         if decision not in STATUS_CHOICES:
@@ -788,7 +792,8 @@ def ajax_set_committee_decision(request):
 
         #TODO! catch exception
         try:
-            evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+            evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(
+                monograph_sbid=evaluation_sbid).one()
         except NoResultFound:
             return Response('invalid params')
 
@@ -811,13 +816,17 @@ def update_part(part, new_values):
 
 def ajax_action_publish(request):
     if request.method == 'POST':
-        evaluation_isbn = request.POST.get('evaluation', None)
+        evaluation_sbid = request.POST.get('sbid', None)
 
-        if evaluation_isbn is None:
+        if evaluation_sbid is None:
             return Response('insufficient params')
 
         #TODO! catch exception
-        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+        try:
+            evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(
+                monograph_sbid=evaluation_sbid).one()
+        except NoResultFound:
+            return Response('invalid action')
 
         if evaluation.status != 'accepted' and evaluation.status != 'accepted-with-condition':
             return Response('invalid action')
@@ -847,13 +856,15 @@ def ajax_action_publish(request):
         except:
             request.rel_db_session.rollback()
 
-        pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
+        if hasattr(monograph, 'pdf_file'):
+            # Transfer pdf file to static.scielo.org
+            pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
 
-        if request.registry.settings.get('fileserver_sync_enable', 'false').lower() == 'true':
-            #weird. need to find a better way to get boolean values from
-            #settings.
-            transfer_static_file(request, pdf_file, monograph._id,
-                monograph.shortname, 'pdf', request.registry.settings['fileserver_remotebase'])
+            if request.registry.settings.get('fileserver_sync_enable', 'false').lower() == 'true':
+                #weird. need to find a better way to get boolean values from
+                #settings.
+                transfer_static_file(request, pdf_file, monograph._id,
+                    monograph.shortname, 'pdf', request.registry.settings['fileserver_remotebase'])
 
         return Response('done')
 
@@ -861,13 +872,14 @@ def ajax_action_publish(request):
 
 def ajax_action_unpublish(request):
     if request.method == 'POST':
-        evaluation_isbn = request.POST.get('evaluation', None)
+        evaluation_sbid = request.POST.get('sbid', None)
 
-        if evaluation_isbn is None:
+        if evaluation_sbid is None:
             return Response('insufficient params')
 
         #TODO! catch exception
-        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(
+            monograph_sbid=evaluation_sbid).one()
 
         if not evaluation.is_published:
             return Response('nothing to do')
