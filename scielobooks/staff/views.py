@@ -755,14 +755,15 @@ def meetings_list(request):
 
 def ajax_set_meeting(request):
     if request.method == 'POST':
-        evaluation_isbn = request.POST.get('evaluation', None)
+        evaluation_sbid = request.POST.get('sbid', None)
         meeting_id = request.POST.get('meeting', None)
 
-        if evaluation_isbn is None or meeting_id is None:
+        if evaluation_sbid is None or meeting_id is None:
             return Response('insufficient params')
 
         #TODO! catch exception
-        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(isbn=evaluation_isbn).one()
+        evaluation = request.rel_db_session.query(rel_models.Evaluation).filter_by(
+            monograph_sbid=evaluation_sbid).one()
         meeting = request.rel_db_session.query(rel_models.Meeting).filter_by(id=meeting_id).one()
 
         evaluation.meeting = meeting

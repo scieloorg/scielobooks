@@ -100,39 +100,39 @@
                           <li tal:condition="(evaluation.status == 'accepted' or evaluation.status == 'accepted-with-condition') and evaluation.is_published != True">
                             <a href="javascript: void(0);"
                                class="action_publish"
-                               id="${evaluation.isbn}_action-publish" i18n:translate="">Publish</a>
+                               id="${evaluation.monograph_sbid}_action-publish" i18n:translate="">Publish</a>
                           </li>
                           <li tal:condition="evaluation.is_published == True">
                             <a href="javascript: void(0);"
                                class="action_unpublish"
-                               id="${evaluation.isbn}_action-unpublish" i18n:translate="">Unpublish</a>
+                               id="${evaluation.monograph_sbid}_action-unpublish" i18n:translate="">Unpublish</a>
                           </li>
                           <li><a href="javascript: void(0);"
                                  class="action_delete"
-                                 id="${evaluation.monograph_sbid}_${evaluation.isbn}_action-delete" i18n:translate="">Delete</a>
+                                 id="${evaluation.monograph_sbid}_action-delete" i18n:translate="">Delete</a>
                           </li>
                         </ul>
 
-                        <img id="actions_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
+                        <img id="actions_load_icon_${evaluation.monograph_sbid}" src="/static/images/ajax-loader.gif" style="display:none"/>
                       </td>
                       <td >
                         <select class="meetings">
                           <option value="nothing">---</option>
                           <option tal:repeat="meeting meetings"
                                   tal:content="meeting.description if meeting.description else meeting.date"
-                                  value="${evaluation.isbn}_${meeting.id}"
+                                  value="${evaluation.monograph_sbid}_${meeting.id}"
                                   tal:attributes="selected evaluation.meeting == meeting"></option>
                         </select>
-                        <img id="meeting_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
+                        <img id="meeting_load_icon_${evaluation.monograph_sbid}" src="/static/images/ajax-loader.gif" style="display:none"/>
                       </td>
                       <td>
                         <select class="committee-decision">
                           <option tal:repeat="decision committee_decisions"
                                   tal:content="decision.text"
-                                  value="${evaluation.isbn}_${decision.value}"
+                                  value="${evaluation.monograph_sbid}_${decision.value}"
                                   tal:attributes="selected evaluation.status == decision.value">Accepted</option>
                         </select>
-                        <img id="committee-decision_load_icon_${evaluation.isbn}" src="/static/images/ajax-loader.gif" style="display:none"/>
+                        <img id="committee-decision_load_icon_${evaluation.monograph_sbid}" src="/static/images/ajax-loader.gif" style="display:none"/>
                       </td>
                       <td>
                           <span tal:condition="evaluation.is_published == True"
