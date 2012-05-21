@@ -54,8 +54,11 @@ class Monograph(model.CouchdbDocument):
 
     def _creators_by_roles(self):
         creators_by_role = OrderedDict()
-        for creator in self.creators:
-            creators_by_role.setdefault(creator['role'], []).append(creator['full_name'])
+        try:
+            for creator in self.creators:
+                creators_by_role.setdefault(creator['role'], []).append(creator['full_name'])
+        except AttributeError:
+            return {}
 
         return copy.deepcopy(creators_by_role)
 
