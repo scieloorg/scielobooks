@@ -591,7 +591,6 @@ def new_book(request):
         try:
             request.rel_db_session.commit()
         except IntegrityError:
-            import pdb; pdb.set_trace()
             request.rel_db_session.rollback()
             request.session.flash(_('This record already exists! Please check the data and try again.'))
             return {'content':evaluation_form.render(appstruct),
