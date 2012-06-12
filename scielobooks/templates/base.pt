@@ -18,7 +18,7 @@
       </metal:block>
 
       <script type="text/javascript"
-              tal:condition="getattr(request.registry.settings, 'google_analytics_enable', None) == 'true' and 
+              tal:condition="getattr(request.registry.settings, 'google_analytics_enable', None) == 'true' and
                 getattr(request.registry.settings, 'google_analytics_code', None)">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', '${request.registry.settings.google_analytics_code}']);
@@ -69,7 +69,7 @@
 
       <div class="spacer"></div>
       <div class="footer">
-        <p>version: ${request.registry.app_version}. <a href="http://reddes.bvsalud.org/projects/scielo-books/newticket?version=${request.registry.app_version}&amp;type=defect" target="_blank">Report a Bug!</a></p>
+        <p>version: ${request.registry.app_version}. <a href="http://trac.scielo.org/trac/scielo-livros/newticket?version=${request.registry.app_version}&amp;type=defect" target="_blank">Report a Bug!</a></p>
       </div>
     </body>
 </html>
