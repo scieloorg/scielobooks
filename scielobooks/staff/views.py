@@ -239,7 +239,7 @@ def new_part(request):
                 'monograph':monograph_as_python['_id'],
                 'visible': monograph_as_python['visible'],
                 'monograph_title': monograph_as_python['title'],
-                'monograph_isbn': monograph_as_python['isbn'],
+                'monograph_isbn': monograph_as_python.get('isbn'),
                 'monograph_creators': monograph_as_python['creators'],
                 'monograph_publisher': monograph_as_python['publisher'],})
         part = Part.from_python(appstruct)

@@ -24,7 +24,7 @@ from scielobooks.request import MyRequest
 
 
 APP_PATH = os.path.abspath(os.path.dirname(__file__))
-APP_VERSION = 'v1rc8'
+APP_VERSION = 'v1rc10'
 
 
 def main(global_config, **settings):
