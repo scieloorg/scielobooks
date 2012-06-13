@@ -56,7 +56,9 @@ class Monograph(model.CouchdbDocument):
         creators_by_role = OrderedDict()
         try:
             for creator in self.creators:
-                creators_by_role.setdefault(creator['role'], []).append(creator['full_name'])
+
+                creators_by_role.setdefault(creator['role'], []).append(
+                    (creator['full_name'], creator['link_resume']))
         except AttributeError:
             return {}
 
@@ -70,9 +72,9 @@ class Monograph(model.CouchdbDocument):
                 accept a list of creators and returns it in a formatted form.
                 """
                 if len(creators) > 3:
-                    return creators[0] + ' et al.'
+                    return creators[0][0] + ' et al.'
 
-                return '; '.join(creators)
+                return '; '.join([creator[0] for creator in creators])
 
         creators_by_role = self._creators_by_roles()
 
@@ -100,10 +102,19 @@ class Monograph(model.CouchdbDocument):
         Calls self.formatted_creators passing a custom formatting function.
         """
         def formatting_func(creators):
-            if len(creators) > 3:
-                return creators[0] + ' <i>et al.</i>'
 
-            return '; '.join(creators)
+            linked_creators = []
+            for creator in creators:
+                if creator[1]:
+                    linked_creators.append(u'<a href="'+creator[1]+u'">'+creator[0]+u'</a>')
+                else:
+                    linked_creators.append(creator[0])
+
+            if len(linked_creators) > 3:
+                return linked_creators[0] + ' <i>et al.</i>'
+
+            return '; '.join(linked_creators)
+
         return self.formatted_creators(formatting_func)
 
 class Part(model.CouchdbDocument):
