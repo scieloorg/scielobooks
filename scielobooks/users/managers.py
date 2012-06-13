@@ -55,7 +55,7 @@ class RegistrationProfileManager(object):
         if user.registration_profile.activation_key == ACTIVATED:
             raise InvalidActivationKey()
 
-        activation_url = request.route_path('users.activation') + '?key=%s' % user.registration_profile.activation_key
+        activation_url = request.route_url('users.activation', _host='books.scielo.org', _port=80) + '?key=%s' % user.registration_profile.activation_key
         if message is None:
             message = "Hello %s, to activate your account please visit %s" % (user.username, activation_url)
 
