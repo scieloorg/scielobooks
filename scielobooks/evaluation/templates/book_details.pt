@@ -69,6 +69,9 @@
           <dt i18n:translate="">eISBN:</dt>
             <dd tal:content="document.eisbn">0123456789</dd>
           </span>
+
+          <dt i18n:translate="">Modality:</dt>
+            <dd tal:content="publication_mode"></dd>
         </dl>
 
         <div class="download"
@@ -90,10 +93,12 @@
               tal:attributes="href document.publisher_url"
               href="#" i18n:translate="">Link to the Institutional Catalog</a></p>
 
+        <span tal:omit-tag="" tal:condition="getattr(document, 'synopsis', None)">
         <div>
           <strong i18n:translate="">Synopsis</strong>
           <p tal:condition="'synopsis' in document" tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
         </div>
+        </span>
         <div class="spacer"></div>
 
         <div class="book-parts">
