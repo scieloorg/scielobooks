@@ -111,6 +111,9 @@
           <dt i18n:translate="">eISBN:</dt>
             <dd tal:content="document.eisbn">0123456789</dd>
           </span>
+
+          <dt i18n:translate="">Modality:</dt>
+            <dd tal:content="publication_mode"></dd>
         </dl>
 
         <div class="download_box" tal:condition="not getattr(document, 'is_comercial', None)">
