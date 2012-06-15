@@ -312,7 +312,7 @@ def book_details(request):
     parts = catalog_views.get_book_parts(monograph._id, request)
 
     return {'document':monograph,
-            'publication_mode': _('Comercial') if getattr(monograph, 'is_comercial', lambda: None) else _('Open Access'),
+            'publication_mode': _('Commercial') if getattr(monograph, 'is_comercial', lambda: None) else _('Open Access'),
             'document_parts':parts,
             'evaluation':evaluation,
             'book_attachments':book_attachments,
