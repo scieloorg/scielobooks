@@ -90,7 +90,7 @@ class Monograph(model.CouchdbDocument):
         precedence = ('individual_author', 'organizer', 'coordinator', 'translator', 'collaborator', 'editor', 'corporate_author', 'other')
         for role in precedence:
             if role in creators_by_role:
-                first_author = creators_by_role[role][0]
+                first_author = creators_by_role[role][0][0]
                 first_author_lastname = self.__get_cleaned_lastname(first_author)
 
                 return shortname_format % (first_author_lastname, self.isbn)
