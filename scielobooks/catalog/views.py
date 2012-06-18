@@ -2,6 +2,8 @@
 These view callables use request.route_path instead of request.route_url, because of the
 integration needs with the wordpress based app (apache proxy rules).
 '''
+
+from pyramid.settings import asbool
 from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid import exceptions
@@ -178,7 +180,11 @@ def pdf_file(request):
     req_part = request.matchdict['part'].split('-')
 
     monograph = Monograph.get(request.db, sbid)
-    if len(req_part) == 2 and req_part[1] == monograph.isbn:
+    if len(req_part) == 2:
+
+        if req_part[1] != getattr(monograph, 'isbn', None) and req_part[1] != getattr(monograph, 'eisbn', None):
+            raise exceptions.NotFound()
+
         try:
             url = static_url('scielobooks:fileserver/{0}/pdf/{1}.pdf'.format(sbid, request.matchdict['part']), request)
             u = urllib2.urlopen(url)
@@ -190,12 +196,28 @@ def pdf_file(request):
             except (couchdbkit.ResourceNotFound, AttributeError):
                 raise exceptions.NotFound()
             else:
-                if request.registry.settings.get('fileserver_sync_enable', 'false').lower() == 'true':
-                    #weird. need to find a better way to get boolean values from
-                    #settings.
-                    fresh_pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
-                    functions.transfer_static_file(request, fresh_pdf_file, monograph._id,
-                        monograph.shortname, 'pdf', request.registry.settings['fileserver_remotebase'])
+                if asbool(request.registry.settings.get('fileserver_sync_enable', False)):
+                    if req_part[1] == getattr(monograph, 'eisbn', None) and getattr(monograph, 'isbn', None):
+                        #when the eisbn is registered at an already published book. The eisbn takes
+                        #precedence when generating the shortname.
+                        source_filename = '-'.join([monograph.shortname.split('-')[0], monograph.isbn])
+
+                        try:
+                            url = static_url('scielobooks:fileserver/{0}/pdf/{1}.pdf'.format(sbid, source_filename), request)
+                            u = urllib2.urlopen(url)
+                        except (urllib2.HTTPError, urllib2.URLError):
+                            # there are no static files available for this book.
+                            fresh_pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
+                            functions.transfer_static_file(request, fresh_pdf_file, monograph._id,
+                                monograph.shortname, 'pdf', request.registry.settings['fileserver_remotebase'])
+                        else:
+                            dest_filename = monograph.shortname
+                            functions.symlink_static_file(request, monograph._id, source_filename,
+                                dest_filename, 'pdf', request.registry.settings['fileserver_remotebase'])
+                    else:
+                        fresh_pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
+                        functions.transfer_static_file(request, fresh_pdf_file, monograph._id,
+                            monograph.shortname, 'pdf', request.registry.settings['fileserver_remotebase'])
     else:
         parts = get_book_parts(monograph._id, request)
         try:
