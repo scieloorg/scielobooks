@@ -111,7 +111,7 @@ class Monograph(model.CouchdbDocument):
             linked_creators = []
             for creator in creators:
                 if creator[1]:
-                    linked_creators.append(u'<a href="'+creator[1]+u'">'+creator[0]+u'</a>')
+                    linked_creators.append(u'<a href="'+creator[1]+u'" target="_blank">'+creator[0]+u'</a>')
                 else:
                     linked_creators.append(creator[0])
 
