@@ -113,7 +113,7 @@ class SFTPChannel(object):
 
         self.transport = paramiko.Transport((self.remote_host, self.port))
         self.transport.connect(username=self.username, password=self.password) #raises paramiko.SSHException
-        self.sftp = paramiko.SFTPClient.from_transport(self.transport)        
+        self.sftp = paramiko.SFTPClient.from_transport(self.transport)
 
     def __enter__(self):
         return self
@@ -123,7 +123,7 @@ class SFTPChannel(object):
             self.transport.close()
         except:
             pass
-        
+
     def transfer(self, data, remote_path):
         if not isinstance(data, basestring):
             data = data.read()
@@ -139,14 +139,17 @@ class SFTPChannel(object):
 
         current_path = '/'
         for path_segment in splitted_remote_path:
-            current_path += path_segment   
+            current_path += path_segment
             try:
                 self.sftp.mkdir(current_path)
             except IOError:
                 pass #assuming the directory already exists
             current_path += '/'
-    
+
         self.sftp.put(self.temp_filename, remote_path)
+
+    def symlink(self, source, dest):
+        self.sftp.symlink(source, dest)
 
 
 def transfer_static_file(request, data, book_sbid, filename, filetype, remote_basepath):
@@ -162,7 +165,23 @@ def transfer_static_file(request, data, book_sbid, filename, filetype, remote_ba
     fileserver_username = request.registry.settings['fileserver_username']
     fileserver_password = request.registry.settings['fileserver_password']
 
-    return transfer_data.delay(data.read(), remote_path, fileserver_host, 
+    return transfer_data.delay(data.read(), remote_path, fileserver_host,
+        fileserver_username, fileserver_password)
+
+
+def symlink_static_file(request, book_sbid, source_filename, dest_filename, filetype, remote_basepath):
+    """
+    Start a celery task to create a symlink to an existing file on a remote server.
+    """
+    fileserver_host = request.registry.settings['fileserver_host']
+    fileserver_username = request.registry.settings['fileserver_username']
+    fileserver_password = request.registry.settings['fileserver_password']
+
+    remote_path = os.path.join(remote_basepath, book_sbid, filetype)
+    source_path = os.path.join(remote_path, '.'.join([source_filename, filetype]))
+    dest_path = os.path.join(remote_path, '.'.join([dest_filename, filetype]))
+
+    return create_symlink.delay(source_path, dest_path, fileserver_host,
         fileserver_username, fileserver_password)
 
 @task(name='functions.transfer_data')
@@ -174,3 +193,14 @@ def transfer_data(data, remote_path, fileserver_host, fileserver_username, files
             sftp.transfer(data, remote_path)
     except Exception, exc:
         logger.error('Error transfering %s to %s: %s' % (remote_path, fileserver_host, exc))
+
+@task(name='functions.create_symlink')
+def create_symlink(source_path, dest_path, fileserver_host, fileserver_username, fileserver_password):
+    logger = transfer_data.get_logger()
+    try:
+        with SFTPChannel(fileserver_host, fileserver_username, fileserver_password) as sftp:
+            logger.info('Symlinking %s to %s' % (source_path, dest_path))
+            sftp.symlink(source_path, dest_path)
+    except Exception, exc:
+        logger.error('Error symlinking %s to %s: %s' % (source_path, dest_path, exc))
+

@@ -93,7 +93,12 @@ class Monograph(model.CouchdbDocument):
                 first_author = creators_by_role[role][0][0]
                 first_author_lastname = self.__get_cleaned_lastname(first_author)
 
-                return shortname_format % (first_author_lastname, self.isbn)
+                try:
+                    prefered_isbn = self.eisbn
+                except AttributeError:
+                    prefered_isbn = self.isbn
+
+                return shortname_format % (first_author_lastname, prefered_isbn)
         else:
             raise AttributeError()
 
