@@ -30,9 +30,16 @@
         <h3 tal:content="document.title">The man who ate his boots</h3>
 
         <dl class="metadata">
-          <span tal:omit-tag="" tal:condition="getattr(document, 'creators', None)">
-          <dt i18n:translate="">Author:</dt>
-            <dd tal:repeat="person document.creators" tal:content="person.full_name">Soares, Sandra Regina</dd>
+          <span tal:omit-tag="" tal:repeat="creator creators" tal:define="creators document.html_formatted_creators()">
+            <dt tal:condition="creator.lower() == 'individual_author'" i18n:translate="">Author:</dt>
+            <dt tal:condition="creator.lower() == 'corporate_author'" i18n:translate="">Corporate Author:</dt>
+            <dt tal:condition="creator.lower() == 'translator'" i18n:translate="">Translator:</dt>
+            <dt tal:condition="creator.lower() == 'coordinator'" i18n:translate="">Coordinator:</dt>
+            <dt tal:condition="creator.lower() == 'editor'" i18n:translate="">Editor:</dt>
+            <dt tal:condition="creator.lower() == 'other'" i18n:translate="">Other:</dt>
+            <dt tal:condition="creator.lower() == 'organizer'" i18n:translate="">Organizer:</dt>
+            <dt tal:condition="creator.lower() == 'collaborator'" i18n:translate="">Collaborator:</dt>
+              <dd tal:content="structure creators[creator]"></dd>
           </span>
 
           <span tal:omit-tag="" tal:condition="getattr(document, 'publisher', None)">
@@ -91,6 +98,7 @@
 
         <p><a tal:condition="getattr(document, 'publisher_url', None)"
               tal:attributes="href document.publisher_url"
+              target="_blank"
               href="#" i18n:translate="">Link to the Institutional Catalog</a></p>
 
         <span tal:omit-tag="" tal:condition="getattr(document, 'synopsis', None)">
@@ -101,21 +109,11 @@
         </span>
         <div class="spacer"></div>
 
-        <div class="book-parts">
-          <strong i18n:translate="">Book Parts</strong>
-          <table>
-            <tr>
-                <th i18n:translate="">Order</th>
-                <th i18n:translate="">Title</th>
-            </tr>
-            <tr tal:repeat="part document_parts">
-                <td tal:content="part.partnumber" />
-                <td tal:content="part.title" />
-                <td><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
-            </tr>
-          </table>
-
+        <div class="notes" tal:condition="exists: document.notes">
+          <strong i18n:translate="">Notes</strong>
+          <p tal:content="document.notes"></p>
         </div>
+
         <div class="spacer"></div>
 
         <div class="evaluation-info">
