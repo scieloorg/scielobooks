@@ -91,6 +91,7 @@
 
         <p><a tal:condition="getattr(document, 'publisher_url', None)"
               tal:attributes="href document.publisher_url"
+              target="_blank"
               href="#" i18n:translate="">Link to the Institutional Catalog</a></p>
 
         <span tal:omit-tag="" tal:condition="getattr(document, 'synopsis', None)">
