@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: scielobooks v1rc10\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-06-28 15:40-0300\n"
+"POT-Creation-Date: 2012-06-28 15:56-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -188,46 +188,32 @@ msgid "Link to the Institutional Catalog"
 msgstr ""
 
 #: scielobooks/evaluation/templates/book_details.pt:105
-#: scielobooks/staff/templates/book_details.pt:162
-msgid "Book Parts"
+#: scielobooks/staff/forms.py:191 scielobooks/staff/forms.py:192
+#: scielobooks/staff/forms.py:408 scielobooks/staff/forms.py:409
+msgid "Notes"
 msgstr ""
 
-#: scielobooks/evaluation/templates/book_details.pt:108
-#: scielobooks/staff/forms.py:392 scielobooks/staff/templates/book_details.pt:167
-msgid "Order"
-msgstr ""
-
-#: scielobooks/evaluation/templates/book_details.pt:109
-#: scielobooks/evaluation/templates/books_list.pt:58 scielobooks/staff/forms.py:96
-#: scielobooks/staff/forms.py:123 scielobooks/staff/forms.py:124
-#: scielobooks/staff/forms.py:165 scielobooks/staff/forms.py:181
-#: scielobooks/staff/forms.py:384 scielobooks/staff/forms.py:390
-#: scielobooks/staff/forms.py:391 scielobooks/staff/templates/book_details.pt:168
-#: scielobooks/staff/templates/panel.pt:87
-msgid "Title"
-msgstr ""
-
-#: scielobooks/evaluation/templates/book_details.pt:122
+#: scielobooks/evaluation/templates/book_details.pt:112
 #: scielobooks/staff/templates/book_details.pt:194
 msgid "Evaluation Info"
 msgstr ""
 
-#: scielobooks/evaluation/templates/book_details.pt:125
+#: scielobooks/evaluation/templates/book_details.pt:115
 #: scielobooks/staff/templates/book_details.pt:197
 msgid "Submission Date:"
 msgstr ""
 
-#: scielobooks/evaluation/templates/book_details.pt:127
+#: scielobooks/evaluation/templates/book_details.pt:117
 #: scielobooks/staff/templates/book_details.pt:199
 msgid "Status:"
 msgstr ""
 
-#: scielobooks/evaluation/templates/book_details.pt:129
+#: scielobooks/evaluation/templates/book_details.pt:119
 #: scielobooks/staff/templates/book_details.pt:201
 msgid "Scheduled for Meeting:"
 msgstr ""
 
-#: scielobooks/evaluation/templates/book_details.pt:131
+#: scielobooks/evaluation/templates/book_details.pt:121
 #: scielobooks/staff/templates/book_details.pt:203
 msgid "Meeting Description:"
 msgstr ""
@@ -246,6 +232,15 @@ msgstr ""
 #: scielobooks/staff/templates/panel.pt:86 scielobooks/users/forms.py:47
 #: scielobooks/users/forms.py:93
 msgid "Publisher"
+msgstr ""
+
+#: scielobooks/evaluation/templates/books_list.pt:58 scielobooks/staff/forms.py:96
+#: scielobooks/staff/forms.py:123 scielobooks/staff/forms.py:124
+#: scielobooks/staff/forms.py:165 scielobooks/staff/forms.py:181
+#: scielobooks/staff/forms.py:384 scielobooks/staff/forms.py:390
+#: scielobooks/staff/forms.py:391 scielobooks/staff/templates/book_details.pt:168
+#: scielobooks/staff/templates/panel.pt:87
+msgid "Title"
 msgstr ""
 
 #: scielobooks/staff/forms.py:47 scielobooks/staff/forms.py:159
@@ -490,11 +485,6 @@ msgstr ""
 msgid "Digital Object Identifier"
 msgstr ""
 
-#: scielobooks/staff/forms.py:191 scielobooks/staff/forms.py:192
-#: scielobooks/staff/forms.py:408 scielobooks/staff/forms.py:409
-msgid "Notes"
-msgstr ""
-
 #: scielobooks/staff/forms.py:194 scielobooks/staff/forms.py:402
 msgid "Full book PDF"
 msgstr ""
@@ -604,6 +594,10 @@ msgstr ""
 
 #: scielobooks/staff/forms.py:333
 msgid "Short description about the meeting"
+msgstr ""
+
+#: scielobooks/staff/forms.py:392 scielobooks/staff/templates/book_details.pt:167
+msgid "Order"
 msgstr ""
 
 #: scielobooks/staff/forms.py:393
@@ -743,6 +737,10 @@ msgstr ""
 
 #: scielobooks/staff/templates/book_details.pt:148
 msgid "Link para o Catálogo Institucional"
+msgstr ""
+
+#: scielobooks/staff/templates/book_details.pt:162
+msgid "Book Parts"
 msgstr ""
 
 #: scielobooks/staff/templates/book_details.pt:163

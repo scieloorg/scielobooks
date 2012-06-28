@@ -101,21 +101,11 @@
         </span>
         <div class="spacer"></div>
 
-        <div class="book-parts">
-          <strong i18n:translate="">Book Parts</strong>
-          <table>
-            <tr>
-                <th i18n:translate="">Order</th>
-                <th i18n:translate="">Title</th>
-            </tr>
-            <tr tal:repeat="part document_parts">
-                <td tal:content="part.partnumber" />
-                <td tal:content="part.title" />
-                <td><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
-            </tr>
-          </table>
-
+        <div class="notes" tal:condition="exists: document.notes">
+          <strong i18n:translate="">Notes</strong>
+          <p tal:content="document.notes"></p>
         </div>
+
         <div class="spacer"></div>
 
         <div class="evaluation-info">
