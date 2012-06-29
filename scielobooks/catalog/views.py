@@ -144,7 +144,6 @@ def chapter_details(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
 
     return {'document':monograph,
-            'document_pdf_url': request.route_path('catalog.pdf_file', sbid=monograph._id, part=monograph.isbn),
             'parts':parts,
             'part':part,
             'cover_thumb_url': request.route_path('catalog.cover_thumbnail', sbid=monograph._id),
@@ -267,23 +266,17 @@ def swf_file(request):
     req_part = request.matchdict['part']
 
     monograph = Monograph.get(request.db, sbid)
-    if req_part == monograph.isbn:
-        try:
-            pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'])
-        except (couchdbkit.ResourceNotFound, AttributeError):
-            raise exceptions.NotFound()
-    else:
-        parts = get_book_parts(monograph._id, request)
-        try:
-            selected_part = parts[int(req_part)]
-        except (IndexError, ValueError):
-            raise exceptions.NotFound()
+    parts = get_book_parts(monograph._id, request)
+    try:
+        selected_part = parts[int(req_part)]
+    except (IndexError, ValueError):
+        raise exceptions.NotFound()
 
-        part = Part.get(request.db, selected_part['part_sbid'])
-        try:
-            pdf_file = request.db.fetch_attachment(part._id, part.pdf_file['filename'])
-        except (couchdbkit.ResourceNotFound, AttributeError):
-            raise exceptions.NotFound()
+    part = Part.get(request.db, selected_part['part_sbid'])
+    try:
+        pdf_file = request.db.fetch_attachment(part._id, part.pdf_file['filename'])
+    except (couchdbkit.ResourceNotFound, AttributeError):
+        raise exceptions.NotFound()
 
     swf_file = functions.convert_pdf2swf(pdf_file)
 
