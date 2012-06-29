@@ -105,6 +105,7 @@
         <div>
           <strong i18n:translate="">Synopsis</strong>
           <p tal:condition="'synopsis' in document" tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+          <br/>
         </div>
         </span>
         <div class="spacer"></div>
@@ -112,6 +113,7 @@
         <div class="notes" tal:condition="exists: document.notes">
           <strong i18n:translate="">Notes</strong>
           <p tal:content="document.notes"></p>
+          <br/>
         </div>
 
         <div class="spacer"></div>
