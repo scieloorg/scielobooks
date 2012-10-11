@@ -92,19 +92,9 @@ Install the scielobooks application
 
     Development(Recommended):
     Read-only:
-    (scielobooks-env)$ git clone git://github.com/bireme/scielobooks.git
+    (scielobooks-env)$ git clone git://github.com/scieloorg/scielobooks.git
     Read+write:
-    (scielobooks-env)$ git clone git@github.com:bireme/scielobooks.git
-
-    Development:
-    (scielobooks-env)$ svn co http://svn.reddes.bvsalud.org/scielo-books/trunk/scielobooks
-
-    Stable:
-    (scielobooks-env)$ svn co http://svn.reddes.bvsalud.org/scielo-books/tags/<VERSION>
-
-
-    user: anonymous
-    password: 4guests@
+    (scielobooks-env)$ git clone git@github.com:scieloorg/scielobooks.git
 
 
 7. With the `scielobooks-env` environment active, use `setuptools` to automagically download and install all the dependencies::
