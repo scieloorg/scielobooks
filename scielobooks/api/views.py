@@ -83,7 +83,7 @@ def list_books(request):
             'pisbn': data.get('isbn', ''),
             'eisbn': data.get('eisbn', ''),
             'language': data.get('language', ''),
-            'updated': data.get('publication_date', ''),
+            'updated': data.get('creation_date', ''),
             'pdf_file': {
                 'type': 'application/pdf',
                 'uri': pdf_file_url,
