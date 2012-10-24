@@ -1,5 +1,5 @@
 function(doc) {
     if(doc.TYPE == 'Monograph' && doc.visible === true){
-        emit(doc.publisher.toUpperCase().trim(), 1);
+        emit(doc.publisher.toUpperCase(), 1);
     }
 }
