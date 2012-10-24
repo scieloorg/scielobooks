@@ -321,4 +321,27 @@
     xhr="True"
     permission="admin"
   />
+<!--
+***************
+ API FUNCTIONS
+***************
+ -->
+  <route
+    name="api.v1.list_publishers"
+    pattern="/api/v1/publishers/"
+    view="scielobooks.api.views.list_publishers"
+    renderer="json"
+  />
+  <route
+    name="api.v1.list_alphasum"
+    pattern="/api/v1/alphasum/"
+    view="scielobooks.api.views.list_alphasum"
+    renderer="json"
+  />
+  <route
+    name="api.v1.list_books"
+    pattern="/api/v1/books/"
+    view="scielobooks.api.views.list_books"
+    renderer="json"
+  />
 </configure>
