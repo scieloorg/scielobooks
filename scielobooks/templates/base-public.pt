@@ -9,6 +9,7 @@
   i18n:domain="scielobooks">
     <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <metal:block define-slot="custom_metatags"/>
       <title metal:define-slot="custom_title">SciELO Books</title>
       <link rel="shortcut icon" type="image/x-icon" href="${ request.route_path('general.favicon') }" />
 

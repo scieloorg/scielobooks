@@ -1,5 +1,24 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <p metal:use-macro="main.macros['master']" i18n:domain="scielobooks">
+
+  <div metal:fill-slot="custom_metatags" tal:omit-tag="">
+    <meta tal:attributes="content document.title" name="citation_title" />
+    <span tal:omit-tag="" tal:repeat="creator document.creators">
+    <meta name="citation_author" tal:attributes="content creator.full_name" />
+    </span>
+    <meta name="citation_publisher" tal:attributes="content document.publisher" />
+    <meta name="citation_publication_date" tal:attributes="content document.year" />
+    <meta name="citation_isbn" tal:attributes="content document.isbn" />
+    <span tal:omit-tag="" class="download_box" tal:condition="not getattr(document, 'is_comercial', None)">
+     <span tal:omit-tag="" class="download"
+          tal:condition="book_attachments | nothing">
+        <span tal:omit-tag="" tal:repeat="attach book_attachments">
+    <meta tal:attributes="content attach.url; name attach.citation_file" />
+        </span>
+      </span>
+    </span>
+  </div>
+
   <h2 metal:fill-slot="custom_top"
     tal:condition="document.publisher"
     tal:content="document.publisher">EDUSP</h2>
