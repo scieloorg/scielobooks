@@ -97,7 +97,7 @@ def book_details(request):
             # some mandatory data is missing. do not make the link public
             pass
         else:
-            book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF'), 'css_class':'pdf_file'})
+            book_attachments.append({'url':pdf_file_url, 'text':_('Book in PDF'), 'css_class':'pdf_file', 'citation_file':'citation_pdf_url'})
 
     if getattr(monograph, 'epub_file', None):
         try:
@@ -106,7 +106,7 @@ def book_details(request):
             # some mandatory data is missing. do not make the link public
             pass
         else:
-            book_attachments.append({'url':epub_file_url, 'text':_('Book in EPUB'), 'css_class': 'epub_file'})
+            book_attachments.append({'url':epub_file_url, 'text':_('Book in EPUB'), 'css_class': 'epub_file', 'citation_file':'citation_epub_url'})
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
