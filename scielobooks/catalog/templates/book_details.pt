@@ -145,6 +145,7 @@
 		      <a class="addthis_button_google_plusone" tal:attributes="g:plusone:size 'medium'"></a>
 		      <a class="addthis_button_tweet"></a>
 		      <a class="addthis_button_facebook_like" tal:attributes="fb:like:layout 'button_count'"></a>
+          <a class="addthis_button_email"></a>
 		      <a class="addthis_counter addthis_pill_style"></a>
         </div>
 
