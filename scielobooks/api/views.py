@@ -84,14 +84,6 @@ def list_books(request):
             'eisbn': data.get('eisbn', ''),
             'language': data.get('language', ''),
             'updated': data.get('creation_date', ''),
-            'pdf_file': {
-                'type': 'application/pdf',
-                'uri': pdf_file_url,
-            },
-            'epub_file': {
-                'type': 'application/epub+zip',
-                'uri': epub_file_url,
-            },
             'cover_thumbnail': {
                 'type': 'image/jpeg',
                 'uri': cover_thumb_url,
@@ -105,6 +97,19 @@ def list_books(request):
             'title': data.get('title', ''),
             'creators': book._creators_by_roles(),
         }
+
+        if pdf_file_url:
+            resp.update({'pdf_file': {
+                'type': 'application/pdf',
+                'uri': pdf_file_url,
+            }})
+
+        if epub_file_url:
+            resp.update({'epub_file': {
+                'type': 'application/epub+zip',
+                'uri': epub_file_url,
+            }})
+
         return resp
 
     kwargs = {}
