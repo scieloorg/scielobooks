@@ -75,7 +75,7 @@ function(head, req) {
       collection_fields["_"+field[0]] = field[1];
     }
     row.value.kv_collection.push(collection_fields);
-    // format as key-value
+    // translated_title as key-value
     for each (var t_title in row.value.translated_titles) {
       var fields = {};
       for each (var field in t_title) {
