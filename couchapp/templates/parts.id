@@ -1,0 +1,23 @@
+{{#rows}}
+!ID 0
+!v001!{{monograph}}
+!v004!{{monograph_year}}
+!v005!{{pages}}
+!v006!{{monograph_publisher}}
+!v007!{{monograph_language}}
+!v008!{{monograph_title}}
+{{#kv_creators}}
+!v012!{{full_name}}^r{{role}}^c{{link_resume}}
+{{/kv_creators}}
+!v019!{{monograph_isbn}}
+{{#kv_translated_titles}}
+!v022!{{_title}}^l{{_
+language}}
+{{/kv_translated_titles}}
+!v023!{{title}}
+!v024!{{pdf_file.name}}
+!v025!{{descriptive_information}}
+!v026!{{notes}}
+!v027!{{_id}}
+!v028!{{order}}
+{{/rows}}
