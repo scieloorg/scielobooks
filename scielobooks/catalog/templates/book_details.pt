@@ -15,7 +15,7 @@
       <span tal:omit-tag=""
             tal:condition="book_attachments | nothing">
         <span tal:omit-tag="" tal:repeat="attach book_attachments">
-          <meta tal:attributes="content attach.url; name attach.citation_file" />
+          <meta tal:attributes="content request.registry.settings.get('public_domain_url','http://books.scielo.org')+attach.url; name attach.citation_file" />
         </span>
       </span>
     </span>
