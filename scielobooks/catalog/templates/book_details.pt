@@ -7,7 +7,9 @@
     <meta name="citation_author" tal:attributes="content creator.full_name" />
     </span>
     <meta name="citation_publisher" tal:attributes="content document.publisher" />
-    <meta name="citation_publication_date" tal:attributes="content document.year" />
+    <meta tal:condition="getattr(document, 'year', None)"
+          name="citation_publication_date"
+          tal:attributes="content document.year" />
     <meta tal:condition="getattr(document, 'isbn', None)"
           name="citation_isbn"
           tal:attributes="content document.isbn" />
@@ -159,7 +161,7 @@
 
       	<div class="spacer"></div>
 
-      	<div class="tableContents">
+      	<div class="tableContents" tal:condition="parts">
           <h3 i18n:translate="">Table of Contents</h3>
           <table cellspacing="0">
             <tr tal:repeat="part parts">

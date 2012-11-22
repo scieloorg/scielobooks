@@ -164,7 +164,7 @@
 
         <div class="book-parts">
           <h3>
-            <span  i18n:translate="" tal:omit-tag="">Book Parts</span>
+            <span i18n:translate="" tal:omit-tag="">Book Parts</span>
             <span class="add"><a href="${add_part_url}" i18n:translate="">Add</a></span>
           </h3>
           <table>

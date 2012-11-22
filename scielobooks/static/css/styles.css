@@ -312,7 +312,7 @@ a img {
     height: 100px;
     float: right;
     width: 191px;
-    background-image: url(/static/images/download_box_bg.jpg);
+    background-image: url(/static/images/download_box_acesso_fechado.png);
     margin: 20px 600px 0;
     position: absolute;
 }
@@ -325,7 +325,7 @@ a img {
 }
 .download {
     height: 30px;
-    margin-top: 10px;
+    margin-top: 23px;
 }
 .download fieldset DIV {
     border-bottom: 1px solid #ccc;
@@ -339,7 +339,7 @@ a img {
     height: 100px;
     float: right;
     width: 191px;
-    background-image: url(/static/images/download_box_bg.jpg);
+    background-image: url(/static/images/download_box_acesso_aberto.png);
     margin: 20px 600px 0;
 	position: absolute;
 }
@@ -589,7 +589,7 @@ form input, .formInput {
 }
 
 .deformClosebuttonActive:before {
-    content:"âœ–";
+    content:"✖";
     color:red;
     margin-right: 2px;
 }
