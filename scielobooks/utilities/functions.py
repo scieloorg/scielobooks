@@ -124,6 +124,11 @@ class SFTPChannel(object):
         except:
             pass
 
+        try:
+            os.unlink(self.temp_filename)
+        except (AttributeError, OSError):
+            pass
+
     def transfer(self, data, remote_path):
         if not isinstance(data, basestring):
             data = data.read()
