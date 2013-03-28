@@ -13,6 +13,7 @@
         <field name="publisher">{{publisher}}</field>
         <field name="language">{{language}}</field>
         <field name="year">{{year}}</field>
+        <field name="is_comercial">{{is_comercial}}</field>
         <field name="synopsis">{{synopsis}}</field>
         {{#format}}
             <field name="format">{{type}}</field>
