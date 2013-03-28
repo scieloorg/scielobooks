@@ -135,6 +135,7 @@ function(doc, req) {
         result.isbn = doc.isbn;
         result.publisher = doc.publisher;
         result.year = doc.year;
+        result.is_comercial = doc.is_comercial;
         var html = Mustache.to_html(ddoc.templates.solr_feed_showbook, result);
     }
 
