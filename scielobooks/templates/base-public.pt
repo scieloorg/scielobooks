@@ -18,7 +18,7 @@
       </metal:block>
 
       <script type="text/javascript"
-              tal:condition="getattr(request.registry.settings, 'google_analytics_enable', None) == 'true' and 
+              tal:condition="getattr(request.registry.settings, 'google_analytics_enable', None) == 'true' and
                 getattr(request.registry.settings, 'google_analytics_code', None)">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', '${request.registry.settings.google_analytics_code}']);
@@ -111,9 +111,9 @@
         <div class="footer">
           <p>SciELO - Scientific Electronic Library Online | <a href="http://www.fapesp.br/en/" target="_blank" class="Corpo_11_bd">FAPESP </a> - <a href="http://www.cnpq.br/english/cnpq/index.htm" target="_blank">CNPq</a> - <a href="http://regional.bvsalud.org/bvs/bireme/I/homepage.htm" target="_blank">BIREME </a> - <a href="http://www.fapunifesp.edu.br/" target="_blank">FapUnifesp</a>
           <br/>
-          Rua Machado Bittencourt, 430 - Vila Clementino  04044-001 S„o Paulo SP -  Brasil
+          Avenida Onze de Junho, 269 - Vila Clementino  04041-050 São Paulo SP -  Brasil
           <br/>
-          Tel.: (55 11) 3369-4080 - Email: <a href="mailto:scielo.books@scielo.org">scielo.books@scielo.org</a>
+          Tel.: (55 11) 5083-3639 - Email: <a href="mailto:scielo.books@scielo.org">scielo.books@scielo.org</a>
           </p>
           <ul>
             <li>
