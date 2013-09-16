@@ -4,6 +4,7 @@
         <field name="sbid">{{sbid}}</field>
         <field name="shortname">{{shortname}}</field>
         <field name="title">{{title}}</field>
+        <field name="eisbn">{{eisbn}}</field>
         <field name="isbn">{{isbn}}</field>
         <field name="author">{{authors}}</field>
         <field name="corporate_authors">{{corporate_authors}}</field>
