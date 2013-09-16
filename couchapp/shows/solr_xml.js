@@ -121,6 +121,7 @@ function(doc, req) {
         result.type = "part";
         result.book_title = doc.monograph_title;
         result.isbn = doc.monograph_isbn;
+        result.eisbn = doc.monograph_eisbn;
         result.title = doc.title;
         result.chapterorder = doc.order;
         result.monographsbid = doc.monograph;
@@ -133,6 +134,7 @@ function(doc, req) {
         result.synopsis = doc.synopsis;
         result.title = doc.title;
         result.isbn = doc.isbn;
+        result.eisbn = doc.eisbn;
         result.publisher = doc.publisher;
         result.year = doc.year;
         result.is_comercial = doc.is_comercial;
