@@ -79,7 +79,7 @@
         <span tal:omit-tag="" metal:define-slot="middle"/>
         <div class="spacer"></div>
 
-        <div class="licence">
+        <div class="licence" tal:condition="not getattr(document, 'is_comercial', None)">
           <span tal:omit-tag="" tal:condition="current_language == 'en'">
             <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" rel="license">
               <img src="http://i.creativecommons.org/l/by-nc-sa/3.0/80x15.png"
