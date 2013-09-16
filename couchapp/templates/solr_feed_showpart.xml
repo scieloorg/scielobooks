@@ -7,6 +7,7 @@
         <field name="shortname">{{shortname}}</field>
         <field name="title">{{title}}</field>
         <field name="book_title">{{book_title}}</field>
+        <field name="eisbn">{{eisbn}}</field>
         <field name="isbn">{{isbn}}</field>
         <field name="author">{{authors}}</field>
         <field name="publisher">{{publisher}}</field>

@@ -76,6 +76,7 @@
    <field name="title" type="text" indexed="true" stored="true"/>
    <field name="book_title" type="text" indexed="true" stored="true"/>
    <field name="isbn" type="string" indexed="true" stored="true"/>
+   <field name="eisbn" type="string" indexed="true" stored="true"/>
    <field name="author" type="text" indexed="true" stored="true"/>
    <field name="corporate_authors" type="text" indexed="true" stored="true"/>
    <field name="translators" type="text" indexed="true" stored="true"/>

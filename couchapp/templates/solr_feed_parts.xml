@@ -9,6 +9,7 @@
         <field name="title">{{title}}</field>
         <field name="book_title">{{book_title}}</field>
         <field name="isbn">{{isbn}}</field>
+        <field name="eisbn">{{eisbn}}</field>
         {{#authors}}
             <field name="author">{{name}}</field>
         {{/authors}}
