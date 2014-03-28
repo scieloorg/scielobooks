@@ -350,4 +350,10 @@
     view="scielobooks.api.views.list_changes"
     renderer="json"
   />
+  <route
+    name="api.v1.show_book"
+    pattern="/api/v1/book/{id}/"
+    view="scielobooks.api.views.show_book"
+    renderer="json"
+  />
 </configure>
