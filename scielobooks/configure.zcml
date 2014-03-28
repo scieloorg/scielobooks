@@ -344,4 +344,10 @@
     view="scielobooks.api.views.list_books"
     renderer="json"
   />
+  <route
+    name="api.v1.list_changes"
+    pattern="/api/v1/changes/"
+    view="scielobooks.api.views.list_changes"
+    renderer="json"
+  />
 </configure>

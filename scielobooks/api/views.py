@@ -129,3 +129,9 @@ def list_books(request):
         raise exceptions.NotFound()
 
     return books
+
+
+def list_changes(request):
+    consumer = couchdbkit.Consumer(request.db)
+    return consumer.fetch(since=request.params.get('since', 0))
+
