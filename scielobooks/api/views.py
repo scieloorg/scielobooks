@@ -43,7 +43,7 @@ def _prepare_response(data, request):
         'pisbn': data.get('isbn', ''),
         'eisbn': data.get('eisbn', ''),
         'language': data.get('language', ''),
-        'updated': data.get('creation_date', '2012-03-31 00:00:00.000000'), # 2012-04-01 is the launching date.
+        'updated': data.get('creation_date', '2012-03-31 00:00:00.000000'),  # 2012-04-01 is the launching date.
         'cover_thumbnail': {
             'type': 'image/jpeg',
             'uri': cover_thumb_url,
