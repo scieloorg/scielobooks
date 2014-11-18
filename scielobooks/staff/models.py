@@ -16,6 +16,8 @@ class Monograph(model.CouchdbDocument):
     isbn = model.TextProperty(required=False)
     eisbn = model.TextProperty(required=False)
     is_comercial = model.BooleanProperty()
+    price_dollar = model.TextProperty()
+    price_reais = model.TextProperty()
     shopping_info = model.MultiCompositeTextProperty(subkeys=['store','book_url'])
     creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'])
     publisher = model.TextProperty(required=True)
