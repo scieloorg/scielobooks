@@ -5,7 +5,11 @@ import os
 import re
 from unicodedata import normalize
 
-import Image
+try:
+    import Image
+except ImportError:
+    from PIL import Image
+
 import deform
 import paramiko
 from celery.task import task
@@ -16,6 +20,7 @@ except ImportError:
     print 'Whithout gfx module the system is not able to handle pdf to swf conversions'
 
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
+
 
 def slugify(text, delim=u'-'):
     """Generates an slightly worse ASCII-only slug.
@@ -53,6 +58,7 @@ def create_thumbnail(img, size=None):
 
     return buf
 
+
 def convert_pdf2swf(pdf_doc):
 
     if not isinstance(pdf_doc, basestring):
@@ -84,6 +90,7 @@ def convert_pdf2swf(pdf_doc):
     os.unlink(pdf_temp_filename)
 
     return open(swf_temp_filename, 'r')
+
 
 def customize_form_css_class(form, default_css=None, **kwargs):
     """

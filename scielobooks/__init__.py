@@ -13,7 +13,6 @@ from pyramid.exceptions import Forbidden
 from pyramid_mailer.mailer import Mailer
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker
-import newrelic.agent
 import couchdbkit
 import pyramid_zcml
 
@@ -24,7 +23,7 @@ from scielobooks.request import MyRequest
 
 
 APP_PATH = os.path.abspath(os.path.dirname(__file__))
-APP_VERSION = 'v1rc10'
+APP_VERSION = 'v1'
 
 
 def main(global_config, **settings):
@@ -74,22 +73,14 @@ def main(global_config, **settings):
     my_session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet')
     config.set_session_factory(my_session_factory)
 
-    application = config.make_wsgi_app()
+    return config.make_wsgi_app()
 
-    try:
-        if settings.get('newrelic.enable', 'False').lower() == 'true':
-            newrelic.agent.initialize(os.path.join(APP_PATH, '..', 'newrelic.ini'), settings['newrelic.environment'])
-            return newrelic.agent.wsgi_application()(application)
-        else:
-            return application
-    except IOError:
-        config.registry.settings['newrelic.enable'] = False
-        return application
 
 def add_couch_db(event):
     settings = event.request.registry.settings
     db = settings['db_conn'][settings['db_name']]
     event.request.db = db
+
 
 def custom_locale_negotiator(request):
     settings = request.registry.settings
@@ -104,6 +95,7 @@ def custom_locale_negotiator(request):
         locale = settings['default_locale_name']
 
     return locale
+
 
 def renderer_globals_factory(system):
     """

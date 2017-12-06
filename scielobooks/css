@@ -302,6 +302,9 @@ a img {
     background-image: url(/static/images/download_box_bg.jpg);
     margin: 20px 20px 0px 20px;
 }
+.POD {
+    background: url(/static/images/print_on_demand.svg) top left no-repeat;
+}
 .PDF {
     background: url(/static/images/pdf.gif) top left no-repeat;
 }
@@ -314,7 +317,7 @@ a img {
 .status-false {
     background: url(/static/images/icon-no.gif) top left no-repeat;
 }
-.PDF, .ePub, .status-true, .status-false {
+.POD .PDF, .ePub, .status-true, .status-false {
     padding: 3px 2px 2px 20px;
     margin: 0px 0px 4px 0px;
 }
