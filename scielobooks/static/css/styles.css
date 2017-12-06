@@ -344,7 +344,7 @@ a img {
 	position: absolute;
 }
 .POD, .pod_file {
-    background: url(/static/images/print_on_demand.svg) top left no-repeat;
+    background: url(/static/images/print_on_demand.png) top left no-repeat;
     background-size: 18px;
 }
 .PDF, .pdf_file {
