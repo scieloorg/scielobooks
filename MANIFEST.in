@@ -1,0 +1,2 @@
+include *.txt *.ini *.cfg *.rst
+recursive-include scielobooks *.ico *.png *.css *.gif *.svg *.jpg *.pt *.txt *.mak *.mako *.js *.html *.xml *.zcml *.json *.pot *.mo

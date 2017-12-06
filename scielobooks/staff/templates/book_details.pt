@@ -131,16 +131,19 @@
         </dl>
 
         <div class="download_box" tal:condition="not getattr(document, 'is_comercial', None)">
-         <div class="download"
+          <div class="download"
               tal:condition="book_attachments | nothing">
-           <fieldset>
-             <legend>Download</legend>
-             <div tal:repeat="attach book_attachments">
-               <a tal:attributes="href attach.url;class attach.css_class"
-                  tal:content="attach.text"
-                  href="#">Livro em PDF</a>
-             </div>
-           </fieldset>
+            <fieldset>
+              <legend>Download</legend>
+              <div tal:repeat="attach book_attachments">
+                 <a tal:attributes="href attach.url;class attach.css_class"
+                    tal:content="attach.text"
+                    href="#">Livro em PDF</a>
+               </div>
+              <div tal:condition="getattr(document, 'print_on_demand_service_url', None)">
+                 <a tal:attributes="href document.print_on_demand_service_url; class 'pod_file'" href="#">Impressão por demanda</a>
+              </div>
+             </fieldset>
          </div>
         </div>
 

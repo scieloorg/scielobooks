@@ -10,6 +10,7 @@ from isis import model
 
 from ..utilities import functions
 
+
 class Monograph(model.CouchdbDocument):
     title = model.TextProperty(required=True)
     translated_titles = model.MultiCompositeTextProperty(subkeys=['title','language'])
@@ -19,6 +20,7 @@ class Monograph(model.CouchdbDocument):
     price_dollar = model.TextProperty()
     price_reais = model.TextProperty()
     shopping_info = model.MultiCompositeTextProperty(subkeys=['store','book_url'])
+    print_on_demand_service_url = model.TextProperty()
     creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'])
     publisher = model.TextProperty(required=True)
     publisher_url = model.TextProperty()
@@ -31,7 +33,7 @@ class Monograph(model.CouchdbDocument):
     pages = model.TextProperty()
     primary_descriptor = model.TextProperty()
     translated_primary_descriptors = model.MultiCompositeTextProperty(subkeys=['primary_descriptor','language'])
-    bisac_code =  model.MultiCompositeTextProperty(subkeys=['code'])
+    bisac_code = model.MultiCompositeTextProperty(subkeys=['code'])
     edition = model.TextProperty()
     collection = model.CompositeTextProperty(subkeys=['individual_author', 'corporate_author', 'title', 'english_translated_title', 'total_number_of_volumes'])
     format = model.CompositeTextProperty(subkeys=['height', 'width'])
@@ -123,6 +125,7 @@ class Monograph(model.CouchdbDocument):
             return '; '.join(linked_creators)
 
         return self.formatted_creators(formatting_func)
+
 
 class Part(model.CouchdbDocument):
     title = model.TextProperty(required=True)
