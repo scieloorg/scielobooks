@@ -33,7 +33,8 @@ RUN cd /tmp/swftools-2013-04-09-1007 && \
 COPY requirements.txt /app/requirements.txt
 COPY scielobooks/static /app/scielobooks/static
 COPY dist/* /tmp/pypa/
-COPY production.ini /app/production.ini
+COPY production-TEMPLATE.ini /app/production.ini
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN pip install --upgrade pip && \
     pip --no-cache-dir install -r /app/requirements.txt && \
@@ -41,4 +42,4 @@ RUN pip install --upgrade pip && \
 
 EXPOSE 6543
 
-CMD gunicorn --paste /app/production.ini
+ENTRYPOINT ["/docker-entrypoint.sh"]
