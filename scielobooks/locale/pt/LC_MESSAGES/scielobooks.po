@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  scielobooks\n"
 "Report-Msgid-Bugs-To: http://github.com/bireme/scielobooks/issues\n"
-"POT-Creation-Date: 2017-12-07 15:36-0200\n"
+"POT-Creation-Date: 2017-12-07 15:39-0200\n"
 "PO-Revision-Date: 2012-06-28 15:42-0300\n"
 "Last-Translator: Gustavo Fonseca <gustavo.fonseca@scielo.org>\n"
 "Language-Team: Portuguese (Brazilian) "
@@ -784,7 +784,7 @@ msgid "Price R$:"
 msgstr ""
 
 #: scielobooks/staff/templates/book_details.pt:144
-msgid "Impressão por demanda"
+msgid "Print on demand"
 msgstr ""
 
 #: scielobooks/staff/templates/book_details.pt:164
@@ -992,4 +992,7 @@ msgstr ""
 #: scielobooks/users/templates/activation.pt:11
 msgid "Help"
 msgstr ""
+
+#~ msgid "Impressão por demanda"
+#~ msgstr ""
 
