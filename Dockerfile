@@ -30,15 +30,14 @@ RUN cd /tmp/swftools-2013-04-09-1007 && \
     cp lib/python/*.so /usr/lib/python2.7/site-packages
 
 # Installing APP
-COPY requirements.txt /app/requirements.txt
-COPY scielobooks/static /app/scielobooks/static
-COPY dist/* /tmp/pypa/
-COPY production-TEMPLATE.ini /app/production.ini
+COPY . /app
+WORKIR /app
+
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN pip install --upgrade pip && \
     pip --no-cache-dir install -r /app/requirements.txt && \
-    pip --no-cache-dir install -f file:///tmp/pypa -U scielobooks
+    python setup.py install
 
 EXPOSE 6543
 

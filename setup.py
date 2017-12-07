@@ -9,8 +9,9 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 try:
     from scielobooks import APP_VERSION
-except ImportError:
-    APP_VERSION = ''
+except ValueError:
+    APP_VERSION = '1.1.0'
+
 
 if sys.version_info[:2] < (2, 7):
     print('Old Python version. Installing OrderedDict lib from Pypi.')

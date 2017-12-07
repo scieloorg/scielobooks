@@ -141,7 +141,7 @@
                     href="#">Livro em PDF</a>
                </div>
               <div tal:condition="getattr(document, 'print_on_demand_service_url', None)">
-                 <a tal:attributes="href document.print_on_demand_service_url; class 'pod_file'" href="#">Impressão por demanda</a>
+                 <a tal:attributes="href document.print_on_demand_service_url; class 'pod_file'" href="#" i18n:translate="">Print on demand</a>
               </div>
              </fieldset>
          </div>
