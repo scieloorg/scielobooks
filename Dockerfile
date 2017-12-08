@@ -31,9 +31,9 @@ RUN cd /tmp/swftools-2013-04-09-1007 && \
 
 # Installing APP
 COPY . /app
-WORKIR /app
-
 COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+WORKDIR /app
 
 RUN pip install --upgrade pip && \
     pip --no-cache-dir install -r /app/requirements.txt && \
