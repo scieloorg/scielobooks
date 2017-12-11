@@ -31,7 +31,6 @@ RUN cd /tmp/swftools-2013-04-09-1007 && \
 
 # Installing APP
 COPY . /app
-COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 WORKDIR /app
 
@@ -41,4 +40,4 @@ RUN pip install --upgrade pip && \
 
 EXPOSE 6543
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD gunicorn --paste /app/production.ini

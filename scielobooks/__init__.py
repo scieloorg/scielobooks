@@ -1,3 +1,4 @@
+# coding: utf-8
 import os
 
 from pyramid.config import Configurator
@@ -25,6 +26,45 @@ from scielobooks.request import MyRequest
 APP_PATH = os.path.abspath(os.path.dirname(__file__))
 APP_VERSION = '1.1.0'
 
+DEFAULT_SETTINGS = [
+    ('available_languages', 'AVAILABLE_LANGUAGES', str, 'pt en es'),
+    ('fileserver_sync_enable', 'FILESERVER_SYNC_ENABLE', bool, 'true'),
+    ('fileserver_url', 'FILESERVER_URL', str, 'http://static.scielo.org/scielobooks'),
+    ('fileserver_remotebase', 'FILESERVER_REMOTEBASE', str, '/var/www/static_scielo_org/scielobooks'),
+    ('fileserver_host', 'FILESERVER_HOST', str, '192.168.1.12'),
+    ('fileserver_username', 'FILESERVER_USERNAME', str, ''),
+    ('fileserver_password', 'FILESERVER_PASSWORD', str, ''),
+    ('sqlalchemy.url', 'SQLALCHEMY_URL', str, 'sqlite:///%(here)s/database.db'),
+    ('books_static_url', 'BOOKS_STATIC_URL', str, 'http://img.livros.scielo.org/books'),
+    ('solr_url', 'SOLR_URL', str, 'http://iahx.local'),
+    ('db_uri', 'DB_URI', str, 'http://127.0.0.1:5984'),
+    ('db_name', 'DB_NAME', str, 'scielobooks_1a'),
+    ('serve_static_files', 'SERVER_STATIC_FILES', bool, 'true'),
+    ('mail.host', 'MAIL_HOST', str, 'mail_server_address'),
+    ('mail.port', 'MAIL_PORT', str, '25'),
+    ('mail.username', 'MAIL_USERNAME', str, ''),
+    ('mail.password', 'MAIL_PASSWORD', str, ''),
+    ('mail.default_sender', 'MAIL_DEFAULT_SENDER', str, ''),
+    ('mail.tls', 'MAIL_TLS', str, 'true'),
+]
+
+
+def parse_settings(settings):
+    """Analisa e retorna as configurações da app com base no arquivo .ini e env.
+    As variáveis de ambiente possuem precedência em relação aos valores
+    definidos no arquivo .ini.
+    """
+    parsed = {}
+    cfg = list(DEFAULT_SETTINGS)
+
+    for name, envkey, convert, default in cfg:
+        value = os.environ.get(envkey, settings.get(name, default))
+        if convert is not None:
+            value = convert(value)
+        parsed[name] = value
+
+    return parsed
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -34,15 +74,15 @@ def main(global_config, **settings):
 
     engine = engine_from_config(settings, prefix='sqlalchemy.')
     db_maker = sessionmaker(bind=engine)
-    settings['rel_db.sessionmaker'] = db_maker
 
-    config = Configurator(settings=settings,
+    config = Configurator(settings=parse_settings(settings),
                           root_factory='scielobooks.resources.RootFactory',
                           authentication_policy=authentication_policy,
                           authorization_policy=authorization_policy,
                           request_factory=MyRequest,
                           renderer_globals_factory=renderer_globals_factory)
 
+    config.registry.settings['rel_db.sessionmaker'] = db_maker
     config.include(pyramid_zcml)
     config.load_zcml('configure.zcml')
     config.include('pyramid_mailer')
@@ -59,11 +99,11 @@ def main(global_config, **settings):
     config.scan('scielobooks.models')
     initialize_sql(engine)
 
-    if settings['serve_static_files'] == 'true':
+    if config.registry.settings['serve_static_files'] is True:
         config.add_static_view(name='static', path='static')
     config.add_static_view('deform_static', 'deform:static')
-    config.add_static_view('/'.join((settings['db_uri'], settings['db_name'])), 'scielobooks:database')
-    config.add_static_view(settings['fileserver_url'], 'scielobooks:fileserver')
+    config.add_static_view('/'.join((config.registry.settings['db_uri'], config.registry.settings['db_name'])), 'scielobooks:database')
+    config.add_static_view(config.registry.settings['fileserver_url'], 'scielobooks:fileserver')
 
     config.add_view(custom_forbidden_view, context=Forbidden)
 
