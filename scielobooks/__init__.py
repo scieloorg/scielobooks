@@ -49,7 +49,7 @@ DEFAULT_SETTINGS = [
     ('mail.default_sender', 'MAIL_DEFAULT_SENDER', str, ''),
     ('mail.tls', 'MAIL_TLS', str, 'true'),
     ('BROKER_URL', 'BROKER_URL', str, "amqp://guest:guest@127.0.0.1:5672//"),
-    ('google_analytics_enable', 'GOOGLE_ANALYTICS_ENABLE', bool, 'false'),
+    ('google_analytics_enable', 'GOOGLE_ANALYTICS_ENABLE', str, 'false'),
     ('google_analytics_code', 'GOOGLE_ANALYTICS_CODE', str, ''),
 ]
 
