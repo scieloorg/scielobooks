@@ -35,6 +35,8 @@ DEFAULT_SETTINGS = [
     ('fileserver_username', 'FILESERVER_USERNAME', str, ''),
     ('fileserver_password', 'FILESERVER_PASSWORD', str, ''),
     ('sqlalchemy.url', 'SQLALCHEMY_URL', str, 'sqlite:///%(here)s/database.db'),
+    ('sqlalchemy.pool_size', 'SQLALCHEMY_POOL_SIZE', int, 4),
+    ('sqlalchemy.pool_recycle', 'SQLALCHEMY_POOL_RECYCLE', int, 3600),
     ('books_static_url', 'BOOKS_STATIC_URL', str, 'http://img.livros.scielo.org/books'),
     ('solr_url', 'SOLR_URL', str, 'http://iahx.local'),
     ('db_uri', 'DB_URI', str, 'http://127.0.0.1:5984'),
@@ -91,7 +93,7 @@ def main(global_config, **settings):
     config.registry['mailer'] = Mailer.from_settings(settings)
     config.registry['app_version'] = APP_VERSION
 
-    db_uri = settings['db_uri']
+    db_uri = config.registry.settings['db_uri']
     conn = couchdbkit.Server(db_uri)
     config.registry.settings['db_conn'] = conn
     config.add_subscriber(add_couch_db, NewRequest)
