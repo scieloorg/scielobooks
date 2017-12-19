@@ -31,6 +31,7 @@ RUN cd /tmp/swftools-2013-04-09-1007 && \
 
 # Installing APP
 COPY . /app
+COPY production-TEMPLATE.ini /app/production.ini
 
 WORKDIR /app
 
