@@ -12,6 +12,7 @@ from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.exceptions import Forbidden
 from pyramid_mailer.mailer import Mailer
+from pyramid.settings import asbool
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker
 import couchdbkit
@@ -28,7 +29,7 @@ APP_VERSION = '1.1.0'
 
 DEFAULT_SETTINGS = [
     ('available_languages', 'AVAILABLE_LANGUAGES', str, 'pt en es'),
-    ('fileserver_sync_enable', 'FILESERVER_SYNC_ENABLE', bool, 'true'),
+    ('fileserver_sync_enable', 'FILESERVER_SYNC_ENABLE', asbool, 'true'),
     ('fileserver_url', 'FILESERVER_URL', str, 'http://static.scielo.org/scielobooks'),
     ('fileserver_remotebase', 'FILESERVER_REMOTEBASE', str, '/var/www/static_scielo_org/scielobooks'),
     ('fileserver_host', 'FILESERVER_HOST', str, '192.168.1.12'),
@@ -41,7 +42,7 @@ DEFAULT_SETTINGS = [
     ('solr_url', 'SOLR_URL', str, 'http://iahx.local'),
     ('db_uri', 'DB_URI', str, 'http://127.0.0.1:5984'),
     ('db_name', 'DB_NAME', str, 'scielobooks_1a'),
-    ('serve_static_files', 'SERVER_STATIC_FILES', bool, 'true'),
+    ('serve_static_files', 'SERVER_STATIC_FILES', asbool, 'true'),
     ('mail.host', 'MAIL_HOST', str, 'mail_server_address'),
     ('mail.port', 'MAIL_PORT', str, '25'),
     ('mail.username', 'MAIL_USERNAME', str, ''),
@@ -76,10 +77,6 @@ def main(global_config, **settings):
     """
     authentication_policy = AuthTktAuthenticationPolicy('seekrit', callback=groupfinder)
     authorization_policy = ACLAuthorizationPolicy()
-
-    engine = engine_from_config(settings, prefix='sqlalchemy.')
-    db_maker = sessionmaker(bind=engine)
-
     config = Configurator(settings=parse_settings(settings),
                           root_factory='scielobooks.resources.RootFactory',
                           authentication_policy=authentication_policy,
@@ -87,13 +84,16 @@ def main(global_config, **settings):
                           request_factory=MyRequest,
                           renderer_globals_factory=renderer_globals_factory)
 
+    engine = engine_from_config(config.registry.settings, prefix='sqlalchemy.')
+    db_maker = sessionmaker(bind=engine)
+
     config.registry.settings['rel_db.sessionmaker'] = db_maker
     config.include(pyramid_zcml)
     config.load_zcml('configure.zcml')
     config.include('pyramid_mailer')
     config.include('pyramid_celery')
 
-    config.registry['mailer'] = Mailer.from_settings(settings)
+    config.registry['mailer'] = Mailer.from_settings(config.registry.settings)
     config.registry['app_version'] = APP_VERSION
 
     db_uri = config.registry.settings['db_uri']
