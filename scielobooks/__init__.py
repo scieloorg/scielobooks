@@ -75,9 +75,11 @@ def parse_settings(settings):
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
+    settings.update(parse_settings(settings))
+    
     authentication_policy = AuthTktAuthenticationPolicy('seekrit', callback=groupfinder)
     authorization_policy = ACLAuthorizationPolicy()
-    config = Configurator(settings=parse_settings(settings),
+    config = Configurator(settings=settings,
                           root_factory='scielobooks.resources.RootFactory',
                           authentication_policy=authentication_policy,
                           authorization_policy=authorization_policy,
