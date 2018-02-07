@@ -359,7 +359,10 @@ a img {
 .status-false {
     background: url(/static/images/icon-no.gif) top left no-repeat;
 }
-.POD, .PDF, .ePub, .status-true, .status-false, .pdf_file, .epub_file, .pod_file {
+.print_on_demand_file {
+    background: url(/static/images/print_on_demand.png) top left no-repeat;
+}
+.POD, .PDF, .ePub, .status-true, .status-false, .pdf_file, .epub_file, .pod_file, .print_on_demand_file {
     padding: 3px 2px 2px 20px;
     margin: 0px 0px 4px 0px;
 }

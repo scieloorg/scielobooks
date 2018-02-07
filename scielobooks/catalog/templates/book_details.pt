@@ -117,16 +117,17 @@
 
         <div class="download_box" tal:condition="not getattr(document, 'is_comercial', None)">
          <div class="download"
-              tal:condition="book_attachments | nothing">
+              tal:condition="book_attachments | document.print_on_demand_service_url | nothing">
            <fieldset>
              <legend i18n:translate="">Get</legend>
              <div tal:repeat="attach book_attachments">
                <a tal:attributes="href attach.url;class attach.css_class"
                   tal:content="attach.text"
                   href="#">Livro em PDF</a>
+             </div>
+             <div>
                <a tal:condition="getattr(document, 'print_on_demand_service_url', None)"
-                  tal:attributes="href document.print_on_demand_service_url"
-                  tal:content="document.print_on_demand_service_url"
+                  tal:attributes="href document.print_on_demand_service_url; target '_blank'; class 'print_on_demand_file'"
                   i18n:translate=""
                   href="#">Print on demand</a>
              </div>
@@ -140,6 +141,12 @@
                <legend i18n:translate="">Buy at:</legend>
                <div tal:repeat="shopping document.shopping_info">
                 <a tal:attributes="href shopping.book_url; target '_blank'; class 'epub_file'" tal:content="shopping.store" href="#">Store</a>
+               </div>
+               <div>
+                 <a tal:condition="getattr(document, 'print_on_demand_service_url', None)"
+                  tal:attributes="href document.print_on_demand_service_url; target '_blank'; class 'print_on_demand_file'"
+                  i18n:translate=""
+                  href="#">Print on demand</a>
                </div>
              </fieldset>
            </div>
