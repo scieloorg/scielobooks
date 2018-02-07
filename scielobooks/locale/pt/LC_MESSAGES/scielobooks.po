@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  scielobooks\n"
 "Report-Msgid-Bugs-To: http://github.com/bireme/scielobooks/issues\n"
-"POT-Creation-Date: 2017-12-07 15:45-0200\n"
+"POT-Creation-Date: 2018-02-07 09:59-0200\n"
 "PO-Revision-Date: 2012-06-28 15:42-0300\n"
 "Last-Translator: Gustavo Fonseca <gustavo.fonseca@scielo.org>\n"
 "Language-Team: Portuguese (Brazilian) "
@@ -176,24 +176,33 @@ msgstr ""
 msgid "DOI:"
 msgstr ""
 
-#: scielobooks/catalog/templates/book_details.pt:135
+#: scielobooks/catalog/templates/book_details.pt:122
+msgid "Get"
+msgstr "Obtenha"
+
+#: scielobooks/catalog/templates/book_details.pt:127
+#: scielobooks/staff/templates/book_details.pt:144
+msgid "Print on demand"
+msgstr "Impressão sob demanda"
+
+#: scielobooks/catalog/templates/book_details.pt:140
 #: scielobooks/staff/templates/book_details.pt:153
 msgid "Buy at:"
 msgstr "Compre em:"
 
-#: scielobooks/catalog/templates/book_details.pt:158
+#: scielobooks/catalog/templates/book_details.pt:163
 #: scielobooks/evaluation/templates/book_details.pt:111
 #: scielobooks/staff/templates/book_details.pt:170
 msgid "Synopsis"
 msgstr "Sinopse"
 
-#: scielobooks/catalog/templates/book_details.pt:165
+#: scielobooks/catalog/templates/book_details.pt:170
 #: scielobooks/catalog/templates/chapter_details.pt:123
 #: scielobooks/staff/forms.py:204 scielobooks/staff/views.py:302
 msgid "Table of Contents"
 msgstr "Tabela de Conteúdos"
 
-#: scielobooks/catalog/templates/book_details.pt:171
+#: scielobooks/catalog/templates/book_details.pt:176
 msgid "Preview"
 msgstr "Visualizar"
 
@@ -787,10 +796,6 @@ msgstr ""
 msgid "Price R$:"
 msgstr ""
 
-#: scielobooks/staff/templates/book_details.pt:144
-msgid "Print on demand"
-msgstr "Impressão sob demanda"
-
 #: scielobooks/staff/templates/book_details.pt:164
 msgid "Link para o Catálogo Institucional"
 msgstr "Link to the Institutional Catalog"
@@ -1006,4 +1011,7 @@ msgstr "Bem vindo à equipe SciELOBooks. O que deseja fazer?"
 #: scielobooks/users/templates/activation.pt:11
 msgid "Help"
 msgstr "Ajuda"
+
+#~ msgid "Impressão sob Demanda"
+#~ msgstr ""
 

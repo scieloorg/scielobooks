@@ -119,11 +119,16 @@
          <div class="download"
               tal:condition="book_attachments | nothing">
            <fieldset>
-             <legend>Download</legend>
+             <legend i18n:translate="">Get</legend>
              <div tal:repeat="attach book_attachments">
                <a tal:attributes="href attach.url;class attach.css_class"
                   tal:content="attach.text"
                   href="#">Livro em PDF</a>
+               <a tal:condition="getattr(document, 'print_on_demand_service_url', None)"
+                  tal:attributes="href document.print_on_demand_service_url"
+                  tal:content="document.print_on_demand_service_url"
+                  i18n:translate=""
+                  href="#">Print on demand</a>
              </div>
            </fieldset>
          </div>
