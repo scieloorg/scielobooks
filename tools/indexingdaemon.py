@@ -3,8 +3,16 @@
 import couchdbkit
 import urllib2
 from datetime import datetime
-import pickle
+import json
 import argparse
+import signal
+import sys
+import os
+
+
+CWD = os.path.dirname(os.path.abspath(__file__))
+DATA_FILEPATH = os.path.join(CWD, "indexingdaemon.json")
+
 
 class IndexingDaemon(object):
     """
@@ -54,17 +62,18 @@ class IndexingDaemon(object):
 
 
     def store_last_activity(self):
-        with open('indexingdaemon.data', 'w') as f:
-            pickle.dump(self.last_activity, f)
+        with open(DATA_FILEPATH, 'w') as f:
+            json.dump({"last_seq": self.last_activity}, f)
 
 
     @property
     def last_activity(self):
         if self.__last_activity is None:
             try:
-                return pickle.load(open('indexingdaemon.data'))
+                data = json.load(open(DATA_FILEPATH))
             except (EOFError, IOError):
                 return 0
+            return data["last_seq"]
         else:
             return self.__last_activity
 
@@ -119,8 +128,12 @@ class IndexingDaemon(object):
         else:
             self.__consumer.wait(self.__callback, **kwargs)
 
-        self.store_last_activity()
-        print 'listening stopped'
+
+def register_exit(signal_type, func):
+    def _exit_func(*args, **kwargs):
+        func()
+        sys.exit(1)
+    signal.signal(signal_type, _exit_func)
 
 
 if __name__ == '__main__':
@@ -142,4 +155,6 @@ if __name__ == '__main__':
     feedtype = args.feedtype if args.feedtype else 'continuous'
 
     daemon = IndexingDaemon(args.couchdb_uri, args.db_name, args.solr_uri, feedtype)
+    register_exit(signal.SIGTERM, daemon.store_last_activity)
+    register_exit(signal.SIGINT, daemon.store_last_activity)
     daemon.start_listening(heartbeat=heartbeat)
