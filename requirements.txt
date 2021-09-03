@@ -21,7 +21,7 @@ amqplib==1.0.2
 anyjson==0.3.1
 argh==0.15.1
 celery==2.5.3
-colander==0.9.7
+colander==1.7.0
 couchdbkit==0.5.7
 deform==0.9.4
 http-parser==0.7.5
