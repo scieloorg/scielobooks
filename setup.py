@@ -10,7 +10,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 try:
     from scielobooks import APP_VERSION
 except ValueError:
-    APP_VERSION = '1.1.0'
+    APP_VERSION = '1.1.1'
 
 
 if sys.version_info[:2] < (2, 7):
