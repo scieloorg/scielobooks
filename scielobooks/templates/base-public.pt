@@ -118,7 +118,12 @@
           <ul>
             <li>
               <a target="_blank" href="http://www.fapesp.br/">
-                <img title="FAPESP" alt="FAPESP" src="http://books.scielo.org/wp-content/uploads/2012/03/fapesp.png"/>
+                <img title="FAPESP" alt="FAPESP" src="http://books.scielo.org/wp-content/uploads/2021/09/fapesp.png"/>
+              </a>
+            </li>
+            <li>
+              <a target="_blank" href="https://www.gov.br/capes/">
+                <img title="CAPES" alt="CAPES" src="http://books.scielo.org/wp-content/uploads/2021/09/CAPES.png"/>
               </a>
             </li>
             <li>
@@ -128,12 +133,17 @@
             </li>
             <li>
               <a href="http://regional.bvsalud.org">
-                <img title="BVS" alt="BVS" src="http://books.scielo.org/wp-content/uploads/2012/03/bvs.png"/>
+                <img title="BVS" alt="BVS" src="http://books.scielo.org/wp-content/uploads/2021/09/bvs.png"/>
+              </a>
+            </li>
+             <li>
+              <a href="https://www.paho.org/pt/bireme">
+                <img title="BIREME-OPS-OMS" alt="BIREME-OPS-OMS" src="http://books.scielo.org/wp-content/uploads/2021/09/ops-oms_es_pt.png"/>
               </a>
             </li>
             <li>
               <a href="http://www.fapunifesp.edu.br/" target="_blank">
-                <img alt="FapUNIFESP" src="http://books.scielo.org/wp-content/uploads/2012/03/fap.png"/>
+                <img alt="FapUNIFESP" src="http://books.scielo.org/wp-content/uploads/2017/08/fap.png"/>
               </a>
             </li>
           </ul>
