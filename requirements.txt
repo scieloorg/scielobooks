@@ -20,7 +20,7 @@ WebOb==1.2b3
 amqplib==1.0.2
 anyjson==0.3.1
 argh==0.15.1
-celery==2.5.3
+celery==5.2.2
 colander==0.9.7
 couchdbkit==0.5.7
 deform==0.9.4
