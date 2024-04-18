@@ -6,7 +6,7 @@ Chameleon==2.9.2
 Couchapp==1.0.1
 Mako==0.7.0
 MarkupSafe==0.15
-gunicorn==19.7
+gunicorn==22.0.0
 Paste==1.7.5.1
 PasteDeploy==1.5.0
 PasteScript==1.7.5
