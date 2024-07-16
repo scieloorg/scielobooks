@@ -59,3 +59,4 @@ zope.i18nmessageid==3.6.1
 zope.interface==3.8.0
 zope.schema==4.1.1
 sqlalchemy-migrate==0.7.2
+setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability
