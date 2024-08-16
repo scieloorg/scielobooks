@@ -16,7 +16,7 @@ Pygments==1.5
 SQLAlchemy==0.7.4
 Tempita==0.5.1
 WebError==0.10.3
-WebOb==1.2b3
+WebOb==1.8.8
 amqplib==1.0.2
 anyjson==0.3.1
 argh==0.15.1
