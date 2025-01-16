@@ -109,45 +109,20 @@
 
         <div class="spacer"></div>
         <div class="footer">
-          <p>SciELO - Scientific Electronic Library Online | <a href="http://www.fapesp.br/en/" target="_blank" class="Corpo_11_bd">FAPESP </a> - <a href="http://www.cnpq.br/english/cnpq/index.htm" target="_blank">CNPq</a> - <a href="http://regional.bvsalud.org/bvs/bireme/I/homepage.htm" target="_blank">BIREME </a> - <a href="http://www.fapunifesp.edu.br/" target="_blank">FapUnifesp</a>
-          <br/>
-          Rua Dr. Diogo de Faria, 1087 – 9º andar – Vila Clementino 04037-003 São Paulo/SP - Brasil
-          <br/>
-          Email: <a href="mailto:scielo.books@scielo.org">scielo.books@scielo.org</a>
-          </p>
-          <ul>
-            <li>
-              <a target="_blank" href="http://www.fapesp.br/">
-                <img title="FAPESP" alt="FAPESP" src="http://books.scielo.org/wp-content/uploads/2021/09/fapesp.png"/>
-              </a>
-            </li>
-            <li>
-              <a target="_blank" href="https://www.gov.br/capes/">
-                <img title="CAPES" alt="CAPES" src="http://books.scielo.org/wp-content/uploads/2021/09/CAPES.png"/>
-              </a>
-            </li>
-            <li>
-              <a target="_blank" href="http://www.cnpq.br/">
-                <img title="CNPq" alt="CNPq" src="http://books.scielo.org/wp-content/uploads/2012/03/cnpq.png"/>
-              </a>
-            </li>
-            <li>
-              <a href="http://regional.bvsalud.org">
-                <img title="BVS" alt="BVS" src="http://books.scielo.org/wp-content/uploads/2021/09/bvs.png"/>
-              </a>
-            </li>
-             <li>
-              <a href="https://www.paho.org/pt/bireme">
-                <img title="BIREME-OPS-OMS" alt="BIREME-OPS-OMS" src="http://books.scielo.org/wp-content/uploads/2021/09/ops-oms_es_pt.png"/>
-              </a>
-            </li>
-            <li>
-              <a href="http://www.fapunifesp.edu.br/" target="_blank">
-                <img alt="FapUNIFESP" src="http://books.scielo.org/wp-content/uploads/2017/08/fap.png"/>
-              </a>
-            </li>
-          </ul>
-        </div>
+<p>SciELO - Scientific Electronic Library Online | <a href="http://www.capes.gov.br/" target="_blank">CAPES</a> - <a href="http://www.cnpq.br/english/cnpq/index.htm" target="_blank">CNPq</a> - <a href="http://www.fapesp.br/en/" target="_blank" class="Corpo_11_bd">FAPESP </a>- <a href="http://regional.bvsalud.org/bvs/bireme/I/homepage.htm" target="_blank">BIREME </a> - <a href="http://www.fapunifesp.edu.br/" target="_blank">FapUnifesp</a><br>
+Rua Dr. Diogo de Faria, 1087 – 9º andar – Vila Clementino 04037-003 São Paulo/SP - Brasil<br>
+Email: <a href="mailto:scielo.books@scielo.org">scielo.books@scielo.org </a>
+</p>
+<p>
+<ul>
+        <li><a target="_blank" href="http://www.capes.gov.br/"><img title="CAPES" alt="CAPES" src="/wp-content/uploads/2018/02/capes-4.png"></a></li>
+        <li><a target="_blank" href="http://www.cnpq.br/"><img title="CNPq" alt="CNPq" src="/wp-content/uploads/2012/03/cnpq.png"></a></li>
+        <li><a target="_blank" href="http://www.fapesp.br/"><img title="FAPESP" alt="FAPESP" src="/wp-content/uploads/2025/01/FAPESP.png"></a></li>
+        <li><a href="http://regional.bvsalud.org"><img title="Biblioteca Virtual em Saúde" alt="Biblioteca Virtual em Saúde" src="/wp-content/uploads/2012/03/bvs.png"></a></li>
+        <li><a href="http://www.fapunifesp.edu.br/" target="_blank"><img alt="FapUNIFESP" src="/wp-content/uploads/2017/08/fap.png"></a></li>
+    </ul>
+</p>
+</div>
       </div>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
       <script src="/static/js/language.js"></script>
