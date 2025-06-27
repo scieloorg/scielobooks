@@ -368,6 +368,7 @@ class PartForm():
                        ('collaborator',localizer.translate(_('Collaborator'))),]
 
         language_values = [('pt', localizer.translate(_('Portuguese'))),
+                           ('es', localizer.translate(_('Spanish'))),
                            ('en', localizer.translate(_('English')))]
 
         base_schema = Part.get_schema()
