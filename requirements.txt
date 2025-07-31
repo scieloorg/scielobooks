@@ -4,7 +4,7 @@ lingua==1.5
 Brownie==0.5.1
 Chameleon==2.9.2
 Couchapp==1.0.1
-Mako==0.7.0
+Mako==1.2.2
 MarkupSafe==0.15
 gunicorn==19.7
 Paste==1.7.5.1
