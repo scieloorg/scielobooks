@@ -1,6 +1,6 @@
 # coding: utf-8
 import unittest
-from countries import Countries
+from .countries import Countries
 
 class CountriesTest(unittest.TestCase):
 
@@ -24,9 +24,9 @@ class CountriesTest(unittest.TestCase):
             break
 
     def test_unpacking_iteration(self):
-        for code, country in self.countries_pt.items():
+        for code, country in list(self.countries_pt.items()):
             self.assertEqual(code, 'AF')
-            self.assertEqual(country, u'Afeganistão')
+            self.assertEqual(country, 'Afeganistão')
             break
 
     def test_contains(self):

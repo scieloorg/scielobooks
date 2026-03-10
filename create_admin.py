@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 '''
 Script to load essencial data and create the default "admin" user.
@@ -32,4 +32,4 @@ session.add(admin)
 session.add(reg_profile)
 
 session.commit()
-print 'done'
+print('done')

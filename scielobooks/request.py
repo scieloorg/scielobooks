@@ -1,5 +1,4 @@
-from pyramid.request import Request
-from pyramid.decorator import reify
+from pyramid.request import Request, reify
 
 class MyRequest(Request):
     @reify

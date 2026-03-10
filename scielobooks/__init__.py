@@ -2,12 +2,10 @@
 import os
 
 from pyramid.config import Configurator
-from pyramid.events import subscriber
 from pyramid.events import NewRequest
-from pyramid.events import NewResponse
 from pyramid.events import BeforeRender
 from pyramid.i18n import get_localizer
-from pyramid.session import UnencryptedCookieSessionFactoryConfig
+from pyramid.session import SignedCookieSessionFactory
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.exceptions import Forbidden
@@ -16,12 +14,11 @@ from pyramid.settings import asbool
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker
 import couchdbkit
-import pyramid_zcml
 
 from .views import custom_forbidden_view
 from .security import groupfinder
 from .models import initialize_sql
-from scielobooks.request import MyRequest
+from .request import MyRequest
 
 
 APP_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -83,17 +80,19 @@ def main(global_config, **settings):
                           root_factory='scielobooks.resources.RootFactory',
                           authentication_policy=authentication_policy,
                           authorization_policy=authorization_policy,
-                          request_factory=MyRequest,
-                          renderer_globals_factory=renderer_globals_factory)
+                          request_factory=MyRequest)
 
-    engine = engine_from_config(config.registry.settings, prefix='sqlalchemy.')
+    sa_settings = dict(config.registry.settings)
+    if str(sa_settings.get("sqlalchemy.url", "")).startswith("sqlite:"):
+        sa_settings.pop("sqlalchemy.pool_size", None)
+        sa_settings.pop("sqlalchemy.pool_recycle", None)
+    engine = engine_from_config(sa_settings, prefix='sqlalchemy.')
     db_maker = sessionmaker(bind=engine)
 
     config.registry.settings['rel_db.sessionmaker'] = db_maker
-    config.include(pyramid_zcml)
-    config.load_zcml('configure.zcml')
+    config.include('scielobooks.routes')
+    config.include('pyramid_chameleon')
     config.include('pyramid_mailer')
-    config.include('pyramid_celery')
 
     config.registry['mailer'] = Mailer.from_settings(config.registry.settings)
     config.registry['app_version'] = APP_VERSION
@@ -116,8 +115,9 @@ def main(global_config, **settings):
 
     config.add_translation_dirs('scielobooks:locale/')
     config.set_locale_negotiator(custom_locale_negotiator)
+    config.add_subscriber(add_renderer_globals, BeforeRender)
 
-    my_session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet')
+    my_session_factory = SignedCookieSessionFactory('itsaseekreet')
     config.set_session_factory(my_session_factory)
 
     return config.make_wsgi_app()
@@ -135,7 +135,7 @@ def custom_locale_negotiator(request):
 
     if 'language' in request.params:
         locale = request.params['language']
-    elif 'language' in request.cookies.keys():
+    elif 'language' in list(request.cookies.keys()):
         locale = request.cookies['language']
 
     if locale not in settings['available_languages'].split():
@@ -144,10 +144,7 @@ def custom_locale_negotiator(request):
     return locale
 
 
-def renderer_globals_factory(system):
-    """
-    Injects values to renderer globals before it is sent to the renderer.
-
-    http://docs.pylonsproject.org/projects/pyramid/en/1.0-branch/narr/hooks.html#adding-renderer-globals
-    """
-    return {'current_language': get_localizer(system['request']).locale_name,}
+def add_renderer_globals(event):
+    request = event.get("request")
+    if request is not None:
+        event["current_language"] = get_localizer(request).locale_name

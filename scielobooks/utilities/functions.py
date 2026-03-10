@@ -1,5 +1,5 @@
 # coding: utf-8
-import StringIO
+import io
 import tempfile
 import os
 import re
@@ -9,20 +9,24 @@ try:
     import Image
 except ImportError:
     from PIL import Image
+try:
+    RESAMPLE = Image.Resampling.LANCZOS
+except AttributeError:
+    RESAMPLE = Image.ANTIALIAS
 
 import deform
 import paramiko
-from celery.task import task
+from celery import shared_task
 try:
     import gfx
 except ImportError:
     # raise ImportError('http://www.swftools.org/gfx_tutorial.html')
-    print 'Whithout gfx module the system is not able to handle pdf to swf conversions'
+    print('Whithout gfx module the system is not able to handle pdf to swf conversions')
 
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 
 
-def slugify(text, delim=u'-'):
+def slugify(text, delim='-'):
     """Generates an slightly worse ASCII-only slug.
     Originally from:
     http://flask.pocoo.org/snippets/5/
@@ -30,14 +34,13 @@ def slugify(text, delim=u'-'):
     By Armin Ronacher filed in URLs
     """
     result = []
+    if isinstance(text, bytes):
+        text = text.decode("utf-8", errors="ignore")
     for word in _punct_re.split(text.lower()):
-        try:
-            word = normalize('NFKD', word.decode()).encode('ascii', 'ignore')
-        except UnicodeEncodeError:
-            word = normalize('NFKD', word).encode('ascii', 'ignore')
+        word = normalize('NFKD', word).encode('ascii', 'ignore').decode("ascii")
         if word:
             result.append(word)
-    return unicode(delim.join(result))
+    return delim.join(result)
 
 
 def create_thumbnail(img, size=None):
@@ -45,27 +48,33 @@ def create_thumbnail(img, size=None):
     if not size:
         size = (160, 160)
 
-    if not isinstance(img, basestring):
+    if not isinstance(img, (str, bytes)):
         try:
             img = img.read()
         except AttributeError:
             return None
 
-    img_thumb = Image.open(StringIO.StringIO(img))
-    img_thumb.thumbnail(size, Image.ANTIALIAS)
-    buf = StringIO.StringIO()
+    if isinstance(img, str):
+        img = img.encode("utf-8")
+
+    img_thumb = Image.open(io.BytesIO(img))
+    img_thumb.thumbnail(size, RESAMPLE)
+    buf = io.BytesIO()
     img_thumb.save(buf, format='JPEG')
+    buf.seek(0)
 
     return buf
 
 
 def convert_pdf2swf(pdf_doc):
 
-    if not isinstance(pdf_doc, basestring):
+    if not isinstance(pdf_doc, (str, bytes)):
         try:
             pdf_doc = pdf_doc.read()
         except AttributeError:
             return None
+    if isinstance(pdf_doc, str):
+        pdf_doc = pdf_doc.encode("utf-8")
     pdf_temp_file = tempfile.NamedTemporaryFile(delete=False)
     swf_temp_file = tempfile.NamedTemporaryFile(delete=False)
 
@@ -79,7 +88,6 @@ def convert_pdf2swf(pdf_doc):
     doc = gfx.open("pdf", pdf_temp_filename)
     swf = gfx.SWF()
     swf.setparameter('flashversion', '9')
-    buf = StringIO.StringIO()
     for pagenr in range(1,doc.pages+1):
         page = doc.getPage(pagenr)
         swf.startpage(page.width, page.height)
@@ -89,7 +97,7 @@ def convert_pdf2swf(pdf_doc):
 
     os.unlink(pdf_temp_filename)
 
-    return open(swf_temp_filename, 'r')
+    return open(swf_temp_filename, 'rb')
 
 
 def customize_form_css_class(form, default_css=None, **kwargs):
@@ -137,16 +145,17 @@ class SFTPChannel(object):
             pass
 
     def transfer(self, data, remote_path):
-        if not isinstance(data, basestring):
+        if not isinstance(data, (str, bytes)):
             data = data.read()
+        if isinstance(data, str):
+            data = data.encode("utf-8")
 
         self.temp_file = tempfile.NamedTemporaryFile(delete=False)
         self.temp_file.write(data)
         self.temp_filename = self.temp_file.name
         self.temp_file.close()
 
-        if remote_path.startswith('/'):
-            splitted_remote_path = remote_path[1:]
+        splitted_remote_path = remote_path[1:] if remote_path.startswith('/') else remote_path
         splitted_remote_path = splitted_remote_path.split('/')[:-1]
 
         current_path = '/'
@@ -196,23 +205,22 @@ def symlink_static_file(request, book_sbid, source_filename, dest_filename, file
     return create_symlink.delay(source_path, dest_path, fileserver_host,
         fileserver_username, fileserver_password)
 
-@task(name='functions.transfer_data')
+@shared_task(name='functions.transfer_data')
 def transfer_data(data, remote_path, fileserver_host, fileserver_username, fileserver_password):
     logger = transfer_data.get_logger()
     try:
         with SFTPChannel(fileserver_host, fileserver_username, fileserver_password) as sftp:
             logger.info('Transfering %s to %s' % (remote_path, fileserver_host))
             sftp.transfer(data, remote_path)
-    except Exception, exc:
+    except Exception as exc:
         logger.error('Error transfering %s to %s: %s' % (remote_path, fileserver_host, exc))
 
-@task(name='functions.create_symlink')
+@shared_task(name='functions.create_symlink')
 def create_symlink(source_path, dest_path, fileserver_host, fileserver_username, fileserver_password):
     logger = transfer_data.get_logger()
     try:
         with SFTPChannel(fileserver_host, fileserver_username, fileserver_password) as sftp:
             logger.info('Symlinking %s to %s' % (source_path, dest_path))
             sftp.symlink(source_path, dest_path)
-    except Exception, exc:
+    except Exception as exc:
         logger.error('Error symlinking %s to %s: %s' % (source_path, dest_path, exc))
-

@@ -7,7 +7,6 @@ from pyramid.settings import asbool
 from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid import exceptions
-from pyramid.url import route_url, static_url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import get_renderer
 from pyramid.i18n import TranslationStringFactory, negotiate_locale_name
@@ -21,10 +20,10 @@ from operator import itemgetter
 from datetime import datetime, timedelta
 import hashlib
 import shutil
-import StringIO
+import io
 
 import couchdbkit
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import deform
 
 BASE_TEMPLATE = 'scielobooks:templates/base-public.pt'
@@ -167,7 +166,7 @@ def cover(request):
         response_headers['expires'] = datetime_rfc822(365)
 
     except (couchdbkit.ResourceNotFound, KeyError):
-        img = urllib2.urlopen(static_url('scielobooks:static/images/fakecover.jpg', request))
+        img = urllib.request.urlopen(request.static_url('scielobooks:static/images/fakecover.jpg'))
 
     response = Response(**response_headers)
     response.app_iter = img
@@ -185,10 +184,10 @@ def pdf_file(request):
             raise exceptions.NotFound()
 
         try:
-            url = static_url('scielobooks:fileserver/{0}/pdf/{1}.pdf'.format(sbid, request.matchdict['part']), request)
-            u = urllib2.urlopen(url)
+            url = request.static_url('scielobooks:fileserver/{0}/pdf/{1}.pdf'.format(sbid, request.matchdict['part']))
+            u = urllib.request.urlopen(url)
             return HTTPFound(location=url)
-        except (urllib2.HTTPError, urllib2.URLError):
+        except (urllib.error.HTTPError, urllib.error.URLError):
             #cannot find in static file server, fetch from db
             try:
                 pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
@@ -202,9 +201,9 @@ def pdf_file(request):
                         source_filename = '-'.join([monograph.shortname.split('-')[0], monograph.isbn])
 
                         try:
-                            url = static_url('scielobooks:fileserver/{0}/pdf/{1}.pdf'.format(sbid, source_filename), request)
-                            u = urllib2.urlopen(url)
-                        except (urllib2.HTTPError, urllib2.URLError):
+                            url = request.static_url('scielobooks:fileserver/{0}/pdf/{1}.pdf'.format(sbid, source_filename))
+                            u = urllib.request.urlopen(url)
+                        except (urllib.error.HTTPError, urllib.error.URLError):
                             # there are no static files available for this book.
                             fresh_pdf_file = request.db.fetch_attachment(monograph._id, monograph.pdf_file['filename'], stream=True)
                             functions.transfer_static_file(request, fresh_pdf_file, monograph._id,

@@ -97,7 +97,7 @@ def convertISBN10toISBN13(digits):
     if len(digits) > 10:
         digits = filterDigits(digits)
     if len(digits) != 10:
-        raise InvalidISBN, '%s is not a valid ISBN-10' % digits
+        raise InvalidISBN('%s is not a valid ISBN-10' % digits)
     else:
         digits = '978' + digits[:-1]
         return digits + checksumEAN(digits)
@@ -106,14 +106,14 @@ def convertISBN13toISBN10(digits):
     if len(digits) > 13:
         digits = filterDigits(digits)
     if len(digits) != 13:
-        raise InvalidISBN, '%s is not a valid ISBN-13'
+        raise InvalidISBN('%s is not a valid ISBN-13')
     if digits.startswith('978'):
         digits = digits[3:-1]
         return digits + checksumISBN10(digits)
     elif digits.startswith('979'):
-        raise InvalidISBN, '%s is a valid ISBN-13 but has no ISBN-10 equivalent'
+        raise InvalidISBN('%s is a valid ISBN-13 but has no ISBN-10 equivalent')
     else:
-        raise InvalidISBN, '%s is not a valid ISBN-13 (wrong prefix)'
+        raise InvalidISBN('%s is not a valid ISBN-13 (wrong prefix)')
 
 def toISBN13(digits):
     digits = filterDigits(digits)
@@ -152,7 +152,7 @@ lang_groups = {
 
 group_lang = {}
 
-for lang, groups in lang_groups.iteritems():
+for lang, groups in lang_groups.items():
     for group in groups:
         group_lang[str(group)] = lang
 

@@ -3,10 +3,8 @@
 from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid import exceptions
-from pyramid.url import route_url, static_url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import get_renderer
-from pyramid.security import authenticated_userid
 from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
@@ -15,7 +13,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from datetime import date
 
-from forms import MonographForm, PublisherForm, EvaluationForm, MeetingForm, PartForm
+from .forms import MonographForm, PublisherForm, EvaluationForm, MeetingForm, PartForm
 from ..models import models as rel_models
 from ..users import models as user_models
 from ..catalog import views as catalog_views
@@ -23,7 +21,7 @@ from ..catalog import views as catalog_views
 import couchdbkit
 import deform
 import colander
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import math
 
 from .models import Monograph, Part
@@ -58,7 +56,7 @@ class Catalog(object):
         return int(math.ceil(self.total_items / float(self._limit)))
 
 def get_logged_user(request):
-    userid = authenticated_userid(request)
+    userid = request.authenticated_userid
     if userid:
         return request.rel_db_session.query(user_models.User).get(userid)
 
@@ -75,10 +73,10 @@ def edit_book(request):
         if 'btn_cancel' in request.POST:
             return HTTPFound(location=request.route_path('staff.book_details', sbid=request.matchdict['sbid']))
 
-        controls = request.POST.items()
+        controls = list(request.POST.items())
         try:
             appstruct = monograph_form.validate(controls)
-        except deform.ValidationFailure, e:
+        except deform.ValidationFailure as e:
 
             monograph = Monograph.get(request.db, request.matchdict['sbid'])
             return {'content':e.render(),
@@ -214,10 +212,10 @@ def new_part(request):
         if 'btn_cancel' in request.POST:
             return HTTPFound(location=request.route_path('staff.book_details', sbid=request.matchdict['sbid']))
 
-        controls = request.POST.items()
+        controls = list(request.POST.items())
         try:
             appstruct = part_form.validate(controls)
-        except deform.ValidationFailure, e:
+        except deform.ValidationFailure as e:
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
@@ -380,19 +378,19 @@ def panel(request):
 
     catalog = Catalog(evaluations, limit=request.registry.settings['pagination.items_per_page'])
 
-    pagination_filters = dict([k, v] for k, v in filters.items() if v != '')
+    pagination_filters = dict([k, v] for k, v in list(filters.items()) if v != '')
     pagination = []
     for k in range(catalog.total_pages):
         querystring_params = pagination_filters.copy()
         querystring_params['page'] = k+1
-        pagination.append({'pg_number':k+1, 'url':urllib.urlencode(querystring_params)})
+        pagination.append({'pg_number':k+1, 'url':urllib.parse.urlencode(querystring_params)})
 
     meetings = request.rel_db_session.query(rel_models.Meeting).all()
     publishers = request.rel_db_session.query(rel_models.Publisher).all()
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
-    committee_decisions = [{'text':label,'value':k} for k, label in STATUS_CHOICES.items()]
+    committee_decisions = [{'text':label,'value':k} for k, label in list(STATUS_CHOICES.items())]
 
     return {'evaluations': catalog.page(page),
             'evaluations_total': catalog.total_items,
@@ -419,10 +417,10 @@ def new_publisher(request):
         if 'btn_cancel' in request.POST:
             return HTTPFound(location=request.route_path('staff.publishers_list'))
 
-        controls = request.POST.items()
+        controls = list(request.POST.items())
         try:
             appstruct = publisher_form.validate(controls)
-        except deform.ValidationFailure, e:
+        except deform.ValidationFailure as e:
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
@@ -556,11 +554,11 @@ def new_book(request):
         if 'btn_cancel' in request.POST:
             return HTTPFound(location=request.route_path('staff.panel'))
 
-        controls = request.POST.items()
+        controls = list(request.POST.items())
 
         try:
             appstruct = evaluation_form.validate(controls)
-        except deform.ValidationFailure, e:
+        except deform.ValidationFailure as e:
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
@@ -654,10 +652,10 @@ def new_meeting(request):
         if 'btn_cancel' in request.POST:
             return HTTPFound(location=request.route_path('staff.meetings_list'))
 
-        controls = request.POST.items()
+        controls = list(request.POST.items())
         try:
             appstruct = meeting_form.validate(controls)
-        except deform.ValidationFailure, e:
+        except deform.ValidationFailure as e:
             return {'content':e.render(),
                     'main':main,
                     'user':get_logged_user(request),
@@ -696,11 +694,11 @@ def new_meeting(request):
         return {'content':meeting_form.render(appstruct),
                 'main':main,
                 'user':get_logged_user(request),
-                'general_stuff':{'form_title':FORM_TITLE_EDIT % unicode(meeting.description),
+                'general_stuff':{'form_title':FORM_TITLE_EDIT % str(meeting.description),
                               'breadcrumb': [
                                 (_('Dashboard'), request.route_path('staff.panel')),
                                 (_('Manage Meetings'), request.route_path('staff.meetings_list')),
-                                (FORM_TITLE_EDIT % unicode(meeting.description), None),
+                                (FORM_TITLE_EDIT % str(meeting.description), None),
                               ]
                              },
                 }

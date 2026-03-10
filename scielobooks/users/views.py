@@ -3,11 +3,9 @@
 from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid import exceptions
-from pyramid.url import route_url, static_url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import get_renderer
 from pyramid.security import remember, forget
-from pyramid.security import authenticated_userid
 from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
@@ -16,15 +14,15 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from datetime import date
 
-from forms import SignupForm, LoginForm, RecoverPasswordForm, ForgotPasswordForm, EditUserForm
-import models as users
+from .forms import SignupForm, LoginForm, RecoverPasswordForm, ForgotPasswordForm, EditUserForm
+from . import models as users
 from ..models import models
-from managers import RegistrationProfileManager
-from managers import InvalidActivationKey
-from managers import ActivationError
-from managers import AccountRecoveryManager
+from .managers import RegistrationProfileManager
+from .managers import InvalidActivationKey
+from .managers import ActivationError
+from .managers import AccountRecoveryManager
 
-from Crypto.Hash import SHA256
+import hashlib
 
 import json
 import deform
@@ -34,8 +32,14 @@ import base64
 BASE_TEMPLATE = 'scielobooks:templates/base.pt'
 
 
+def _sha256(value):
+    if not isinstance(value, bytes):
+        value = str(value).encode("utf-8")
+    return hashlib.sha256(value).hexdigest()
+
+
 def get_logged_user(request):
-    userid = authenticated_userid(request)
+    userid = request.authenticated_userid
     if userid:
         return request.rel_db_session.query(users.User).get(userid)
 
@@ -46,20 +50,20 @@ def login(request):
     main = get_renderer(BASE_TEMPLATE).implementation()
     login_form = LoginForm.get_form(localizer)
 
-    login_url = route_url('users.login', request)
+    login_url = request.route_url('users.login')
     referrer = request.url
     if referrer == login_url:
-        referrer = route_url('staff.panel', request)
+        referrer = request.route_url('staff.panel')
 
     b64_caller = request.params.get('caller', None)
-    caller = base64.b64decode(b64_caller) if b64_caller is not None else referrer
+    caller = base64.urlsafe_b64decode(b64_caller.encode("ascii")).decode("utf-8") if b64_caller is not None else referrer
 
     if request.method == 'POST':
 
-        controls = request.POST.items()
+        controls = list(request.POST.items())
         try:
             appstruct = login_form.validate(controls)
-        except deform.ValidationFailure, e:
+        except deform.ValidationFailure as e:
 
             return {'content':e.render(),
                     'main':main,
@@ -71,7 +75,7 @@ def login(request):
         except NoResultFound:
             request.session.flash(_("Username doesn't exist."))
         else:
-            if SHA256.new(appstruct['password']).hexdigest() == user.password:
+            if _sha256(appstruct['password']) == user.password:
                 if not user.is_active:
                     request.session.flash(_("The username is not active. Check your email account for the activation instructions."))
                 else:
@@ -90,7 +94,7 @@ def login(request):
 
 def logout(request):
     headers = forget(request)
-    return HTTPFound(location = route_url('users.login', request),
+    return HTTPFound(location=request.route_url('users.login'),
                      headers = headers)
 
 
@@ -105,10 +109,10 @@ def signup(request):
         if 'btn_cancel' in request.POST:
             return HTTPFound(location=request.route_path('users.list'))
 
-        controls = request.POST.items()
+        controls = list(request.POST.items())
         try:
             appstruct = signup_form.validate(controls)
-        except deform.ValidationFailure, e:
+        except deform.ValidationFailure as e:
 
             return {'content':e.render(),
                     'main':main,
@@ -214,10 +218,10 @@ def forgot_password(request):
         if 'btn_cancel' in request.POST:
             return HTTPFound(location=request.route_path('users.login'))
 
-        controls = request.POST.items()
+        controls = list(request.POST.items())
         try:
             appstruct = forgot_password_form.validate(controls)
-        except deform.ValidationFailure, e:
+        except deform.ValidationFailure as e:
             return {'content':e.render(),
                     'main':main,
                     'general_stuff':{'form_title':FORM_TITLE},
@@ -271,10 +275,10 @@ def recover_password(request):
         raise exceptions.NotFound()
 
     if request.method == 'POST':
-        controls = request.POST.items()
+        controls = list(request.POST.items())
         try:
             appstruct = recovery_form.validate(controls)
-        except deform.ValidationFailure, e:
+        except deform.ValidationFailure as e:
             return {'content':e.render(),
                     'main':main,
                     'general_stuff':{'form_title':FORM_TITLE},
@@ -327,10 +331,10 @@ def edit_user(request):
         if 'btn_cancel' in request.POST:
             return HTTPFound(location=request.route_path('users.list'))
 
-        controls = request.POST.items()
+        controls = list(request.POST.items())
         try:
             appstruct = edit_user_form.validate(controls)
-        except deform.ValidationFailure, e:
+        except deform.ValidationFailure as e:
 
             return {'content':e.render(),
                     'main':main,
@@ -350,7 +354,7 @@ def edit_user(request):
             raise exceptions.NotFound()
 
         if appstruct['password'] is not None:
-            user.password = SHA256.new(appstruct['password']).hexdigest()
+            user.password = _sha256(appstruct['password'])
             user.password_encryption = 'SHA256'
 
         if len(appstruct['email']):
@@ -398,12 +402,12 @@ def edit_user(request):
 def ajax_set_active(request):
     user_id = request.POST.get('id', None)
     if user_id is None:
-        return Respose('insufficient params')
+        return Response('insufficient params')
 
     try:
         user = request.rel_db_session.query(users.User).filter_by(id=user_id).one()
     except NoResultFound:
-        return Respose('nothing to do')
+        return Response('nothing to do')
 
     activation_key = user.registration_profile.activation_key
 
@@ -427,12 +431,12 @@ def ajax_set_active(request):
 def ajax_set_inactive(request):
     user_id = request.POST.get('id', None)
     if user_id is None:
-        return Respose('insufficient params')
+        return Response('insufficient params')
 
     try:
         user = request.rel_db_session.query(users.User).filter_by(id=user_id).one()
     except NoResultFound:
-        return Respose('nothing to do')
+        return Response('nothing to do')
 
     if user.is_active == True:
         user.is_active = False

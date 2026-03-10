@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 
 import string
@@ -26,14 +26,13 @@ def calcbase(s, digitos=BASE28):
                for pot, dig in enumerate(reversed(s)))
 
 if __name__=='__main__':
-    print 'Amostra de alguns números em base 28'
+    print('Amostra de alguns números em base 28')
 
-    l = range(11)
+    l = list(range(11))
     l.extend([calcbase(x) for x in ('3zz', '422','4zz','522','zzz','3222')])
     l.extend([27,28,29,28**2-1,28**2,1001,1100,1200,2000])
 
     for n in sorted(l):
         v = reprbase(n)
         assert n == calcbase(v)
-        print '%8d\t%8s' % (n, reprbase(n))
-
+        print('%8d\t%8s' % (n, reprbase(n)))

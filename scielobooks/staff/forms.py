@@ -1,4 +1,4 @@
-from models import Monograph, Part
+from .models import Monograph, Part
 
 from pyramid.i18n import TranslationStringFactory
 _ = TranslationStringFactory('scielobooks')
@@ -66,7 +66,7 @@ class MonographForm():
                         ]
 
         l10n_countries = Countries(localizer.locale_name)
-        country_values = l10n_countries.items()
+        country_values = list(l10n_countries.items())
 
         base_schema = Monograph.get_schema()
         base_schema['synopsis'].widget = deform.widget.TextAreaWidget(cols=80, rows=15)

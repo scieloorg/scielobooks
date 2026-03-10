@@ -4,10 +4,16 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from datetime import datetime, timedelta
-from Crypto.Hash import SHA256
+import hashlib
 
 from scielobooks.models import Base
 from ..utilities import functions
+
+
+def _sha256(value):
+    if not isinstance(value, bytes):
+        value = str(value).encode("utf-8")
+    return hashlib.sha256(value).hexdigest()
 
 class User(Base):
     __tablename__ = 'user'
@@ -31,7 +37,7 @@ class User(Base):
     
     def __init__(self, username, password, group, fullname=None, email=None, is_active=False):
         self.username = username
-        self.password = SHA256.new(password).hexdigest()
+        self.password = _sha256(password)
         self.password_encryption = 'SHA256'
         self.fullname = fullname
         self.email = email
@@ -67,7 +73,7 @@ class RegistrationProfile(Base):
 
     def __init__(self, user):
         self.user = user
-        self.activation_key = SHA256.new(user.username).hexdigest()
+        self.activation_key = _sha256(user.username)
         self.expiration_date = datetime.now() + timedelta(1)
 
 
@@ -86,6 +92,6 @@ class AccountRecovery(Base):
 
     def __init__(self, user):
         self.user = user
-        self.recovery_key = SHA256.new(user.username+ str(datetime.now())).hexdigest()
+        self.recovery_key = _sha256(user.username + str(datetime.now()))
         self.expiration_date = datetime.now() + timedelta(1)
         

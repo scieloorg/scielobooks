@@ -1,5 +1,5 @@
 # coding: utf-8
-import urllib
+from urllib.parse import quote
 
 import couchdbkit
 from pyramid import exceptions
@@ -79,7 +79,7 @@ def list_publishers(request):
         resp = {
             'total_items': data['value'],
             'title': data['key'],
-            '_id': urllib.quote(data['key']),
+            '_id': quote(data['key']),
         }
 
         return resp
@@ -142,4 +142,3 @@ def list_changes(request):
 def show_book(request):
     book = request.db.get(request.matchdict['id'])
     return _prepare_response(book, request)
-

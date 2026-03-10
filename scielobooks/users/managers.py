@@ -1,26 +1,27 @@
 from pyramid_mailer.message import Message
 from sqlalchemy.orm.exc import NoResultFound
-import models
+from sqlalchemy.exc import IntegrityError
+from . import models
 import transaction
 from datetime import datetime
-from Crypto.Hash import SHA256
+import hashlib
 
 ACTIVATED = 'ACTIVATED'
 RECOVERED = 'RECOVERED'
 
 class InvalidActivationKey(Exception):
     def __init__(self, message=None):
-        super(Exception, self).__init__(message)
+        super().__init__(message)
 
     def __repr__(self):
-        return '%s(%r)' % (self.__class__.__name__, self.message)
+        return '%s(%r)' % (self.__class__.__name__, self.args[0] if self.args else None)
 
 class ActivationError(Exception):
     def __init__(self, message=None):
-        super(Exception, self).__init__(message)
+        super().__init__(message)
 
     def __repr__(self):
-        return '%s(%r)' % (self.__class__.__name__, self.message)
+        return '%s(%r)' % (self.__class__.__name__, self.args[0] if self.args else None)
 
 
 class RegistrationProfileManager(object):
@@ -68,8 +69,12 @@ class RegistrationProfileManager(object):
 
     @staticmethod
     def clean_expired(request):
+        exclude_total = 0
         try:
-            exclude_total = request.rel_db_session.query(models.RegistrationProfile).filter(models.RegistrationProfile.activation_key != ACTIVATED and models.RegistrationProfile.expiration_date < datetime.now()).delete()
+            exclude_total = request.rel_db_session.query(models.RegistrationProfile).filter(
+                models.RegistrationProfile.activation_key != ACTIVATED,
+                models.RegistrationProfile.expiration_date < datetime.now(),
+            ).delete()
         except:
             pass
 
@@ -90,7 +95,7 @@ class AccountRecoveryManager(object):
         if datetime.now() > account.expiration_date:
             raise InvalidActivationKey()
 
-        account.user.password = SHA256.new(new_password).hexdigest()
+        account.user.password = hashlib.sha256(new_password.encode("utf-8")).hexdigest()
         account.user.password_encryption = 'SHA256'
         account.recovery_key = RECOVERED
         account.recovery_date = datetime.now()

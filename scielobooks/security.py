@@ -1,5 +1,5 @@
 from sqlalchemy.orm.exc import NoResultFound
-from users import models as user_models
+from .users import models as user_models
 
 def groupfinder(userid, request):
     try:

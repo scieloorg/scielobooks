@@ -1,5 +1,5 @@
 import copy
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 try:
     from collections import OrderedDict
 except ImportError:
@@ -82,7 +82,7 @@ class Monograph(model.CouchdbDocument):
 
         creators_by_role = self._creators_by_roles()
 
-        return OrderedDict((key, formatting_func(value)) for key, value in creators_by_role.items())
+        return OrderedDict((key, formatting_func(value)) for key, value in list(creators_by_role.items()))
 
     def __get_cleaned_lastname(self, author):
         return functions.slugify(author).split('-')[0]
@@ -115,7 +115,7 @@ class Monograph(model.CouchdbDocument):
             linked_creators = []
             for creator in creators:
                 if creator[1]:
-                    linked_creators.append(u'<a href="'+creator[1]+u'" target="_blank">'+creator[0]+u'</a>')
+                    linked_creators.append('<a href="'+creator[1]+'" target="_blank">'+creator[0]+'</a>')
                 else:
                     linked_creators.append(creator[0])
 
